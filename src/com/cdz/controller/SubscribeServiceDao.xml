@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- subscribe管理模块使用的SQL语句 -->
+<mapper namespace="Subscribe">
+
+	<!-- 查询subscribe列表 ,多表关联查询-->
+	<select id="listSubscribesPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.SubscribeDao.column2" />	,b1.account_ as b1_account_
+				,c.cp_no as cp_no
+			FROM subscribe 
+			left join base_user	 b1 on subscribe.user_id=b1.id_
+			left join charging_pile	 c on subscribe.cp_id=c.cp_id
+			<where>
+				subscribe.is_del='0'
+			    <if test="account_ != null and account_ != ''">
+				   AND b1.account_ like '%${account_}%'
+				</if>
+				<if test="cp_no != null and cp_no != ''">
+				   AND c.cp_no like '%${cp_no}%'
+				</if>
+				<if test="status != null and status != ''">
+				   AND subscribe.status = #{status}  <!-- 押金状态，0:未交，1：已交，-1：已退 -->
+				</if>
+			</where>
+			order by subscribe.create_date desc
+	</select>
+
+</mapper>

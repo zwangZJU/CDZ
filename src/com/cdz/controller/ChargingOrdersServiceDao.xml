@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- charging_orders管理模块使用的SQL语句 -->
+<mapper namespace="ChargingOrders">
+
+	<!-- 查询charging_orders列表 ,多表关联查询-->
+	<select id="listChargingOrderssPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.ChargingOrdersDao.column2" />	,b1.account_ as b1_account_	
+				,c.cp_no
+			FROM charging_orders
+			left join base_user	 b1 on charging_orders.user_id=b1.id_ 
+			left join charging_pile	 c on charging_orders.cp_id=c.cp_id
+			<where>
+				charging_orders.is_del='0'
+			    <include refid="dao.ChargingOrdersDao.equal2" />
+			    <if test="account_ != null and account_ != ''">
+				   AND b1.account_ like '%${account_}%'
+				</if>
+				<if test="cp_no != null and cp_no != ''">
+				   AND c.cp_no like '%${cp_no}%'
+				</if>
+			    <if test="date_start != null and date_start != ''">
+				   AND charging_orders.create_date <![CDATA[ >= ]]> #{date_start}  
+				</if>
+				<if test="date_end != null and date_end != ''">
+				   AND charging_orders.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>
+			</where>
+			order by charging_orders.create_date desc
+	</select>
+	<select id="listChargingOrderssSocket" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.ChargingOrdersDao.column" />	
+			FROM charging_orders
+			<where>
+				is_del='0' AND status_='0' 
+				<if test="co_id != null and co_id != ''">
+				   AND co_id = #{co_id}
+				</if>
+				<if test="cp_id != null and cp_id != ''">
+				   AND cp_id = #{cp_id}
+				</if>
+				<if test="user_id != null and user_id != ''">
+				   AND user_id = #{user_id}
+				</if>
+			</where>
+			order by create_date desc LIMIT 0,1	
+	</select>
+	<select id="listChargingOrderssSocket1" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.ChargingOrdersDao.column" />	
+			FROM charging_orders
+			<where>
+				is_del='0' AND status_='-2' 
+				<if test="co_id != null and co_id != ''">
+				   AND co_id = #{co_id}
+				</if>
+				<if test="cp_id != null and cp_id != ''">
+				   AND cp_id = #{cp_id}
+				</if>
+				<if test="user_id != null and user_id != ''">
+				   AND user_id = #{user_id}
+				</if>
+			</where>
+			order by create_date desc LIMIT 0,1	
+	</select>
+	<select id="listChargingOrderssDoing" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.ChargingOrdersDao.column2" />	,t.addr
+			FROM charging_orders
+			LEFT JOIN charging_pile t ON charging_orders.cp_id= t.cp_id
+			<where>
+				charging_orders.is_del='0' AND (charging_orders.status_='0' or charging_orders.status_='1'  OR charging_orders.status_='-2' )
+				<if test="co_id != null and co_id != ''">
+				   AND charging_orders.co_id = #{co_id}
+				</if>
+				<if test="cp_id != null and cp_id != ''">
+				   AND charging_orders.cp_id = #{cp_id}
+				</if>
+				<if test="user_id != null and user_id != ''">
+				   AND charging_orders.user_id = #{user_id}
+				</if>
+			</where>
+			order by charging_orders.create_date desc LIMIT 0,1	
+	</select>	
+	<select id="checkListChargingOrderss" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.ChargingOrdersDao.column" />	
+			FROM charging_orders
+			<where>
+				is_del='0' AND status_ in('0','-2') AND round((UNIX_TIMESTAMP(SYSDATE())-UNIX_TIMESTAMP(update_date))/60)<![CDATA[ > ]]> #{checkOrderDate} 
+			</where>
+	</select>			
+	<select id="listChargingOrderss" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.ChargingOrdersDao.column2" />	,b1.account_ as b1_account_	
+				,c.cp_no
+			FROM charging_orders
+			left join base_user	 b1 on charging_orders.user_id=b1.id_ 
+			left join charging_pile	 c on charging_orders.cp_id=c.cp_id
+			<where>
+				charging_orders.is_del='0'
+			    <include refid="dao.ChargingOrdersDao.equal2" />
+			    <if test="account_ != null and account_ != ''">
+				   AND b1.account_ like '%${account_}%'
+				</if>
+				<if test="cp_no != null and cp_no != ''">
+				   AND c.cp_no like '%${cp_no}%'
+				</if>
+			    <if test="date_start != null and date_start != ''">
+				   AND charging_orders.create_date <![CDATA[ >= ]]> #{date_start}  
+				</if>
+				<if test="date_end != null and date_end != ''">
+				   AND charging_orders.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>
+			</where>
+	</select>
+	<select id="listMyChargingOrdersPage" resultType="Dto" parameterType="Dto">
+		SELECT o.co_id,o.user_id,o.cp_id,o.amounted,o.dateed,o.electricity,o.rest_date,o.total_amt,o.deduction_amt,o.real_amt,o.status_,o.deduction_type,o.create_date,t.cp_no ,t.addr ,o.put_gun
+		FROM charging_orders o 
+		LEFT JOIN charging_pile t ON o.cp_id= t.cp_id
+		<where>
+			o.is_del='0'
+		<if test="user_id != null and user_id != ''">
+		   AND o.user_id = #{user_id}
+		</if>
+		<if test="co_id != null and co_id != ''">
+		   AND o.co_id = #{co_id}
+		</if>
+		<if test="status_ != null and status_ != ''">
+		   AND o.status_ = #{status_}
+		</if>
+		<if test="noPay != null and noPay != ''">
+		   AND o.status_ <![CDATA[ <> ]]> #{noPay}
+		</if>
+		</where>
+		order by o.create_date desc
+	</select>
+	<select id="chargingOrdersSummary" resultType="Dto" parameterType="Dto">
+			SELECT 	
+			IFNULL(SUM(CASE WHEN t.status_='2' or t.status_='1' THEN 1 ELSE 0 END),0) AS  count ,
+			IFNULL(SUM(CASE WHEN t.status_='2' THEN 1 ELSE 0 END),0) AS  pay ,
+			IFNULL(SUM(CASE WHEN t.status_='1' THEN 1 ELSE 0 END),0) AS  nopay  FROM charging_orders t WHERE   is_del='0'
+			<if test="date_start != null and date_start != ''">
+			   AND t.create_date <![CDATA[ >= ]]> #{date_start}  
+			</if>
+			<if test="date_end != null and date_end != ''">
+			   AND t.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+			</if>
+			
+	</select>
+	<select id="chargingOrdersStatPage" resultType="Dto" parameterType="Dto">
+		SELECT
+			COUNT(1) AS o_num,DATE_FORMAT(create_date,'%Y-%m-%d')  AS create_date,
+			IFNULL(SUM(CASE WHEN t.status_='0' THEN 1 ELSE 0 END),0) AS  runing,
+			IFNULL(SUM(CASE WHEN t.status_='1' THEN 1 ELSE 0 END),0) AS  ok,
+			IFNULL(SUM(CASE WHEN t.status_='-1' THEN 1 ELSE 0 END),0) AS  cancel
+		FROM 
+			charging_orders t
+		WHERE   is_del='0'
+		<if test="date_start != null and date_start != ''">
+		   AND t.create_date <![CDATA[ >= ]]> #{date_start}  
+		</if>
+		<if test="date_end != null and date_end != ''">
+		   AND t.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+		</if>
+		GROUP BY DATE_FORMAT(create_date,'%Y-%m-%d')
+		order by 	t.create_date  desc
+	</select>
+	
+	<select id="chargingOrdersStatQuerySummary" resultType="Dto" parameterType="Dto">
+		SELECT
+			COUNT(1) AS o_num,
+			IFNULL(SUM(CASE WHEN t.status_='0' THEN 1 ELSE 0 END),0) AS  runing,
+			IFNULL(SUM(CASE WHEN t.status_='1' THEN 1 ELSE 0 END),0) AS  ok,
+			IFNULL(SUM(CASE WHEN t.status_='-1' THEN 1 ELSE 0 END),0) AS  cancel
+		FROM 
+			charging_orders t
+		WHERE   is_del='0'
+		<if test="date_start != null and date_start != ''">
+		   AND t.create_date <![CDATA[ >= ]]> #{date_start}  
+		</if>
+		<if test="date_end != null and date_end != ''">
+		   AND t.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+		</if>
+	</select>
+	<select id="chargingOrdersStatFigure" resultType="Dto" parameterType="Dto">
+		SELECT
+			COUNT(1) AS num,DATE_FORMAT(create_date,'%Y-%m-%d')  AS create_date,
+			IFNULL(SUM(CASE WHEN t.status_='0' THEN 1 ELSE 0 END),0) AS  runing,
+			IFNULL(SUM(CASE WHEN t.status_='1' THEN 1 ELSE 0 END),0) AS  ok,
+			IFNULL(SUM(CASE WHEN t.status_='-1' THEN 1 ELSE 0 END),0) AS  cancel
+		FROM 
+			charging_orders t
+		WHERE   is_del='0'
+		<if test="date_start != null and date_start != ''">
+		   AND t.create_date <![CDATA[ >= ]]> #{date_start}  
+		</if>
+		<if test="date_end != null and date_end != ''">
+		   AND t.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+		</if>
+		GROUP BY
+			DATE_FORMAT(create_date,'%Y-%m-%d')
+		order by 	DATE_FORMAT(create_date,'%Y-%m-%d')
+	</select>
+	<select id="chargingOrdersSalesStatPage" resultType="Dto" parameterType="Dto">
+		SELECT
+			DATE_FORMAT(create_date,'%Y-%m-%d')  AS create_date,
+			SUM(total_amt) AS  total_amt,
+			SUM(deduction_amt) AS  deduction_amt,
+			SUM(real_amt) AS  real_amt
+		FROM 
+			charging_orders t
+		WHERE   is_del='0' and status_='1'
+		<if test="date_start != null and date_start != ''">
+		   AND t.create_date <![CDATA[ >= ]]> #{date_start}  
+		</if>
+		<if test="date_end != null and date_end != ''">
+		   AND t.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+		</if>
+		GROUP BY DATE_FORMAT(create_date,'%Y-%m-%d')
+		order by 	t.create_date  desc
+	</select>
+	
+	<select id="chargingOrdersSalesStatQuerySummary" resultType="Dto" parameterType="Dto">
+		SELECT
+			IFNULL(SUM(total_amt),0) AS  total_amt,
+			IFNULL(SUM(deduction_amt),0) AS  deduction_amt,
+			IFNULL(SUM(real_amt),0) AS  real_amt
+		FROM 
+			charging_orders t
+		WHERE   is_del='0' and status_='1'
+		<if test="date_start != null and date_start != ''">
+		   AND t.create_date <![CDATA[ >= ]]> #{date_start}  
+		</if>
+		<if test="date_end != null and date_end != ''">
+		   AND t.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+		</if>
+	</select>
+	<select id="chargingOrdersSalesStatFigure" resultType="Dto" parameterType="Dto">
+		SELECT
+			DATE_FORMAT(create_date,'%Y-%m-%d')  AS create_date,
+			SUM(total_amt) AS  total_amt,
+			SUM(deduction_amt) AS  deduction_amt,
+			SUM(real_amt) AS  real_amt
+		FROM 
+			charging_orders t
+		WHERE   is_del='0' and status_='1'
+		<if test="date_start != null and date_start != ''">
+		   AND t.create_date <![CDATA[ >= ]]> #{date_start}  
+		</if>
+		<if test="date_end != null and date_end != ''">
+		   AND t.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+		</if>
+		GROUP BY
+			DATE_FORMAT(create_date,'%Y-%m-%d')
+		order by 	DATE_FORMAT(create_date,'%Y-%m-%d')
+	</select>
+</mapper>

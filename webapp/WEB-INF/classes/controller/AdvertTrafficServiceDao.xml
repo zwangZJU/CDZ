@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- advert_traffic管理模块使用的SQL语句 -->
+<mapper namespace="AdvertTraffic">
+
+	<!-- 查询advert_traffic列表 ,多表关联查询-->
+	<select id="listAdvertTrafficsPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.AdvertTrafficDao.column" />	
+			FROM advert_traffic
+			<where>
+				is_del='0'
+			    <include refid="dao.AdvertTrafficDao.equal" />
+			</where>
+	</select>
+	<select id="listAdvertTrafficsStatPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				sum(at_mun) as at_mun,DATE_FORMAT(create_date,'%Y-%m-%d')  AS create_date
+			FROM advert_traffic
+			<where>
+				is_del='0' 
+				<if test="date_start != null and date_start != ''">
+				   AND create_date <![CDATA[ >= ]]> #{date_start}  
+				</if>
+				<if test="date_end != null and date_end != ''">
+				   AND create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>
+			</where>
+			GROUP BY DATE_FORMAT(create_date,'%Y-%m-%d')
+			order by create_date desc
+	</select>
+	<select id="listAdvertTrafficsStatQuerySummary" resultType="Dto" parameterType="Dto">
+			SELECT
+				count(1) as count
+			FROM advert_traffic
+			<where>
+				is_del='0' 
+				<if test="date_start != null and date_start != ''">
+				   AND create_date <![CDATA[ >= ]]> #{date_start}  
+				</if>
+				<if test="date_end != null and date_end != ''">
+				   AND create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>
+			</where>
+	</select>
+	<select id="listAdvertTrafficsStatFigure" resultType="Dto" parameterType="Dto">
+			SELECT
+				sum(at_mun) AS num,DATE_FORMAT(create_date,'%Y-%m-%d')  AS create_date
+			FROM advert_traffic
+			<where>
+				is_del='0' 
+				<if test="date_start != null and date_start != ''">
+				   AND create_date <![CDATA[ >= ]]> #{date_start}  
+				</if>
+				<if test="date_end != null and date_end != ''">
+				   AND create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>
+			</where>
+			GROUP BY DATE_FORMAT(create_date,'%Y-%m-%d')
+			order by create_date 
+	</select>
+</mapper>

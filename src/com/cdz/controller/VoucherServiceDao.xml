@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 代金券表管理模块使用的SQL语句 -->
+<mapper namespace="Voucher">
+
+	<!-- 查询代金券表列表 ,多表关联查询-->
+	<select id="listVouchersPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.VoucherDao.column2" />,	base_user.name_,	base_user.account_,	activity.name_ as activity_name	
+			FROM voucher left join base_user on voucher.dealer_id=base_user.id_
+			left join activity on voucher.activity_id=activity.activity_id
+			<where>
+				voucher.is_del='0'
+			    <if test="name_ != null and name_ != ''">
+				      AND base_user.name_ like '%${name_}%'  <!-- 主键 -->
+				</if>
+				<if test="account_ != null and account_ != ''">
+				      AND base_user.account_ like '%${account_}%'  <!-- 主键 -->
+				</if>
+				<if test="activity_name != null and activity_name != ''">
+				      AND activity.name_ like '%${activity_name}%'  <!-- 主键 -->
+				</if>
+				<if test="voucher_id != null and voucher_id != ''">
+				      AND voucher.voucher_id = #{voucher_id}  <!-- 主键 -->
+				</if>
+			   <if test="voucher_amt != null ">
+				      AND voucher.voucher_amt = #{voucher_amt}  <!-- 券金额 -->
+				</if>
+			    <if test="activity_id != null and activity_id != ''">
+				      AND voucher.activity_id = #{activity_id}  <!-- 活动ID -->
+				</if>
+			    <if test="id_ != null and id_ != ''">
+				      AND voucher.dealer_id = #{id_}  <!-- 会员ID -->
+				</if>
+			   <if test="direction != null and direction != ''">
+				      AND voucher.direction = #{direction}  <!-- 计算方向，1：发放金券，-1：抵扣消费 -->
+				</if>
+			    <if test="order_id != null and order_id != ''">
+				      AND voucher.order_id = #{order_id}  <!-- 订单ID -->
+				</if>
+			    <if test="is_del != null and is_del != ''">
+				      AND voucher.is_del = #{is_del}  <!-- 是否删除，0：未删除，1：删除 -->
+				</if>
+			    <if test="create_date != null and create_date != ''">
+				      AND voucher.create_date = #{create_date}  <!-- 创建时间 -->
+				</if>
+			    <if test="oper_id != null and oper_id != ''">
+				      AND voucher.oper_id = #{oper_id}  <!-- 操作人ID -->
+				</if>
+			    <if test="effec_date != null and effec_date != ''">
+				      AND voucher.effec_date = #{effec_date}  <!-- 有效日期 -->
+				</if>
+				<if test="use_date != null and use_date != ''">
+				      AND voucher.use_date = #{use_date}  <!-- 有效日期 -->
+				</if>
+			   <if test="cond_value != null ">
+				      AND voucher.cond_value = #{cond_value}  <!-- 使用条件值 -->
+				</if>
+			</where>
+			order by 	voucher.create_date desc
+	</select>
+	<select id="apiListVouchersPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				  voucher_id,  <!-- 主键 -->
+				  voucher_amt,  <!-- 券金额 -->
+				  effec_date,  <!-- 有效日期 -->
+				  create_date  <!-- 新建时间 -->
+			FROM voucher
+			<where>
+			    <include refid="dao.VoucherDao.equal" />
+			</where>
+			order by effec_date ASC
+	</select>
+	<select id="availableVouchersList" resultType="Dto" parameterType="Dto">
+			SELECT
+				  <include refid="dao.VoucherDao.column" />
+			FROM voucher
+			<where>
+				is_del='0'
+				and direction='0'
+			     <if test="id_ != null and id_ != ''">
+				      AND dealer_id = #{id_}  <!-- 会员ID -->
+				 </if>
+				AND CURRENT_DATE <![CDATA[ <= ]]> effec_date
+			</where>
+			order by voucher_amt desc
+	</select>
+	<update id="checkUpdateVouchersList" parameterType="Dto">
+			UPDATE voucher SET direction='-1' WHERE is_del='0'
+				AND direction='0'
+				AND CURRENT_DATE <![CDATA[ > ]]> effec_date
+			
+	</update>
+    <select id="vouchersStatPage" resultType="Dto" parameterType="Dto">
+		SELECT
+			DATE_FORMAT(create_date,'%Y-%m-%d')  AS create_date
+			,COUNT(1) AS num,SUM(voucher_amt) AS voucher_amt,
+			IFNULL(SUM(CASE WHEN t.direction='1' THEN 1 ELSE 0 END),0) as yiyong,
+			IFNULL(SUM(CASE WHEN t.direction='-1' THEN 1 ELSE 0 END),0) as gouqi
+		FROM 
+			voucher t
+		WHERE   is_del='0' 
+		<if test="date_start != null and date_start != ''">
+		   AND t.create_date <![CDATA[ >= ]]> #{date_start}  
+		</if>
+		<if test="date_end != null and date_end != ''">
+		   AND t.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+		</if>
+		GROUP BY DATE_FORMAT(create_date,'%Y-%m-%d')
+		order by 	t.create_date  desc
+	</select>
+	
+	<select id="vouchersStatQuerySummary" resultType="Dto" parameterType="Dto">
+		SELECT
+			COUNT(1) AS num,IFNULL(SUM(voucher_amt),0) AS voucher_amt,
+			IFNULL(SUM(CASE WHEN t.direction='1' THEN 1 ELSE 0 END),0) as yiyong,
+			IFNULL(SUM(CASE WHEN t.direction='-1' THEN 1 ELSE 0 END),0) as gouqi
+		FROM 
+			voucher t
+		WHERE   is_del='0' 
+		<if test="date_start != null and date_start != ''">
+		   AND t.create_date <![CDATA[ >= ]]> #{date_start}  
+		</if>
+		<if test="date_end != null and date_end != ''">
+		   AND t.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+		</if>
+	</select>
+	<select id="vouchersStatFigure" resultType="Dto" parameterType="Dto">
+		SELECT
+			DATE_FORMAT(create_date,'%Y-%m-%d')  AS create_date
+			,COUNT(1) AS num
+			,SUM(voucher_amt) AS voucher_amt,
+			IFNULL(SUM(CASE WHEN t.direction='1' THEN 1 ELSE 0 END),0) as yiyong,
+			IFNULL(SUM(CASE WHEN t.direction='-1' THEN 1 ELSE 0 END),0) as gouqi
+		FROM 
+			voucher t
+		WHERE   is_del='0' 
+		<if test="date_start != null and date_start != ''">
+		   AND t.create_date <![CDATA[ >= ]]> #{date_start}  
+		</if>
+		<if test="date_end != null and date_end != ''">
+		   AND t.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+		</if>
+		GROUP BY
+		DATE_FORMAT(create_date,'%Y-%m-%d')
+		order by 	create_date
+	</select>
+</mapper>

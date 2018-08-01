@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- deposit_list管理模块使用的SQL语句 -->
+<mapper namespace="DepositList">
+
+	<!-- 查询deposit_list列表 ,多表关联查询-->
+	<select id="listDepositListsPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.DepositListDao.column2" />,b1.account_ as b1_account_
+				,b2.account_ as b2_name_
+				,b3.account_ as b3_name_
+			FROM deposit_list
+			left join base_user	 b1 on deposit_list.user_id=b1.id_
+			left join base_user	 b2 on deposit_list.audit_id=b2.id_
+			left join base_user	 b3 on deposit_list.pay_id=b3.id_
+			<where>
+				deposit_list.is_del='0'
+			    <include refid="dao.DepositListDao.equal2" />
+			    <if test="account_ != null and account_ != ''">
+				   AND b1.account_ like '%${account_}%'
+				</if>
+			    <if test="date_start != null and date_start != ''">
+				   AND deposit_list.create_date <![CDATA[ >= ]]> #{date_start}  
+				</if>
+				<if test="date_end != null and date_end != ''">
+				   AND deposit_list.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>
+			</where>
+			order by deposit_list.create_date desc
+	</select>
+	<select id="list1DepositListsPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.DepositListDao.column2" />,b1.account_ as b1_account_
+				,b2.account_ as b2_name_
+				,b3.account_ as b3_name_
+			FROM deposit_list
+			left join base_user	 b1 on deposit_list.user_id=b1.id_
+			left join base_user	 b2 on deposit_list.audit_id=b2.id_
+			left join base_user	 b3 on deposit_list.pay_id=b3.id_
+			<where>
+				deposit_list.is_del='0' and deposit_list.status='0'
+			    <include refid="dao.DepositListDao.equal2" />
+			    <if test="account_ != null and account_ != ''">
+				   AND b1.account_ like '%${account_}%'
+				</if>
+				
+			    <if test="date_start != null and date_start != ''">
+				   AND deposit_list.create_date <![CDATA[ >= ]]> #{date_start}  
+				</if>
+				<if test="date_end != null and date_end != ''">
+				   AND deposit_list.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>
+			</where>
+			order by deposit_list.create_date desc
+	</select>
+	<select id="list2DepositListsPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.DepositListDao.column2" />,b1.account_ as b1_account_
+				,b2.account_ as b2_name_
+				,b3.account_ as b3_name_
+			FROM deposit_list
+			left join base_user	 b1 on deposit_list.user_id=b1.id_
+			left join base_user	 b2 on deposit_list.audit_id=b2.id_
+			left join base_user	 b3 on deposit_list.pay_id=b3.id_
+			<where>
+				deposit_list.is_del='0' and ( deposit_list.status='1' or deposit_list.status='2')
+			    <include refid="dao.DepositListDao.equal2" />
+			    <if test="account_ != null and account_ != ''">
+				   AND b1.account_ like '%${account_}%'
+				</if>
+			    <if test="date_start != null and date_start != ''">
+				   AND deposit_list.create_date <![CDATA[ >= ]]> #{date_start}  
+				</if>
+				<if test="date_end != null and date_end != ''">
+				   AND deposit_list.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>
+			</where>
+			order by deposit_list.create_date desc
+	</select>
+	<select id="apiListDepositPage" resultType="Dto" parameterType="Dto">
+		SELECT deposit_id,amt,status,audit_date,pay_date FROM  deposit_list
+		<where>
+			<include refid="dao.DepositListDao.equal" />
+		</where>
+		order by deposit_list.create_date desc
+	</select>
+
+</mapper>

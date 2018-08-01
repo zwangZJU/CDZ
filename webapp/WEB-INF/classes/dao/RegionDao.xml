@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- region[region]SQL自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2017-04-19 20:27:12 -->
+<mapper namespace="dao.RegionDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.RegionPO">
+		INSERT INTO region (
+		<if test="region_code != null and region_code != ''">
+	         region_code, <!-- region_code -->
+		</if>
+		<if test="region_name != null and region_name != ''">
+	         region_name, <!-- region_name -->
+		</if>
+		<if test="parent_id != null and parent_id != ''">
+	         parent_id, <!-- parent_id -->
+		</if>
+		<if test="region_level != null and region_level != ''">
+	         region_level, <!-- region_level -->
+		</if>
+		<if test="region_order != null and region_order != ''">
+	         region_order, <!-- region_order -->
+		</if>
+		<if test="region_id != null and region_id != ''">
+	          region_id  <!-- region_id -->
+	   </if>
+		)VALUES(
+		<if test="region_code != null and region_code != ''">
+	          #{region_code, jdbcType=VARCHAR}, <!-- region_code -->
+	    </if>
+		<if test="region_name != null and region_name != ''">
+	          #{region_name, jdbcType=VARCHAR}, <!-- region_name -->
+	    </if>
+		<if test="parent_id != null and parent_id != ''">
+	          #{parent_id, jdbcType=VARCHAR}, <!-- parent_id -->
+	    </if>
+		<if test="region_level != null and region_level != ''">
+	          #{region_level, jdbcType=VARCHAR}, <!-- region_level -->
+	    </if>
+		<if test="region_order != null and region_order != ''">
+	          #{region_order, jdbcType=VARCHAR}, <!-- region_order -->
+	    </if>
+		<if test="region_id != null and region_id != ''">
+		     #{region_id, jdbcType=VARCHAR}  <!-- region_id -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.RegionPO">
+		INSERT INTO region (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{region_id, jdbcType=VARCHAR},  <!-- region_id -->
+		    #{region_code, jdbcType=VARCHAR},  <!-- region_code -->
+		    #{region_name, jdbcType=VARCHAR},  <!-- region_name -->
+		    #{parent_id, jdbcType=VARCHAR},  <!-- parent_id -->
+		    #{region_level, jdbcType=VARCHAR},  <!-- region_level -->
+		    #{region_order, jdbcType=VARCHAR}  <!-- region_order -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.RegionPO">
+		UPDATE region
+		<set>
+			<if test="region_id != null">
+		          region_id = #{region_id, jdbcType=VARCHAR},  <!-- region_id -->
+			</if>
+			<if test="region_code != null">
+		          region_code = #{region_code, jdbcType=VARCHAR},  <!-- region_code -->
+			</if>
+			<if test="region_name != null">
+		          region_name = #{region_name, jdbcType=VARCHAR},  <!-- region_name -->
+			</if>
+			<if test="parent_id != null">
+		          parent_id = #{parent_id, jdbcType=VARCHAR},  <!-- parent_id -->
+			</if>
+			<if test="region_level != null">
+		          region_level = #{region_level, jdbcType=VARCHAR},  <!-- region_level -->
+			</if>
+			<if test="region_order != null">
+		          region_order = #{region_order, jdbcType=VARCHAR},  <!-- region_order -->
+			</if>
+		</set>
+		WHERE  region_id = #{region_id}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM region WHERE  region_id = #{region_id}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.RegionPO">
+		SELECT
+		<include refid="column" />
+		FROM region WHERE  region_id = #{region_id}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.RegionPO">
+		SELECT
+		    <include refid="column" />
+		FROM region
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.RegionPO">
+		SELECT
+			<include refid="column" />	
+		FROM region
+		<where>
+		    <include refid="equal" />
+		    
+		</where>	
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.RegionPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM region
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.RegionPO">
+		SELECT
+			<include refid="column" />	
+		FROM region
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.RegionPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM region
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM region
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM region
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  region_id,  <!-- region_id -->
+		  region_code,  <!-- region_code -->
+		  region_name,  <!-- region_name -->
+		  parent_id,  <!-- parent_id -->
+		  region_level,  <!-- region_level -->
+		  region_order  <!-- region_order -->
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  region.region_id,  <!-- region_id -->
+		  region.region_code,  <!-- region_code -->
+		  region.region_name,  <!-- region_name -->
+		  region.parent_id,  <!-- parent_id -->
+		  region.region_level,  <!-- region_level -->
+		  region.region_order  <!-- region_order -->
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="region_id != null and region_id != ''">
+		      AND region_id = #{region_id}  <!-- region_id -->
+		</if>
+	    <if test="region_code != null and region_code != ''">
+		      AND region_code = #{region_code}  <!-- region_code -->
+		</if>
+	    <if test="region_name != null and region_name != ''">
+		      AND region_name = #{region_name}  <!-- region_name -->
+		</if>
+	    <if test="parent_id != null and parent_id != ''">
+		      AND parent_id = #{parent_id}  <!-- parent_id -->
+		</if>
+	    <if test="region_level != null and region_level != ''">
+		      AND region_level = #{region_level}  <!-- region_level -->
+		</if>
+	    <if test="region_order != null and region_order != ''">
+		      AND region_order = #{region_order}  <!-- region_order -->
+		</if>
+	</sql>
+	
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="region_id != null and region_id != ''">
+		      AND region_id like '%${region_id}%'  <!-- region_id -->
+		</if>
+	    <if test="region_code != null and region_code != ''">
+		      AND region_code like '%${region_code}%'  <!-- region_code -->
+		</if>
+	    <if test="region_name != null and region_name != ''">
+		      AND region_name like '%${region_name}%'  <!-- region_name -->
+		</if>
+	    <if test="parent_id != null and parent_id != ''">
+		      AND parent_id like '%${parent_id}%'  <!-- parent_id -->
+		</if>
+	    <if test="region_level != null and region_level != ''">
+		      AND region_level like '%${region_level}%'  <!-- region_level -->
+		</if>
+	    <if test="region_order != null and region_order != ''">
+		      AND region_order like '%${region_order}%'  <!-- region_order -->
+		</if>
+	</sql>
+	
+</mapper>

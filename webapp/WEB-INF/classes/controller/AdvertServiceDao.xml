@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 广告表管理模块使用的SQL语句 -->
+<mapper namespace="Advert">
+
+	<!-- 查询广告表列表 ,多表关联查询-->
+	<select id="listAdvertsPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.AdvertDao.column" />	
+			FROM advert
+			<where>
+				is_del='0'
+			    <include refid="dao.AdvertDao.equal" />
+			    <include refid="dao.AdvertDao.like" />
+			</where>
+			order by  sort, create_date desc
+	</select>
+
+</mapper>

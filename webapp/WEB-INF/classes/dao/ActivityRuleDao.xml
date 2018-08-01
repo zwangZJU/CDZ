@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 活动规则表[activity_rule]SQL自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2017-04-21 20:57:29 -->
+<mapper namespace="dao.ActivityRuleDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.ActivityRulePO">
+		INSERT INTO activity_rule (
+		<if test="activity_id != null and activity_id != ''">
+	         activity_id, <!-- 活动ID -->
+		</if>
+		<if test="name_ != null and name_ != ''">
+	         name_, <!-- 规则名称 -->
+		</if>
+		<if test="symbol != null and symbol != ''">
+	         symbol, <!-- 符号 -->
+		</if>
+		<if test="param != null ">
+	         param, <!-- 参数 -->
+		</if>
+		<if test="expression != null and expression != ''">
+	         expression, <!-- 表达式 -->
+		</if>
+		<if test="desc_ != null and desc_ != ''">
+	         desc_, <!-- 描述 -->
+		</if>
+		<if test="award_amt != null ">
+	         award_amt, <!-- 参数 -->
+		</if>
+		<if test="cond_value != null ">
+	         cond_value, <!-- 参数 -->
+		</if>
+		<if test="ar_num != null ">
+	         ar_num, <!-- 优惠券数量 -->
+		</if>
+		<if test="ar_id != null and ar_id != ''">
+	          ar_id  <!-- 主键 -->
+	   </if>
+		)VALUES(
+		<if test="activity_id != null and activity_id != ''">
+	          #{activity_id, jdbcType=VARCHAR}, <!-- 活动ID -->
+	    </if>
+		<if test="name_ != null and name_ != ''">
+	          #{name_, jdbcType=VARCHAR}, <!-- 规则名称 -->
+	    </if>
+		<if test="symbol != null and symbol != ''">
+	          #{symbol, jdbcType=VARCHAR}, <!-- 符号 -->
+	    </if>
+		<if test="param != null ">
+	          #{param, jdbcType=NUMERIC}, <!-- 参数 -->
+	    </if>
+		<if test="expression != null and expression != ''">
+	          #{expression, jdbcType=VARCHAR}, <!-- 表达式 -->
+	    </if>
+		<if test="desc_ != null and desc_ != ''">
+	          #{desc_, jdbcType=VARCHAR}, <!-- 描述 -->
+	    </if>
+	    <if test="award_amt != null ">
+	          #{award_amt, jdbcType=NUMERIC}, <!-- 参数 -->
+	    </if>
+	    <if test="cond_value != null ">
+	          #{cond_value, jdbcType=NUMERIC}, <!-- 参数 -->
+	    </if>
+	    <if test="ar_num != null ">
+	          #{ar_num, jdbcType=NUMERIC}, <!-- 参数 -->
+	    </if>
+		<if test="ar_id != null and ar_id != ''">
+		     #{ar_id, jdbcType=VARCHAR}  <!-- 主键 -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.ActivityRulePO">
+		INSERT INTO activity_rule (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{ar_id, jdbcType=VARCHAR},  <!-- 主键 -->
+		    #{activity_id, jdbcType=VARCHAR},  <!-- 活动ID -->
+		    #{name_, jdbcType=VARCHAR},  <!-- 规则名称 -->
+		    #{symbol, jdbcType=VARCHAR},  <!-- 符号 -->
+		    #{param, jdbcType=NUMERIC},  <!-- 参数 -->
+		    #{expression, jdbcType=VARCHAR},  <!-- 表达式 -->
+		    #{desc_, jdbcType=VARCHAR},  <!-- 描述 -->
+		    #{award_amt, jdbcType=NUMERIC},
+		    #{cond_value, jdbcType=NUMERIC}  
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.ActivityRulePO">
+		UPDATE activity_rule
+		<set>
+			<if test="ar_id != null">
+		          ar_id = #{ar_id, jdbcType=VARCHAR},  <!-- 主键 -->
+			</if>
+			<if test="activity_id != null">
+		          activity_id = #{activity_id, jdbcType=VARCHAR},  <!-- 活动ID -->
+			</if>
+			<if test="name_ != null">
+		          name_ = #{name_, jdbcType=VARCHAR},  <!-- 规则名称 -->
+			</if>
+			<if test="symbol != null">
+		          symbol = #{symbol, jdbcType=VARCHAR},  <!-- 符号 -->
+			</if>
+			<if test="param != null">
+		          param = #{param, jdbcType=NUMERIC},  <!-- 参数 -->
+			</if>
+			<if test="expression != null">
+		          expression = #{expression, jdbcType=VARCHAR},  <!-- 表达式 -->
+			</if>
+			<if test="desc_ != null">
+		          desc_ = #{desc_, jdbcType=VARCHAR},  <!-- 描述 -->
+			</if>
+			<if test="award_amt != null">
+		          award_amt = #{award_amt, jdbcType=NUMERIC},  <!-- 参数 -->
+			</if>
+			<if test="cond_value != null">
+		          cond_value = #{cond_value, jdbcType=NUMERIC},  <!-- 参数 -->
+			</if>
+			<if test="ar_num != null">
+		          ar_num = #{ar_num, jdbcType=NUMERIC},  <!-- 参数 -->
+			</if>
+		</set>
+		WHERE  ar_id = #{ar_id}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM activity_rule WHERE  ar_id = #{ar_id}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.ActivityRulePO">
+		SELECT
+		<include refid="column" />
+		FROM activity_rule WHERE  ar_id = #{ar_id}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.ActivityRulePO">
+		SELECT
+		    <include refid="column" />
+		FROM activity_rule
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.ActivityRulePO">
+		SELECT
+			<include refid="column" />	
+		FROM activity_rule
+		<where>
+		    <include refid="equal" />
+		</where>
+		order by param desc
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.ActivityRulePO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM activity_rule
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.ActivityRulePO">
+		SELECT
+			<include refid="column" />	
+		FROM activity_rule
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.ActivityRulePO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM activity_rule
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM activity_rule
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM activity_rule
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  ar_id,  <!-- 主键 -->
+		  activity_id,  <!-- 活动ID -->
+		  name_,  <!-- 规则名称 -->
+		  symbol,  <!-- 符号 -->
+		  param,  <!-- 参数 -->
+		  expression,  <!-- 表达式 -->
+		  desc_,  <!-- 描述 -->
+		  award_amt,
+		  cond_value,
+		  ar_num
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  activity_rule.ar_id,  <!-- 主键 -->
+		  activity_rule.activity_id,  <!-- 活动ID -->
+		  activity_rule.name_,  <!-- 规则名称 -->
+		  activity_rule.symbol,  <!-- 符号 -->
+		  activity_rule.param,  <!-- 参数 -->
+		  activity_rule.expression,  <!-- 表达式 -->
+		  activity_rule.desc_ , <!-- 描述 -->
+		  activity_rule.award_amt, 
+		  activity_rule.cond_value,
+		  activity_rule.ar_num
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="ar_id != null and ar_id != ''">
+		      AND ar_id = #{ar_id}  <!-- 主键 -->
+		</if>
+	    <if test="activity_id != null and activity_id != ''">
+		      AND activity_id = #{activity_id}  <!-- 活动ID -->
+		</if>
+	    <if test="name_ != null and name_ != ''">
+		      AND name_ = #{name_}  <!-- 规则名称 -->
+		</if>
+	    <if test="symbol != null and symbol != ''">
+		      AND symbol = #{symbol}  <!-- 符号 -->
+		</if>
+	    <if test="param != null ">
+		      AND param = #{param}  <!-- 参数 -->
+		</if>
+	    <if test="expression != null and expression != ''">
+		      AND expression = #{expression}  <!-- 表达式 -->
+		</if>
+	    <if test="desc_ != null and desc_ != ''">
+		      AND desc_ = #{desc_}  <!-- 描述 -->
+		</if>
+		<if test="award_amt != null">
+		      AND award_amt = #{award_amt}  <!-- 描述 -->
+		</if>
+		<if test="cond_value != null">
+		      AND cond_value = #{cond_value}  <!-- 描述 -->
+		</if>
+		<if test="ar_num != null">
+		      AND ar_num = #{ar_num}  <!-- 描述 -->
+		</if>
+	</sql>
+	
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="ar_id != null and ar_id != ''">
+		      AND ar_id like '%${ar_id}%'  <!-- 主键 -->
+		</if>
+	    <if test="activity_id != null and activity_id != ''">
+		      AND activity_id like '%${activity_id}%'  <!-- 活动ID -->
+		</if>
+	    <if test="name_ != null and name_ != ''">
+		      AND name_ like '%${name_}%'  <!-- 规则名称 -->
+		</if>
+	    <if test="symbol != null and symbol != ''">
+		      AND symbol like '%${symbol}%'  <!-- 符号 -->
+		</if>
+	    <if test="param != null ">
+		      AND param like '%${param}%'  <!-- 参数 -->
+		</if>
+	    <if test="expression != null and expression != ''">
+		      AND expression like '%${expression}%'  <!-- 表达式 -->
+		</if>
+	    <if test="desc_ != null and desc_ != ''">
+		      AND desc_ like '%${desc_}%'  <!-- 描述 -->
+		</if>
+	</sql>
+	
+</mapper>

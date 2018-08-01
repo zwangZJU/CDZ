@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 文章表管理模块使用的SQL语句 -->
+<mapper namespace="Article">
+
+	<!-- 查询文章表列表 ,多表关联查询-->
+	<select id="listArticlesPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.ArticleDao.column" />	
+			FROM article
+			<where>
+				is_del='0'
+			    <include refid="dao.ArticleDao.equal" />
+			</where>
+	</select>
+
+</mapper>

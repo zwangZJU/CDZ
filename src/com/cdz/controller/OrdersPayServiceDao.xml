@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- orders_pay管理模块使用的SQL语句 -->
+<mapper namespace="OrdersPay">
+
+	<!-- 查询orders_pay列表 ,多表关联查询-->
+	<select id="listOrdersPaysPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.OrdersPayDao.column2" />,	base_user.account_
+			FROM orders_pay  left join base_user 
+			on orders_pay.user_id=base_user.id_
+			<where>
+				orders_pay.is_del='0'
+			    <include refid="dao.OrdersPayDao.equal2" />
+			    <if test="account_ != null and account_ != ''">
+				   AND base_user.account_ like '%${account_}%'
+				</if>
+			</where>
+			order by orders_pay.create_date desc
+	</select>
+	<!--<select id="available_amt" resultType="Float" parameterType="Dto">
+		SELECT IFNULL(SUM(t.award_amt*t.direction),0)  FROM award_list t WHERE t.is_del="0" AND t.dealer_id= #{dealer_id} 
+	</select>-->
+	<select id="gold_coins_amt" resultType="Float" parameterType="Dto">
+		SELECT  ROUND(IFNULL(SUM(t.pay_amt*t.pay_direction),0),2)  FROM orders_pay t WHERE t.is_del='0' AND t.status='1' AND t.user_id= #{user_id} 
+	</select>
+	<select id="gold_coins_list" resultType="Dto" parameterType="Dto">
+		SELECT pay_id  FROM orders_pay t WHERE t.is_del='0' AND t.status='1' and t.pay_type='0' and t.pay_direction='1' AND t.user_id= #{user_id} 
+	</select>
+	<select id="deposit_amt" resultType="Float" parameterType="Dto">
+		SELECT ROUND(IFNULL(SUM(t.pay_amt),0),2)  FROM orders_pay t WHERE t.is_del='0' and t.oper_id='1' AND t.status='1' and t.pay_type='2' AND t.user_id= #{user_id} 
+	</select>
+</mapper>

@@ -1,0 +1,1376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- device[device]SQLMapper自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2018-07-26 16:31:09 -->
+<mapper namespace="dao.DeviceDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.DevicePO">
+		INSERT INTO device (
+		<if test="status != null and status != ''">
+	         status, <!-- 状态 -->
+		</if>
+		<if test="arrange_withdraw != null and arrange_withdraw != ''">
+	         arrange_withdraw, <!-- 布撤防 -->
+		</if>
+		<if test="id_ != null and id_ != ''">
+	         id_, <!-- 序号 -->
+		</if>
+		<if test="user_id != null and user_id != ''">
+	         user_id, <!-- 用户编号 -->
+		</if>
+		<if test="user_name != null and user_name != ''">
+	         user_name, <!-- 用户名称 -->
+		</if>
+		<if test="user_address != null and user_address != ''">
+	         user_address, <!-- 用户地址 -->
+		</if>
+		<if test="sub_center != null and sub_center != ''">
+	         sub_center, <!-- 分中心 -->
+		</if>
+		<if test="cross_road != null and cross_road != ''">
+	         cross_road, <!-- 交叉路 -->
+		</if>
+		<if test="user_type != null and user_type != ''">
+	         user_type, <!-- 用户类型 -->
+		</if>
+		<if test="is_alarming != null and is_alarming != ''">
+	         is_alarming, <!-- 报警状态 -->
+		</if>
+		<if test="host_type != null and host_type != ''">
+	         host_type, <!-- 主机类型 -->
+		</if>
+		<if test="video_linkage != null and video_linkage != ''">
+	         video_linkage, <!-- 视频联动 -->
+		</if>
+		<if test="head != null and head != ''">
+	         head, <!-- 负责人 -->
+		</if>
+		<if test="head_phone != null and head_phone != ''">
+	         head_phone, <!-- 负责人电话 -->
+		</if>
+		<if test="test_period != null and test_period != ''">
+	         test_period, <!-- 测试间隔 -->
+		</if>
+		<if test="pay_date != null and pay_date != ''">
+	         pay_date, <!-- 缴费截止日期 -->
+		</if>
+		<if test="guarantee_time != null and guarantee_time != ''">
+	         guarantee_time, <!-- 保修截止日期 -->
+		</if>
+		<if test="check_status != null and check_status != ''">
+	         check_status, <!-- 核查状态 -->
+		</if>
+		<if test="arrearage != null and arrearage != ''">
+	         arrearage, <!-- 欠费 -->
+		</if>
+		<if test="shut_down != null and shut_down != ''">
+	         shut_down, <!-- 停机 -->
+		</if>
+		<if test="town != null and town != ''">
+	         town, <!-- 镇所 -->
+		</if>
+		<if test="town_phone != null and town_phone != ''">
+	         town_phone, <!-- 镇所电话 -->
+		</if>
+		<if test="police_station != null and police_station != ''">
+	         police_station, <!-- 所属派出所 -->
+		</if>
+		<if test="network != null and network != ''">
+	         network, <!-- 网络 -->
+		</if>
+		<if test="police_phone != null and police_phone != ''">
+	         police_phone, <!-- 派出所电话 -->
+		</if>
+		<if test="host_address != null and host_address != ''">
+	         host_address, <!-- 主机位置 -->
+		</if>
+		<if test="install_date != null and install_date != ''">
+	         install_date, <!-- 安装日期 -->
+		</if>
+		<if test="code42 != null and code42 != ''">
+	         code42, <!-- 42代码 -->
+		</if>
+		<if test="withdraw_date != null and withdraw_date != ''">
+	         withdraw_date, <!-- 撤防时间 -->
+		</if>
+		<if test="arrange_date != null and arrange_date != ''">
+	         arrange_date, <!-- 布防时间 -->
+		</if>
+		<if test="last_date != null and last_date != ''">
+	         last_date, <!-- 最后来信号时间 -->
+		</if>
+		<if test="builders != null and builders != ''">
+	         builders, <!-- 施工人员 -->
+		</if>
+		<if test="police_unit != null and police_unit != ''">
+	         police_unit, <!-- 出警单位 -->
+		</if>
+		<if test="phone != null and phone != ''">
+	         phone, <!-- 电话 -->
+		</if>
+		<if test="repair_record != null and repair_record != ''">
+	         repair_record, <!-- 报修记录 -->
+		</if>
+		<if test="repair_progress != null and repair_progress != ''">
+	         repair_progress, <!-- 报修进度 -->
+		</if>
+		<if test="group_ != null and group_ != ''">
+	         group_, <!-- 组 -->
+		</if>
+		<if test="entry_clerk != null and entry_clerk != ''">
+	         entry_clerk, <!-- 录入员 -->
+		</if>
+		<if test="inspection_staff != null and inspection_staff != ''">
+	         inspection_staff, <!-- 巡检人员 -->
+		</if>
+		<if test="downtime != null and downtime != ''">
+	         downtime, <!-- 停机时间 -->
+		</if>
+		<if test="phone1 != null and phone1 != ''">
+	         phone1, <!-- 电话1 -->
+		</if>
+		<if test="product_type != null and product_type != ''">
+	         product_type, <!-- 产品型号 -->
+		</if>
+		<if test="production_date != null and production_date != ''">
+	         production_date, <!-- 出厂日期 -->
+		</if>
+		<if test="head_phone2 != null and head_phone2 != ''">
+	         head_phone2, <!-- 负责人电话2 -->
+		</if>
+		<if test="net_date != null and net_date != ''">
+	         net_date, <!-- 入网日期 -->
+		</if>
+		<if test="communication_line != null and communication_line != ''">
+	         communication_line, <!-- 通讯线路 -->
+		</if>
+		<if test="users_id != null and users_id != ''">
+	         users_id, <!-- 编号 -->
+		</if>
+		<if test="users_name != null and users_name != ''">
+	         users_name, <!-- 姓名 -->
+		</if>
+		<if test="users_identity != null and users_identity != ''">
+	         users_identity, <!-- 身份 -->
+		</if>
+		<if test="remarks != null and remarks != ''">
+	         remarks, <!-- 备注 -->
+		</if>
+		<if test="arrangeandwithdraw_time != null and arrangeandwithdraw_time != ''">
+	         arrangeandwithdraw_time, <!-- 预定布撤防时间 -->
+		</if>
+		<if test="network_setting_substation != null and network_setting_substation != ''">
+	         network_setting_substation, <!-- 分站 -->
+		</if>
+		<if test="network_setting_name != null and network_setting_name != ''">
+	         network_setting_name, <!-- 名称 -->
+		</if>
+		<if test="network_setting_type != null and network_setting_type != ''">
+	         network_setting_type, <!-- 类型 -->
+		</if>
+		<if test="network_setting_template != null and network_setting_template != ''">
+	         network_setting_template, <!-- 模板文件 -->
+		</if>
+		<if test="network_setting_remarks != null and network_setting_remarks != ''">
+	         network_setting_remarks, <!-- 备注 -->
+		</if>
+		<if test="network_setting_number != null and network_setting_number != ''">
+	         network_setting_number, <!-- 接收号码 -->
+		</if>
+		<if test="network_setting_users != null and network_setting_users != ''">
+	         network_setting_users, <!-- 防区使用者 -->
+		</if>
+		<if test="alarm_type != null and alarm_type != ''">
+	         alarm_type, <!-- 报警类型 -->
+		</if>
+		<if test="communication_format != null and communication_format != ''">
+	         communication_format, <!-- 通信格式 -->
+		</if>
+		<if test="alarm_sound != null and alarm_sound != ''">
+	         alarm_sound, <!-- 报警声音方案 -->
+		</if>
+		<if test="host_alarm_sms != null and host_alarm_sms != ''">
+	         host_alarm_sms, <!-- 主机报警短信号码 -->
+		</if>
+		<if test="substation_number != null and substation_number != ''">
+	         substation_number, <!-- 分局号 -->
+		</if>
+		<if test="shutdown_time != null and shutdown_time != ''">
+	         shutdown_time, <!-- 停机时间 -->
+		</if>
+		<if test="pause != null and pause != ''">
+	         pause, <!-- 暂停 -->
+		</if>
+		<if test="breakdown != null and breakdown != ''">
+	         breakdown, <!-- 故障 -->
+		</if>
+		<if test="review_confirm != null and review_confirm != ''">
+	         review_confirm, <!-- 审查确认 -->
+		</if>
+		<if test="management_remarks != null and management_remarks != ''">
+	         management_remarks, <!-- 备注 -->
+		</if>
+		<if test="device_id != null and device_id != ''">
+	          device_id  <!-- 设备编号 -->
+	   </if>
+		)VALUES(
+		<if test="status != null and status != ''">
+	          #{status, jdbcType=VARCHAR}, <!-- 状态 -->
+	    </if>
+		<if test="arrange_withdraw != null and arrange_withdraw != ''">
+	          #{arrange_withdraw, jdbcType=VARCHAR}, <!-- 布撤防 -->
+	    </if>
+		<if test="id_ != null and id_ != ''">
+	          #{id_, jdbcType=VARCHAR}, <!-- 序号 -->
+	    </if>
+		<if test="user_id != null and user_id != ''">
+	          #{user_id, jdbcType=VARCHAR}, <!-- 用户编号 -->
+	    </if>
+		<if test="user_name != null and user_name != ''">
+	          #{user_name, jdbcType=VARCHAR}, <!-- 用户名称 -->
+	    </if>
+		<if test="user_address != null and user_address != ''">
+	          #{user_address, jdbcType=VARCHAR}, <!-- 用户地址 -->
+	    </if>
+		<if test="sub_center != null and sub_center != ''">
+	          #{sub_center, jdbcType=VARCHAR}, <!-- 分中心 -->
+	    </if>
+		<if test="cross_road != null and cross_road != ''">
+	          #{cross_road, jdbcType=VARCHAR}, <!-- 交叉路 -->
+	    </if>
+		<if test="user_type != null and user_type != ''">
+	          #{user_type, jdbcType=VARCHAR}, <!-- 用户类型 -->
+	    </if>
+		<if test="is_alarming != null and is_alarming != ''">
+	          #{is_alarming, jdbcType=VARCHAR}, <!-- 报警状态 -->
+	    </if>
+		<if test="host_type != null and host_type != ''">
+	          #{host_type, jdbcType=VARCHAR}, <!-- 主机类型 -->
+	    </if>
+		<if test="video_linkage != null and video_linkage != ''">
+	          #{video_linkage, jdbcType=VARCHAR}, <!-- 视频联动 -->
+	    </if>
+		<if test="head != null and head != ''">
+	          #{head, jdbcType=VARCHAR}, <!-- 负责人 -->
+	    </if>
+		<if test="head_phone != null and head_phone != ''">
+	          #{head_phone, jdbcType=VARCHAR}, <!-- 负责人电话 -->
+	    </if>
+		<if test="test_period != null and test_period != ''">
+	          #{test_period, jdbcType=VARCHAR}, <!-- 测试间隔 -->
+	    </if>
+		<if test="pay_date != null and pay_date != ''">
+	          #{pay_date, jdbcType=VARCHAR}, <!-- 缴费截止日期 -->
+	    </if>
+		<if test="guarantee_time != null and guarantee_time != ''">
+	          #{guarantee_time, jdbcType=VARCHAR}, <!-- 保修截止日期 -->
+	    </if>
+		<if test="check_status != null and check_status != ''">
+	          #{check_status, jdbcType=VARCHAR}, <!-- 核查状态 -->
+	    </if>
+		<if test="arrearage != null and arrearage != ''">
+	          #{arrearage, jdbcType=VARCHAR}, <!-- 欠费 -->
+	    </if>
+		<if test="shut_down != null and shut_down != ''">
+	          #{shut_down, jdbcType=VARCHAR}, <!-- 停机 -->
+	    </if>
+		<if test="town != null and town != ''">
+	          #{town, jdbcType=VARCHAR}, <!-- 镇所 -->
+	    </if>
+		<if test="town_phone != null and town_phone != ''">
+	          #{town_phone, jdbcType=VARCHAR}, <!-- 镇所电话 -->
+	    </if>
+		<if test="police_station != null and police_station != ''">
+	          #{police_station, jdbcType=VARCHAR}, <!-- 所属派出所 -->
+	    </if>
+		<if test="network != null and network != ''">
+	          #{network, jdbcType=VARCHAR}, <!-- 网络 -->
+	    </if>
+		<if test="police_phone != null and police_phone != ''">
+	          #{police_phone, jdbcType=VARCHAR}, <!-- 派出所电话 -->
+	    </if>
+		<if test="host_address != null and host_address != ''">
+	          #{host_address, jdbcType=VARCHAR}, <!-- 主机位置 -->
+	    </if>
+		<if test="install_date != null and install_date != ''">
+	          #{install_date, jdbcType=VARCHAR}, <!-- 安装日期 -->
+	    </if>
+		<if test="code42 != null and code42 != ''">
+	          #{code42, jdbcType=VARCHAR}, <!-- 42代码 -->
+	    </if>
+		<if test="withdraw_date != null and withdraw_date != ''">
+	          #{withdraw_date, jdbcType=VARCHAR}, <!-- 撤防时间 -->
+	    </if>
+		<if test="arrange_date != null and arrange_date != ''">
+	          #{arrange_date, jdbcType=VARCHAR}, <!-- 布防时间 -->
+	    </if>
+		<if test="last_date != null and last_date != ''">
+	          #{last_date, jdbcType=VARCHAR}, <!-- 最后来信号时间 -->
+	    </if>
+		<if test="builders != null and builders != ''">
+	          #{builders, jdbcType=VARCHAR}, <!-- 施工人员 -->
+	    </if>
+		<if test="police_unit != null and police_unit != ''">
+	          #{police_unit, jdbcType=VARCHAR}, <!-- 出警单位 -->
+	    </if>
+		<if test="phone != null and phone != ''">
+	          #{phone, jdbcType=VARCHAR}, <!-- 电话 -->
+	    </if>
+		<if test="repair_record != null and repair_record != ''">
+	          #{repair_record, jdbcType=VARCHAR}, <!-- 报修记录 -->
+	    </if>
+		<if test="repair_progress != null and repair_progress != ''">
+	          #{repair_progress, jdbcType=VARCHAR}, <!-- 报修进度 -->
+	    </if>
+		<if test="group_ != null and group_ != ''">
+	          #{group_, jdbcType=VARCHAR}, <!-- 组 -->
+	    </if>
+		<if test="entry_clerk != null and entry_clerk != ''">
+	          #{entry_clerk, jdbcType=VARCHAR}, <!-- 录入员 -->
+	    </if>
+		<if test="inspection_staff != null and inspection_staff != ''">
+	          #{inspection_staff, jdbcType=VARCHAR}, <!-- 巡检人员 -->
+	    </if>
+		<if test="downtime != null and downtime != ''">
+	          #{downtime, jdbcType=VARCHAR}, <!-- 停机时间 -->
+	    </if>
+		<if test="phone1 != null and phone1 != ''">
+	          #{phone1, jdbcType=VARCHAR}, <!-- 电话1 -->
+	    </if>
+		<if test="product_type != null and product_type != ''">
+	          #{product_type, jdbcType=VARCHAR}, <!-- 产品型号 -->
+	    </if>
+		<if test="production_date != null and production_date != ''">
+	          #{production_date, jdbcType=VARCHAR}, <!-- 出厂日期 -->
+	    </if>
+		<if test="head_phone2 != null and head_phone2 != ''">
+	          #{head_phone2, jdbcType=VARCHAR}, <!-- 负责人电话2 -->
+	    </if>
+		<if test="net_date != null and net_date != ''">
+	          #{net_date, jdbcType=VARCHAR}, <!-- 入网日期 -->
+	    </if>
+		<if test="communication_line != null and communication_line != ''">
+	          #{communication_line, jdbcType=VARCHAR}, <!-- 通讯线路 -->
+	    </if>
+		<if test="users_id != null and users_id != ''">
+	          #{users_id, jdbcType=VARCHAR}, <!-- 编号 -->
+	    </if>
+		<if test="users_name != null and users_name != ''">
+	          #{users_name, jdbcType=VARCHAR}, <!-- 姓名 -->
+	    </if>
+		<if test="users_identity != null and users_identity != ''">
+	          #{users_identity, jdbcType=VARCHAR}, <!-- 身份 -->
+	    </if>
+		<if test="remarks != null and remarks != ''">
+	          #{remarks, jdbcType=VARCHAR}, <!-- 备注 -->
+	    </if>
+		<if test="arrangeandwithdraw_time != null and arrangeandwithdraw_time != ''">
+	          #{arrangeandwithdraw_time, jdbcType=VARCHAR}, <!-- 预定布撤防时间 -->
+	    </if>
+		<if test="network_setting_substation != null and network_setting_substation != ''">
+	          #{network_setting_substation, jdbcType=VARCHAR}, <!-- 分站 -->
+	    </if>
+		<if test="network_setting_name != null and network_setting_name != ''">
+	          #{network_setting_name, jdbcType=VARCHAR}, <!-- 名称 -->
+	    </if>
+		<if test="network_setting_type != null and network_setting_type != ''">
+	          #{network_setting_type, jdbcType=VARCHAR}, <!-- 类型 -->
+	    </if>
+		<if test="network_setting_template != null and network_setting_template != ''">
+	          #{network_setting_template, jdbcType=VARCHAR}, <!-- 模板文件 -->
+	    </if>
+		<if test="network_setting_remarks != null and network_setting_remarks != ''">
+	          #{network_setting_remarks, jdbcType=VARCHAR}, <!-- 备注 -->
+	    </if>
+		<if test="network_setting_number != null and network_setting_number != ''">
+	          #{network_setting_number, jdbcType=VARCHAR}, <!-- 接收号码 -->
+	    </if>
+		<if test="network_setting_users != null and network_setting_users != ''">
+	          #{network_setting_users, jdbcType=VARCHAR}, <!-- 防区使用者 -->
+	    </if>
+		<if test="alarm_type != null and alarm_type != ''">
+	          #{alarm_type, jdbcType=VARCHAR}, <!-- 报警类型 -->
+	    </if>
+		<if test="communication_format != null and communication_format != ''">
+	          #{communication_format, jdbcType=VARCHAR}, <!-- 通信格式 -->
+	    </if>
+		<if test="alarm_sound != null and alarm_sound != ''">
+	          #{alarm_sound, jdbcType=VARCHAR}, <!-- 报警声音方案 -->
+	    </if>
+		<if test="host_alarm_sms != null and host_alarm_sms != ''">
+	          #{host_alarm_sms, jdbcType=VARCHAR}, <!-- 主机报警短信号码 -->
+	    </if>
+		<if test="substation_number != null and substation_number != ''">
+	          #{substation_number, jdbcType=VARCHAR}, <!-- 分局号 -->
+	    </if>
+		<if test="shutdown_time != null and shutdown_time != ''">
+	          #{shutdown_time, jdbcType=VARCHAR}, <!-- 停机时间 -->
+	    </if>
+		<if test="pause != null and pause != ''">
+	          #{pause, jdbcType=VARCHAR}, <!-- 暂停 -->
+	    </if>
+		<if test="breakdown != null and breakdown != ''">
+	          #{breakdown, jdbcType=VARCHAR}, <!-- 故障 -->
+	    </if>
+		<if test="review_confirm != null and review_confirm != ''">
+	          #{review_confirm, jdbcType=VARCHAR}, <!-- 审查确认 -->
+	    </if>
+		<if test="management_remarks != null and management_remarks != ''">
+	          #{management_remarks, jdbcType=VARCHAR}, <!-- 备注 -->
+	    </if>
+		<if test="device_id != null and device_id != ''">
+		     #{device_id, jdbcType=VARCHAR}  <!-- 设备编号 -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.DevicePO">
+		INSERT INTO device (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{device_id, jdbcType=VARCHAR},  <!-- 设备编号 -->
+		    #{status, jdbcType=VARCHAR},  <!-- 状态 -->
+		    #{arrange_withdraw, jdbcType=VARCHAR},  <!-- 布撤防 -->
+		    #{id_, jdbcType=VARCHAR},  <!-- 序号 -->
+		    #{user_id, jdbcType=VARCHAR},  <!-- 用户编号 -->
+		    #{user_name, jdbcType=VARCHAR},  <!-- 用户名称 -->
+		    #{user_address, jdbcType=VARCHAR},  <!-- 用户地址 -->
+		    #{sub_center, jdbcType=VARCHAR},  <!-- 分中心 -->
+		    #{cross_road, jdbcType=VARCHAR},  <!-- 交叉路 -->
+		    #{user_type, jdbcType=VARCHAR},  <!-- 用户类型 -->
+		    #{is_alarming, jdbcType=VARCHAR},  <!-- 报警状态 -->
+		    #{host_type, jdbcType=VARCHAR},  <!-- 主机类型 -->
+		    #{video_linkage, jdbcType=VARCHAR},  <!-- 视频联动 -->
+		    #{head, jdbcType=VARCHAR},  <!-- 负责人 -->
+		    #{head_phone, jdbcType=VARCHAR},  <!-- 负责人电话 -->
+		    #{test_period, jdbcType=VARCHAR},  <!-- 测试间隔 -->
+		    #{pay_date, jdbcType=VARCHAR},  <!-- 缴费截止日期 -->
+		    #{guarantee_time, jdbcType=VARCHAR},  <!-- 保修截止日期 -->
+		    #{check_status, jdbcType=VARCHAR},  <!-- 核查状态 -->
+		    #{arrearage, jdbcType=VARCHAR},  <!-- 欠费 -->
+		    #{shut_down, jdbcType=VARCHAR},  <!-- 停机 -->
+		    #{town, jdbcType=VARCHAR},  <!-- 镇所 -->
+		    #{town_phone, jdbcType=VARCHAR},  <!-- 镇所电话 -->
+		    #{police_station, jdbcType=VARCHAR},  <!-- 所属派出所 -->
+		    #{network, jdbcType=VARCHAR},  <!-- 网络 -->
+		    #{police_phone, jdbcType=VARCHAR},  <!-- 派出所电话 -->
+		    #{host_address, jdbcType=VARCHAR},  <!-- 主机位置 -->
+		    #{install_date, jdbcType=VARCHAR},  <!-- 安装日期 -->
+		    #{code42, jdbcType=VARCHAR},  <!-- 42代码 -->
+		    #{withdraw_date, jdbcType=VARCHAR},  <!-- 撤防时间 -->
+		    #{arrange_date, jdbcType=VARCHAR},  <!-- 布防时间 -->
+		    #{last_date, jdbcType=VARCHAR},  <!-- 最后来信号时间 -->
+		    #{builders, jdbcType=VARCHAR},  <!-- 施工人员 -->
+		    #{police_unit, jdbcType=VARCHAR},  <!-- 出警单位 -->
+		    #{phone, jdbcType=VARCHAR},  <!-- 电话 -->
+		    #{repair_record, jdbcType=VARCHAR},  <!-- 报修记录 -->
+		    #{repair_progress, jdbcType=VARCHAR},  <!-- 报修进度 -->
+		    #{group_, jdbcType=VARCHAR},  <!-- 组 -->
+		    #{entry_clerk, jdbcType=VARCHAR},  <!-- 录入员 -->
+		    #{inspection_staff, jdbcType=VARCHAR},  <!-- 巡检人员 -->
+		    #{downtime, jdbcType=VARCHAR},  <!-- 停机时间 -->
+		    #{phone1, jdbcType=VARCHAR},  <!-- 电话1 -->
+		    #{product_type, jdbcType=VARCHAR},  <!-- 产品型号 -->
+		    #{production_date, jdbcType=VARCHAR},  <!-- 出厂日期 -->
+		    #{head_phone2, jdbcType=VARCHAR},  <!-- 负责人电话2 -->
+		    #{net_date, jdbcType=VARCHAR},  <!-- 入网日期 -->
+		    #{communication_line, jdbcType=VARCHAR},  <!-- 通讯线路 -->
+		    #{users_id, jdbcType=VARCHAR},  <!-- 编号 -->
+		    #{users_name, jdbcType=VARCHAR},  <!-- 姓名 -->
+		    #{users_identity, jdbcType=VARCHAR},  <!-- 身份 -->
+		    #{remarks, jdbcType=VARCHAR},  <!-- 备注 -->
+		    #{arrangeandwithdraw_time, jdbcType=VARCHAR},  <!-- 预定布撤防时间 -->
+		    #{network_setting_substation, jdbcType=VARCHAR},  <!-- 分站 -->
+		    #{network_setting_name, jdbcType=VARCHAR},  <!-- 名称 -->
+		    #{network_setting_type, jdbcType=VARCHAR},  <!-- 类型 -->
+		    #{network_setting_template, jdbcType=VARCHAR},  <!-- 模板文件 -->
+		    #{network_setting_remarks, jdbcType=VARCHAR},  <!-- 备注 -->
+		    #{network_setting_number, jdbcType=VARCHAR},  <!-- 接收号码 -->
+		    #{network_setting_users, jdbcType=VARCHAR},  <!-- 防区使用者 -->
+		    #{alarm_type, jdbcType=VARCHAR},  <!-- 报警类型 -->
+		    #{communication_format, jdbcType=VARCHAR},  <!-- 通信格式 -->
+		    #{alarm_sound, jdbcType=VARCHAR},  <!-- 报警声音方案 -->
+		    #{host_alarm_sms, jdbcType=VARCHAR},  <!-- 主机报警短信号码 -->
+		    #{substation_number, jdbcType=VARCHAR},  <!-- 分局号 -->
+		    #{shutdown_time, jdbcType=VARCHAR},  <!-- 停机时间 -->
+		    #{pause, jdbcType=VARCHAR},  <!-- 暂停 -->
+		    #{breakdown, jdbcType=VARCHAR},  <!-- 故障 -->
+		    #{review_confirm, jdbcType=VARCHAR},  <!-- 审查确认 -->
+		    #{management_remarks, jdbcType=VARCHAR}  <!-- 备注 -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.DevicePO">
+		UPDATE device
+		<set>
+			<if test="device_id != null">
+		          device_id = #{device_id, jdbcType=VARCHAR},  <!-- 设备编号 -->
+			</if>
+			<if test="status != null">
+		          status = #{status, jdbcType=VARCHAR},  <!-- 状态 -->
+			</if>
+			<if test="arrange_withdraw != null">
+		          arrange_withdraw = #{arrange_withdraw, jdbcType=VARCHAR},  <!-- 布撤防 -->
+			</if>
+			<if test="id_ != null">
+		          id_ = #{id_, jdbcType=VARCHAR},  <!-- 序号 -->
+			</if>
+			<if test="user_id != null">
+		          user_id = #{user_id, jdbcType=VARCHAR},  <!-- 用户编号 -->
+			</if>
+			<if test="user_name != null">
+		          user_name = #{user_name, jdbcType=VARCHAR},  <!-- 用户名称 -->
+			</if>
+			<if test="user_address != null">
+		          user_address = #{user_address, jdbcType=VARCHAR},  <!-- 用户地址 -->
+			</if>
+			<if test="sub_center != null">
+		          sub_center = #{sub_center, jdbcType=VARCHAR},  <!-- 分中心 -->
+			</if>
+			<if test="cross_road != null">
+		          cross_road = #{cross_road, jdbcType=VARCHAR},  <!-- 交叉路 -->
+			</if>
+			<if test="user_type != null">
+		          user_type = #{user_type, jdbcType=VARCHAR},  <!-- 用户类型 -->
+			</if>
+			<if test="is_alarming != null">
+		          is_alarming = #{is_alarming, jdbcType=VARCHAR},  <!-- 报警状态 -->
+			</if>
+			<if test="host_type != null">
+		          host_type = #{host_type, jdbcType=VARCHAR},  <!-- 主机类型 -->
+			</if>
+			<if test="video_linkage != null">
+		          video_linkage = #{video_linkage, jdbcType=VARCHAR},  <!-- 视频联动 -->
+			</if>
+			<if test="head != null">
+		          head = #{head, jdbcType=VARCHAR},  <!-- 负责人 -->
+			</if>
+			<if test="head_phone != null">
+		          head_phone = #{head_phone, jdbcType=VARCHAR},  <!-- 负责人电话 -->
+			</if>
+			<if test="test_period != null">
+		          test_period = #{test_period, jdbcType=VARCHAR},  <!-- 测试间隔 -->
+			</if>
+			<if test="pay_date != null">
+		          pay_date = #{pay_date, jdbcType=VARCHAR},  <!-- 缴费截止日期 -->
+			</if>
+			<if test="guarantee_time != null">
+		          guarantee_time = #{guarantee_time, jdbcType=VARCHAR},  <!-- 保修截止日期 -->
+			</if>
+			<if test="check_status != null">
+		          check_status = #{check_status, jdbcType=VARCHAR},  <!-- 核查状态 -->
+			</if>
+			<if test="arrearage != null">
+		          arrearage = #{arrearage, jdbcType=VARCHAR},  <!-- 欠费 -->
+			</if>
+			<if test="shut_down != null">
+		          shut_down = #{shut_down, jdbcType=VARCHAR},  <!-- 停机 -->
+			</if>
+			<if test="town != null">
+		          town = #{town, jdbcType=VARCHAR},  <!-- 镇所 -->
+			</if>
+			<if test="town_phone != null">
+		          town_phone = #{town_phone, jdbcType=VARCHAR},  <!-- 镇所电话 -->
+			</if>
+			<if test="police_station != null">
+		          police_station = #{police_station, jdbcType=VARCHAR},  <!-- 所属派出所 -->
+			</if>
+			<if test="network != null">
+		          network = #{network, jdbcType=VARCHAR},  <!-- 网络 -->
+			</if>
+			<if test="police_phone != null">
+		          police_phone = #{police_phone, jdbcType=VARCHAR},  <!-- 派出所电话 -->
+			</if>
+			<if test="host_address != null">
+		          host_address = #{host_address, jdbcType=VARCHAR},  <!-- 主机位置 -->
+			</if>
+			<if test="install_date != null">
+		          install_date = #{install_date, jdbcType=VARCHAR},  <!-- 安装日期 -->
+			</if>
+			<if test="code42 != null">
+		          code42 = #{code42, jdbcType=VARCHAR},  <!-- 42代码 -->
+			</if>
+			<if test="withdraw_date != null">
+		          withdraw_date = #{withdraw_date, jdbcType=VARCHAR},  <!-- 撤防时间 -->
+			</if>
+			<if test="arrange_date != null">
+		          arrange_date = #{arrange_date, jdbcType=VARCHAR},  <!-- 布防时间 -->
+			</if>
+			<if test="last_date != null">
+		          last_date = #{last_date, jdbcType=VARCHAR},  <!-- 最后来信号时间 -->
+			</if>
+			<if test="builders != null">
+		          builders = #{builders, jdbcType=VARCHAR},  <!-- 施工人员 -->
+			</if>
+			<if test="police_unit != null">
+		          police_unit = #{police_unit, jdbcType=VARCHAR},  <!-- 出警单位 -->
+			</if>
+			<if test="phone != null">
+		          phone = #{phone, jdbcType=VARCHAR},  <!-- 电话 -->
+			</if>
+			<if test="repair_record != null">
+		          repair_record = #{repair_record, jdbcType=VARCHAR},  <!-- 报修记录 -->
+			</if>
+			<if test="repair_progress != null">
+		          repair_progress = #{repair_progress, jdbcType=VARCHAR},  <!-- 报修进度 -->
+			</if>
+			<if test="group_ != null">
+		          group_ = #{group_, jdbcType=VARCHAR},  <!-- 组 -->
+			</if>
+			<if test="entry_clerk != null">
+		          entry_clerk = #{entry_clerk, jdbcType=VARCHAR},  <!-- 录入员 -->
+			</if>
+			<if test="inspection_staff != null">
+		          inspection_staff = #{inspection_staff, jdbcType=VARCHAR},  <!-- 巡检人员 -->
+			</if>
+			<if test="downtime != null">
+		          downtime = #{downtime, jdbcType=VARCHAR},  <!-- 停机时间 -->
+			</if>
+			<if test="phone1 != null">
+		          phone1 = #{phone1, jdbcType=VARCHAR},  <!-- 电话1 -->
+			</if>
+			<if test="product_type != null">
+		          product_type = #{product_type, jdbcType=VARCHAR},  <!-- 产品型号 -->
+			</if>
+			<if test="production_date != null">
+		          production_date = #{production_date, jdbcType=VARCHAR},  <!-- 出厂日期 -->
+			</if>
+			<if test="head_phone2 != null">
+		          head_phone2 = #{head_phone2, jdbcType=VARCHAR},  <!-- 负责人电话2 -->
+			</if>
+			<if test="net_date != null">
+		          net_date = #{net_date, jdbcType=VARCHAR},  <!-- 入网日期 -->
+			</if>
+			<if test="communication_line != null">
+		          communication_line = #{communication_line, jdbcType=VARCHAR},  <!-- 通讯线路 -->
+			</if>
+			<if test="users_id != null">
+		          users_id = #{users_id, jdbcType=VARCHAR},  <!-- 编号 -->
+			</if>
+			<if test="users_name != null">
+		          users_name = #{users_name, jdbcType=VARCHAR},  <!-- 姓名 -->
+			</if>
+			<if test="users_identity != null">
+		          users_identity = #{users_identity, jdbcType=VARCHAR},  <!-- 身份 -->
+			</if>
+			<if test="remarks != null">
+		          remarks = #{remarks, jdbcType=VARCHAR},  <!-- 备注 -->
+			</if>
+			<if test="arrangeandwithdraw_time != null">
+		          arrangeandwithdraw_time = #{arrangeandwithdraw_time, jdbcType=VARCHAR},  <!-- 预定布撤防时间 -->
+			</if>
+			<if test="network_setting_substation != null">
+		          network_setting_substation = #{network_setting_substation, jdbcType=VARCHAR},  <!-- 分站 -->
+			</if>
+			<if test="network_setting_name != null">
+		          network_setting_name = #{network_setting_name, jdbcType=VARCHAR},  <!-- 名称 -->
+			</if>
+			<if test="network_setting_type != null">
+		          network_setting_type = #{network_setting_type, jdbcType=VARCHAR},  <!-- 类型 -->
+			</if>
+			<if test="network_setting_template != null">
+		          network_setting_template = #{network_setting_template, jdbcType=VARCHAR},  <!-- 模板文件 -->
+			</if>
+			<if test="network_setting_remarks != null">
+		          network_setting_remarks = #{network_setting_remarks, jdbcType=VARCHAR},  <!-- 备注 -->
+			</if>
+			<if test="network_setting_number != null">
+		          network_setting_number = #{network_setting_number, jdbcType=VARCHAR},  <!-- 接收号码 -->
+			</if>
+			<if test="network_setting_users != null">
+		          network_setting_users = #{network_setting_users, jdbcType=VARCHAR},  <!-- 防区使用者 -->
+			</if>
+			<if test="alarm_type != null">
+		          alarm_type = #{alarm_type, jdbcType=VARCHAR},  <!-- 报警类型 -->
+			</if>
+			<if test="communication_format != null">
+		          communication_format = #{communication_format, jdbcType=VARCHAR},  <!-- 通信格式 -->
+			</if>
+			<if test="alarm_sound != null">
+		          alarm_sound = #{alarm_sound, jdbcType=VARCHAR},  <!-- 报警声音方案 -->
+			</if>
+			<if test="host_alarm_sms != null">
+		          host_alarm_sms = #{host_alarm_sms, jdbcType=VARCHAR},  <!-- 主机报警短信号码 -->
+			</if>
+			<if test="substation_number != null">
+		          substation_number = #{substation_number, jdbcType=VARCHAR},  <!-- 分局号 -->
+			</if>
+			<if test="shutdown_time != null">
+		          shutdown_time = #{shutdown_time, jdbcType=VARCHAR},  <!-- 停机时间 -->
+			</if>
+			<if test="pause != null">
+		          pause = #{pause, jdbcType=VARCHAR},  <!-- 暂停 -->
+			</if>
+			<if test="breakdown != null">
+		          breakdown = #{breakdown, jdbcType=VARCHAR},  <!-- 故障 -->
+			</if>
+			<if test="review_confirm != null">
+		          review_confirm = #{review_confirm, jdbcType=VARCHAR},  <!-- 审查确认 -->
+			</if>
+			<if test="management_remarks != null">
+		          management_remarks = #{management_remarks, jdbcType=VARCHAR},  <!-- 备注 -->
+			</if>
+		</set>
+		WHERE  device_id = #{device_id}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM device WHERE  device_id = #{device_id}
+	</delete>
+	<delete id="deleteById">
+		DELETE FROM device WHERE id_ = #{id_}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.DevicePO">
+		SELECT
+		<include refid="column" />
+		FROM device WHERE  device_id = #{device_id}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.DevicePO">
+		SELECT
+		    <include refid="column" />
+		FROM device
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.DevicePO">
+		SELECT
+			<include refid="column" />	
+		FROM device
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.DevicePO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM device
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.DevicePO">
+		SELECT
+			<include refid="column" />	
+		FROM device
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.DevicePO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM device
+		<where>
+		    <include refid="like" />
+		</where>	
+		
+		
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM device
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM device
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  device_id,  <!-- 设备编号 -->
+		  status,  <!-- 状态 -->
+		  arrange_withdraw,  <!-- 布撤防 -->
+		  id_,  <!-- 序号 -->
+		  user_id,  <!-- 用户编号 -->
+		  user_name,  <!-- 用户名称 -->
+		  user_address,  <!-- 用户地址 -->
+		  sub_center,  <!-- 分中心 -->
+		  cross_road,  <!-- 交叉路 -->
+		  user_type,  <!-- 用户类型 -->
+		  is_alarming,  <!-- 报警状态 -->
+		  host_type,  <!-- 主机类型 -->
+		  video_linkage,  <!-- 视频联动 -->
+		  head,  <!-- 负责人 -->
+		  head_phone,  <!-- 负责人电话 -->
+		  test_period,  <!-- 测试间隔 -->
+		  pay_date,  <!-- 缴费截止日期 -->
+		  guarantee_time,  <!-- 保修截止日期 -->
+		  check_status,  <!-- 核查状态 -->
+		  arrearage,  <!-- 欠费 -->
+		  shut_down,  <!-- 停机 -->
+		  town,  <!-- 镇所 -->
+		  town_phone,  <!-- 镇所电话 -->
+		  police_station,  <!-- 所属派出所 -->
+		  network,  <!-- 网络 -->
+		  police_phone,  <!-- 派出所电话 -->
+		  host_address,  <!-- 主机位置 -->
+		  install_date,  <!-- 安装日期 -->
+		  code42,  <!-- 42代码 -->
+		  withdraw_date,  <!-- 撤防时间 -->
+		  arrange_date,  <!-- 布防时间 -->
+		  last_date,  <!-- 最后来信号时间 -->
+		  builders,  <!-- 施工人员 -->
+		  police_unit,  <!-- 出警单位 -->
+		  phone,  <!-- 电话 -->
+		  repair_record,  <!-- 报修记录 -->
+		  repair_progress,  <!-- 报修进度 -->
+		  group_,  <!-- 组 -->
+		  entry_clerk,  <!-- 录入员 -->
+		  inspection_staff,  <!-- 巡检人员 -->
+		  downtime,  <!-- 停机时间 -->
+		  phone1,  <!-- 电话1 -->
+		  product_type,  <!-- 产品型号 -->
+		  production_date,  <!-- 出厂日期 -->
+		  head_phone2,  <!-- 负责人电话2 -->
+		  net_date,  <!-- 入网日期 -->
+		  communication_line,  <!-- 通讯线路 -->
+		  users_id,  <!-- 编号 -->
+		  users_name,  <!-- 姓名 -->
+		  users_identity,  <!-- 身份 -->
+		  remarks,  <!-- 备注 -->
+		  arrangeandwithdraw_time,  <!-- 预定布撤防时间 -->
+		  network_setting_substation,  <!-- 分站 -->
+		  network_setting_name,  <!-- 名称 -->
+		  network_setting_type,  <!-- 类型 -->
+		  network_setting_template,  <!-- 模板文件 -->
+		  network_setting_remarks,  <!-- 备注 -->
+		  network_setting_number,  <!-- 接收号码 -->
+		  network_setting_users,  <!-- 防区使用者 -->
+		  alarm_type,  <!-- 报警类型 -->
+		  communication_format,  <!-- 通信格式 -->
+		  alarm_sound,  <!-- 报警声音方案 -->
+		  host_alarm_sms,  <!-- 主机报警短信号码 -->
+		  substation_number,  <!-- 分局号 -->
+		  shutdown_time,  <!-- 停机时间 -->
+		  pause,  <!-- 暂停 -->
+		  breakdown,  <!-- 故障 -->
+		  review_confirm,  <!-- 审查确认 -->
+		  management_remarks  <!-- 备注 -->
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  device.device_id,  <!-- 设备编号 -->
+		  device.status,  <!-- 状态 -->
+		  device.arrange_withdraw,  <!-- 布撤防 -->
+		  device.id_,  <!-- 序号 -->
+		  device.user_id,  <!-- 用户编号 -->
+		  device.user_name,  <!-- 用户名称 -->
+		  device.user_address,  <!-- 用户地址 -->
+		  device.sub_center,  <!-- 分中心 -->
+		  device.cross_road,  <!-- 交叉路 -->
+		  device.user_type,  <!-- 用户类型 -->
+		  device.is_alarming,  <!-- 报警状态 -->
+		  device.host_type,  <!-- 主机类型 -->
+		  device.video_linkage,  <!-- 视频联动 -->
+		  device.head,  <!-- 负责人 -->
+		  device.head_phone,  <!-- 负责人电话 -->
+		  device.test_period,  <!-- 测试间隔 -->
+		  device.pay_date,  <!-- 缴费截止日期 -->
+		  device.guarantee_time,  <!-- 保修截止日期 -->
+		  device.check_status,  <!-- 核查状态 -->
+		  device.arrearage,  <!-- 欠费 -->
+		  device.shut_down,  <!-- 停机 -->
+		  device.town,  <!-- 镇所 -->
+		  device.town_phone,  <!-- 镇所电话 -->
+		  device.police_station,  <!-- 所属派出所 -->
+		  device.network,  <!-- 网络 -->
+		  device.police_phone,  <!-- 派出所电话 -->
+		  device.host_address,  <!-- 主机位置 -->
+		  device.install_date,  <!-- 安装日期 -->
+		  device.code42,  <!-- 42代码 -->
+		  device.withdraw_date,  <!-- 撤防时间 -->
+		  device.arrange_date,  <!-- 布防时间 -->
+		  device.last_date,  <!-- 最后来信号时间 -->
+		  device.builders,  <!-- 施工人员 -->
+		  device.police_unit,  <!-- 出警单位 -->
+		  device.phone,  <!-- 电话 -->
+		  device.repair_record,  <!-- 报修记录 -->
+		  device.repair_progress,  <!-- 报修进度 -->
+		  device.group_,  <!-- 组 -->
+		  device.entry_clerk,  <!-- 录入员 -->
+		  device.inspection_staff,  <!-- 巡检人员 -->
+		  device.downtime,  <!-- 停机时间 -->
+		  device.phone1,  <!-- 电话1 -->
+		  device.product_type,  <!-- 产品型号 -->
+		  device.production_date,  <!-- 出厂日期 -->
+		  device.head_phone2,  <!-- 负责人电话2 -->
+		  device.net_date,  <!-- 入网日期 -->
+		  device.communication_line,  <!-- 通讯线路 -->
+		  device.users_id,  <!-- 编号 -->
+		  device.users_name,  <!-- 姓名 -->
+		  device.users_identity,  <!-- 身份 -->
+		  device.remarks,  <!-- 备注 -->
+		  device.arrangeandwithdraw_time,  <!-- 预定布撤防时间 -->
+		  device.network_setting_substation,  <!-- 分站 -->
+		  device.network_setting_name,  <!-- 名称 -->
+		  device.network_setting_type,  <!-- 类型 -->
+		  device.network_setting_template,  <!-- 模板文件 -->
+		  device.network_setting_remarks,  <!-- 备注 -->
+		  device.network_setting_number,  <!-- 接收号码 -->
+		  device.network_setting_users,  <!-- 防区使用者 -->
+		  device.alarm_type,  <!-- 报警类型 -->
+		  device.communication_format,  <!-- 通信格式 -->
+		  device.alarm_sound,  <!-- 报警声音方案 -->
+		  device.host_alarm_sms,  <!-- 主机报警短信号码 -->
+		  device.substation_number,  <!-- 分局号 -->
+		  device.shutdown_time,  <!-- 停机时间 -->
+		  device.pause,  <!-- 暂停 -->
+		  device.breakdown,  <!-- 故障 -->
+		  device.review_confirm,  <!-- 审查确认 -->
+		  device.management_remarks  <!-- 备注 -->
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="device_id != null and device_id != ''">
+		      AND device_id = #{device_id}  <!-- 设备编号 -->
+		</if>
+	    <if test="status != null and status != ''">
+		      AND status = #{status}  <!-- 状态 -->
+		</if>
+	    <if test="arrange_withdraw != null and arrange_withdraw != ''">
+		      AND arrange_withdraw = #{arrange_withdraw}  <!-- 布撤防 -->
+		</if>
+	    <if test="id_ != null and id_ != ''">
+		      AND id_ = #{id_}  <!-- 序号 -->
+		</if>
+	    <if test="user_id != null and user_id != ''">
+		      AND user_id = #{user_id}  <!-- 用户编号 -->
+		</if>
+	    <if test="user_name != null and user_name != ''">
+		      AND user_name = #{user_name}  <!-- 用户名称 -->
+		</if>
+	    <if test="user_address != null and user_address != ''">
+		      AND user_address = #{user_address}  <!-- 用户地址 -->
+		</if>
+	    <if test="sub_center != null and sub_center != ''">
+		      AND sub_center = #{sub_center}  <!-- 分中心 -->
+		</if>
+	    <if test="cross_road != null and cross_road != ''">
+		      AND cross_road = #{cross_road}  <!-- 交叉路 -->
+		</if>
+	    <if test="user_type != null and user_type != ''">
+		      AND user_type = #{user_type}  <!-- 用户类型 -->
+		</if>
+	    <if test="is_alarming != null and is_alarming != ''">
+		      AND is_alarming = #{is_alarming}  <!-- 报警状态 -->
+		</if>
+	    <if test="host_type != null and host_type != ''">
+		      AND host_type = #{host_type}  <!-- 主机类型 -->
+		</if>
+	    <if test="video_linkage != null and video_linkage != ''">
+		      AND video_linkage = #{video_linkage}  <!-- 视频联动 -->
+		</if>
+	    <if test="head != null and head != ''">
+		      AND head = #{head}  <!-- 负责人 -->
+		</if>
+	    <if test="head_phone != null and head_phone != ''">
+		      AND head_phone = #{head_phone}  <!-- 负责人电话 -->
+		</if>
+	    <if test="test_period != null and test_period != ''">
+		      AND test_period = #{test_period}  <!-- 测试间隔 -->
+		</if>
+	    <if test="pay_date != null and pay_date != ''">
+		      AND pay_date = #{pay_date}  <!-- 缴费截止日期 -->
+		</if>
+	    <if test="guarantee_time != null and guarantee_time != ''">
+		      AND guarantee_time = #{guarantee_time}  <!-- 保修截止日期 -->
+		</if>
+	    <if test="check_status != null and check_status != ''">
+		      AND check_status = #{check_status}  <!-- 核查状态 -->
+		</if>
+	    <if test="arrearage != null and arrearage != ''">
+		      AND arrearage = #{arrearage}  <!-- 欠费 -->
+		</if>
+	    <if test="shut_down != null and shut_down != ''">
+		      AND shut_down = #{shut_down}  <!-- 停机 -->
+		</if>
+	    <if test="town != null and town != ''">
+		      AND town = #{town}  <!-- 镇所 -->
+		</if>
+	    <if test="town_phone != null and town_phone != ''">
+		      AND town_phone = #{town_phone}  <!-- 镇所电话 -->
+		</if>
+	    <if test="police_station != null and police_station != ''">
+		      AND police_station = #{police_station}  <!-- 所属派出所 -->
+		</if>
+	    <if test="network != null and network != ''">
+		      AND network = #{network}  <!-- 网络 -->
+		</if>
+	    <if test="police_phone != null and police_phone != ''">
+		      AND police_phone = #{police_phone}  <!-- 派出所电话 -->
+		</if>
+	    <if test="host_address != null and host_address != ''">
+		      AND host_address = #{host_address}  <!-- 主机位置 -->
+		</if>
+	    <if test="install_date != null and install_date != ''">
+		      AND install_date = #{install_date}  <!-- 安装日期 -->
+		</if>
+	    <if test="code42 != null and code42 != ''">
+		      AND code42 = #{code42}  <!-- 42代码 -->
+		</if>
+	    <if test="withdraw_date != null and withdraw_date != ''">
+		      AND withdraw_date = #{withdraw_date}  <!-- 撤防时间 -->
+		</if>
+	    <if test="arrange_date != null and arrange_date != ''">
+		      AND arrange_date = #{arrange_date}  <!-- 布防时间 -->
+		</if>
+	    <if test="last_date != null and last_date != ''">
+		      AND last_date = #{last_date}  <!-- 最后来信号时间 -->
+		</if>
+	    <if test="builders != null and builders != ''">
+		      AND builders = #{builders}  <!-- 施工人员 -->
+		</if>
+	    <if test="police_unit != null and police_unit != ''">
+		      AND police_unit = #{police_unit}  <!-- 出警单位 -->
+		</if>
+	    <if test="phone != null and phone != ''">
+		      AND phone = #{phone}  <!-- 电话 -->
+		</if>
+	    <if test="repair_record != null and repair_record != ''">
+		      AND repair_record = #{repair_record}  <!-- 报修记录 -->
+		</if>
+	    <if test="repair_progress != null and repair_progress != ''">
+		      AND repair_progress = #{repair_progress}  <!-- 报修进度 -->
+		</if>
+	    <if test="group_ != null and group_ != ''">
+		      AND group_ = #{group_}  <!-- 组 -->
+		</if>
+	    <if test="entry_clerk != null and entry_clerk != ''">
+		      AND entry_clerk = #{entry_clerk}  <!-- 录入员 -->
+		</if>
+	    <if test="inspection_staff != null and inspection_staff != ''">
+		      AND inspection_staff = #{inspection_staff}  <!-- 巡检人员 -->
+		</if>
+	    <if test="downtime != null and downtime != ''">
+		      AND downtime = #{downtime}  <!-- 停机时间 -->
+		</if>
+	    <if test="phone1 != null and phone1 != ''">
+		      AND phone1 = #{phone1}  <!-- 电话1 -->
+		</if>
+	    <if test="product_type != null and product_type != ''">
+		      AND product_type = #{product_type}  <!-- 产品型号 -->
+		</if>
+	    <if test="production_date != null and production_date != ''">
+		      AND production_date = #{production_date}  <!-- 出厂日期 -->
+		</if>
+	    <if test="head_phone2 != null and head_phone2 != ''">
+		      AND head_phone2 = #{head_phone2}  <!-- 负责人电话2 -->
+		</if>
+	    <if test="net_date != null and net_date != ''">
+		      AND net_date = #{net_date}  <!-- 入网日期 -->
+		</if>
+	    <if test="communication_line != null and communication_line != ''">
+		      AND communication_line = #{communication_line}  <!-- 通讯线路 -->
+		</if>
+	    <if test="users_id != null and users_id != ''">
+		      AND users_id = #{users_id}  <!-- 编号 -->
+		</if>
+	    <if test="users_name != null and users_name != ''">
+		      AND users_name = #{users_name}  <!-- 姓名 -->
+		</if>
+	    <if test="users_identity != null and users_identity != ''">
+		      AND users_identity = #{users_identity}  <!-- 身份 -->
+		</if>
+	    <if test="remarks != null and remarks != ''">
+		      AND remarks = #{remarks}  <!-- 备注 -->
+		</if>
+	    <if test="arrangeandwithdraw_time != null and arrangeandwithdraw_time != ''">
+		      AND arrangeandwithdraw_time = #{arrangeandwithdraw_time}  <!-- 预定布撤防时间 -->
+		</if>
+	    <if test="network_setting_substation != null and network_setting_substation != ''">
+		      AND network_setting_substation = #{network_setting_substation}  <!-- 分站 -->
+		</if>
+	    <if test="network_setting_name != null and network_setting_name != ''">
+		      AND network_setting_name = #{network_setting_name}  <!-- 名称 -->
+		</if>
+	    <if test="network_setting_type != null and network_setting_type != ''">
+		      AND network_setting_type = #{network_setting_type}  <!-- 类型 -->
+		</if>
+	    <if test="network_setting_template != null and network_setting_template != ''">
+		      AND network_setting_template = #{network_setting_template}  <!-- 模板文件 -->
+		</if>
+	    <if test="network_setting_remarks != null and network_setting_remarks != ''">
+		      AND network_setting_remarks = #{network_setting_remarks}  <!-- 备注 -->
+		</if>
+	    <if test="network_setting_number != null and network_setting_number != ''">
+		      AND network_setting_number = #{network_setting_number}  <!-- 接收号码 -->
+		</if>
+	    <if test="network_setting_users != null and network_setting_users != ''">
+		      AND network_setting_users = #{network_setting_users}  <!-- 防区使用者 -->
+		</if>
+	    <if test="alarm_type != null and alarm_type != ''">
+		      AND alarm_type = #{alarm_type}  <!-- 报警类型 -->
+		</if>
+	    <if test="communication_format != null and communication_format != ''">
+		      AND communication_format = #{communication_format}  <!-- 通信格式 -->
+		</if>
+	    <if test="alarm_sound != null and alarm_sound != ''">
+		      AND alarm_sound = #{alarm_sound}  <!-- 报警声音方案 -->
+		</if>
+	    <if test="host_alarm_sms != null and host_alarm_sms != ''">
+		      AND host_alarm_sms = #{host_alarm_sms}  <!-- 主机报警短信号码 -->
+		</if>
+	    <if test="substation_number != null and substation_number != ''">
+		      AND substation_number = #{substation_number}  <!-- 分局号 -->
+		</if>
+	    <if test="shutdown_time != null and shutdown_time != ''">
+		      AND shutdown_time = #{shutdown_time}  <!-- 停机时间 -->
+		</if>
+	    <if test="pause != null and pause != ''">
+		      AND pause = #{pause}  <!-- 暂停 -->
+		</if>
+	    <if test="breakdown != null and breakdown != ''">
+		      AND breakdown = #{breakdown}  <!-- 故障 -->
+		</if>
+	    <if test="review_confirm != null and review_confirm != ''">
+		      AND review_confirm = #{review_confirm}  <!-- 审查确认 -->
+		</if>
+	    <if test="management_remarks != null and management_remarks != ''">
+		      AND management_remarks = #{management_remarks}  <!-- 备注 -->
+		</if>
+	</sql>
+	
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="device_id != null and device_id != ''">
+		      AND device_id like '%${device_id}%'  <!-- 设备编号 -->
+		</if>
+	    <if test="status != null and status != ''">
+		      AND status like '%${status}%'  <!-- 状态 -->
+		</if>
+	    <if test="arrange_withdraw != null and arrange_withdraw != ''">
+		      AND arrange_withdraw like '%${arrange_withdraw}%'  <!-- 布撤防 -->
+		</if>
+	    <if test="id_ != null and id_ != ''">
+		      AND id_ like '%${id_}%'  <!-- 序号 -->
+		</if>
+	    <if test="user_id != null and user_id != ''">
+		      AND user_id like '%${user_id}%'  <!-- 用户编号 -->
+		</if>
+	    <if test="user_name != null and user_name != ''">
+		      AND user_name like '%${user_name}%'  <!-- 用户名称 -->
+		</if>
+	    <if test="user_address != null and user_address != ''">
+		      AND user_address like '%${user_address}%'  <!-- 用户地址 -->
+		</if>
+	    <if test="sub_center != null and sub_center != ''">
+		      AND sub_center like '%${sub_center}%'  <!-- 分中心 -->
+		</if>
+	    <if test="cross_road != null and cross_road != ''">
+		      AND cross_road like '%${cross_road}%'  <!-- 交叉路 -->
+		</if>
+	    <if test="user_type != null and user_type != ''">
+		      AND user_type like '%${user_type}%'  <!-- 用户类型 -->
+		</if>
+	    <if test="is_alarming != null and is_alarming != ''">
+		      AND is_alarming like '%${is_alarming}%'  <!-- 报警状态 -->
+		</if>
+	    <if test="host_type != null and host_type != ''">
+		      AND host_type like '%${host_type}%'  <!-- 主机类型 -->
+		</if>
+	    <if test="video_linkage != null and video_linkage != ''">
+		      AND video_linkage like '%${video_linkage}%'  <!-- 视频联动 -->
+		</if>
+	    <if test="head != null and head != ''">
+		      AND head like '%${head}%'  <!-- 负责人 -->
+		</if>
+	    <if test="head_phone != null and head_phone != ''">
+		      AND head_phone like '%${head_phone}%'  <!-- 负责人电话 -->
+		</if>
+	    <if test="test_period != null and test_period != ''">
+		      AND test_period like '%${test_period}%'  <!-- 测试间隔 -->
+		</if>
+	    <if test="pay_date != null and pay_date != ''">
+		      AND pay_date like '%${pay_date}%'  <!-- 缴费截止日期 -->
+		</if>
+	    <if test="guarantee_time != null and guarantee_time != ''">
+		      AND guarantee_time like '%${guarantee_time}%'  <!-- 保修截止日期 -->
+		</if>
+	    <if test="check_status != null and check_status != ''">
+		      AND check_status like '%${check_status}%'  <!-- 核查状态 -->
+		</if>
+	    <if test="arrearage != null and arrearage != ''">
+		      AND arrearage like '%${arrearage}%'  <!-- 欠费 -->
+		</if>
+	    <if test="shut_down != null and shut_down != ''">
+		      AND shut_down like '%${shut_down}%'  <!-- 停机 -->
+		</if>
+	    <if test="town != null and town != ''">
+		      AND town like '%${town}%'  <!-- 镇所 -->
+		</if>
+	    <if test="town_phone != null and town_phone != ''">
+		      AND town_phone like '%${town_phone}%'  <!-- 镇所电话 -->
+		</if>
+	    <if test="police_station != null and police_station != ''">
+		      AND police_station like '%${police_station}%'  <!-- 所属派出所 -->
+		</if>
+	    <if test="network != null and network != ''">
+		      AND network like '%${network}%'  <!-- 网络 -->
+		</if>
+	    <if test="police_phone != null and police_phone != ''">
+		      AND police_phone like '%${police_phone}%'  <!-- 派出所电话 -->
+		</if>
+	    <if test="host_address != null and host_address != ''">
+		      AND host_address like '%${host_address}%'  <!-- 主机位置 -->
+		</if>
+	    <if test="install_date != null and install_date != ''">
+		      AND install_date like '%${install_date}%'  <!-- 安装日期 -->
+		</if>
+	    <if test="code42 != null and code42 != ''">
+		      AND code42 like '%${code42}%'  <!-- 42代码 -->
+		</if>
+	    <if test="withdraw_date != null and withdraw_date != ''">
+		      AND withdraw_date like '%${withdraw_date}%'  <!-- 撤防时间 -->
+		</if>
+	    <if test="arrange_date != null and arrange_date != ''">
+		      AND arrange_date like '%${arrange_date}%'  <!-- 布防时间 -->
+		</if>
+	    <if test="last_date != null and last_date != ''">
+		      AND last_date like '%${last_date}%'  <!-- 最后来信号时间 -->
+		</if>
+	    <if test="builders != null and builders != ''">
+		      AND builders like '%${builders}%'  <!-- 施工人员 -->
+		</if>
+	    <if test="police_unit != null and police_unit != ''">
+		      AND police_unit like '%${police_unit}%'  <!-- 出警单位 -->
+		</if>
+	    <if test="phone != null and phone != ''">
+		      AND phone like '%${phone}%'  <!-- 电话 -->
+		</if>
+	    <if test="repair_record != null and repair_record != ''">
+		      AND repair_record like '%${repair_record}%'  <!-- 报修记录 -->
+		</if>
+	    <if test="repair_progress != null and repair_progress != ''">
+		      AND repair_progress like '%${repair_progress}%'  <!-- 报修进度 -->
+		</if>
+	    <if test="group_ != null and group_ != ''">
+		      AND group_ like '%${group_}%'  <!-- 组 -->
+		</if>
+	    <if test="entry_clerk != null and entry_clerk != ''">
+		      AND entry_clerk like '%${entry_clerk}%'  <!-- 录入员 -->
+		</if>
+	    <if test="inspection_staff != null and inspection_staff != ''">
+		      AND inspection_staff like '%${inspection_staff}%'  <!-- 巡检人员 -->
+		</if>
+	    <if test="downtime != null and downtime != ''">
+		      AND downtime like '%${downtime}%'  <!-- 停机时间 -->
+		</if>
+	    <if test="phone1 != null and phone1 != ''">
+		      AND phone1 like '%${phone1}%'  <!-- 电话1 -->
+		</if>
+	    <if test="product_type != null and product_type != ''">
+		      AND product_type like '%${product_type}%'  <!-- 产品型号 -->
+		</if>
+	    <if test="production_date != null and production_date != ''">
+		      AND production_date like '%${production_date}%'  <!-- 出厂日期 -->
+		</if>
+	    <if test="head_phone2 != null and head_phone2 != ''">
+		      AND head_phone2 like '%${head_phone2}%'  <!-- 负责人电话2 -->
+		</if>
+	    <if test="net_date != null and net_date != ''">
+		      AND net_date like '%${net_date}%'  <!-- 入网日期 -->
+		</if>
+	    <if test="communication_line != null and communication_line != ''">
+		      AND communication_line like '%${communication_line}%'  <!-- 通讯线路 -->
+		</if>
+	    <if test="users_id != null and users_id != ''">
+		      AND users_id like '%${users_id}%'  <!-- 编号 -->
+		</if>
+	    <if test="users_name != null and users_name != ''">
+		      AND users_name like '%${users_name}%'  <!-- 姓名 -->
+		</if>
+	    <if test="users_identity != null and users_identity != ''">
+		      AND users_identity like '%${users_identity}%'  <!-- 身份 -->
+		</if>
+	    <if test="remarks != null and remarks != ''">
+		      AND remarks like '%${remarks}%'  <!-- 备注 -->
+		</if>
+	    <if test="arrangeandwithdraw_time != null and arrangeandwithdraw_time != ''">
+		      AND arrangeandwithdraw_time like '%${arrangeandwithdraw_time}%'  <!-- 预定布撤防时间 -->
+		</if>
+	    <if test="network_setting_substation != null and network_setting_substation != ''">
+		      AND network_setting_substation like '%${network_setting_substation}%'  <!-- 分站 -->
+		</if>
+	    <if test="network_setting_name != null and network_setting_name != ''">
+		      AND network_setting_name like '%${network_setting_name}%'  <!-- 名称 -->
+		</if>
+	    <if test="network_setting_type != null and network_setting_type != ''">
+		      AND network_setting_type like '%${network_setting_type}%'  <!-- 类型 -->
+		</if>
+	    <if test="network_setting_template != null and network_setting_template != ''">
+		      AND network_setting_template like '%${network_setting_template}%'  <!-- 模板文件 -->
+		</if>
+	    <if test="network_setting_remarks != null and network_setting_remarks != ''">
+		      AND network_setting_remarks like '%${network_setting_remarks}%'  <!-- 备注 -->
+		</if>
+	    <if test="network_setting_number != null and network_setting_number != ''">
+		      AND network_setting_number like '%${network_setting_number}%'  <!-- 接收号码 -->
+		</if>
+	    <if test="network_setting_users != null and network_setting_users != ''">
+		      AND network_setting_users like '%${network_setting_users}%'  <!-- 防区使用者 -->
+		</if>
+	    <if test="alarm_type != null and alarm_type != ''">
+		      AND alarm_type like '%${alarm_type}%'  <!-- 报警类型 -->
+		</if>
+	    <if test="communication_format != null and communication_format != ''">
+		      AND communication_format like '%${communication_format}%'  <!-- 通信格式 -->
+		</if>
+	    <if test="alarm_sound != null and alarm_sound != ''">
+		      AND alarm_sound like '%${alarm_sound}%'  <!-- 报警声音方案 -->
+		</if>
+	    <if test="host_alarm_sms != null and host_alarm_sms != ''">
+		      AND host_alarm_sms like '%${host_alarm_sms}%'  <!-- 主机报警短信号码 -->
+		</if>
+	    <if test="substation_number != null and substation_number != ''">
+		      AND substation_number like '%${substation_number}%'  <!-- 分局号 -->
+		</if>
+	    <if test="shutdown_time != null and shutdown_time != ''">
+		      AND shutdown_time like '%${shutdown_time}%'  <!-- 停机时间 -->
+		</if>
+	    <if test="pause != null and pause != ''">
+		      AND pause like '%${pause}%'  <!-- 暂停 -->
+		</if>
+	    <if test="breakdown != null and breakdown != ''">
+		      AND breakdown like '%${breakdown}%'  <!-- 故障 -->
+		</if>
+	    <if test="review_confirm != null and review_confirm != ''">
+		      AND review_confirm like '%${review_confirm}%'  <!-- 审查确认 -->
+		</if>
+	    <if test="management_remarks != null and management_remarks != ''">
+		      AND management_remarks like '%${management_remarks}%'  <!-- 备注 -->
+		</if>
+	</sql>
+	
+</mapper>

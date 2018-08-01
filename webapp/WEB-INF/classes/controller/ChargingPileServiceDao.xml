@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- charging_pile管理模块使用的SQL语句 -->
+<mapper namespace="ChargingPile">
+
+	<!-- 查询charging_pile列表 ,多表关联查询-->
+	<select id="listChargingPilesPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.ChargingPileDao.column" />	
+			FROM charging_pile
+			<where>
+				is_del='0'
+			    <include refid="dao.ChargingPileDao.equal" />
+			    <if test="addrs != null and addrs != ''">
+				      AND addr like '%${addrs}%'  <!-- 地址 -->
+				</if>
+			</where>
+	</select>
+	
+	<select id="appListChargingPilesPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.ChargingPileDao.column" />	
+			FROM charging_pile
+			<where>
+				is_del='0'
+			    <if test="cp_no != null and cp_no != ''">
+		      		  AND cp_no like '%${cp_no}%'  <!-- 编号 -->
+				</if>
+			    <if test="supplier != null and supplier != ''">
+				      AND supplier like '%${supplier}%'  <!-- 供应商 -->
+				</if>
+			    <if test="addr != null and addr != ''">
+				      AND addr like '%${addr}%'  <!-- 地址 -->
+				</if>
+				 <if test="cp_type != null and cp_type != ''">
+		      		  AND cp_type = #{cp_type}  <!-- 型号 -->
+				</if>
+			    <if test="electricity != null ">
+				      AND electricity = #{electricity}  <!-- 充电费 -->
+				</if>
+			    <if test="cp_status != null and cp_status != ''">
+				      AND cp_status = #{cp_status}  <!-- 状态 -->
+				</if>
+			    <if test="lon != null and lon != ''">
+				      AND (lon BETWEEN #{lon_minX} AND #{lon_maxX})   <!-- 经度 -->
+				</if>
+			    <if test="lat != null and lat != ''">
+				      AND (lat BETWEEN #{lat_minY} AND #{lat_maxY})  <!-- 纬度 -->
+				</if>
+				<if test="addrName != null and addrName != ''">
+				      AND (province like '%${addrName}%' or city  like '%${addrName}%' or county  like '%${addrName}%')  <!-- 地名 -->
+				</if>
+			</where>
+	</select>
+	<select id="chargingPileSummary" resultType="Dto" parameterType="Dto">
+			SELECT COUNT(1) AS count,	
+			IFNULL(SUM(CASE WHEN t.cp_status='1' THEN 1 ELSE 0 END),0) AS  keyong,
+			IFNULL(SUM(CASE WHEN t.cp_status='2' THEN 1 ELSE 0 END),0) AS  zhanyong ,
+			IFNULL(SUM(CASE WHEN t.cp_status='3' THEN 1 ELSE 0 END),0) AS  guzhang  FROM charging_pile t WHERE is_del='0'
+	</select>
+</mapper>

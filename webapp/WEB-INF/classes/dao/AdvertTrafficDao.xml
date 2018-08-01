@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- advert_traffic[advert_traffic]SQL自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2017-07-06 20:19:05 -->
+<mapper namespace="dao.AdvertTrafficDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.AdvertTrafficPO">
+		INSERT INTO advert_traffic (
+		<if test="ad_id != null and ad_id != ''">
+	         ad_id, <!-- 广告id -->
+		</if>
+		<if test="at_type != null and at_type != ''">
+	         at_type, <!-- 设备类型，0：IOS，1：android -->
+		</if>
+		<if test="at_mun != null">
+	         at_mun, <!-- 展示次数 -->
+		</if>
+		<if test="is_del != null and is_del != ''">
+	         is_del, <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+		<if test="create_date != null and create_date != ''">
+	         create_date, <!-- 展示时间 -->
+		</if>
+		<if test="oper_id != null and oper_id != ''">
+	         oper_id, <!-- 操作人ID -->
+		</if>
+		<if test="at_id != null and at_id != ''">
+	          at_id  <!-- 主键 -->
+	   </if>
+		)VALUES(
+		<if test="ad_id != null and ad_id != ''">
+	          #{ad_id, jdbcType=VARCHAR}, <!-- 广告id -->
+	    </if>
+		<if test="at_type != null and at_type != ''">
+	          #{at_type, jdbcType=VARCHAR}, <!-- 设备类型，0：IOS，1：android -->
+	    </if>
+		<if test="at_mun != null">
+	          #{at_mun, jdbcType=INTEGER}, <!-- 展示次数 -->
+	    </if>
+		<if test="is_del != null and is_del != ''">
+	          #{is_del, jdbcType=VARCHAR}, <!-- 是否删除，0：未删除，1：删除 -->
+	    </if>
+		<if test="create_date != null and create_date != ''">
+	          #{create_date, jdbcType=VARCHAR}, <!-- 展示时间 -->
+	    </if>
+		<if test="oper_id != null and oper_id != ''">
+	          #{oper_id, jdbcType=VARCHAR}, <!-- 操作人ID -->
+	    </if>
+		<if test="at_id != null and at_id != ''">
+		     #{at_id, jdbcType=VARCHAR}  <!-- 主键 -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.AdvertTrafficPO">
+		INSERT INTO advert_traffic (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{at_id, jdbcType=VARCHAR},  <!-- 主键 -->
+		    #{ad_id, jdbcType=VARCHAR},  <!-- 广告id -->
+		    #{at_type, jdbcType=VARCHAR},  <!-- 设备类型，0：IOS，1：android -->
+		    #{at_mun, jdbcType=INTEGER},  <!-- 展示次数 -->
+		    #{is_del, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：删除 -->
+		    #{create_date, jdbcType=VARCHAR},  <!-- 展示时间 -->
+		    #{oper_id, jdbcType=VARCHAR}  <!-- 操作人ID -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.AdvertTrafficPO">
+		UPDATE advert_traffic
+		<set>
+			<if test="at_id != null">
+		          at_id = #{at_id, jdbcType=VARCHAR},  <!-- 主键 -->
+			</if>
+			<if test="ad_id != null">
+		          ad_id = #{ad_id, jdbcType=VARCHAR},  <!-- 广告id -->
+			</if>
+			<if test="at_type != null">
+		          at_type = #{at_type, jdbcType=VARCHAR},  <!-- 设备类型，0：IOS，1：android -->
+			</if>
+			<if test="at_mun != null">
+		          at_mun = #{at_mun, jdbcType=INTEGER},  <!-- 展示次数 -->
+			</if>
+			<if test="is_del != null">
+		          is_del = #{is_del, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：删除 -->
+			</if>
+			<if test="create_date != null">
+		          create_date = #{create_date, jdbcType=VARCHAR},  <!-- 展示时间 -->
+			</if>
+			<if test="oper_id != null">
+		          oper_id = #{oper_id, jdbcType=VARCHAR},  <!-- 操作人ID -->
+			</if>
+		</set>
+		WHERE  at_id = #{at_id}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM advert_traffic WHERE  at_id = #{at_id}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.AdvertTrafficPO">
+		SELECT
+		<include refid="column" />
+		FROM advert_traffic WHERE  at_id = #{at_id}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.AdvertTrafficPO">
+		SELECT
+		    <include refid="column" />
+		FROM advert_traffic
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.AdvertTrafficPO">
+		SELECT
+			<include refid="column" />	
+		FROM advert_traffic
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.AdvertTrafficPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM advert_traffic
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.AdvertTrafficPO">
+		SELECT
+			<include refid="column" />	
+		FROM advert_traffic
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.AdvertTrafficPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM advert_traffic
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM advert_traffic
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM advert_traffic
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  at_id,  <!-- 主键 -->
+		  ad_id,  <!-- 广告id -->
+		  at_type,  <!-- 设备类型，0：IOS，1：android -->
+		  at_mun,  <!-- 展示次数 -->
+		  is_del,  <!-- 是否删除，0：未删除，1：删除 -->
+		  create_date,  <!-- 展示时间 -->
+		  oper_id  <!-- 操作人ID -->
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  advert_traffic.at_id,  <!-- 主键 -->
+		  advert_traffic.ad_id,  <!-- 广告id -->
+		  advert_traffic.at_type,  <!-- 设备类型，0：IOS，1：android -->
+		  advert_traffic.at_mun,  <!-- 展示次数 -->
+		  advert_traffic.is_del,  <!-- 是否删除，0：未删除，1：删除 -->
+		  advert_traffic.create_date,  <!-- 展示时间 -->
+		  advert_traffic.oper_id  <!-- 操作人ID -->
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="at_id != null and at_id != ''">
+		      AND at_id = #{at_id}  <!-- 主键 -->
+		</if>
+	    <if test="ad_id != null and ad_id != ''">
+		      AND ad_id = #{ad_id}  <!-- 广告id -->
+		</if>
+	    <if test="at_type != null and at_type != ''">
+		      AND at_type = #{at_type}  <!-- 设备类型，0：IOS，1：android -->
+		</if>
+	   <if test="at_mun != null ">
+		      AND at_mun = #{at_mun}  <!-- 展示次数 -->
+		</if>
+	    <if test="is_del != null and is_del != ''">
+		      AND is_del = #{is_del}  <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+	    <if test="create_date != null and create_date != ''">
+		      AND create_date = #{create_date}  <!-- 展示时间 -->
+		</if>
+	    <if test="oper_id != null and oper_id != ''">
+		      AND oper_id = #{oper_id}  <!-- 操作人ID -->
+		</if>
+	</sql>
+	
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="at_id != null and at_id != ''">
+		      AND at_id like '%${at_id}%'  <!-- 主键 -->
+		</if>
+	    <if test="ad_id != null and ad_id != ''">
+		      AND ad_id like '%${ad_id}%'  <!-- 广告id -->
+		</if>
+	    <if test="at_type != null and at_type != ''">
+		      AND at_type like '%${at_type}%'  <!-- 设备类型，0：IOS，1：android -->
+		</if>
+	    <if test="is_del != null and is_del != ''">
+		      AND is_del like '%${is_del}%'  <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+	    <if test="create_date != null and create_date != ''">
+		      AND create_date like '%${create_date}%'  <!-- 展示时间 -->
+		</if>
+	    <if test="oper_id != null and oper_id != ''">
+		      AND oper_id like '%${oper_id}%'  <!-- 操作人ID -->
+		</if>
+	</sql>
+	
+</mapper>

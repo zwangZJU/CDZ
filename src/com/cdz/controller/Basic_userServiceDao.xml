@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--用户信息[basic_user]SQL语句 -->
+<mapper namespace="Basic_user">
+	<select id="listBasic_usersPage" parameterType="Dto" resultType="Dto">
+		SELECT
+		<include refid="dao.Basic_userDao.column" />
+		FROM basic_user
+		<where>
+ 		</where>
+	</select>
+</mapper>

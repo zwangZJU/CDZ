@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- charging_pile[charging_pile]SQL自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2017-07-06 20:31:43 -->
+<mapper namespace="dao.ChargingPileDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.ChargingPilePO">
+		INSERT INTO charging_pile (
+		<if test="cp_no != null and cp_no != ''">
+	         cp_no, <!-- 编号 -->
+		</if>
+		<if test="supplier != null and supplier != ''">
+	         supplier, <!-- 供应商 -->
+		</if>
+		<if test="province != null and province != ''">
+	         province, <!-- 省 -->
+		</if>
+		<if test="city != null and city != ''">
+	         city, <!-- 市 -->
+		</if>
+		<if test="county != null and county != ''">
+	         county, <!-- 区 -->
+		</if>
+		<if test="addr != null and addr != ''">
+	         addr, <!-- 地址 -->
+		</if>
+		<if test="cp_type != null and cp_type != ''">
+	         cp_type, <!-- 型号 -->
+		</if>
+		<if test="electricity != null">
+	         electricity, <!-- 充电费 -->
+		</if>
+		<if test="cp_status != null and cp_status != ''">
+	         cp_status, <!-- 状态 -->
+		</if>
+		<if test="lon != null and lon != ''">
+	         lon, <!-- 经度 -->
+		</if>
+		<if test="lat != null and lat != ''">
+	         lat, <!-- 纬度 -->
+		</if>
+		<if test="create_date != null and create_date != ''">
+	         create_date, <!-- 创建时间 -->
+		</if>
+		<if test="update_date != null and update_date != ''">
+	         update_date, <!-- 创建时间 -->
+		</if>
+		<if test="is_del != null and is_del != ''">
+	         is_del, <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+		<if test="net_way != null and net_way != ''">
+	         net_way, <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+		<if test="signal_quality != null and signal_quality != ''">
+	         signal_quality, <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+		<if test="is_activation != null and is_activation != ''">
+	         is_activation, <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+		<if test="fault_code != null and fault_code != ''">
+	         fault_code, <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+		<if test="oper_id != null and oper_id != ''">
+	         oper_id, <!-- 操作人ID -->
+		</if>
+		<if test="cp_id != null and cp_id != ''">
+	          cp_id  <!-- 主键 -->
+	   </if>
+		)VALUES(
+		<if test="cp_no != null and cp_no != ''">
+	          #{cp_no, jdbcType=VARCHAR}, <!-- 编号 -->
+	    </if>
+		<if test="supplier != null and supplier != ''">
+	          #{supplier, jdbcType=VARCHAR}, <!-- 供应商 -->
+	    </if>
+		<if test="province != null and province != ''">
+	          #{province, jdbcType=VARCHAR}, <!-- 省 -->
+	    </if>
+		<if test="city != null and city != ''">
+	          #{city, jdbcType=VARCHAR}, <!-- 市 -->
+	    </if>
+		<if test="county != null and county != ''">
+	          #{county, jdbcType=VARCHAR}, <!-- 区 -->
+	    </if>
+		<if test="addr != null and addr != ''">
+	          #{addr, jdbcType=VARCHAR}, <!-- 地址 -->
+	    </if>
+		<if test="cp_type != null and cp_type != ''">
+	          #{cp_type, jdbcType=VARCHAR}, <!-- 型号 -->
+	    </if>
+		<if test="electricity != null">
+	          #{electricity, jdbcType=NUMERIC}, <!-- 充电费 -->
+	    </if>
+		<if test="cp_status != null and cp_status != ''">
+	          #{cp_status, jdbcType=VARCHAR}, <!-- 状态 -->
+	    </if>
+		<if test="lon != null and lon != ''">
+	          #{lon, jdbcType=VARCHAR}, <!-- 经度 -->
+	    </if>
+		<if test="lat != null and lat != ''">
+	          #{lat, jdbcType=VARCHAR}, <!-- 纬度 -->
+	    </if>
+		<if test="create_date != null and create_date != ''">
+	          #{create_date, jdbcType=VARCHAR}, <!-- 创建时间 -->
+	    </if>
+		<if test="is_del != null and is_del != ''">
+	          #{is_del, jdbcType=VARCHAR}, <!-- 是否删除，0：未删除，1：删除 -->
+	    </if>
+	    <if test="net_way != null and net_way != ''">
+	          #{net_way, jdbcType=VARCHAR}, <!-- 是否删除，0：未删除，1：删除 -->
+	    </if>
+	    <if test="signal_quality != null and signal_quality != ''">
+	          #{signal_quality, jdbcType=VARCHAR}, <!-- 是否删除，0：未删除，1：删除 -->
+	    </if>
+	    <if test="is_activation != null and is_activation != ''">
+	          #{is_activation, jdbcType=VARCHAR}, <!-- 是否删除，0：未删除，1：删除 -->
+	    </if>
+	    <if test="fault_code != null and fault_code != ''">
+	          #{fault_code, jdbcType=VARCHAR}, <!-- 是否删除，0：未删除，1：删除 -->
+	    </if>
+		<if test="oper_id != null and oper_id != ''">
+	          #{oper_id, jdbcType=VARCHAR}, <!-- 操作人ID -->
+	    </if>
+		<if test="cp_id != null and cp_id != ''">
+		     #{cp_id, jdbcType=VARCHAR}  <!-- 主键 -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.ChargingPilePO">
+		INSERT INTO charging_pile (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{cp_id, jdbcType=VARCHAR},  <!-- 主键 -->
+		    #{cp_no, jdbcType=VARCHAR},  <!-- 编号 -->
+		    #{supplier, jdbcType=VARCHAR},  <!-- 供应商 -->
+		    #{province, jdbcType=VARCHAR},  <!-- 省 -->
+		    #{city, jdbcType=VARCHAR},  <!-- 市 -->
+		    #{county, jdbcType=VARCHAR},  <!-- 区 -->
+		    #{addr, jdbcType=VARCHAR},  <!-- 地址 -->
+		    #{cp_type, jdbcType=VARCHAR},  <!-- 型号 -->
+		    #{electricity, jdbcType=NUMERIC},  <!-- 充电费 -->
+		    #{cp_status, jdbcType=VARCHAR},  <!-- 状态 -->
+		    #{lon, jdbcType=VARCHAR},  <!-- 经度 -->
+		    #{lat, jdbcType=VARCHAR},  <!-- 纬度 -->
+		    #{create_date, jdbcType=VARCHAR},  <!-- 创建时间 -->
+		    #{update_date, jdbcType=VARCHAR},
+		    #{is_del, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：删除 -->
+		    #{net_way, jdbcType=VARCHAR},
+		    #{signal_quality, jdbcType=VARCHAR},
+		    #{is_activation, jdbcType=VARCHAR},
+		    #{fault_code, jdbcType=VARCHAR},
+		    #{oper_id, jdbcType=VARCHAR}  <!-- 操作人ID -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.ChargingPilePO">
+		UPDATE charging_pile
+		<set>
+			<if test="cp_id != null">
+		          cp_id = #{cp_id, jdbcType=VARCHAR},  <!-- 主键 -->
+			</if>
+			<if test="cp_no != null">
+		          cp_no = #{cp_no, jdbcType=VARCHAR},  <!-- 编号 -->
+			</if>
+			<if test="supplier != null">
+		          supplier = #{supplier, jdbcType=VARCHAR},  <!-- 供应商 -->
+			</if>
+			<if test="province != null">
+		          province = #{province, jdbcType=VARCHAR},  <!-- 省 -->
+			</if>
+			<if test="city != null">
+		          city = #{city, jdbcType=VARCHAR},  <!-- 市 -->
+			</if>
+			<if test="county != null">
+		          county = #{county, jdbcType=VARCHAR},  <!-- 区 -->
+			</if>
+			<if test="addr != null">
+		          addr = #{addr, jdbcType=VARCHAR},  <!-- 地址 -->
+			</if>
+			<if test="cp_type != null">
+		          cp_type = #{cp_type, jdbcType=VARCHAR},  <!-- 型号 -->
+			</if>
+			<if test="electricity != null">
+		          electricity = #{electricity, jdbcType=NUMERIC},  <!-- 充电费 -->
+			</if>
+			<if test="cp_status != null">
+		          cp_status = #{cp_status, jdbcType=VARCHAR},  <!-- 状态 -->
+			</if>
+			<if test="lon != null">
+		          lon = #{lon, jdbcType=VARCHAR},  <!-- 经度 -->
+			</if>
+			<if test="lat != null">
+		          lat = #{lat, jdbcType=VARCHAR},  <!-- 纬度 -->
+			</if>
+			<if test="create_date != null">
+		          create_date = #{create_date, jdbcType=VARCHAR},  <!-- 创建时间 -->
+			</if>
+			<if test="update_date != null">
+		          update_date = #{update_date, jdbcType=VARCHAR},  <!-- 创建时间 -->
+			</if>
+			<if test="is_del != null">
+		          is_del = #{is_del, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：删除 -->
+			</if>
+			<if test="net_way != null">
+		          net_way = #{net_way, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：删除 -->
+			</if>
+			<if test="signal_quality != null">
+		          signal_quality = #{signal_quality, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：删除 -->
+			</if>
+			<if test="is_activation != null">
+		          is_activation = #{is_activation, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：删除 -->
+			</if>
+			<if test="fault_code != null">
+		          fault_code = #{fault_code, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：删除 -->
+			</if>
+			<if test="oper_id != null">
+		          oper_id = #{oper_id, jdbcType=VARCHAR},  <!-- 操作人ID -->
+			</if>
+		</set>
+		WHERE  cp_id = #{cp_id}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM charging_pile WHERE  cp_id = #{cp_id}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.ChargingPilePO">
+		SELECT
+		<include refid="column" />
+		FROM charging_pile WHERE  cp_id = #{cp_id}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.ChargingPilePO">
+		SELECT
+		    <include refid="column" />
+		FROM charging_pile
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.ChargingPilePO">
+		SELECT
+			<include refid="column" />	
+		FROM charging_pile
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.ChargingPilePO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM charging_pile
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.ChargingPilePO">
+		SELECT
+			<include refid="column" />	
+		FROM charging_pile
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.ChargingPilePO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM charging_pile
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM charging_pile
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM charging_pile
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  cp_id,  <!-- 主键 -->
+		  cp_no,  <!-- 编号 -->
+		  supplier,  <!-- 供应商 -->
+		  province,  <!-- 省 -->
+		  city,  <!-- 市 -->
+		  county,  <!-- 区 -->
+		  addr,  <!-- 地址 -->
+		  cp_type,  <!-- 型号 -->
+		  electricity,  <!-- 充电费 -->
+		  cp_status,  <!-- 状态 -->
+		  lon,  <!-- 经度 -->
+		  lat,  <!-- 纬度 -->
+		  create_date,  <!-- 创建时间 -->
+		  update_date,
+		  is_del,  <!-- 是否删除，0：未删除，1：删除 -->
+		  net_way,
+		  signal_quality,
+		  is_activation,
+		  fault_code,
+		  oper_id  <!-- 操作人ID -->
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  charging_pile.cp_id,  <!-- 主键 -->
+		  charging_pile.cp_no,  <!-- 编号 -->
+		  charging_pile.supplier,  <!-- 供应商 -->
+		  charging_pile.province,  <!-- 省 -->
+		  charging_pile.city,  <!-- 市 -->
+		  charging_pile.county,  <!-- 区 -->
+		  charging_pile.addr,  <!-- 地址 -->
+		  charging_pile.cp_type,  <!-- 型号 -->
+		  charging_pile.electricity,  <!-- 充电费 -->
+		  charging_pile.cp_status,  <!-- 状态 -->
+		  charging_pile.lon,  <!-- 经度 -->
+		  charging_pile.lat,  <!-- 纬度 -->
+		  charging_pile.create_date,  <!-- 创建时间 -->
+		  charging_pile.is_del,  <!-- 是否删除，0：未删除，1：删除 -->
+		  charging_pile.net_way,
+		  charging_pile.signal_quality,
+		  charging_pile.is_activation,
+		  charging_pile.fault_code,
+		  charging_pile.net_way,
+		  charging_pile.signal_quality,
+		  charging_pile.is_activation,
+		  charging_pile.fault_code,
+		  charging_pile.oper_id  <!-- 操作人ID -->
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="cp_id != null and cp_id != ''">
+		      AND cp_id = #{cp_id}  <!-- 主键 -->
+		</if>
+	    <if test="cp_no != null and cp_no != ''">
+		      AND cp_no = #{cp_no}  <!-- 编号 -->
+		</if>
+	    <if test="supplier != null and supplier != ''">
+		      AND supplier = #{supplier}  <!-- 供应商 -->
+		</if>
+	    <if test="province != null and province != ''">
+		      AND province = #{province}  <!-- 省 -->
+		</if>
+	    <if test="city != null and city != ''">
+		      AND city = #{city}  <!-- 市 -->
+		</if>
+	    <if test="county != null and county != ''">
+		      AND county = #{county}  <!-- 区 -->
+		</if>
+	    <if test="addr != null and addr != ''">
+		      AND addr = #{addr}  <!-- 地址 -->
+		</if>
+	    <if test="cp_type != null and cp_type != ''">
+		      AND cp_type = #{cp_type}  <!-- 型号 -->
+		</if>
+	   <if test="electricity != null ">
+		      AND electricity = #{electricity}  <!-- 充电费 -->
+		</if>
+	    <if test="cp_status != null and cp_status != ''">
+		      AND cp_status = #{cp_status}  <!-- 状态 -->
+		</if>
+	    <if test="lon != null and lon != ''">
+		      AND lon = #{lon}  <!-- 经度 -->
+		</if>
+	    <if test="lat != null and lat != ''">
+		      AND lat = #{lat}  <!-- 纬度 -->
+		</if>
+	    <if test="create_date != null and create_date != ''">
+		      AND create_date = #{create_date}  <!-- 创建时间 -->
+		</if>
+	    <if test="is_del != null and is_del != ''">
+		      AND is_del = #{is_del}  <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+	    <if test="oper_id != null and oper_id != ''">
+		      AND oper_id = #{oper_id}  <!-- 操作人ID -->
+		</if>
+	</sql>
+	
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="cp_id != null and cp_id != ''">
+		      AND cp_id like '%${cp_id}%'  <!-- 主键 -->
+		</if>
+	    <if test="cp_no != null and cp_no != ''">
+		      AND cp_no like '%${cp_no}%'  <!-- 编号 -->
+		</if>
+	    <if test="supplier != null and supplier != ''">
+		      AND supplier like '%${supplier}%'  <!-- 供应商 -->
+		</if>
+	    <if test="province != null and province != ''">
+		      AND province like '%${province}%'  <!-- 省 -->
+		</if>
+	    <if test="city != null and city != ''">
+		      AND city like '%${city}%'  <!-- 市 -->
+		</if>
+	    <if test="county != null and county != ''">
+		      AND county like '%${county}%'  <!-- 区 -->
+		</if>
+	    <if test="addr != null and addr != ''">
+		      AND addr like '%${addr}%'  <!-- 地址 -->
+		</if>
+	    <if test="cp_type != null and cp_type != ''">
+		      AND cp_type like '%${cp_type}%'  <!-- 型号 -->
+		</if>
+	    <if test="cp_status != null and cp_status != ''">
+		      AND cp_status like '%${cp_status}%'  <!-- 状态 -->
+		</if>
+	    <if test="lon != null and lon != ''">
+		      AND lon like '%${lon}%'  <!-- 经度 -->
+		</if>
+	    <if test="lat != null and lat != ''">
+		      AND lat like '%${lat}%'  <!-- 纬度 -->
+		</if>
+	    <if test="create_date != null and create_date != ''">
+		      AND create_date like '%${create_date}%'  <!-- 创建时间 -->
+		</if>
+	    <if test="is_del != null and is_del != ''">
+		      AND is_del like '%${is_del}%'  <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+	    <if test="oper_id != null and oper_id != ''">
+		      AND oper_id like '%${oper_id}%'  <!-- 操作人ID -->
+		</if>
+	</sql>
+	
+</mapper>

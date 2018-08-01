@@ -1,0 +1,797 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- members[members]SQL自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2017-07-06 20:19:04 -->
+<mapper namespace="dao.MembersDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.MembersPO">
+		INSERT INTO base_user (
+		<if test="account_ != null and account_ != ''">
+	         account_, <!-- 用户登录帐号 -->
+		</if>
+		<if test="password_ != null and password_ != ''">
+	         password_, <!-- 密码 -->
+		</if>
+		<if test="name_ != null and name_ != ''">
+	         name_, <!-- 昵称 -->
+		</if>
+		<if test="sex_ != null and sex_ != ''">
+	         sex_, <!-- 性别 -->
+		</if>
+		<if test="status_ != null and status_ != ''">
+	         status_, <!-- 用户状态（是否屏蔽） -->
+		</if>
+		<if test="type_ != null and type_ != ''">
+	         type_, <!-- 用户类型用户类型，1：管理员,2：销售员 -->
+		</if>
+		<if test="org_id_ != null and org_id_ != ''">
+	         org_id_, <!-- 图片地址 -->
+		</if>
+		<if test="email_ != null and email_ != ''">
+	         email_, <!-- 电子邮件 -->
+		</if>
+		<if test="mobile_ != null and mobile_ != ''">
+	         mobile_, <!-- 手机号 -->
+		</if>
+		<if test="idno_ != null and idno_ != ''">
+	         idno_, <!-- 身份证号 -->
+		</if>
+		<if test="skin_ != null and skin_ != ''">
+	         skin_, <!-- 用户界面皮肤 -->
+		</if>
+		<if test="biz_code_ != null and biz_code_ != ''">
+	         biz_code_, <!-- 业务对照码 -->
+		</if>
+		<if test="address_ != null and address_ != ''">
+	         address_, <!-- 联系地址 -->
+		</if>
+		<if test="remark_ != null and remark_ != ''">
+	         remark_, <!-- 介绍/备注 -->
+		</if>
+		<if test="is_del_ != null and is_del_ != ''">
+	         is_del_, <!-- 是否已删除 -->
+		</if>
+		<if test="create_time_ != null and create_time_ != ''">
+	         create_time_, <!-- 创建时间 -->
+		</if>
+		<if test="create_by_ != null and create_by_ != ''">
+	         create_by_, <!-- 创建人ID -->
+		</if>
+		<if test="login_time_ != null and login_time_ != ''">
+	         login_time_, <!-- 最后登录时间 -->
+		</if>
+		<if test="sort_ != null">
+	         sort_, <!-- 排序 -->
+		</if>
+		<if test="registration_id != null and registration_id != ''">
+	         registration_id, <!-- 设备ID -->
+		</if>
+		<if test="registration_type != null and registration_type != ''">
+	         registration_type, <!-- 设备类型 -->
+		</if>
+		<if test="is_huanxin != null and is_huanxin != ''">
+	         is_huanxin, <!-- 是否注册环信 -->
+		</if>
+		<if test="gold_coins != null">
+	         gold_coins, <!-- 金币 -->
+		</if>
+		<if test="pay_password != null and pay_password != ''">
+	         pay_password, <!-- 支付密码 -->
+		</if>
+		<if test="deposit_amt != null">
+	         deposit_amt, <!-- 押金 -->
+		</if>
+		<if test="deposit_date != null and deposit_date != ''">
+	         deposit_date, <!-- 押金支付时间 -->
+		</if>
+		<if test="deposit_status != null and deposit_status != ''">
+	         deposit_status, <!-- 押金状态，0:未交，1：已交，-1：已退 -->
+		</if>
+		<if test="grade_ != null and grade_ != ''">
+	         grade_, <!-- 级别，silver：银牌会员，gold：金牌会员，platinum：白金会员 -->
+		</if>
+		<if test="user_name != null and user_name != ''">
+	         user_name, <!-- 姓名 -->
+		</if>
+		<if test="id_card != null and id_card != ''">
+	         id_card, <!-- 身份证号码 -->
+		</if>
+		<if test="vehicle_license != null and vehicle_license != ''">
+	         vehicle_license, <!-- 行驶证号 -->
+		</if>
+		<if test="driver_license != null and driver_license != ''">
+	         driver_license, <!-- 驾驶证号 -->
+		</if>
+		<if test="vehicle_img != null and vehicle_img != ''">
+	         vehicle_img, <!-- 行驶证图片 -->
+		</if>
+		<if test="driver_img != null and driver_img != ''">
+	         driver_img, <!-- 驾驶证图片 -->
+		</if>
+		<if test="user_img != null and user_img != ''">
+	         user_img, <!-- 用户头像 -->
+		</if>
+		<if test="is_cert != null and is_cert != ''">
+	         is_cert, <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 -->
+		</if>
+		<if test="gold_coins_status != null and gold_coins_status != ''">
+	         gold_coins_status, <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 -->
+		</if>
+		<if test="id_ != null and id_ != ''">
+	          id_  <!-- 流水号 -->
+	   </if>
+		)VALUES(
+		<if test="account_ != null and account_ != ''">
+	          #{account_, jdbcType=VARCHAR}, <!-- 用户登录帐号 -->
+	    </if>
+		<if test="password_ != null and password_ != ''">
+	          #{password_, jdbcType=VARCHAR}, <!-- 密码 -->
+	    </if>
+		<if test="name_ != null and name_ != ''">
+	          #{name_, jdbcType=VARCHAR}, <!-- 昵称 -->
+	    </if>
+		<if test="sex_ != null and sex_ != ''">
+	          #{sex_, jdbcType=VARCHAR}, <!-- 性别 -->
+	    </if>
+		<if test="status_ != null and status_ != ''">
+	          #{status_, jdbcType=VARCHAR}, <!-- 用户状态（是否屏蔽） -->
+	    </if>
+		<if test="type_ != null and type_ != ''">
+	          #{type_, jdbcType=VARCHAR}, <!-- 用户类型用户类型，1：管理员,2：销售员 -->
+	    </if>
+		<if test="org_id_ != null and org_id_ != ''">
+	          #{org_id_, jdbcType=VARCHAR}, <!-- 图片地址 -->
+	    </if>
+		<if test="email_ != null and email_ != ''">
+	          #{email_, jdbcType=VARCHAR}, <!-- 电子邮件 -->
+	    </if>
+		<if test="mobile_ != null and mobile_ != ''">
+	          #{mobile_, jdbcType=VARCHAR}, <!-- 手机号 -->
+	    </if>
+		<if test="idno_ != null and idno_ != ''">
+	          #{idno_, jdbcType=VARCHAR}, <!-- 身份证号 -->
+	    </if>
+		<if test="skin_ != null and skin_ != ''">
+	          #{skin_, jdbcType=VARCHAR}, <!-- 用户界面皮肤 -->
+	    </if>
+		<if test="biz_code_ != null and biz_code_ != ''">
+	          #{biz_code_, jdbcType=VARCHAR}, <!-- 业务对照码 -->
+	    </if>
+		<if test="address_ != null and address_ != ''">
+	          #{address_, jdbcType=VARCHAR}, <!-- 联系地址 -->
+	    </if>
+		<if test="remark_ != null and remark_ != ''">
+	          #{remark_, jdbcType=VARCHAR}, <!-- 介绍/备注 -->
+	    </if>
+		<if test="is_del_ != null and is_del_ != ''">
+	          #{is_del_, jdbcType=VARCHAR}, <!-- 是否已删除 -->
+	    </if>
+		<if test="create_time_ != null and create_time_ != ''">
+	          #{create_time_, jdbcType=VARCHAR}, <!-- 创建时间 -->
+	    </if>
+		<if test="create_by_ != null and create_by_ != ''">
+	          #{create_by_, jdbcType=VARCHAR}, <!-- 创建人ID -->
+	    </if>
+		<if test="login_time_ != null and login_time_ != ''">
+	          #{login_time_, jdbcType=VARCHAR}, <!-- 最后登录时间 -->
+	    </if>
+		<if test="sort_ != null">
+	          #{sort_, jdbcType=INTEGER}, <!-- 排序 -->
+	    </if>
+		<if test="registration_id != null and registration_id != ''">
+	          #{registration_id, jdbcType=VARCHAR}, <!-- 设备ID -->
+	    </if>
+		<if test="registration_type != null and registration_type != ''">
+	          #{registration_type, jdbcType=VARCHAR}, <!-- 设备类型 -->
+	    </if>
+		<if test="is_huanxin != null and is_huanxin != ''">
+	          #{is_huanxin, jdbcType=VARCHAR}, <!-- 是否注册环信 -->
+	    </if>
+		<if test="gold_coins != null">
+	          #{gold_coins, jdbcType=NUMERIC}, <!-- 金币 -->
+	    </if>
+		<if test="pay_password != null and pay_password != ''">
+	          #{pay_password, jdbcType=VARCHAR}, <!-- 支付密码 -->
+	    </if>
+		<if test="deposit_amt != null">
+	          #{deposit_amt, jdbcType=NUMERIC}, <!-- 押金 -->
+	    </if>
+		<if test="deposit_date != null and deposit_date != ''">
+	          #{deposit_date, jdbcType=VARCHAR}, <!-- 押金支付时间 -->
+	    </if>
+		<if test="deposit_status != null and deposit_status != ''">
+	          #{deposit_status, jdbcType=VARCHAR}, <!-- 押金状态，0:未交，1：已交，-1：已退 -->
+	    </if>
+		<if test="grade_ != null and grade_ != ''">
+	          #{grade_, jdbcType=VARCHAR}, <!-- 级别，silver：银牌会员，gold：金牌会员，platinum：白金会员 -->
+	    </if>
+		<if test="user_name != null and user_name != ''">
+	          #{user_name, jdbcType=VARCHAR}, <!-- 姓名 -->
+	    </if>
+		<if test="id_card != null and id_card != ''">
+	          #{id_card, jdbcType=VARCHAR}, <!-- 身份证号码 -->
+	    </if>
+		<if test="vehicle_license != null and vehicle_license != ''">
+	          #{vehicle_license, jdbcType=VARCHAR}, <!-- 行驶证号 -->
+	    </if>
+		<if test="driver_license != null and driver_license != ''">
+	          #{driver_license, jdbcType=VARCHAR}, <!-- 驾驶证号 -->
+	    </if>
+		<if test="vehicle_img != null and vehicle_img != ''">
+	          #{vehicle_img, jdbcType=VARCHAR}, <!-- 行驶证图片 -->
+	    </if>
+		<if test="driver_img != null and driver_img != ''">
+	          #{driver_img, jdbcType=VARCHAR}, <!-- 驾驶证图片 -->
+	    </if>
+		<if test="user_img != null and user_img != ''">
+	          #{user_img, jdbcType=VARCHAR}, <!-- 用户头像 -->
+	    </if>
+		<if test="is_cert != null and is_cert != ''">
+	          #{is_cert, jdbcType=VARCHAR}, <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 -->
+	    </if>
+	    <if test="gold_coins_status != null and gold_coins_status != ''">
+	          #{gold_coins_status, jdbcType=VARCHAR}, <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 -->
+	    </if>
+		<if test="id_ != null and id_ != ''">
+		     #{id_, jdbcType=VARCHAR}  <!-- 流水号 -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.MembersPO">
+		INSERT INTO base_user (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{id_, jdbcType=VARCHAR},  <!-- 流水号 -->
+		    #{account_, jdbcType=VARCHAR},  <!-- 用户登录帐号 -->
+		    #{password_, jdbcType=VARCHAR},  <!-- 密码 -->
+		    #{name_, jdbcType=VARCHAR},  <!-- 昵称 -->
+		    #{sex_, jdbcType=VARCHAR},  <!-- 性别 -->
+		    #{status_, jdbcType=VARCHAR},  <!-- 用户状态（是否屏蔽） -->
+		    #{type_, jdbcType=VARCHAR},  <!-- 用户类型用户类型，1：管理员,2：销售员 -->
+		    #{org_id_, jdbcType=VARCHAR},  <!-- 图片地址 -->
+		    #{email_, jdbcType=VARCHAR},  <!-- 电子邮件 -->
+		    #{mobile_, jdbcType=VARCHAR},  <!-- 手机号 -->
+		    #{idno_, jdbcType=VARCHAR},  <!-- 身份证号 -->
+		    #{skin_, jdbcType=VARCHAR},  <!-- 用户界面皮肤 -->
+		    #{biz_code_, jdbcType=VARCHAR},  <!-- 业务对照码 -->
+		    #{address_, jdbcType=VARCHAR},  <!-- 联系地址 -->
+		    #{remark_, jdbcType=VARCHAR},  <!-- 介绍/备注 -->
+		    #{is_del_, jdbcType=VARCHAR},  <!-- 是否已删除 -->
+		    #{create_time_, jdbcType=VARCHAR},  <!-- 创建时间 -->
+		    #{create_by_, jdbcType=VARCHAR},  <!-- 创建人ID -->
+		    #{login_time_, jdbcType=VARCHAR},  <!-- 最后登录时间 -->
+		    #{sort_, jdbcType=INTEGER},  <!-- 排序 -->
+		    #{registration_id, jdbcType=VARCHAR},  <!-- 设备ID -->
+		    #{registration_type, jdbcType=VARCHAR},  <!-- 设备类型 -->
+		    #{is_huanxin, jdbcType=VARCHAR},  <!-- 是否注册环信 -->
+		    #{gold_coins, jdbcType=NUMERIC},  <!-- 金币 -->
+		    #{pay_password, jdbcType=VARCHAR},  <!-- 支付密码 -->
+		    #{deposit_amt, jdbcType=NUMERIC},  <!-- 押金 -->
+		    #{deposit_date, jdbcType=VARCHAR},  <!-- 押金支付时间 -->
+		    #{deposit_status, jdbcType=VARCHAR},  <!-- 押金状态，0:未交，1：已交，-1：已退 -->
+		    #{grade_, jdbcType=VARCHAR},  <!-- 级别，silver：银牌会员，gold：金牌会员，platinum：白金会员 -->
+		    #{user_name, jdbcType=VARCHAR},  <!-- 姓名 -->
+		    #{id_card, jdbcType=VARCHAR},  <!-- 身份证号码 -->
+		    #{vehicle_license, jdbcType=VARCHAR},  <!-- 行驶证号 -->
+		    #{driver_license, jdbcType=VARCHAR},  <!-- 驾驶证号 -->
+		    #{vehicle_img, jdbcType=VARCHAR},  <!-- 行驶证图片 -->
+		    #{driver_img, jdbcType=VARCHAR},  <!-- 驾驶证图片 -->
+		    #{user_img, jdbcType=VARCHAR},  <!-- 用户头像 -->
+		    #{is_cert, jdbcType=VARCHAR}  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.MembersPO">
+		UPDATE base_user
+		<set>
+			<if test="id_ != null">
+		          id_ = #{id_, jdbcType=VARCHAR},  <!-- 流水号 -->
+			</if>
+			<if test="account_ != null">
+		          account_ = #{account_, jdbcType=VARCHAR},  <!-- 用户登录帐号 -->
+			</if>
+			<if test="password_ != null">
+		          password_ = #{password_, jdbcType=VARCHAR},  <!-- 密码 -->
+			</if>
+			<if test="name_ != null">
+		          name_ = #{name_, jdbcType=VARCHAR},  <!-- 昵称 -->
+			</if>
+			<if test="sex_ != null">
+		          sex_ = #{sex_, jdbcType=VARCHAR},  <!-- 性别 -->
+			</if>
+			<if test="status_ != null">
+		          status_ = #{status_, jdbcType=VARCHAR},  <!-- 用户状态（是否屏蔽） -->
+			</if>
+			<if test="type_ != null">
+		          type_ = #{type_, jdbcType=VARCHAR},  <!-- 用户类型用户类型，1：管理员,2：销售员 -->
+			</if>
+			<if test="org_id_ != null">
+		          org_id_ = #{org_id_, jdbcType=VARCHAR},  <!-- 图片地址 -->
+			</if>
+			<if test="email_ != null">
+		          email_ = #{email_, jdbcType=VARCHAR},  <!-- 电子邮件 -->
+			</if>
+			<if test="mobile_ != null">
+		          mobile_ = #{mobile_, jdbcType=VARCHAR},  <!-- 手机号 -->
+			</if>
+			<if test="idno_ != null">
+		          idno_ = #{idno_, jdbcType=VARCHAR},  <!-- 身份证号 -->
+			</if>
+			<if test="skin_ != null">
+		          skin_ = #{skin_, jdbcType=VARCHAR},  <!-- 用户界面皮肤 -->
+			</if>
+			<if test="biz_code_ != null">
+		          biz_code_ = #{biz_code_, jdbcType=VARCHAR},  <!-- 业务对照码 -->
+			</if>
+			<if test="address_ != null">
+		          address_ = #{address_, jdbcType=VARCHAR},  <!-- 联系地址 -->
+			</if>
+			<if test="remark_ != null">
+		          remark_ = #{remark_, jdbcType=VARCHAR},  <!-- 介绍/备注 -->
+			</if>
+			<if test="is_del_ != null">
+		          is_del_ = #{is_del_, jdbcType=VARCHAR},  <!-- 是否已删除 -->
+			</if>
+			<if test="create_time_ != null">
+		          create_time_ = #{create_time_, jdbcType=VARCHAR},  <!-- 创建时间 -->
+			</if>
+			<if test="create_by_ != null">
+		          create_by_ = #{create_by_, jdbcType=VARCHAR},  <!-- 创建人ID -->
+			</if>
+			<if test="login_time_ != null">
+		          login_time_ = #{login_time_, jdbcType=VARCHAR},  <!-- 最后登录时间 -->
+			</if>
+			<if test="sort_ != null">
+		          sort_ = #{sort_, jdbcType=INTEGER},  <!-- 排序 -->
+			</if>
+			<if test="registration_id != null">
+		          registration_id = #{registration_id, jdbcType=VARCHAR},  <!-- 设备ID -->
+			</if>
+			<if test="registration_type != null">
+		          registration_type = #{registration_type, jdbcType=VARCHAR},  <!-- 设备类型 -->
+			</if>
+			<if test="is_huanxin != null">
+		          is_huanxin = #{is_huanxin, jdbcType=VARCHAR},  <!-- 是否注册环信 -->
+			</if>
+			<if test="gold_coins != null">
+		          gold_coins = #{gold_coins, jdbcType=NUMERIC},  <!-- 金币 -->
+			</if>
+			<if test="pay_password != null">
+		          pay_password = #{pay_password, jdbcType=VARCHAR},  <!-- 支付密码 -->
+			</if>
+			<if test="deposit_amt != null">
+		          deposit_amt = #{deposit_amt, jdbcType=NUMERIC},  <!-- 押金 -->
+			</if>
+			<if test="deposit_date != null">
+		          deposit_date = #{deposit_date, jdbcType=VARCHAR},  <!-- 押金支付时间 -->
+			</if>
+			<if test="deposit_status != null">
+		          deposit_status = #{deposit_status, jdbcType=VARCHAR},  <!-- 押金状态，0:未交，1：已交，-1：已退 -->
+			</if>
+			<if test="grade_ != null">
+		          grade_ = #{grade_, jdbcType=VARCHAR},  <!-- 级别，silver：银牌会员，gold：金牌会员，platinum：白金会员 -->
+			</if>
+			<if test="user_name != null">
+		          user_name = #{user_name, jdbcType=VARCHAR},  <!-- 姓名 -->
+			</if>
+			<if test="id_card != null">
+		          id_card = #{id_card, jdbcType=VARCHAR},  <!-- 身份证号码 -->
+			</if>
+			<if test="vehicle_license != null">
+		          vehicle_license = #{vehicle_license, jdbcType=VARCHAR},  <!-- 行驶证号 -->
+			</if>
+			<if test="driver_license != null">
+		          driver_license = #{driver_license, jdbcType=VARCHAR},  <!-- 驾驶证号 -->
+			</if>
+			<if test="vehicle_img != null">
+		          vehicle_img = #{vehicle_img, jdbcType=VARCHAR},  <!-- 行驶证图片 -->
+			</if>
+			<if test="driver_img != null">
+		          driver_img = #{driver_img, jdbcType=VARCHAR},  <!-- 驾驶证图片 -->
+			</if>
+			<if test="user_img != null">
+		          user_img = #{user_img, jdbcType=VARCHAR},  <!-- 用户头像 -->
+			</if>
+			<if test="is_cert != null">
+		          is_cert = #{is_cert, jdbcType=VARCHAR},  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 -->
+			</if>
+			<if test="gold_coins_status != null">
+		          gold_coins_status = #{gold_coins_status, jdbcType=VARCHAR},  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 -->
+			</if>
+		</set>
+		WHERE  id_ = #{id_}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM base_user WHERE  id_ = #{id_}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.MembersPO">
+		SELECT
+		<include refid="column" />
+		FROM base_user WHERE  id_ = #{id_}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.MembersPO">
+		SELECT
+		    <include refid="column" />
+		FROM base_user
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.MembersPO">
+		SELECT
+			<include refid="column" />	
+		FROM base_user
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.MembersPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM base_user
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.MembersPO">
+		SELECT
+			<include refid="column" />	
+		FROM base_user
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.MembersPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM base_user
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM base_user
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM base_user
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  id_,  <!-- 流水号 -->
+		  account_,  <!-- 用户登录帐号 -->
+		  password_,  <!-- 密码 -->
+		  name_,  <!-- 昵称 -->
+		  sex_,  <!-- 性别 -->
+		  status_,  <!-- 用户状态（是否屏蔽） -->
+		  type_,  <!-- 用户类型用户类型，1：管理员,2：销售员 -->
+		  org_id_,  <!-- 图片地址 -->
+		  email_,  <!-- 电子邮件 -->
+		  mobile_,  <!-- 手机号 -->
+		  idno_,  <!-- 身份证号 -->
+		  skin_,  <!-- 用户界面皮肤 -->
+		  biz_code_,  <!-- 业务对照码 -->
+		  address_,  <!-- 联系地址 -->
+		  remark_,  <!-- 介绍/备注 -->
+		  is_del_,  <!-- 是否已删除 -->
+		  create_time_,  <!-- 创建时间 -->
+		  create_by_,  <!-- 创建人ID -->
+		  login_time_,  <!-- 最后登录时间 -->
+		  sort_,  <!-- 排序 -->
+		  registration_id,  <!-- 设备ID -->
+		  registration_type,  <!-- 设备类型 -->
+		  is_huanxin,  <!-- 是否注册环信 -->
+		  gold_coins,  <!-- 金币 -->
+		  pay_password,  <!-- 支付密码 -->
+		  deposit_amt,  <!-- 押金 -->
+		  deposit_date,  <!-- 押金支付时间 -->
+		  deposit_status,  <!-- 押金状态，0:未交，1：已交，-1：已退 -->
+		  grade_,  <!-- 级别，silver：银牌会员，gold：金牌会员，platinum：白金会员 -->
+		  user_name,  <!-- 姓名 -->
+		  id_card,  <!-- 身份证号码 -->
+		  vehicle_license,  <!-- 行驶证号 -->
+		  driver_license,  <!-- 驾驶证号 -->
+		  vehicle_img,  <!-- 行驶证图片 -->
+		  driver_img,  <!-- 驾驶证图片 -->
+		  user_img,  <!-- 用户头像 -->
+		  is_cert,  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 -->
+		  gold_coins_status
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  base_user.id_,  <!-- 流水号 -->
+		  base_user.account_,  <!-- 用户登录帐号 -->
+		  base_user.password_,  <!-- 密码 -->
+		  base_user.name_,  <!-- 昵称 -->
+		  base_user.sex_,  <!-- 性别 -->
+		  base_user.status_,  <!-- 用户状态（是否屏蔽） -->
+		  base_user.type_,  <!-- 用户类型用户类型，1：管理员,2：销售员 -->
+		  base_user.org_id_,  <!-- 图片地址 -->
+		  base_user.email_,  <!-- 电子邮件 -->
+		  base_user.mobile_,  <!-- 手机号 -->
+		  base_user.idno_,  <!-- 身份证号 -->
+		  base_user.skin_,  <!-- 用户界面皮肤 -->
+		  base_user.biz_code_,  <!-- 业务对照码 -->
+		  base_user.address_,  <!-- 联系地址 -->
+		  base_user.remark_,  <!-- 介绍/备注 -->
+		  base_user.is_del_,  <!-- 是否已删除 -->
+		  base_user.create_time_,  <!-- 创建时间 -->
+		  base_user.create_by_,  <!-- 创建人ID -->
+		  base_user.login_time_,  <!-- 最后登录时间 -->
+		  base_user.sort_,  <!-- 排序 -->
+		  base_user.registration_id,  <!-- 设备ID -->
+		  base_user.registration_type,  <!-- 设备类型 -->
+		  base_user.is_huanxin,  <!-- 是否注册环信 -->
+		  base_user.gold_coins,  <!-- 金币 -->
+		  base_user.pay_password,  <!-- 支付密码 -->
+		  base_user.deposit_amt,  <!-- 押金 -->
+		  base_user.deposit_date,  <!-- 押金支付时间 -->
+		  base_user.deposit_status,  <!-- 押金状态，0:未交，1：已交，-1：已退 -->
+		  base_user.grade_,  <!-- 级别，silver：银牌会员，gold：金牌会员，platinum：白金会员 -->
+		  base_user.user_name,  <!-- 姓名 -->
+		  base_user.id_card,  <!-- 身份证号码 -->
+		  base_user.vehicle_license,  <!-- 行驶证号 -->
+		  base_user.driver_license,  <!-- 驾驶证号 -->
+		  base_user.vehicle_img,  <!-- 行驶证图片 -->
+		  base_user.driver_img,  <!-- 驾驶证图片 -->
+		  base_user.user_img,  <!-- 用户头像 -->
+		  base_user.is_cert,  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 -->
+		  base_user.gold_coins_status
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="id_ != null and id_ != ''">
+		      AND id_ = #{id_}  <!-- 流水号 -->
+		</if>
+	    <if test="account_ != null and account_ != ''">
+		      AND account_ = #{account_}  <!-- 用户登录帐号 -->
+		</if>
+	    <if test="password_ != null and password_ != ''">
+		      AND password_ = #{password_}  <!-- 密码 -->
+		</if>
+	    <if test="name_ != null and name_ != ''">
+		      AND name_ = #{name_}  <!-- 昵称 -->
+		</if>
+	    <if test="sex_ != null and sex_ != ''">
+		      AND sex_ = #{sex_}  <!-- 性别 -->
+		</if>
+	    <if test="status_ != null and status_ != ''">
+		      AND status_ = #{status_}  <!-- 用户状态（是否屏蔽） -->
+		</if>
+	    <if test="type_ != null and type_ != ''">
+		      AND type_ = #{type_}  <!-- 用户类型用户类型，1：管理员,2：销售员 -->
+		</if>
+	    <if test="org_id_ != null and org_id_ != ''">
+		      AND org_id_ = #{org_id_}  <!-- 图片地址 -->
+		</if>
+	    <if test="email_ != null and email_ != ''">
+		      AND email_ = #{email_}  <!-- 电子邮件 -->
+		</if>
+	    <if test="mobile_ != null and mobile_ != ''">
+		      AND mobile_ = #{mobile_}  <!-- 手机号 -->
+		</if>
+	    <if test="idno_ != null and idno_ != ''">
+		      AND idno_ = #{idno_}  <!-- 身份证号 -->
+		</if>
+	    <if test="skin_ != null and skin_ != ''">
+		      AND skin_ = #{skin_}  <!-- 用户界面皮肤 -->
+		</if>
+	    <if test="biz_code_ != null and biz_code_ != ''">
+		      AND biz_code_ = #{biz_code_}  <!-- 业务对照码 -->
+		</if>
+	    <if test="address_ != null and address_ != ''">
+		      AND address_ = #{address_}  <!-- 联系地址 -->
+		</if>
+	    <if test="remark_ != null and remark_ != ''">
+		      AND remark_ = #{remark_}  <!-- 介绍/备注 -->
+		</if>
+	    <if test="is_del_ != null and is_del_ != ''">
+		      AND is_del_ = #{is_del_}  <!-- 是否已删除 -->
+		</if>
+	    <if test="create_time_ != null and create_time_ != ''">
+		      AND create_time_ = #{create_time_}  <!-- 创建时间 -->
+		</if>
+	    <if test="create_by_ != null and create_by_ != ''">
+		      AND create_by_ = #{create_by_}  <!-- 创建人ID -->
+		</if>
+	    <if test="login_time_ != null and login_time_ != ''">
+		      AND login_time_ = #{login_time_}  <!-- 最后登录时间 -->
+		</if>
+	   <if test="sort_ != null ">
+		      AND sort_ = #{sort_}  <!-- 排序 -->
+		</if>
+	    <if test="registration_id != null and registration_id != ''">
+		      AND registration_id = #{registration_id}  <!-- 设备ID -->
+		</if>
+	    <if test="registration_type != null and registration_type != ''">
+		      AND registration_type = #{registration_type}  <!-- 设备类型 -->
+		</if>
+	    <if test="is_huanxin != null and is_huanxin != ''">
+		      AND is_huanxin = #{is_huanxin}  <!-- 是否注册环信 -->
+		</if>
+	   <if test="gold_coins != null ">
+		      AND gold_coins = #{gold_coins}  <!-- 金币 -->
+		</if>
+	    <if test="pay_password != null and pay_password != ''">
+		      AND pay_password = #{pay_password}  <!-- 支付密码 -->
+		</if>
+	   <if test="deposit_amt != null ">
+		      AND deposit_amt = #{deposit_amt}  <!-- 押金 -->
+		</if>
+	    <if test="deposit_date != null and deposit_date != ''">
+		      AND deposit_date = #{deposit_date}  <!-- 押金支付时间 -->
+		</if>
+	    <if test="deposit_status != null and deposit_status != ''">
+		      AND deposit_status = #{deposit_status}  <!-- 押金状态，0:未交，1：已交，-1：已退 -->
+		</if>
+	    <if test="grade_ != null and grade_ != ''">
+		      AND grade_ = #{grade_}  <!-- 级别，silver：银牌会员，gold：金牌会员，platinum：白金会员 -->
+		</if>
+	    <if test="user_name != null and user_name != ''">
+		      AND user_name = #{user_name}  <!-- 姓名 -->
+		</if>
+	    <if test="id_card != null and id_card != ''">
+		      AND id_card = #{id_card}  <!-- 身份证号码 -->
+		</if>
+	    <if test="vehicle_license != null and vehicle_license != ''">
+		      AND vehicle_license = #{vehicle_license}  <!-- 行驶证号 -->
+		</if>
+	    <if test="driver_license != null and driver_license != ''">
+		      AND driver_license = #{driver_license}  <!-- 驾驶证号 -->
+		</if>
+	    <if test="vehicle_img != null and vehicle_img != ''">
+		      AND vehicle_img = #{vehicle_img}  <!-- 行驶证图片 -->
+		</if>
+	    <if test="driver_img != null and driver_img != ''">
+		      AND driver_img = #{driver_img}  <!-- 驾驶证图片 -->
+		</if>
+	    <if test="user_img != null and user_img != ''">
+		      AND user_img = #{user_img}  <!-- 用户头像 -->
+		</if>
+	    <if test="is_cert != null and is_cert != ''">
+		      AND is_cert = #{is_cert}  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 -->
+		</if>
+	</sql>
+	
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="id_ != null and id_ != ''">
+		      AND id_ like '%${id_}%'  <!-- 流水号 -->
+		</if>
+	    <if test="account_ != null and account_ != ''">
+		      AND account_ like '%${account_}%'  <!-- 用户登录帐号 -->
+		</if>
+	    <if test="password_ != null and password_ != ''">
+		      AND password_ like '%${password_}%'  <!-- 密码 -->
+		</if>
+	    <if test="name_ != null and name_ != ''">
+		      AND name_ like '%${name_}%'  <!-- 昵称 -->
+		</if>
+	    <if test="sex_ != null and sex_ != ''">
+		      AND sex_ like '%${sex_}%'  <!-- 性别 -->
+		</if>
+	    <if test="status_ != null and status_ != ''">
+		      AND status_ like '%${status_}%'  <!-- 用户状态（是否屏蔽） -->
+		</if>
+	    <if test="type_ != null and type_ != ''">
+		      AND type_ like '%${type_}%'  <!-- 用户类型用户类型，1：管理员,2：销售员 -->
+		</if>
+	    <if test="org_id_ != null and org_id_ != ''">
+		      AND org_id_ like '%${org_id_}%'  <!-- 图片地址 -->
+		</if>
+	    <if test="email_ != null and email_ != ''">
+		      AND email_ like '%${email_}%'  <!-- 电子邮件 -->
+		</if>
+	    <if test="mobile_ != null and mobile_ != ''">
+		      AND mobile_ like '%${mobile_}%'  <!-- 手机号 -->
+		</if>
+	    <if test="idno_ != null and idno_ != ''">
+		      AND idno_ like '%${idno_}%'  <!-- 身份证号 -->
+		</if>
+	    <if test="skin_ != null and skin_ != ''">
+		      AND skin_ like '%${skin_}%'  <!-- 用户界面皮肤 -->
+		</if>
+	    <if test="biz_code_ != null and biz_code_ != ''">
+		      AND biz_code_ like '%${biz_code_}%'  <!-- 业务对照码 -->
+		</if>
+	    <if test="address_ != null and address_ != ''">
+		      AND address_ like '%${address_}%'  <!-- 联系地址 -->
+		</if>
+	    <if test="remark_ != null and remark_ != ''">
+		      AND remark_ like '%${remark_}%'  <!-- 介绍/备注 -->
+		</if>
+	    <if test="is_del_ != null and is_del_ != ''">
+		      AND is_del_ like '%${is_del_}%'  <!-- 是否已删除 -->
+		</if>
+	    <if test="create_time_ != null and create_time_ != ''">
+		      AND create_time_ like '%${create_time_}%'  <!-- 创建时间 -->
+		</if>
+	    <if test="create_by_ != null and create_by_ != ''">
+		      AND create_by_ like '%${create_by_}%'  <!-- 创建人ID -->
+		</if>
+	    <if test="login_time_ != null and login_time_ != ''">
+		      AND login_time_ like '%${login_time_}%'  <!-- 最后登录时间 -->
+		</if>
+	    <if test="registration_id != null and registration_id != ''">
+		      AND registration_id like '%${registration_id}%'  <!-- 设备ID -->
+		</if>
+	    <if test="registration_type != null and registration_type != ''">
+		      AND registration_type like '%${registration_type}%'  <!-- 设备类型 -->
+		</if>
+	    <if test="is_huanxin != null and is_huanxin != ''">
+		      AND is_huanxin like '%${is_huanxin}%'  <!-- 是否注册环信 -->
+		</if>
+	    <if test="pay_password != null and pay_password != ''">
+		      AND pay_password like '%${pay_password}%'  <!-- 支付密码 -->
+		</if>
+	    <if test="deposit_date != null and deposit_date != ''">
+		      AND deposit_date like '%${deposit_date}%'  <!-- 押金支付时间 -->
+		</if>
+	    <if test="deposit_status != null and deposit_status != ''">
+		      AND deposit_status like '%${deposit_status}%'  <!-- 押金状态，0:未交，1：已交，-1：已退 -->
+		</if>
+	    <if test="grade_ != null and grade_ != ''">
+		      AND grade_ like '%${grade_}%'  <!-- 级别，silver：银牌会员，gold：金牌会员，platinum：白金会员 -->
+		</if>
+	    <if test="user_name != null and user_name != ''">
+		      AND user_name like '%${user_name}%'  <!-- 姓名 -->
+		</if>
+	    <if test="id_card != null and id_card != ''">
+		      AND id_card like '%${id_card}%'  <!-- 身份证号码 -->
+		</if>
+	    <if test="vehicle_license != null and vehicle_license != ''">
+		      AND vehicle_license like '%${vehicle_license}%'  <!-- 行驶证号 -->
+		</if>
+	    <if test="driver_license != null and driver_license != ''">
+		      AND driver_license like '%${driver_license}%'  <!-- 驾驶证号 -->
+		</if>
+	    <if test="vehicle_img != null and vehicle_img != ''">
+		      AND vehicle_img like '%${vehicle_img}%'  <!-- 行驶证图片 -->
+		</if>
+	    <if test="driver_img != null and driver_img != ''">
+		      AND driver_img like '%${driver_img}%'  <!-- 驾驶证图片 -->
+		</if>
+	    <if test="user_img != null and user_img != ''">
+		      AND user_img like '%${user_img}%'  <!-- 用户头像 -->
+		</if>
+	    <if test="is_cert != null and is_cert != ''">
+		      AND is_cert like '%${is_cert}%'  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 -->
+		</if>
+	</sql>
+	
+</mapper>

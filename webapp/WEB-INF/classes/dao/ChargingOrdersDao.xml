@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- charging_orders[charging_orders]SQL自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2017-07-06 20:19:04 -->
+<mapper namespace="dao.ChargingOrdersDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.ChargingOrdersPO">
+		INSERT INTO charging_orders (
+		<if test="user_id != null and user_id != ''">
+	         user_id, <!-- 用户ID -->
+		</if>
+		<if test="cp_id != null and cp_id != ''">
+	         cp_id, <!-- 充电桩ID -->
+		</if>
+		<if test="amounted != null">
+	         amounted, <!-- 已充金额 -->
+		</if>
+		<if test="dateed != null">
+	         dateed, <!-- 已充时间 -->
+		</if>
+		<if test="electricity != null">
+	         electricity, <!-- 已充电量 -->
+		</if>
+		<if test="rest_date != null">
+	         rest_date, <!-- 剩余时间 -->
+		</if>
+		<if test="total_amt != null">
+	         total_amt, <!-- 总金额 -->
+		</if>
+		<if test="deduction_amt != null">
+	         deduction_amt, <!-- 抵扣金额 -->
+		</if>
+		<if test="real_amt != null">
+	         real_amt, <!-- 实付金额 -->
+		</if>
+		<if test="status_ != null and status_ != ''">
+	         status_, <!-- 状态，0：新增，1：支付成功，2：支付失败，-1：取消 -->
+		</if>
+		<if test="co_type != null and co_type != ''">
+	         co_type, <!-- 计算类型，0：金额，1：时间，2：度数，3：充满 -->
+		</if>
+		<if test="co_num != null">
+	         co_num, <!-- 数量 -->
+		</if>
+		<if test="discount != null">
+	         discount, <!-- 数量 -->
+		</if>
+		<if test="degree != null">
+	         degree, <!-- 电量度数 -->
+		</if>
+		<if test="deduction_type != null and deduction_type != ''">
+	         deduction_type, <!-- 抵扣类型，0：折扣，1：优惠券 -->
+		</if>
+		<if test="is_del != null and is_del != ''">
+	         is_del, <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+		<if test="put_gun != null and put_gun != ''">
+	         put_gun, <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+		<if test="create_date != null and create_date != ''">
+	         create_date, <!-- 创建时间 -->
+		</if>
+		<if test="oper_id != null and oper_id != ''">
+	         oper_id, <!-- 操作人ID -->
+		</if>
+		<if test="complete_date != null and complete_date != ''">
+	         complete_date, <!-- 创建时间 -->
+		</if>
+		<if test="puted_gun_date != null and puted_gun_date != ''">
+	         puted_gun_date, <!-- 创建时间 -->
+		</if>
+		<if test="put_gun_date != null and put_gun_date != ''">
+	         put_gun_date, <!-- 创建时间 -->
+		</if>
+		<if test="reason != null and reason != ''">
+	         reason, <!-- 创建时间 -->
+		</if>
+		<if test="co_id != null and co_id != ''">
+	          co_id  <!-- co_id -->
+	   </if>
+		)VALUES(
+		<if test="user_id != null and user_id != ''">
+	          #{user_id, jdbcType=VARCHAR}, <!-- 用户ID -->
+	    </if>
+		<if test="cp_id != null and cp_id != ''">
+	          #{cp_id, jdbcType=VARCHAR}, <!-- 充电桩ID -->
+	    </if>
+		<if test="amounted != null">
+	          #{amounted, jdbcType=NUMERIC}, <!-- 已充金额 -->
+	    </if>
+		<if test="dateed != null">
+	          #{dateed, jdbcType=NUMERIC}, <!-- 已充时间 -->
+	    </if>
+		<if test="electricity != null">
+	          #{electricity, jdbcType=NUMERIC}, <!-- 已充电量 -->
+	    </if>
+		<if test="rest_date != null">
+	          #{rest_date, jdbcType=NUMERIC}, <!-- 剩余时间 -->
+	    </if>
+		<if test="total_amt != null">
+	          #{total_amt, jdbcType=NUMERIC}, <!-- 总金额 -->
+	    </if>
+		<if test="deduction_amt != null">
+	          #{deduction_amt, jdbcType=NUMERIC}, <!-- 抵扣金额 -->
+	    </if>
+		<if test="real_amt != null">
+	          #{real_amt, jdbcType=NUMERIC}, <!-- 实付金额 -->
+	    </if>
+		<if test="status_ != null and status_ != ''">
+	          #{status_, jdbcType=VARCHAR}, <!-- 状态，0：新增，1：支付成功，2：支付失败，-1：取消 -->
+	    </if>
+		<if test="co_type != null and co_type != ''">
+	          #{co_type, jdbcType=VARCHAR}, <!-- 计算类型，0：金额，1：时间，2：度数，3：充满 -->
+	    </if>
+		<if test="co_num != null">
+	          #{co_num, jdbcType=NUMERIC}, <!-- 数量 -->
+	    </if>
+	    <if test="discount != null">
+	          #{discount, jdbcType=NUMERIC}, <!-- 数量 -->
+	    </if>
+	    <if test="degree != null">
+	          #{degree, jdbcType=NUMERIC}, <!-- 数量 -->
+	    </if>
+		<if test="deduction_type != null and deduction_type != ''">
+	          #{deduction_type, jdbcType=VARCHAR}, <!-- 抵扣类型，0：折扣，1：优惠券 -->
+	    </if>
+		<if test="is_del != null and is_del != ''">
+	          #{is_del, jdbcType=VARCHAR}, <!-- 是否删除，0：未删除，1：删除 -->
+	    </if>
+	    <if test="put_gun != null and put_gun != ''">
+	          #{put_gun, jdbcType=VARCHAR}, <!-- 是否删除，0：未删除，1：删除 -->
+	    </if>
+		<if test="create_date != null and create_date != ''">
+	          #{create_date, jdbcType=VARCHAR}, <!-- 创建时间 -->
+	    </if>
+		<if test="oper_id != null and oper_id != ''">
+	          #{oper_id, jdbcType=VARCHAR}, <!-- 操作人ID -->
+	    </if>
+	    <if test="complete_date != null and complete_date != ''">
+	          #{complete_date, jdbcType=VARCHAR}, <!-- 创建时间 -->
+	    </if>
+	    <if test="puted_gun_date != null and puted_gun_date != ''">
+	          #{puted_gun_date, jdbcType=VARCHAR}, <!-- 创建时间 -->
+	    </if>
+	    <if test="put_gun_date != null and put_gun_date != ''">
+	          #{put_gun_date, jdbcType=VARCHAR}, <!-- 创建时间 -->
+	    </if>
+	    <if test="reason != null and reason != ''">
+	          #{reason, jdbcType=VARCHAR}, <!-- 创建时间 -->
+	    </if>
+		<if test="co_id != null and co_id != ''">
+		     #{co_id, jdbcType=VARCHAR}  <!-- co_id -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.ChargingOrdersPO">
+		INSERT INTO charging_orders (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{co_id, jdbcType=VARCHAR},  <!-- co_id -->
+		    #{user_id, jdbcType=VARCHAR},  <!-- 用户ID -->
+		    #{cp_id, jdbcType=VARCHAR},  <!-- 充电桩ID -->
+		    #{amounted, jdbcType=NUMERIC},  <!-- 已充金额 -->
+		    #{dateed, jdbcType=NUMERIC},  <!-- 已充时间 -->
+		    #{electricity, jdbcType=NUMERIC},  <!-- 已充电量 -->
+		    #{rest_date, jdbcType=NUMERIC},  <!-- 剩余时间 -->
+		    #{total_amt, jdbcType=NUMERIC},  <!-- 总金额 -->
+		    #{deduction_amt, jdbcType=NUMERIC},  <!-- 抵扣金额 -->
+		    #{real_amt, jdbcType=NUMERIC},  <!-- 实付金额 -->
+		    #{status_, jdbcType=VARCHAR},  <!-- 状态，0：新增，1：支付成功，2：支付失败，-1：取消 -->
+		    #{co_type, jdbcType=VARCHAR},  <!-- 计算类型，0：金额，1：时间，2：度数，3：充满 -->
+		    #{co_num, jdbcType=NUMERIC},  <!-- 数量 -->
+		    #{deduction_type, jdbcType=VARCHAR},  <!-- 抵扣类型，0：折扣，1：优惠券 -->
+		    #{is_del, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：删除 -->
+		    #{create_date, jdbcType=VARCHAR},  <!-- 创建时间 -->
+		    #{oper_id, jdbcType=VARCHAR}  <!-- 操作人ID -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.ChargingOrdersPO">
+		UPDATE charging_orders
+		<set>
+			<if test="co_id != null">
+		          co_id = #{co_id, jdbcType=VARCHAR},  <!-- co_id -->
+			</if>
+			<if test="user_id != null">
+		          user_id = #{user_id, jdbcType=VARCHAR},  <!-- 用户ID -->
+			</if>
+			<if test="cp_id != null">
+		          cp_id = #{cp_id, jdbcType=VARCHAR},  <!-- 充电桩ID -->
+			</if>
+			<if test="amounted != null">
+		          amounted = #{amounted, jdbcType=NUMERIC},  <!-- 已充金额 -->
+			</if>
+			<if test="dateed != null">
+		          dateed = #{dateed, jdbcType=NUMERIC},  <!-- 已充时间 -->
+			</if>
+			<if test="electricity != null">
+		          electricity = #{electricity, jdbcType=NUMERIC},  <!-- 已充电量 -->
+			</if>
+			<if test="rest_date != null">
+		          rest_date = #{rest_date, jdbcType=NUMERIC},  <!-- 剩余时间 -->
+			</if>
+			<if test="total_amt != null">
+		          total_amt = #{total_amt, jdbcType=NUMERIC},  <!-- 总金额 -->
+			</if>
+			<if test="deduction_amt != null">
+		          deduction_amt = #{deduction_amt, jdbcType=NUMERIC},  <!-- 抵扣金额 -->
+			</if>
+			<if test="real_amt != null">
+		          real_amt = #{real_amt, jdbcType=NUMERIC},  <!-- 实付金额 -->
+			</if>
+			<if test="status_ != null">
+		          status_ = #{status_, jdbcType=VARCHAR},  <!-- 状态，0：新增，1：支付成功，2：支付失败，-1：取消 -->
+			</if>
+			<if test="co_type != null">
+		          co_type = #{co_type, jdbcType=VARCHAR},  <!-- 计算类型，0：金额，1：时间，2：度数，3：充满 -->
+			</if>
+			<if test="co_num != null">
+		          co_num = #{co_num, jdbcType=NUMERIC},  <!-- 数量 -->
+			</if>
+			<if test="discount != null">
+		          discount = #{discount, jdbcType=NUMERIC},  <!-- 数量 -->
+			</if>
+			<if test="degree != null">
+		          degree = #{degree, jdbcType=NUMERIC},  <!-- 数量 -->
+			</if>
+			<if test="deduction_type != null">
+		          deduction_type = #{deduction_type, jdbcType=VARCHAR},  <!-- 抵扣类型，0：折扣，1：优惠券 -->
+			</if>
+			<if test="is_del != null">
+		          is_del = #{is_del, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：删除 -->
+			</if>
+			<if test="put_gun != null">
+		          put_gun = #{put_gun, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：删除 -->
+			</if>
+			<if test="create_date != null">
+		          create_date = #{create_date, jdbcType=VARCHAR},  <!-- 创建时间 -->
+			</if>
+			<if test="puted_gun_date != null">
+		          puted_gun_date = #{puted_gun_date, jdbcType=VARCHAR},  <!-- 创建时间 -->
+			</if>
+			<if test="put_gun_date != null">
+		          put_gun_date = #{put_gun_date, jdbcType=VARCHAR},  <!-- 创建时间 -->
+			</if>
+			<if test="complete_date != null">
+		          complete_date = #{complete_date, jdbcType=VARCHAR},  <!-- 创建时间 -->
+			</if>
+			<if test="oper_id != null">
+		          oper_id = #{oper_id, jdbcType=VARCHAR},  <!-- 操作人ID -->
+			</if>
+			<if test="co_id != null">
+		          update_date = NOW(),  <!-- 操作人ID -->
+			</if>
+			<if test="reason != null">
+		          reason = #{reason, jdbcType=VARCHAR},  <!-- 操作人ID -->
+			</if>
+		</set>
+		WHERE  co_id = #{co_id}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM charging_orders WHERE  co_id = #{co_id}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.ChargingOrdersPO">
+		SELECT
+		<include refid="column" />
+		FROM charging_orders WHERE  co_id = #{co_id}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.ChargingOrdersPO">
+		SELECT
+		    <include refid="column" />
+		FROM charging_orders
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.ChargingOrdersPO">
+		SELECT
+			<include refid="column" />	
+		FROM charging_orders
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.ChargingOrdersPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM charging_orders
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.ChargingOrdersPO">
+		SELECT
+			<include refid="column" />	
+		FROM charging_orders
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.ChargingOrdersPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM charging_orders
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM charging_orders
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM charging_orders
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  co_id,  <!-- co_id -->
+		  user_id,  <!-- 用户ID -->
+		  cp_id,  <!-- 充电桩ID -->
+		  amounted,  <!-- 已充金额 -->
+		  dateed,  <!-- 已充时间 -->
+		  electricity,  <!-- 已充电量 -->
+		  rest_date,  <!-- 剩余时间 -->
+		  total_amt,  <!-- 总金额 -->
+		  deduction_amt,  <!-- 抵扣金额 -->
+		  real_amt,  <!-- 实付金额 -->
+		  status_,  <!-- 状态，0：新增，1：支付成功，2：支付失败，-1：取消 -->
+		  co_type,  <!-- 计算类型，0：金额，1：时间，2：度数，3：充满 -->
+		  co_num,  <!-- 数量 -->
+		  degree, 
+		  deduction_type,  <!-- 抵扣类型，0：折扣，1：优惠券 -->
+		  is_del,  <!-- 是否删除，0：未删除，1：删除 -->
+		  put_gun, 
+		  create_date,  <!-- 创建时间 -->
+		  puted_gun_date,
+		  put_gun_date,
+		  complete_date,
+		  oper_id,  <!-- 操作人ID -->
+		  reason,
+		  discount
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  charging_orders.co_id,  <!-- co_id -->
+		  charging_orders.user_id,  <!-- 用户ID -->
+		  charging_orders.cp_id,  <!-- 充电桩ID -->
+		  charging_orders.amounted,  <!-- 已充金额 -->
+		  charging_orders.dateed,  <!-- 已充时间 -->
+		  charging_orders.electricity,  <!-- 已充电量 -->
+		  charging_orders.rest_date,  <!-- 剩余时间 -->
+		  charging_orders.total_amt,  <!-- 总金额 -->
+		  charging_orders.deduction_amt,  <!-- 抵扣金额 -->
+		  charging_orders.real_amt,  <!-- 实付金额 -->
+		  charging_orders.status_,  <!-- 状态，0：新增，1：支付成功，2：支付失败，-1：取消 -->
+		  charging_orders.co_type,  <!-- 计算类型，0：金额，1：时间，2：度数，3：充满 -->
+		  charging_orders.co_num,  <!-- 数量 -->
+		  charging_orders.degree,
+		  charging_orders.deduction_type,  <!-- 抵扣类型，0：折扣，1：优惠券 -->
+		  charging_orders.is_del,  <!-- 是否删除，0：未删除，1：删除 -->
+		  charging_orders.put_gun,
+		  charging_orders.create_date,  <!-- 创建时间 -->
+		  charging_orders.puted_gun_date,
+		  charging_orders.put_gun_date,
+		  charging_orders.complete_date,
+		  charging_orders.oper_id,  <!-- 操作人ID -->
+		  charging_orders.reason,
+		  charging_orders.discount
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="co_id != null and co_id != ''">
+		      AND co_id = #{co_id}  <!-- co_id -->
+		</if>
+	    <if test="user_id != null and user_id != ''">
+		      AND user_id = #{user_id}  <!-- 用户ID -->
+		</if>
+	    <if test="cp_id != null and cp_id != ''">
+		      AND cp_id = #{cp_id}  <!-- 充电桩ID -->
+		</if>
+	   <if test="amounted != null ">
+		      AND amounted = #{amounted}  <!-- 已充金额 -->
+		</if>
+	   <if test="dateed != null ">
+		      AND dateed = #{dateed}  <!-- 已充时间 -->
+		</if>
+	   <if test="electricity != null ">
+		      AND electricity = #{electricity}  <!-- 已充电量 -->
+		</if>
+	   <if test="rest_date != null ">
+		      AND rest_date = #{rest_date}  <!-- 剩余时间 -->
+		</if>
+	   <if test="total_amt != null ">
+		      AND total_amt = #{total_amt}  <!-- 总金额 -->
+		</if>
+	   <if test="deduction_amt != null ">
+		      AND deduction_amt = #{deduction_amt}  <!-- 抵扣金额 -->
+		</if>
+	   <if test="real_amt != null ">
+		      AND real_amt = #{real_amt}  <!-- 实付金额 -->
+		</if>
+	    <if test="status_ != null and status_ != ''">
+		      AND status_ = #{status_}  <!-- 状态，0：新增，1：支付成功，2：支付失败，-1：取消 -->
+		</if>
+	    <if test="co_type != null and co_type != ''">
+		      AND co_type = #{co_type}  <!-- 计算类型，0：金额，1：时间，2：度数，3：充满 -->
+		</if>
+	   <if test="co_num != null ">
+		      AND co_num = #{co_num}  <!-- 数量 -->
+		</if>
+		<if test="discount != null ">
+		      AND discount = #{discount}  <!-- 数量 -->
+		</if>
+		<if test="degree != null ">
+		      AND degree = #{degree}  <!-- 数量 -->
+		</if>
+	    <if test="deduction_type != null and deduction_type != ''">
+		      AND deduction_type = #{deduction_type}  <!-- 抵扣类型，0：折扣，1：优惠券 -->
+		</if>
+	    <if test="is_del != null and is_del != ''">
+		      AND is_del = #{is_del}  <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+	    <if test="create_date != null and create_date != ''">
+		      AND create_date = #{create_date}  <!-- 创建时间 -->
+		</if>
+	    <if test="oper_id != null and oper_id != ''">
+		      AND oper_id = #{oper_id}  <!-- 操作人ID -->
+		</if>
+	</sql>
+	<sql id="equal2">
+	    <if test="co_id != null and co_id != ''">
+		      AND charging_orders.co_id = #{co_id}  <!-- co_id -->
+		</if>
+	    <if test="user_id != null and user_id != ''">
+		      AND charging_orders.user_id = #{user_id}  <!-- 用户ID -->
+		</if>
+	    <if test="cp_id != null and cp_id != ''">
+		      AND charging_orders.cp_id = #{cp_id}  <!-- 充电桩ID -->
+		</if>
+	   <if test="amounted != null ">
+		      AND charging_orders.amounted = #{amounted}  <!-- 已充金额 -->
+		</if>
+	   <if test="dateed != null ">
+		      AND charging_orders.dateed = #{dateed}  <!-- 已充时间 -->
+		</if>
+	   <if test="electricity != null ">
+		      AND charging_orders.electricity = #{electricity}  <!-- 已充电量 -->
+		</if>
+	   <if test="rest_date != null ">
+		      AND charging_orders.rest_date = #{rest_date}  <!-- 剩余时间 -->
+		</if>
+	   <if test="total_amt != null ">
+		      AND charging_orders.total_amt = #{total_amt}  <!-- 总金额 -->
+		</if>
+	   <if test="deduction_amt != null ">
+		      AND charging_orders.deduction_amt = #{deduction_amt}  <!-- 抵扣金额 -->
+		</if>
+	   <if test="real_amt != null ">
+		      AND charging_orders.real_amt = #{real_amt}  <!-- 实付金额 -->
+		</if>
+	    <if test="status_ != null and status_ != ''">
+		      AND charging_orders.status_ = #{status_}  <!-- 状态，0：新增，1：支付成功，2：支付失败，-1：取消 -->
+		</if>
+	    <if test="co_type != null and co_type != ''">
+		      AND charging_orders.co_type = #{co_type}  <!-- 计算类型，0：金额，1：时间，2：度数，3：充满 -->
+		</if>
+	   <if test="co_num != null ">
+		      AND charging_orders.co_num = #{co_num}  <!-- 数量 -->
+		</if>
+	    <if test="deduction_type != null and deduction_type != ''">
+		      AND charging_orders.deduction_type = #{deduction_type}  <!-- 抵扣类型，0：折扣，1：优惠券 -->
+		</if>
+	    <if test="is_del != null and is_del != ''">
+		      AND charging_orders.is_del = #{is_del}  <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+	    <if test="create_date != null and create_date != ''">
+		      AND charging_orders.create_date = #{create_date}  <!-- 创建时间 -->
+		</if>
+	    <if test="oper_id != null and oper_id != ''">
+		      AND charging_orders.oper_id = #{oper_id}  <!-- 操作人ID -->
+		</if>
+	</sql>
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="co_id != null and co_id != ''">
+		      AND co_id like '%${co_id}%'  <!-- co_id -->
+		</if>
+	    <if test="user_id != null and user_id != ''">
+		      AND user_id like '%${user_id}%'  <!-- 用户ID -->
+		</if>
+	    <if test="cp_id != null and cp_id != ''">
+		      AND cp_id like '%${cp_id}%'  <!-- 充电桩ID -->
+		</if>
+	    <if test="status_ != null and status_ != ''">
+		      AND status_ like '%${status_}%'  <!-- 状态，0：新增，1：支付成功，2：支付失败，-1：取消 -->
+		</if>
+	    <if test="co_type != null and co_type != ''">
+		      AND co_type like '%${co_type}%'  <!-- 计算类型，0：金额，1：时间，2：度数，3：充满 -->
+		</if>
+	    <if test="deduction_type != null and deduction_type != ''">
+		      AND deduction_type like '%${deduction_type}%'  <!-- 抵扣类型，0：折扣，1：优惠券 -->
+		</if>
+	    <if test="is_del != null and is_del != ''">
+		      AND is_del like '%${is_del}%'  <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+	    <if test="create_date != null and create_date != ''">
+		      AND create_date like '%${create_date}%'  <!-- 创建时间 -->
+		</if>
+	    <if test="oper_id != null and oper_id != ''">
+		      AND oper_id like '%${oper_id}%'  <!-- 操作人ID -->
+		</if>
+	</sql>
+	
+</mapper>

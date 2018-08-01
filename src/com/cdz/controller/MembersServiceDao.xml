@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- members管理模块使用的SQL语句 -->
+<mapper namespace="Members">
+
+	<!-- 查询members列表 ,多表关联查询-->
+	<select id="listMemberssPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.MembersDao.column" />	
+			FROM base_user
+			<where>
+				is_del_='0' and type_='2'
+				<if test="is_cert != null and is_cert != ''">
+				      AND is_cert = #{is_cert}  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 and type_='2' -->
+				</if>
+				<if test="deposit_status != null and deposit_status != ''">
+				      AND deposit_status = #{deposit_status}  <!-- 押金状态，0:未交，1：已交，-1：已退 -->
+				</if>
+			    <if test="grade_ != null and grade_ != ''">
+				      AND grade_ = #{grade_}  <!-- 级别，silver：银牌会员，gold：金牌会员，platinum：白金会员 -->
+				</if>
+				<if test="status_ != null and status_ != ''">
+				      AND status_ = #{status_}  <!-- 用户状态（是否屏蔽） -->
+				</if>
+			    <if test="account_ != null and account_ != ''">
+				      AND account_ like '%${account_}%'  <!-- 用户登录帐号 -->
+				</if>
+			    <if test="name_ != null and name_ != ''">
+				      AND name_ like '%${name_}%'  <!-- 昵称 -->
+				</if>
+				<if test="user_name != null and user_name != ''">
+				      AND user_name like '%${user_name}%'  <!-- 姓名 -->
+				</if>
+			    <if test="id_card != null and id_card != ''">
+				      AND id_card like '%${id_card}%'  <!-- 身份证号码 -->
+				</if>
+			</where>
+			order by create_time_ desc
+	</select>
+	<select id="listMemberss" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.MembersDao.column" />	
+			FROM base_user
+			<where>
+				is_del_='0' and type_='2'
+				<if test="is_cert != null and is_cert != ''">
+				      AND is_cert = #{is_cert}  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 and type_='2' -->
+				</if>
+				<if test="deposit_status != null and deposit_status != ''">
+				      AND deposit_status = #{deposit_status}  <!-- 押金状态，0:未交，1：已交，-1：已退 -->
+				</if>
+			    <if test="grade_ != null and grade_ != ''">
+				      AND grade_ = #{grade_}  <!-- 级别，silver：银牌会员，gold：金牌会员，platinum：白金会员 -->
+				</if>
+				<if test="status_ != null and status_ != ''">
+				      AND status_ = #{status_}  <!-- 用户状态（是否屏蔽） -->
+				</if>
+			    <if test="account_ != null and account_ != ''">
+				      AND account_ like '%${account_}%'  <!-- 用户登录帐号 -->
+				</if>
+			    <if test="name_ != null and name_ != ''">
+				      AND name_ like '%${name_}%'  <!-- 昵称 -->
+				</if>
+				<if test="user_name != null and user_name != ''">
+				      AND user_name like '%${user_name}%'  <!-- 姓名 -->
+				</if>
+			    <if test="id_card != null and id_card != ''">
+				      AND id_card like '%${id_card}%'  <!-- 身份证号码 -->
+				</if>
+			</where>
+			order by create_time_ desc
+	</select>
+	<select id="membersSummary" resultType="Dto" parameterType="Dto">
+			SELECT COUNT(1) AS count,	
+			IFNULL(SUM(CASE WHEN t.grade_='silver' THEN 1 ELSE 0 END),0) AS  yp,
+			IFNULL(SUM(CASE WHEN t.grade_='gold' THEN 1 ELSE 0 END),0) AS  jp ,
+			IFNULL(SUM(CASE WHEN t.grade_='platinum' THEN 1 ELSE 0 END),0) AS  bj ,
+			IFNULL(SUM(CASE WHEN t.grade_='0' THEN 1 ELSE 0 END),0) AS  pt  FROM base_user t WHERE t.type_='2' and is_del_='0'
+	</select>
+	<select id="listMemberssStatPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				id_,account_,deposit_amt,gold_coins,user_name,id_card,grade_,create_time_ 
+			FROM base_user
+			<where>
+				is_del_='0' and type_='2'
+				<if test="is_cert != null and is_cert != ''">
+				      AND is_cert = #{is_cert}  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 and type_='2' -->
+				</if>
+				<if test="deposit_status != null and deposit_status != ''">
+				      AND deposit_status = #{deposit_status}  <!-- 押金状态，0:未交，1：已交，-1：已退 -->
+				</if>
+			    <if test="grade_ != null and grade_ != ''">
+				      AND grade_ = #{grade_}  <!-- 级别，silver：银牌会员，gold：金牌会员，platinum：白金会员 -->
+				</if>
+				<if test="status_ != null and status_ != ''">
+				      AND status_ = #{status_}  <!-- 用户状态（是否屏蔽） -->
+				</if>
+			    <if test="account_ != null and account_ != ''">
+				      AND account_ like '%${account_}%'  <!-- 用户登录帐号 -->
+				</if>
+			    <if test="name_ != null and name_ != ''">
+				      AND name_ like '%${name_}%'  <!-- 昵称 -->
+				</if>
+				<if test="user_name != null and user_name != ''">
+				      AND user_name like '%${user_name}%'  <!-- 姓名 -->
+				</if>
+			    <if test="id_card != null and id_card != ''">
+				      AND id_card like '%${id_card}%'  <!-- 身份证号码 -->
+				</if>
+				<if test="date_start != null and date_start != ''">
+				   AND create_time_ <![CDATA[ >= ]]> #{date_start}  
+				</if>
+				<if test="date_end != null and date_end != ''">
+				   AND create_time_ <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>
+			</where>
+			order by create_time_ desc
+	</select>
+	<select id="listMemberssStatQuerySummary" resultType="Dto" parameterType="Dto">
+			SELECT
+				count(1) as count
+			FROM base_user
+			<where>
+				is_del_='0' and type_='2'
+				<if test="is_cert != null and is_cert != ''">
+				      AND is_cert = #{is_cert}  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 and type_='2' -->
+				</if>
+				<if test="deposit_status != null and deposit_status != ''">
+				      AND deposit_status = #{deposit_status}  <!-- 押金状态，0:未交，1：已交，-1：已退 -->
+				</if>
+			    <if test="grade_ != null and grade_ != ''">
+				      AND grade_ = #{grade_}  <!-- 级别，silver：银牌会员，gold：金牌会员，platinum：白金会员 -->
+				</if>
+				<if test="status_ != null and status_ != ''">
+				      AND status_ = #{status_}  <!-- 用户状态（是否屏蔽） -->
+				</if>
+			    <if test="account_ != null and account_ != ''">
+				      AND account_ like '%${account_}%'  <!-- 用户登录帐号 -->
+				</if>
+			    <if test="name_ != null and name_ != ''">
+				      AND name_ like '%${name_}%'  <!-- 昵称 -->
+				</if>
+				<if test="user_name != null and user_name != ''">
+				      AND user_name like '%${user_name}%'  <!-- 姓名 -->
+				</if>
+			    <if test="id_card != null and id_card != ''">
+				      AND id_card like '%${id_card}%'  <!-- 身份证号码 -->
+				</if>
+				<if test="date_start != null and date_start != ''">
+				   AND create_time_ <![CDATA[ >= ]]> #{date_start}  
+				</if>
+				<if test="date_end != null and date_end != ''">
+				   AND create_time_ <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>
+			</where>
+	</select>
+	<select id="listMemberssStatFigure" resultType="Dto" parameterType="Dto">
+			SELECT
+				COUNT(1) AS num,DATE_FORMAT(create_time_,'%Y-%m-%d')  AS create_time
+			FROM base_user
+			<where>
+				is_del_='0' and type_='2'
+				<if test="is_cert != null and is_cert != ''">
+				      AND is_cert = #{is_cert}  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过 and type_='2' -->
+				</if>
+				<if test="deposit_status != null and deposit_status != ''">
+				      AND deposit_status = #{deposit_status}  <!-- 押金状态，0:未交，1：已交，-1：已退 -->
+				</if>
+			    <if test="grade_ != null and grade_ != ''">
+				      AND grade_ = #{grade_}  <!-- 级别，silver：银牌会员，gold：金牌会员，platinum：白金会员 -->
+				</if>
+				<if test="status_ != null and status_ != ''">
+				      AND status_ = #{status_}  <!-- 用户状态（是否屏蔽） -->
+				</if>
+			    <if test="account_ != null and account_ != ''">
+				      AND account_ like '%${account_}%'  <!-- 用户登录帐号 -->
+				</if>
+			    <if test="name_ != null and name_ != ''">
+				      AND name_ like '%${name_}%'  <!-- 昵称 -->
+				</if>
+				<if test="user_name != null and user_name != ''">
+				      AND user_name like '%${user_name}%'  <!-- 姓名 -->
+				</if>
+			    <if test="id_card != null and id_card != ''">
+				      AND id_card like '%${id_card}%'  <!-- 身份证号码 -->
+				</if>
+				<if test="date_start != null and date_start != ''">
+				   AND create_time_ <![CDATA[ >= ]]> #{date_start}  
+				</if>
+				<if test="date_end != null and date_end != ''">
+				   AND create_time_ <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>
+			</where>
+			GROUP BY DATE_FORMAT(create_time_,'%Y-%m-%d')
+			order by create_time_
+	</select>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- messages管理模块使用的SQL语句 -->
+<mapper namespace="Messages">
+
+	<!-- 查询messages列表 ,多表关联查询-->
+	<select id="listMessagessPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.MessagesDao.column" />	
+			FROM messages
+			<where>
+				is_del='0'
+			    <if test="msg_type != null and msg_type != ''">
+				      AND msg_type = #{msg_type}  <!-- 消息类型，0：经销商、销售员，1：经销商，2：销售员 -->
+				</if>
+				<if test="msg_content != null and msg_content != ''">
+				      AND msg_content like '%${msg_content}%'  <!-- 内容 -->
+				</if>
+			</where>
+			order by create_date desc
+	</select>
+	<select id="apiListMessagessPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				msg_content,create_date	
+			FROM messages
+			<where>
+				is_del='0'
+			</where>
+			order by create_date desc
+	</select>
+	<select id="listUsers" resultType="Dto" parameterType="Dto">
+			SELECT t.account_,t.name_,t.registration_id,t.registration_type FROM base_user t WHERE t.is_del_='0' AND t.type_='2' AND t.registration_id IS NOT NULL
+	</select>
+</mapper>

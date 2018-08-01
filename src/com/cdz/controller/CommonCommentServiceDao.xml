@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- common_comment管理模块使用的SQL语句 -->
+<mapper namespace="CommonComment">
+
+	<!-- 查询common_comment列表 ,多表关联查询-->
+	<select id="listCommonCommentsPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.CommonCommentDao.column2" />,b1.account_ as b1_account_	
+			FROM common_comment
+			left join base_user	 b1 on common_comment.user_id=b1.id_
+			<where>
+				common_comment.is_del='0'
+			    <if test="account_ != null and account_ != ''">
+				   AND b1.account_ like '%${account_}%'
+				</if>
+				<if test="comment_ != null and comment_ != ''">
+				   AND common_comment.comment_ like '%${comment_}%'
+				</if>
+				<if test="account_ != null and account_ != ''">
+				   AND b1.account_ like '%${account_}%'
+				</if>
+			    <if test="date_start != null and date_start != ''">
+				   AND common_comment.create_date <![CDATA[ >= ]]> #{date_start}  
+				</if>
+				<if test="date_end != null and date_end != ''">
+				   AND common_comment.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>
+			</where>
+			order by common_comment.create_date desc
+	</select>
+	<select id="apiListCommonCommentsPage" resultType="Dto" parameterType="Dto">
+			SELECT cc_id,comment_ as comment,create_date,img_url1,img_url2,img_url3,img_url4,img_url5,img_url6 
+			FROM common_comment 
+			<where>
+				is_del='0'
+				<if test="user_id != null and user_id != ''">
+				      AND user_id = #{user_id}  
+				</if>
+			</where>
+			order by create_date desc
+	</select>
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 活动表管理模块使用的SQL语句 -->
+<mapper namespace="Activity">
+
+	<!-- 查询活动表列表 ,多表关联查询-->
+	<select id="listActivitysPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.ActivityDao.column" />	
+			FROM activity
+			<where>
+				is_del='0'
+			    <include refid="dao.ActivityDao.equal" />
+			     <if test="name_ != null and name_ != ''">
+				      AND name_ like '%${name_}%'  <!-- 名称 -->
+				</if>
+			</where>
+			order by end_date desc
+	</select>
+
+<select id="listActivity" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.ActivityDao.column" />	
+			FROM activity
+			<where>
+				is_del='0' and
+				status_='1'
+				   AND  
+				   end_date <![CDATA[ >= ]]> #{date_string} 
+				<if test="type_ != null and type_ != ''">
+				   AND type_ =  #{type_} 
+				</if> 
+				 <if test="not_activity_id != null and not_activity_id != ''">
+				   AND activity_id <![CDATA[ <> ]]> #{not_activity_id} <!--  -->
+				</if> 
+			</where>
+	</select>
+	
+	<select id="currentListActivity" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.ActivityDao.column" />	
+			FROM activity
+			<where>
+				is_del='0' and
+				status_='1'
+			    <if test="date_string != null and date_string != ''">
+				   AND end_date <![CDATA[ >= ]]> #{date_string}  
+				</if>
+				<if test="date_string != null and date_string != ''">
+				   AND start_date <![CDATA[ <= ]]> #{date_string} <!-- 创建时间 -->
+				</if> 
+				<if test="current_date_string != null and current_date_string != ''">
+				   AND end_date <![CDATA[ < ]]> #{current_date_string} <!-- 创建时间 -->
+				</if> 
+			</where>
+	</select>
+</mapper>

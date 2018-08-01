@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--设备[device]SQL语句 -->
+<mapper namespace="Device">
+	<select id="listDevicesPage" parameterType="Dto" resultType="Dto">
+		SELECT
+		<include refid="dao.DeviceDao.column" />
+		FROM device
+		<where>
+ 		</where>
+	</select>
+</mapper>

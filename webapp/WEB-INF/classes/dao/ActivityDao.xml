@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 活动表[activity]SQL自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2017-04-20 15:04:10 -->
+<mapper namespace="dao.ActivityDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.ActivityPO">
+		INSERT INTO activity (
+		<if test="name_ != null and name_ != ''">
+	         name_, <!-- 名称 -->
+		</if>
+		<if test="type_ != null and type_ != ''">
+	         type_, <!-- 类型，1：满减，2：满折，3：满送，4满赠 -->
+		</if>
+		<if test="shortname != null and shortname != ''">
+	         shortname, <!-- 短名称 -->
+		</if>
+		<if test="url != null and url != ''">
+	         url, <!-- 跳转地址 -->
+		</if>
+		<if test="img_url != null and img_url != ''">
+	         img_url, <!-- 图片地址 -->
+		</if>
+		<if test="start_date != null and start_date != ''">
+	         start_date, <!-- 开始时间 -->
+		</if>
+		<if test="end_date != null and end_date != ''">
+	         end_date, <!-- 结束时间 -->
+		</if>
+		<if test="desc_ != null and desc_ != ''">
+	         desc_, <!-- 活动描述 -->
+		</if>
+		<if test="status_ != null and status_ != ''">
+	         status_, <!-- 状态 -->
+		</if>
+		<if test="is_del != null and is_del != ''">
+	         is_del, <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+		<if test="create_date != null and create_date != ''">
+	         create_date, <!-- 创建时间 -->
+		</if>
+		<if test="oper_id != null and oper_id != ''">
+	         oper_id, <!-- 操作人ID -->
+		</if>
+		<if test="amount != null ">
+	         amount, <!-- 参数 -->
+		</if>
+		<if test="ar_num != null ">
+	         ar_num, <!-- 参数 -->
+		</if>
+		<if test="activity_id != null and activity_id != ''">
+	          activity_id  <!-- 主键 -->
+	   </if>
+		)VALUES(
+		<if test="name_ != null and name_ != ''">
+	          #{name_, jdbcType=VARCHAR}, <!-- 名称 -->
+	    </if>
+		<if test="type_ != null and type_ != ''">
+	          #{type_, jdbcType=VARCHAR}, <!-- 类型，1：满减，2：满折，3：满送，4满赠 -->
+	    </if>
+		<if test="shortname != null and shortname != ''">
+	          #{shortname, jdbcType=VARCHAR}, <!-- 短名称 -->
+	    </if>
+		<if test="url != null and url != ''">
+	          #{url, jdbcType=VARCHAR}, <!-- 跳转地址 -->
+	    </if>
+		<if test="img_url != null and img_url != ''">
+	          #{img_url, jdbcType=VARCHAR}, <!-- 图片地址 -->
+	    </if>
+		<if test="start_date != null and start_date != ''">
+	          #{start_date, jdbcType=VARCHAR}, <!-- 开始时间 -->
+	    </if>
+		<if test="end_date != null and end_date != ''">
+	          #{end_date, jdbcType=VARCHAR}, <!-- 结束时间 -->
+	    </if>
+		<if test="desc_ != null and desc_ != ''">
+	          #{desc_, jdbcType=VARCHAR}, <!-- 活动描述 -->
+	    </if>
+		<if test="status_ != null and status_ != ''">
+	          #{status_, jdbcType=VARCHAR}, <!-- 状态 -->
+	    </if>
+		<if test="is_del != null and is_del != ''">
+	          #{is_del, jdbcType=VARCHAR}, <!-- 是否删除，0：未删除，1：删除 -->
+	    </if>
+		<if test="create_date != null and create_date != ''">
+	          #{create_date, jdbcType=VARCHAR}, <!-- 创建时间 -->
+	    </if>
+		<if test="oper_id != null and oper_id != ''">
+	          #{oper_id, jdbcType=VARCHAR}, <!-- 操作人ID -->
+	    </if>
+	    <if test="amount != null ">
+	          #{amount, jdbcType=NUMERIC}, <!-- 参数 -->
+	    </if>
+	    <if test="ar_num != null ">
+	          #{ar_num, jdbcType=NUMERIC}, <!-- 参数 -->
+	    </if>
+		<if test="activity_id != null and activity_id != ''">
+		     #{activity_id, jdbcType=VARCHAR}  <!-- 主键 -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.ActivityPO">
+		INSERT INTO activity (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{activity_id, jdbcType=VARCHAR},  <!-- 主键 -->
+		    #{name_, jdbcType=VARCHAR},  <!-- 名称 -->
+		    #{type_, jdbcType=VARCHAR},  <!-- 类型，1：满减，2：满折，3：满送，4满赠 -->
+		    #{shortname, jdbcType=VARCHAR},  <!-- 短名称 -->
+		    #{url, jdbcType=VARCHAR},  <!-- 跳转地址 -->
+		    #{img_url, jdbcType=VARCHAR},  <!-- 图片地址 -->
+		    #{start_date, jdbcType=VARCHAR},  <!-- 开始时间 -->
+		    #{end_date, jdbcType=VARCHAR},  <!-- 结束时间 -->
+		    #{desc_, jdbcType=VARCHAR},  <!-- 活动描述 -->
+		    #{status_, jdbcType=VARCHAR},  <!-- 状态 -->
+		    #{is_del, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：删除 -->
+		    #{create_date, jdbcType=VARCHAR},  <!-- 创建时间 -->
+		    #{oper_id, jdbcType=VARCHAR}  <!-- 操作人ID -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.ActivityPO">
+		UPDATE activity
+		<set>
+			<if test="activity_id != null">
+		          activity_id = #{activity_id, jdbcType=VARCHAR},  <!-- 主键 -->
+			</if>
+			<if test="name_ != null">
+		          name_ = #{name_, jdbcType=VARCHAR},  <!-- 名称 -->
+			</if>
+			<if test="type_ != null">
+		          type_ = #{type_, jdbcType=VARCHAR},  <!-- 类型，1：满减，2：满折，3：满送，4满赠 -->
+			</if>
+			<if test="shortname != null">
+		          shortname = #{shortname, jdbcType=VARCHAR},  <!-- 短名称 -->
+			</if>
+			<if test="url != null">
+		          url = #{url, jdbcType=VARCHAR},  <!-- 跳转地址 -->
+			</if>
+			<if test="img_url != null">
+		          img_url = #{img_url, jdbcType=VARCHAR},  <!-- 图片地址 -->
+			</if>
+			<if test="start_date != null">
+		          start_date = #{start_date, jdbcType=VARCHAR},  <!-- 开始时间 -->
+			</if>
+			<if test="end_date != null">
+		          end_date = #{end_date, jdbcType=VARCHAR},  <!-- 结束时间 -->
+			</if>
+			<if test="desc_ != null">
+		          desc_ = #{desc_, jdbcType=VARCHAR},  <!-- 活动描述 -->
+			</if>
+			<if test="status_ != null">
+		          status_ = #{status_, jdbcType=VARCHAR},  <!-- 状态 -->
+			</if>
+			<if test="is_del != null">
+		          is_del = #{is_del, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：删除 -->
+			</if>
+			<if test="create_date != null">
+		          create_date = #{create_date, jdbcType=VARCHAR},  <!-- 创建时间 -->
+			</if>
+			<if test="oper_id != null">
+		          oper_id = #{oper_id, jdbcType=VARCHAR},  <!-- 操作人ID -->
+			</if>
+			<if test="amount != null">
+		          amount = #{amount, jdbcType=NUMERIC},  <!-- 参数 -->
+			</if>
+			<if test="ar_num != null">
+		          ar_num = #{ar_num, jdbcType=NUMERIC},  <!-- 参数 -->
+			</if>
+		</set>
+		WHERE  activity_id = #{activity_id}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM activity WHERE  activity_id = #{activity_id}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.ActivityPO">
+		SELECT
+		<include refid="column" />
+		FROM activity WHERE  activity_id = #{activity_id}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.ActivityPO">
+		SELECT
+		    <include refid="column" />
+		FROM activity
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.ActivityPO">
+		SELECT
+			<include refid="column" />	
+		FROM activity
+		<where>
+		    1=1 
+		    <include refid="equal" />
+		    AND CURRENT_DATE <![CDATA[ >= ]]> start_date AND CURRENT_DATE <![CDATA[ <= ]]> end_date
+		</where>	
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.ActivityPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM activity
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.ActivityPO">
+		SELECT
+			<include refid="column" />	
+		FROM activity
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.ActivityPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM activity
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM activity
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM activity
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  activity_id,  <!-- 主键 -->
+		  name_,  <!-- 名称 -->
+		  type_,  <!-- 类型，1：满减，2：满折，3：满送，4满赠 -->
+		  shortname,  <!-- 短名称 -->
+		  url,  <!-- 跳转地址 -->
+		  img_url,  <!-- 图片地址 -->
+		  start_date,  <!-- 开始时间 -->
+		  end_date,  <!-- 结束时间 -->
+		  desc_,  <!-- 活动描述 -->
+		  status_,  <!-- 状态 -->
+		  is_del,  <!-- 是否删除，0：未删除，1：删除 -->
+		  create_date,  <!-- 创建时间 -->
+		  amount,
+		  ar_num, 
+		  oper_id  <!-- 操作人ID -->
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  activity.activity_id,  <!-- 主键 -->
+		  activity.name_,  <!-- 名称 -->
+		  activity.type_,  <!-- 类型，1：满减，2：满折，3：满送，4满赠 -->
+		  activity.shortname,  <!-- 短名称 -->
+		  activity.url,  <!-- 跳转地址 -->
+		  activity.img_url,  <!-- 图片地址 -->
+		  activity.start_date,  <!-- 开始时间 -->
+		  activity.end_date,  <!-- 结束时间 -->
+		  activity.desc_,  <!-- 活动描述 -->
+		  activity.status_,  <!-- 状态 -->
+		  activity.is_del,  <!-- 是否删除，0：未删除，1：删除 -->
+		  activity.create_date,  <!-- 创建时间 -->
+		  activity.amount,
+		  activity.ar_num,
+		  activity.oper_id  <!-- 操作人ID -->
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="activity_id != null and activity_id != ''">
+		      AND activity_id = #{activity_id}  <!-- 主键 -->
+		</if>
+	    <if test="type_ != null and type_ != ''">
+		      AND type_ = #{type_}  <!-- 类型，1：满减，2：满折，3：满送，4满赠 -->
+		</if>
+	    <if test="shortname != null and shortname != ''">
+		      AND shortname = #{shortname}  <!-- 短名称 -->
+		</if>
+	    <if test="url != null and url != ''">
+		      AND url = #{url}  <!-- 跳转地址 -->
+		</if>
+	    <if test="img_url != null and img_url != ''">
+		      AND img_url = #{img_url}  <!-- 图片地址 -->
+		</if>
+	    <if test="start_date != null and start_date != ''">
+		      AND start_date = #{start_date}  <!-- 开始时间 -->
+		</if>
+	    <if test="end_date != null and end_date != ''">
+		      AND end_date = #{end_date}  <!-- 结束时间 -->
+		</if>
+	    <if test="desc_ != null and desc_ != ''">
+		      AND desc_ = #{desc_}  <!-- 活动描述 -->
+		</if>
+	    <if test="status_ != null and status_ != ''">
+		      AND status_ = #{status_}  <!-- 状态 -->
+		</if>
+	    <if test="is_del != null and is_del != ''">
+		      AND is_del = #{is_del}  <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+	    <if test="create_date != null and create_date != ''">
+		      AND create_date = #{create_date}  <!-- 创建时间 -->
+		</if>
+	    <if test="oper_id != null and oper_id != ''">
+		      AND oper_id = #{oper_id}  <!-- 操作人ID -->
+		</if>
+	</sql>
+	
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="activity_id != null and activity_id != ''">
+		      AND activity_id like '%${activity_id}%'  <!-- 主键 -->
+		</if>
+	    <if test="name_ != null and name_ != ''">
+		      AND name_ like '%${name_}%'  <!-- 名称 -->
+		</if>
+	    <if test="type_ != null and type_ != ''">
+		      AND type_ like '%${type_}%'  <!-- 类型，1：满减，2：满折，3：满送，4满赠 -->
+		</if>
+	    <if test="shortname != null and shortname != ''">
+		      AND shortname like '%${shortname}%'  <!-- 短名称 -->
+		</if>
+	    <if test="url != null and url != ''">
+		      AND url like '%${url}%'  <!-- 跳转地址 -->
+		</if>
+	    <if test="img_url != null and img_url != ''">
+		      AND img_url like '%${img_url}%'  <!-- 图片地址 -->
+		</if>
+	    <if test="start_date != null and start_date != ''">
+		      AND start_date like '%${start_date}%'  <!-- 开始时间 -->
+		</if>
+	    <if test="end_date != null and end_date != ''">
+		      AND end_date like '%${end_date}%'  <!-- 结束时间 -->
+		</if>
+	    <if test="desc_ != null and desc_ != ''">
+		      AND desc_ like '%${desc_}%'  <!-- 活动描述 -->
+		</if>
+	    <if test="status_ != null and status_ != ''">
+		      AND status_ like '%${status_}%'  <!-- 状态 -->
+		</if>
+	    <if test="is_del != null and is_del != ''">
+		      AND is_del like '%${is_del}%'  <!-- 是否删除，0：未删除，1：删除 -->
+		</if>
+	    <if test="create_date != null and create_date != ''">
+		      AND create_date like '%${create_date}%'  <!-- 创建时间 -->
+		</if>
+	    <if test="oper_id != null and oper_id != ''">
+		      AND oper_id like '%${oper_id}%'  <!-- 操作人ID -->
+		</if>
+	</sql>
+	
+</mapper>

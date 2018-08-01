@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- common_backup管理模块使用的SQL语句 -->
+<mapper namespace="CommonBackup">
+
+	<!-- 查询common_backup列表 ,多表关联查询-->
+	<select id="listCommonBackupsPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.CommonBackupDao.column" />	
+			FROM common_backup
+			<where>
+				is_del='0'
+			    <include refid="dao.CommonBackupDao.equal" />
+			<if test="date_start != null and date_start != ''">
+				   AND common_backup.create_date <![CDATA[ >= ]]> #{date_start}  
+				</if>
+				<if test="date_end != null and date_end != ''">
+				   AND common_backup.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>
+			</where>
+			order by common_backup.create_date  desc
+	</select>
+
+</mapper>

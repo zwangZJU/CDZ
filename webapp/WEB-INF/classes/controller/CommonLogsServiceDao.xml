@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- common_logs管理模块使用的SQL语句 -->
+<mapper namespace="CommonLogs">
+
+	<!-- 查询common_logs列表 ,多表关联查询-->
+	<select id="listCommonLogssPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.CommonLogsDao.column" />	
+			FROM common_logs
+			<where>
+				is_del='0'
+				<if test="content != null and content != ''">
+				      AND common_logs.content like '%${content}%'  
+				</if>
+				<if test="oper_name != null and oper_name != ''">
+				      AND common_logs.oper_name like '%${oper_name}%'  
+				</if>
+			   <if test="date_start != null and date_start != ''">
+				   AND common_logs.create_date <![CDATA[ >= ]]> #{date_start}  
+				</if>
+				<if test="date_end != null and date_end != ''">
+				   AND common_logs.create_date <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>
+			</where>
+			order by common_logs.create_date  desc
+	</select>
+	<update id="deleteAllCommonLogs">
+		UPDATE common_logs set is_del = '1' WHERE  is_del = '0'
+	</update>
+
+</mapper>

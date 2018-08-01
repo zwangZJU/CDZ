@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- basic_user[basic_user]SQLMapper自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2018-07-10 20:05:26 -->
+<mapper namespace="dao.Basic_userDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.Basic_userPO">
+		INSERT INTO basic_user (
+		<if test="account != null and account != ''">
+	         account, <!-- 用户登录帐号 -->
+		</if>
+		<if test="password != null and password != ''">
+	         password, <!-- 密码 -->
+		</if>
+		<if test="nickname != null and nickname != ''">
+	         nickname, <!-- 昵称 -->
+		</if>
+		<if test="sex != null and sex != ''">
+	         sex, <!-- 性别 -->
+		</if>
+		<if test="status != null and status != ''">
+	         status, <!-- 用户状态（是否屏蔽） -->
+		</if>
+		<if test="user_type != null and user_type != ''">
+	         user_type, <!-- 用户类型用户类型，1：管理员,2：会员 -->
+		</if>
+		<if test="img_url != null and img_url != ''">
+	         img_url, <!-- 图片地址 -->
+		</if>
+		<if test="email != null and email != ''">
+	         email, <!-- 电子邮件 -->
+		</if>
+		<if test="mobile != null and mobile != ''">
+	         mobile, <!-- 手机号 -->
+		</if>
+		<if test="skin != null and skin != ''">
+	         skin, <!-- 用户界面皮肤 -->
+		</if>
+		<if test="biz_code != null and biz_code != ''">
+	         biz_code, <!-- 业务对照码 -->
+		</if>
+		<if test="address != null and address != ''">
+	         address, <!-- 联系地址 -->
+		</if>
+		<if test="note != null and note != ''">
+	         note, <!-- 介绍/备注 -->
+		</if>
+		<if test="is_del != null and is_del != ''">
+	         is_del, <!-- 是否已删除 -->
+		</if>
+		<if test="create_at != null and create_at != ''">
+	         create_at, <!-- 创建时间 -->
+		</if>
+		<if test="create_by != null and create_by != ''">
+	         create_by, <!-- 创建人ID -->
+		</if>
+		<if test="login_time != null and login_time != ''">
+	         login_time, <!-- 最后登录时间 -->
+		</if>
+		<if test="sort != null">
+	         sort, <!-- 排序 -->
+		</if>
+		<if test="phone_id != null and phone_id != ''">
+	         phone_id, <!-- 手机ID -->
+		</if>
+		<if test="phone_type != null and phone_type != ''">
+	         phone_type, <!-- 手机类型 -->
+		</if>
+		<if test="gold_coins != null">
+	         gold_coins, <!-- 金币 -->
+		</if>
+		<if test="pay_password != null and pay_password != ''">
+	         pay_password, <!-- 支付密码 -->
+		</if>
+		<if test="deposit_amt != null">
+	         deposit_amt, <!-- 押金 -->
+		</if>
+		<if test="deposit_date != null and deposit_date != ''">
+	         deposit_date, <!-- 押金支付时间 -->
+		</if>
+		<if test="deposit_status != null and deposit_status != ''">
+	         deposit_status, <!-- 押金状态，0:未交，1：已交，-1：已退,2：申请退款中 -->
+		</if>
+		<if test="grade != null and grade != ''">
+	         grade, <!-- 级别，silver：银牌会员，gold
+：金牌会员，platinum
+：白金会员 -->
+		</if>
+		<if test="name != null and name != ''">
+	         name, <!-- 姓名 -->
+		</if>
+		<if test="id_card != null and id_card != ''">
+	         id_card, <!-- 身份证号码 -->
+		</if>
+		<if test="avatar != null and avatar != ''">
+	         avatar, <!-- 用户头像 -->
+		</if>
+		<if test="is_cert != null and is_cert != ''">
+	         is_cert, <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过,2：已填写认证信息 -->
+		</if>
+		<if test="gold_coins_status != null and gold_coins_status != ''">
+	         gold_coins_status, <!-- 金币状态,1：正常，-1：已退,2：申请退款中 -->
+		</if>
+		<if test="device_number != null and device_number != ''">
+	         device_number, <!-- 设备编号 -->
+		</if>
+		<if test="token != null and token != ''">
+	         token, <!-- 登录会话id -->
+		</if>
+		<if test="qq != null and qq != ''">
+	         qq, <!-- qq号码 -->
+		</if>
+		<if test="wechat != null and wechat != ''">
+	         wechat, <!-- 微信 -->
+		</if>
+		<if test="id_ != null and id_ != ''">
+	          id_  <!-- 流水号 -->
+	   </if>
+		)VALUES(
+		<if test="account != null and account != ''">
+	          #{account, jdbcType=VARCHAR}, <!-- 用户登录帐号 -->
+	    </if>
+		<if test="password != null and password != ''">
+	          #{password, jdbcType=VARCHAR}, <!-- 密码 -->
+	    </if>
+		<if test="nickname != null and nickname != ''">
+	          #{nickname, jdbcType=VARCHAR}, <!-- 昵称 -->
+	    </if>
+		<if test="sex != null and sex != ''">
+	          #{sex, jdbcType=VARCHAR}, <!-- 性别 -->
+	    </if>
+		<if test="status != null and status != ''">
+	          #{status, jdbcType=VARCHAR}, <!-- 用户状态（是否屏蔽） -->
+	    </if>
+		<if test="user_type != null and user_type != ''">
+	          #{user_type, jdbcType=VARCHAR}, <!-- 用户类型用户类型，1：管理员,2：会员 -->
+	    </if>
+		<if test="img_url != null and img_url != ''">
+	          #{img_url, jdbcType=VARCHAR}, <!-- 图片地址 -->
+	    </if>
+		<if test="email != null and email != ''">
+	          #{email, jdbcType=VARCHAR}, <!-- 电子邮件 -->
+	    </if>
+		<if test="mobile != null and mobile != ''">
+	          #{mobile, jdbcType=VARCHAR}, <!-- 手机号 -->
+	    </if>
+		<if test="skin != null and skin != ''">
+	          #{skin, jdbcType=VARCHAR}, <!-- 用户界面皮肤 -->
+	    </if>
+		<if test="biz_code != null and biz_code != ''">
+	          #{biz_code, jdbcType=VARCHAR}, <!-- 业务对照码 -->
+	    </if>
+		<if test="address != null and address != ''">
+	          #{address, jdbcType=VARCHAR}, <!-- 联系地址 -->
+	    </if>
+		<if test="note != null and note != ''">
+	          #{note, jdbcType=VARCHAR}, <!-- 介绍/备注 -->
+	    </if>
+		<if test="is_del != null and is_del != ''">
+	          #{is_del, jdbcType=VARCHAR}, <!-- 是否已删除 -->
+	    </if>
+		<if test="create_at != null and create_at != ''">
+	          #{create_at, jdbcType=VARCHAR}, <!-- 创建时间 -->
+	    </if>
+		<if test="create_by != null and create_by != ''">
+	          #{create_by, jdbcType=VARCHAR}, <!-- 创建人ID -->
+	    </if>
+		<if test="login_time != null and login_time != ''">
+	          #{login_time, jdbcType=VARCHAR}, <!-- 最后登录时间 -->
+	    </if>
+		<if test="sort != null">
+	          #{sort, jdbcType=INTEGER}, <!-- 排序 -->
+	    </if>
+		<if test="phone_id != null and phone_id != ''">
+	          #{phone_id, jdbcType=VARCHAR}, <!-- 手机ID -->
+	    </if>
+		<if test="phone_type != null and phone_type != ''">
+	          #{phone_type, jdbcType=VARCHAR}, <!-- 手机类型 -->
+	    </if>
+		<if test="gold_coins != null">
+	          #{gold_coins, jdbcType=NUMERIC}, <!-- 金币 -->
+	    </if>
+		<if test="pay_password != null and pay_password != ''">
+	          #{pay_password, jdbcType=VARCHAR}, <!-- 支付密码 -->
+	    </if>
+		<if test="deposit_amt != null">
+	          #{deposit_amt, jdbcType=NUMERIC}, <!-- 押金 -->
+	    </if>
+		<if test="deposit_date != null and deposit_date != ''">
+	          #{deposit_date, jdbcType=VARCHAR}, <!-- 押金支付时间 -->
+	    </if>
+		<if test="deposit_status != null and deposit_status != ''">
+	          #{deposit_status, jdbcType=VARCHAR}, <!-- 押金状态，0:未交，1：已交，-1：已退,2：申请退款中 -->
+	    </if>
+		<if test="grade != null and grade != ''">
+	          #{grade, jdbcType=VARCHAR}, <!-- 级别，silver：银牌会员，gold
+：金牌会员，platinum
+：白金会员 -->
+	    </if>
+		<if test="name != null and name != ''">
+	          #{name, jdbcType=VARCHAR}, <!-- 姓名 -->
+	    </if>
+		<if test="id_card != null and id_card != ''">
+	          #{id_card, jdbcType=VARCHAR}, <!-- 身份证号码 -->
+	    </if>
+		<if test="avatar != null and avatar != ''">
+	          #{avatar, jdbcType=VARCHAR}, <!-- 用户头像 -->
+	    </if>
+		<if test="is_cert != null and is_cert != ''">
+	          #{is_cert, jdbcType=VARCHAR}, <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过,2：已填写认证信息 -->
+	    </if>
+		<if test="gold_coins_status != null and gold_coins_status != ''">
+	          #{gold_coins_status, jdbcType=VARCHAR}, <!-- 金币状态,1：正常，-1：已退,2：申请退款中 -->
+	    </if>
+		<if test="device_number != null and device_number != ''">
+	          #{device_number, jdbcType=VARCHAR}, <!-- 设备编号 -->
+	    </if>
+		<if test="token != null and token != ''">
+	          #{token, jdbcType=VARCHAR}, <!-- 登录会话id -->
+	    </if>
+		<if test="qq != null and qq != ''">
+	          #{qq, jdbcType=VARCHAR}, <!-- qq号码 -->
+	    </if>
+		<if test="wechat != null and wechat != ''">
+	          #{wechat, jdbcType=VARCHAR}, <!-- 微信 -->
+	    </if>
+		<if test="id_ != null and id_ != ''">
+		     #{id_, jdbcType=VARCHAR}  <!-- 流水号 -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.Basic_userPO">
+		INSERT INTO basic_user (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{id_, jdbcType=VARCHAR},  <!-- 流水号 -->
+		    #{account, jdbcType=VARCHAR},  <!-- 用户登录帐号 -->
+		    #{password, jdbcType=VARCHAR},  <!-- 密码 -->
+		    #{nickname, jdbcType=VARCHAR},  <!-- 昵称 -->
+		    #{sex, jdbcType=VARCHAR},  <!-- 性别 -->
+		    #{status, jdbcType=VARCHAR},  <!-- 用户状态（是否屏蔽） -->
+		    #{user_type, jdbcType=VARCHAR},  <!-- 用户类型用户类型，1：管理员,2：会员 -->
+		    #{img_url, jdbcType=VARCHAR},  <!-- 图片地址 -->
+		    #{email, jdbcType=VARCHAR},  <!-- 电子邮件 -->
+		    #{mobile, jdbcType=VARCHAR},  <!-- 手机号 -->
+		    #{skin, jdbcType=VARCHAR},  <!-- 用户界面皮肤 -->
+		    #{biz_code, jdbcType=VARCHAR},  <!-- 业务对照码 -->
+		    #{address, jdbcType=VARCHAR},  <!-- 联系地址 -->
+		    #{note, jdbcType=VARCHAR},  <!-- 介绍/备注 -->
+		    #{is_del, jdbcType=VARCHAR},  <!-- 是否已删除 -->
+		    #{create_at, jdbcType=VARCHAR},  <!-- 创建时间 -->
+		    #{create_by, jdbcType=VARCHAR},  <!-- 创建人ID -->
+		    #{login_time, jdbcType=VARCHAR},  <!-- 最后登录时间 -->
+		    #{sort, jdbcType=INTEGER},  <!-- 排序 -->
+		    #{phone_id, jdbcType=VARCHAR},  <!-- 手机ID -->
+		    #{phone_type, jdbcType=VARCHAR},  <!-- 手机类型 -->
+		    #{gold_coins, jdbcType=NUMERIC},  <!-- 金币 -->
+		    #{pay_password, jdbcType=VARCHAR},  <!-- 支付密码 -->
+		    #{deposit_amt, jdbcType=NUMERIC},  <!-- 押金 -->
+		    #{deposit_date, jdbcType=VARCHAR},  <!-- 押金支付时间 -->
+		    #{deposit_status, jdbcType=VARCHAR},  <!-- 押金状态，0:未交，1：已交，-1：已退,2：申请退款中 -->
+		    #{grade, jdbcType=VARCHAR},  <!-- 级别，silver：银牌会员，gold
+：金牌会员，platinum
+：白金会员 -->
+		    #{name, jdbcType=VARCHAR},  <!-- 姓名 -->
+		    #{id_card, jdbcType=VARCHAR},  <!-- 身份证号码 -->
+		    #{avatar, jdbcType=VARCHAR},  <!-- 用户头像 -->
+		    #{is_cert, jdbcType=VARCHAR},  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过,2：已填写认证信息 -->
+		    #{gold_coins_status, jdbcType=VARCHAR},  <!-- 金币状态,1：正常，-1：已退,2：申请退款中 -->
+		    #{device_number, jdbcType=VARCHAR},  <!-- 设备编号 -->
+		    #{token, jdbcType=VARCHAR},  <!-- 登录会话id -->
+		    #{qq, jdbcType=VARCHAR},  <!-- qq号码 -->
+		    #{wechat, jdbcType=VARCHAR}  <!-- 微信 -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.Basic_userPO">
+		UPDATE basic_user
+		<set>
+			<if test="id_ != null">
+		          id_ = #{id_, jdbcType=VARCHAR},  <!-- 流水号 -->
+			</if>
+			<if test="account != null">
+		          account = #{account, jdbcType=VARCHAR},  <!-- 用户登录帐号 -->
+			</if>
+			<if test="password != null">
+		          password = #{password, jdbcType=VARCHAR},  <!-- 密码 -->
+			</if>
+			<if test="nickname != null">
+		          nickname = #{nickname, jdbcType=VARCHAR},  <!-- 昵称 -->
+			</if>
+			<if test="sex != null">
+		          sex = #{sex, jdbcType=VARCHAR},  <!-- 性别 -->
+			</if>
+			<if test="status != null">
+		          status = #{status, jdbcType=VARCHAR},  <!-- 用户状态（是否屏蔽） -->
+			</if>
+			<if test="user_type != null">
+		          user_type = #{user_type, jdbcType=VARCHAR},  <!-- 用户类型用户类型，1：管理员,2：会员 -->
+			</if>
+			<if test="img_url != null">
+		          img_url = #{img_url, jdbcType=VARCHAR},  <!-- 图片地址 -->
+			</if>
+			<if test="email != null">
+		          email = #{email, jdbcType=VARCHAR},  <!-- 电子邮件 -->
+			</if>
+			<if test="mobile != null">
+		          mobile = #{mobile, jdbcType=VARCHAR},  <!-- 手机号 -->
+			</if>
+			<if test="skin != null">
+		          skin = #{skin, jdbcType=VARCHAR},  <!-- 用户界面皮肤 -->
+			</if>
+			<if test="biz_code != null">
+		          biz_code = #{biz_code, jdbcType=VARCHAR},  <!-- 业务对照码 -->
+			</if>
+			<if test="address != null">
+		          address = #{address, jdbcType=VARCHAR},  <!-- 联系地址 -->
+			</if>
+			<if test="note != null">
+		          note = #{note, jdbcType=VARCHAR},  <!-- 介绍/备注 -->
+			</if>
+			<if test="is_del != null">
+		          is_del = #{is_del, jdbcType=VARCHAR},  <!-- 是否已删除 -->
+			</if>
+			<if test="create_at != null">
+		          create_at = #{create_at, jdbcType=VARCHAR},  <!-- 创建时间 -->
+			</if>
+			<if test="create_by != null">
+		          create_by = #{create_by, jdbcType=VARCHAR},  <!-- 创建人ID -->
+			</if>
+			<if test="login_time != null">
+		          login_time = #{login_time, jdbcType=VARCHAR},  <!-- 最后登录时间 -->
+			</if>
+			<if test="sort != null">
+		          sort = #{sort, jdbcType=INTEGER},  <!-- 排序 -->
+			</if>
+			<if test="phone_id != null">
+		          phone_id = #{phone_id, jdbcType=VARCHAR},  <!-- 手机ID -->
+			</if>
+			<if test="phone_type != null">
+		          phone_type = #{phone_type, jdbcType=VARCHAR},  <!-- 手机类型 -->
+			</if>
+			<if test="gold_coins != null">
+		          gold_coins = #{gold_coins, jdbcType=NUMERIC},  <!-- 金币 -->
+			</if>
+			<if test="pay_password != null">
+		          pay_password = #{pay_password, jdbcType=VARCHAR},  <!-- 支付密码 -->
+			</if>
+			<if test="deposit_amt != null">
+		          deposit_amt = #{deposit_amt, jdbcType=NUMERIC},  <!-- 押金 -->
+			</if>
+			<if test="deposit_date != null">
+		          deposit_date = #{deposit_date, jdbcType=VARCHAR},  <!-- 押金支付时间 -->
+			</if>
+			<if test="deposit_status != null">
+		          deposit_status = #{deposit_status, jdbcType=VARCHAR},  <!-- 押金状态，0:未交，1：已交，-1：已退,2：申请退款中 -->
+			</if>
+			<if test="grade != null">
+		          grade = #{grade, jdbcType=VARCHAR},  <!-- 级别，silver：银牌会员，gold
+：金牌会员，platinum
+：白金会员 -->
+			</if>
+			<if test="name != null">
+		          name = #{name, jdbcType=VARCHAR},  <!-- 姓名 -->
+			</if>
+			<if test="id_card != null">
+		          id_card = #{id_card, jdbcType=VARCHAR},  <!-- 身份证号码 -->
+			</if>
+			<if test="avatar != null">
+		          avatar = #{avatar, jdbcType=VARCHAR},  <!-- 用户头像 -->
+			</if>
+			<if test="is_cert != null">
+		          is_cert = #{is_cert, jdbcType=VARCHAR},  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过,2：已填写认证信息 -->
+			</if>
+			<if test="gold_coins_status != null">
+		          gold_coins_status = #{gold_coins_status, jdbcType=VARCHAR},  <!-- 金币状态,1：正常，-1：已退,2：申请退款中 -->
+			</if>
+			<if test="device_number != null">
+		          device_number = #{device_number, jdbcType=VARCHAR},  <!-- 设备编号 -->
+			</if>
+			<if test="token != null">
+		          token = #{token, jdbcType=VARCHAR},  <!-- 登录会话id -->
+			</if>
+			<if test="qq != null">
+		          qq = #{qq, jdbcType=VARCHAR},  <!-- qq号码 -->
+			</if>
+			<if test="wechat != null">
+		          wechat = #{wechat, jdbcType=VARCHAR},  <!-- 微信 -->
+			</if>
+		</set>
+		WHERE  id_ = #{id_}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM basic_user WHERE  id_ = #{id_}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.Basic_userPO">
+		SELECT
+		<include refid="column" />
+		FROM basic_user WHERE  id_ = #{id_}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.Basic_userPO">
+		SELECT
+		    <include refid="column" />
+		FROM basic_user
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.Basic_userPO">
+		SELECT
+			<include refid="column" />	
+		FROM basic_user
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.Basic_userPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM basic_user
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.Basic_userPO">
+		SELECT
+			<include refid="column" />	
+		FROM basic_user
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.Basic_userPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM basic_user
+		<where>
+		    <include refid="like" />
+		</where>	
+		
+		
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM basic_user
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM basic_user
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  id_,  <!-- 流水号 -->
+		  account,  <!-- 用户登录帐号 -->
+		  password,  <!-- 密码 -->
+		  nickname,  <!-- 昵称 -->
+		  sex,  <!-- 性别 -->
+		  status,  <!-- 用户状态（是否屏蔽） -->
+		  user_type,  <!-- 用户类型用户类型，1：管理员,2：会员 -->
+		  img_url,  <!-- 图片地址 -->
+		  email,  <!-- 电子邮件 -->
+		  mobile,  <!-- 手机号 -->
+		  skin,  <!-- 用户界面皮肤 -->
+		  biz_code,  <!-- 业务对照码 -->
+		  address,  <!-- 联系地址 -->
+		  note,  <!-- 介绍/备注 -->
+		  is_del,  <!-- 是否已删除 -->
+		  create_at,  <!-- 创建时间 -->
+		  create_by,  <!-- 创建人ID -->
+		  login_time,  <!-- 最后登录时间 -->
+		  sort,  <!-- 排序 -->
+		  phone_id,  <!-- 手机ID -->
+		  phone_type,  <!-- 手机类型 -->
+		  gold_coins,  <!-- 金币 -->
+		  pay_password,  <!-- 支付密码 -->
+		  deposit_amt,  <!-- 押金 -->
+		  deposit_date,  <!-- 押金支付时间 -->
+		  deposit_status,  <!-- 押金状态，0:未交，1：已交，-1：已退,2：申请退款中 -->
+		  grade,  <!-- 级别，silver：银牌会员，gold
+：金牌会员，platinum
+：白金会员 -->
+		  name,  <!-- 姓名 -->
+		  id_card,  <!-- 身份证号码 -->
+		  avatar,  <!-- 用户头像 -->
+		  is_cert,  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过,2：已填写认证信息 -->
+		  gold_coins_status,  <!-- 金币状态,1：正常，-1：已退,2：申请退款中 -->
+		  device_number,  <!-- 设备编号 -->
+		  token,  <!-- 登录会话id -->
+		  qq,  <!-- qq号码 -->
+		  wechat  <!-- 微信 -->
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  basic_user.id_,  <!-- 流水号 -->
+		  basic_user.account,  <!-- 用户登录帐号 -->
+		  basic_user.password,  <!-- 密码 -->
+		  basic_user.nickname,  <!-- 昵称 -->
+		  basic_user.sex,  <!-- 性别 -->
+		  basic_user.status,  <!-- 用户状态（是否屏蔽） -->
+		  basic_user.user_type,  <!-- 用户类型用户类型，1：管理员,2：会员 -->
+		  basic_user.img_url,  <!-- 图片地址 -->
+		  basic_user.email,  <!-- 电子邮件 -->
+		  basic_user.mobile,  <!-- 手机号 -->
+		  basic_user.skin,  <!-- 用户界面皮肤 -->
+		  basic_user.biz_code,  <!-- 业务对照码 -->
+		  basic_user.address,  <!-- 联系地址 -->
+		  basic_user.note,  <!-- 介绍/备注 -->
+		  basic_user.is_del,  <!-- 是否已删除 -->
+		  basic_user.create_at,  <!-- 创建时间 -->
+		  basic_user.create_by,  <!-- 创建人ID -->
+		  basic_user.login_time,  <!-- 最后登录时间 -->
+		  basic_user.sort,  <!-- 排序 -->
+		  basic_user.phone_id,  <!-- 手机ID -->
+		  basic_user.phone_type,  <!-- 手机类型 -->
+		  basic_user.gold_coins,  <!-- 金币 -->
+		  basic_user.pay_password,  <!-- 支付密码 -->
+		  basic_user.deposit_amt,  <!-- 押金 -->
+		  basic_user.deposit_date,  <!-- 押金支付时间 -->
+		  basic_user.deposit_status,  <!-- 押金状态，0:未交，1：已交，-1：已退,2：申请退款中 -->
+		  basic_user.grade,  <!-- 级别，silver：银牌会员，gold
+：金牌会员，platinum
+：白金会员 -->
+		  basic_user.name,  <!-- 姓名 -->
+		  basic_user.id_card,  <!-- 身份证号码 -->
+		  basic_user.avatar,  <!-- 用户头像 -->
+		  basic_user.is_cert,  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过,2：已填写认证信息 -->
+		  basic_user.gold_coins_status,  <!-- 金币状态,1：正常，-1：已退,2：申请退款中 -->
+		  basic_user.device_number,  <!-- 设备编号 -->
+		  basic_user.token,  <!-- 登录会话id -->
+		  basic_user.qq,  <!-- qq号码 -->
+		  basic_user.wechat  <!-- 微信 -->
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="id_ != null and id_ != ''">
+		      AND id_ = #{id_}  <!-- 流水号 -->
+		</if>
+	    <if test="account != null and account != ''">
+		      AND account = #{account}  <!-- 用户登录帐号 -->
+		</if>
+	    <if test="password != null and password != ''">
+		      AND password = #{password}  <!-- 密码 -->
+		</if>
+	    <if test="nickname != null and nickname != ''">
+		      AND nickname = #{nickname}  <!-- 昵称 -->
+		</if>
+	    <if test="sex != null and sex != ''">
+		      AND sex = #{sex}  <!-- 性别 -->
+		</if>
+	    <if test="status != null and status != ''">
+		      AND status = #{status}  <!-- 用户状态（是否屏蔽） -->
+		</if>
+	    <if test="user_type != null and user_type != ''">
+		      AND user_type = #{user_type}  <!-- 用户类型用户类型，1：管理员,2：会员 -->
+		</if>
+	    <if test="img_url != null and img_url != ''">
+		      AND img_url = #{img_url}  <!-- 图片地址 -->
+		</if>
+	    <if test="email != null and email != ''">
+		      AND email = #{email}  <!-- 电子邮件 -->
+		</if>
+	    <if test="mobile != null and mobile != ''">
+		      AND mobile = #{mobile}  <!-- 手机号 -->
+		</if>
+	    <if test="skin != null and skin != ''">
+		      AND skin = #{skin}  <!-- 用户界面皮肤 -->
+		</if>
+	    <if test="biz_code != null and biz_code != ''">
+		      AND biz_code = #{biz_code}  <!-- 业务对照码 -->
+		</if>
+	    <if test="address != null and address != ''">
+		      AND address = #{address}  <!-- 联系地址 -->
+		</if>
+	    <if test="note != null and note != ''">
+		      AND note = #{note}  <!-- 介绍/备注 -->
+		</if>
+	    <if test="is_del != null and is_del != ''">
+		      AND is_del = #{is_del}  <!-- 是否已删除 -->
+		</if>
+	    <if test="create_at != null and create_at != ''">
+		      AND create_at = #{create_at}  <!-- 创建时间 -->
+		</if>
+	    <if test="create_by != null and create_by != ''">
+		      AND create_by = #{create_by}  <!-- 创建人ID -->
+		</if>
+	    <if test="login_time != null and login_time != ''">
+		      AND login_time = #{login_time}  <!-- 最后登录时间 -->
+		</if>
+	   <if test="sort != null ">
+		      AND sort = #{sort}  <!-- 排序 -->
+		</if>
+	    <if test="phone_id != null and phone_id != ''">
+		      AND phone_id = #{phone_id}  <!-- 手机ID -->
+		</if>
+	    <if test="phone_type != null and phone_type != ''">
+		      AND phone_type = #{phone_type}  <!-- 手机类型 -->
+		</if>
+	   <if test="gold_coins != null ">
+		      AND gold_coins = #{gold_coins}  <!-- 金币 -->
+		</if>
+	    <if test="pay_password != null and pay_password != ''">
+		      AND pay_password = #{pay_password}  <!-- 支付密码 -->
+		</if>
+	   <if test="deposit_amt != null ">
+		      AND deposit_amt = #{deposit_amt}  <!-- 押金 -->
+		</if>
+	    <if test="deposit_date != null and deposit_date != ''">
+		      AND deposit_date = #{deposit_date}  <!-- 押金支付时间 -->
+		</if>
+	    <if test="deposit_status != null and deposit_status != ''">
+		      AND deposit_status = #{deposit_status}  <!-- 押金状态，0:未交，1：已交，-1：已退,2：申请退款中 -->
+		</if>
+	    <if test="grade != null and grade != ''">
+		      AND grade = #{grade}  <!-- 级别，silver：银牌会员，gold
+：金牌会员，platinum
+：白金会员 -->
+		</if>
+	    <if test="name != null and name != ''">
+		      AND name = #{name}  <!-- 姓名 -->
+		</if>
+	    <if test="id_card != null and id_card != ''">
+		      AND id_card = #{id_card}  <!-- 身份证号码 -->
+		</if>
+	    <if test="avatar != null and avatar != ''">
+		      AND avatar = #{avatar}  <!-- 用户头像 -->
+		</if>
+	    <if test="is_cert != null and is_cert != ''">
+		      AND is_cert = #{is_cert}  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过,2：已填写认证信息 -->
+		</if>
+	    <if test="gold_coins_status != null and gold_coins_status != ''">
+		      AND gold_coins_status = #{gold_coins_status}  <!-- 金币状态,1：正常，-1：已退,2：申请退款中 -->
+		</if>
+	    <if test="device_number != null and device_number != ''">
+		      AND device_number = #{device_number}  <!-- 设备编号 -->
+		</if>
+	    <if test="token != null and token != ''">
+		      AND token = #{token}  <!-- 登录会话id -->
+		</if>
+	    <if test="qq != null and qq != ''">
+		      AND qq = #{qq}  <!-- qq号码 -->
+		</if>
+	    <if test="wechat != null and wechat != ''">
+		      AND wechat = #{wechat}  <!-- 微信 -->
+		</if>
+	</sql>
+	
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="id_ != null and id_ != ''">
+		      AND id_ like '%${id_}%'  <!-- 流水号 -->
+		</if>
+	    <if test="account != null and account != ''">
+		      AND account like '%${account}%'  <!-- 用户登录帐号 -->
+		</if>
+	    <if test="password != null and password != ''">
+		      AND password like '%${password}%'  <!-- 密码 -->
+		</if>
+	    <if test="nickname != null and nickname != ''">
+		      AND nickname like '%${nickname}%'  <!-- 昵称 -->
+		</if>
+	    <if test="sex != null and sex != ''">
+		      AND sex like '%${sex}%'  <!-- 性别 -->
+		</if>
+	    <if test="status != null and status != ''">
+		      AND status like '%${status}%'  <!-- 用户状态（是否屏蔽） -->
+		</if>
+	    <if test="user_type != null and user_type != ''">
+		      AND user_type like '%${user_type}%'  <!-- 用户类型用户类型，1：管理员,2：会员 -->
+		</if>
+	    <if test="img_url != null and img_url != ''">
+		      AND img_url like '%${img_url}%'  <!-- 图片地址 -->
+		</if>
+	    <if test="email != null and email != ''">
+		      AND email like '%${email}%'  <!-- 电子邮件 -->
+		</if>
+	    <if test="mobile != null and mobile != ''">
+		      AND mobile like '%${mobile}%'  <!-- 手机号 -->
+		</if>
+	    <if test="skin != null and skin != ''">
+		      AND skin like '%${skin}%'  <!-- 用户界面皮肤 -->
+		</if>
+	    <if test="biz_code != null and biz_code != ''">
+		      AND biz_code like '%${biz_code}%'  <!-- 业务对照码 -->
+		</if>
+	    <if test="address != null and address != ''">
+		      AND address like '%${address}%'  <!-- 联系地址 -->
+		</if>
+	    <if test="note != null and note != ''">
+		      AND note like '%${note}%'  <!-- 介绍/备注 -->
+		</if>
+	    <if test="is_del != null and is_del != ''">
+		      AND is_del like '%${is_del}%'  <!-- 是否已删除 -->
+		</if>
+	    <if test="create_at != null and create_at != ''">
+		      AND create_at like '%${create_at}%'  <!-- 创建时间 -->
+		</if>
+	    <if test="create_by != null and create_by != ''">
+		      AND create_by like '%${create_by}%'  <!-- 创建人ID -->
+		</if>
+	    <if test="login_time != null and login_time != ''">
+		      AND login_time like '%${login_time}%'  <!-- 最后登录时间 -->
+		</if>
+	    <if test="phone_id != null and phone_id != ''">
+		      AND phone_id like '%${phone_id}%'  <!-- 手机ID -->
+		</if>
+	    <if test="phone_type != null and phone_type != ''">
+		      AND phone_type like '%${phone_type}%'  <!-- 手机类型 -->
+		</if>
+	    <if test="pay_password != null and pay_password != ''">
+		      AND pay_password like '%${pay_password}%'  <!-- 支付密码 -->
+		</if>
+	    <if test="deposit_date != null and deposit_date != ''">
+		      AND deposit_date like '%${deposit_date}%'  <!-- 押金支付时间 -->
+		</if>
+	    <if test="deposit_status != null and deposit_status != ''">
+		      AND deposit_status like '%${deposit_status}%'  <!-- 押金状态，0:未交，1：已交，-1：已退,2：申请退款中 -->
+		</if>
+	    <if test="grade != null and grade != ''">
+		      AND grade like '%${grade}%'  <!-- 级别，silver：银牌会员，gold
+：金牌会员，platinum
+：白金会员 -->
+		</if>
+	    <if test="name != null and name != ''">
+		      AND name like '%${name}%'  <!-- 姓名 -->
+		</if>
+	    <if test="id_card != null and id_card != ''">
+		      AND id_card like '%${id_card}%'  <!-- 身份证号码 -->
+		</if>
+	    <if test="avatar != null and avatar != ''">
+		      AND avatar like '%${avatar}%'  <!-- 用户头像 -->
+		</if>
+	    <if test="is_cert != null and is_cert != ''">
+		      AND is_cert like '%${is_cert}%'  <!-- 是否认证，0：未认证，1：认证通过，-1：认证不通过,2：已填写认证信息 -->
+		</if>
+	    <if test="gold_coins_status != null and gold_coins_status != ''">
+		      AND gold_coins_status like '%${gold_coins_status}%'  <!-- 金币状态,1：正常，-1：已退,2：申请退款中 -->
+		</if>
+	    <if test="device_number != null and device_number != ''">
+		      AND device_number like '%${device_number}%'  <!-- 设备编号 -->
+		</if>
+	    <if test="token != null and token != ''">
+		      AND token like '%${token}%'  <!-- 登录会话id -->
+		</if>
+	    <if test="qq != null and qq != ''">
+		      AND qq like '%${qq}%'  <!-- qq号码 -->
+		</if>
+	    <if test="wechat != null and wechat != ''">
+		      AND wechat like '%${wechat}%'  <!-- 微信 -->
+		</if>
+	</sql>
+	
+</mapper>

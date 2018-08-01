@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd"
+	default-lazy-init="true">
+
+	<description>系统全局上下文环境</description>
+	
+	<!-- 加载属性配置文件 -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		 <property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Spring服务组件扫描(排除@Controller相关组件) -->
+	<!-- 提醒：请将com.corp.project修改为您的真实项目路径 -->
+	<context:component-scan base-package="aos;controller;utils;service" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+	
+	<!-- 平台缺省 JDBC 数据源 -->
+	 <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
+      <!-- 基本属性 url、user、password -->
+      <property name="url" value="${jdbc.url}" />
+      <property name="username" value="${jdbc.username}" />
+      <property name="password" value="${jdbc.password}" />
+      <!-- 配置初始化大小、最小、最大 -->
+      <property name="initialSize" value="1" />
+      <property name="minIdle" value="1" /> 
+      <property name="maxActive" value="50" />
+      <!-- 配置获取连接等待超时的时间 -->
+      <property name="maxWait" value="60000" />
+      <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+      <property name="timeBetweenEvictionRunsMillis" value="60000" />
+      <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+      <property name="minEvictableIdleTimeMillis" value="300000" />
+      <property name="validationQuery" value="SELECT 'x'" />
+      <property name="testWhileIdle" value="true" />
+      <property name="testOnBorrow" value="false" />
+      <property name="testOnReturn" value="false" />
+      <!-- 打开PSCache，并且指定每个连接上PSCache的大小 ORACLE可配置为true -->
+      <property name="poolPreparedStatements" value="false" />
+      <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+      <!-- 配置监控统计拦截的filters -->
+      <property name="filters" value="stat" /> 
+  </bean>
+
+	<!-- 平台缺省使用JDBC事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 注解驱动的声明式事务管理 -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+	<!-- 平台缺省数据源 SqlSessionFactory配置 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 提醒：请将com.corp.project修改为您的真实项目路径 -->
+		<property name="typeAliasesPackage" value="aos;dao" />
+		<property name="mapperLocations" value="classpath*:**/*Dao.xml" />
+		<property name="configLocation" value="classpath:mybatis.xml" />
+	</bean>
+
+	<!-- 扫描数据访问对象 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	    <!-- 提醒：请将com.corp.project修改为您的真实项目路径 -->
+		<property name="basePackage" value="aos;dao" />
+		<property name="annotationClass" value="aos.framework.core.annotation.Dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+
+	<!-- 平台缺省数据源的SQL通用访问接口 -->
+	<bean id="sqlDao" class="aos.framework.core.dao.SqlDao">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<task:scheduled-tasks>   
+         <task:scheduled ref="taskJob" method="job1" cron="0 15 20 ? * *"/>
+         <task:scheduled ref="taskJob" method="addBackup" cron="0 4 0 * * ?"/><!-- 每天零点过一分执行 -->
+          <task:scheduled ref="taskJob" method="checkVoucher" cron="0 1 0 * * ?"/><!-- 每天零点过一分执行 -->
+         <task:scheduled ref="taskJob" method="cancelSubcribe" cron="0 0/1 * * * ?"/><!-- 每隔1分执行  检测预约失效-->
+         <task:scheduled ref="taskJob" method="checkListChargingOrderss" cron="0 0/1 * * * ?"/><!-- 每隔1分执行  当订单超过5分钟没有数据更新，则取消或完成订单-->
+         <!--<task:scheduled ref="taskJob" method="generateAward" cron="0 0/2 * * * ?"/> 每隔2分执行 生成奖励记录 -->
+         <!--<task:scheduled ref="taskJob" method="checkedOrders" cron="0 0/1 * * * ?"/>每隔1分执行  检测订单失效-->
+         <!--<task:scheduled ref="taskJob" method="completeOrder" cron="0 0/1 * * * ?"/>每隔1分执行  发货超过20天，则系统自动将订单设置为收货状态-->
+         <!--<task:scheduled ref="taskJob" method="updateGoodsVolume" cron="0 0/1 * * * ?"/>每隔1分执行  更新商品总销量和月销量-->
+        <!--<task:scheduled ref="taskJob" method="updateMonthVolume" cron="0 1 0 3 * ?"/>  每月1号零点过三分执行  更新商品月销量为0--> 
+	</task:scheduled-tasks>
+</beans>

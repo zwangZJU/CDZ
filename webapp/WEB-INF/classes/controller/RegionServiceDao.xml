@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- region管理模块使用的SQL语句 -->
+<mapper namespace="Region">
+
+	<!-- 查询region列表 ,多表关联查询-->
+	<select id="listRegionsPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.RegionDao.column" />	
+			FROM region
+			<where>
+			    <include refid="dao.RegionDao.equal" />
+			</where>
+	</select>
+	<select id="listRegions" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.RegionDao.column" />	
+			FROM region
+			<where>
+			    <include refid="dao.RegionDao.equal" />
+			    <if test="lt_region_level != null and lt_region_level != ''">
+				      AND region_level <![CDATA[ <= ]]> #{lt_region_level}  <!-- region_level -->
+				</if>
+			</where>
+	</select>
+	<select id="region" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.RegionDao.column" />	
+			FROM region
+			<where>
+			    <include refid="dao.RegionDao.equal" />
+			</where>
+	</select>
+
+</mapper>

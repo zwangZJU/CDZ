@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- orders_pay[orders_pay]SQL自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2017-07-18 21:56:19 -->
+<mapper namespace="dao.OrdersPayDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.OrdersPayPO">
+		INSERT INTO orders_pay (
+		<if test="pay_amt != null">
+	         pay_amt, <!-- 支付金额 -->
+		</if>
+		<if test="co_id != null and co_id != ''">
+	         co_id, <!-- 订单ID -->
+		</if>
+		<if test="pay_source != null and pay_source != ''">
+	         pay_source, <!-- 支付类型，0：微信，1：支付宝，2:钱包 -->
+		</if>
+		<if test="pay_type != null and pay_type != ''">
+	         pay_type, <!-- 消费类型，0：充值，1：支付充电，2：押金 -->
+		</if>
+		<if test="pay_direction != null and pay_direction != ''">
+	         pay_direction, <!-- 计算方向，1：增加，-1：减少 -->
+		</if>
+		<if test="create_date != null and create_date != ''">
+	         create_date, <!-- 创建时间 -->
+		</if>
+		<if test="is_del != null and is_del != ''">
+	         is_del, <!-- 是否删除，0：未删除，1：已删除 -->
+		</if>
+		<if test="oper_id != null and oper_id != ''">
+	         oper_id, <!-- 操作人 -->
+		</if>
+		<if test="user_id != null and user_id != ''">
+	         user_id, <!-- user_id -->
+		</if>
+		<if test="status != null and status != ''">
+	         status, <!-- 状态，0：未支付，1：已支付 -->
+		</if>
+		<if test="success_date != null and success_date != ''">
+	         success_date, <!-- 支付时间 -->
+		</if>
+		<if test="out_trade_no != null and out_trade_no != ''">
+	         out_trade_no, <!-- 支付时间 -->
+		</if>
+		<if test="voucher_id != null and voucher_id != ''">
+	         voucher_id, <!-- 支付时间 -->
+		</if>
+		<if test="pay_id != null and pay_id != ''">
+	          pay_id  <!-- 主键 -->
+	   </if>
+		)VALUES(
+		<if test="pay_amt != null">
+	          #{pay_amt, jdbcType=NUMERIC}, <!-- 支付金额 -->
+	    </if>
+		<if test="co_id != null and co_id != ''">
+	          #{co_id, jdbcType=VARCHAR}, <!-- 订单ID -->
+	    </if>
+		<if test="pay_source != null and pay_source != ''">
+	          #{pay_source, jdbcType=VARCHAR}, <!-- 支付类型，0：微信，1：支付宝，2:钱包 -->
+	    </if>
+		<if test="pay_type != null and pay_type != ''">
+	          #{pay_type, jdbcType=VARCHAR}, <!-- 消费类型，0：充值，1：支付充电，2：押金 -->
+	    </if>
+		<if test="pay_direction != null and pay_direction != ''">
+	          #{pay_direction, jdbcType=VARCHAR}, <!-- 计算方向，1：增加，-1：减少 -->
+	    </if>
+		<if test="create_date != null and create_date != ''">
+	          #{create_date, jdbcType=VARCHAR}, <!-- 创建时间 -->
+	    </if>
+		<if test="is_del != null and is_del != ''">
+	          #{is_del, jdbcType=VARCHAR}, <!-- 是否删除，0：未删除，1：已删除 -->
+	    </if>
+		<if test="oper_id != null and oper_id != ''">
+	          #{oper_id, jdbcType=VARCHAR}, <!-- 操作人 -->
+	    </if>
+		<if test="user_id != null and user_id != ''">
+	          #{user_id, jdbcType=VARCHAR}, <!-- user_id -->
+	    </if>
+		<if test="status != null and status != ''">
+	          #{status, jdbcType=VARCHAR}, <!-- 状态，0：未支付，1：已支付 -->
+	    </if>
+		<if test="success_date != null and success_date != ''">
+	          #{success_date, jdbcType=VARCHAR}, <!-- 支付时间 -->
+	    </if>
+	    <if test="out_trade_no != null and out_trade_no != ''">
+	          #{out_trade_no, jdbcType=VARCHAR}, <!-- 支付时间 -->
+	    </if>
+	    <if test="voucher_id != null and voucher_id != ''">
+	          #{voucher_id, jdbcType=VARCHAR}, <!-- 支付时间 -->
+	    </if>
+		<if test="pay_id != null and pay_id != ''">
+		     #{pay_id, jdbcType=VARCHAR}  <!-- 主键 -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.OrdersPayPO">
+		INSERT INTO orders_pay (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{pay_id, jdbcType=VARCHAR},  <!-- 主键 -->
+		    #{pay_amt, jdbcType=NUMERIC},  <!-- 支付金额 -->
+		    #{co_id, jdbcType=VARCHAR},  <!-- 订单ID -->
+		    #{pay_source, jdbcType=VARCHAR},  <!-- 支付类型，0：微信，1：支付宝，2:钱包 -->
+		    #{pay_type, jdbcType=VARCHAR},  <!-- 消费类型，0：充值，1：支付充电，2：押金 -->
+		    #{pay_direction, jdbcType=VARCHAR},  <!-- 计算方向，1：增加，-1：减少 -->
+		    #{create_date, jdbcType=VARCHAR},  <!-- 创建时间 -->
+		    #{is_del, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：已删除 -->
+		    #{oper_id, jdbcType=VARCHAR},  <!-- 操作人 -->
+		    #{user_id, jdbcType=VARCHAR},  <!-- user_id -->
+		    #{status, jdbcType=VARCHAR},  <!-- 状态，0：未支付，1：已支付 -->
+		    #{success_date, jdbcType=VARCHAR}  <!-- 支付时间 -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.OrdersPayPO">
+		UPDATE orders_pay
+		<set>
+			<if test="pay_id != null">
+		          pay_id = #{pay_id, jdbcType=VARCHAR},  <!-- 主键 -->
+			</if>
+			<if test="pay_amt != null">
+		          pay_amt = #{pay_amt, jdbcType=NUMERIC},  <!-- 支付金额 -->
+			</if>
+			<if test="co_id != null">
+		          co_id = #{co_id, jdbcType=VARCHAR},  <!-- 订单ID -->
+			</if>
+			<if test="pay_source != null">
+		          pay_source = #{pay_source, jdbcType=VARCHAR},  <!-- 支付类型，0：微信，1：支付宝，2:钱包 -->
+			</if>
+			<if test="pay_type != null">
+		          pay_type = #{pay_type, jdbcType=VARCHAR},  <!-- 消费类型，0：充值，1：支付充电，2：押金 -->
+			</if>
+			<if test="pay_direction != null">
+		          pay_direction = #{pay_direction, jdbcType=VARCHAR},  <!-- 计算方向，1：增加，-1：减少 -->
+			</if>
+			<if test="create_date != null">
+		          create_date = #{create_date, jdbcType=VARCHAR},  <!-- 创建时间 -->
+			</if>
+			<if test="is_del != null">
+		          is_del = #{is_del, jdbcType=VARCHAR},  <!-- 是否删除，0：未删除，1：已删除 -->
+			</if>
+			<if test="oper_id != null">
+		          oper_id = #{oper_id, jdbcType=VARCHAR},  <!-- 操作人 -->
+			</if>
+			<if test="user_id != null">
+		          user_id = #{user_id, jdbcType=VARCHAR},  <!-- user_id -->
+			</if>
+			<if test="status != null">
+		          status = #{status, jdbcType=VARCHAR},  <!-- 状态，0：未支付，1：已支付 -->
+			</if>
+			<if test="success_date != null">
+		          success_date = #{success_date, jdbcType=VARCHAR},  <!-- 支付时间 -->
+			</if>
+			<if test="out_trade_no != null">
+		          out_trade_no = #{out_trade_no, jdbcType=VARCHAR},  <!-- 支付时间 -->
+			</if>
+			<if test="voucher_id != null">
+		          voucher_id = #{voucher_id, jdbcType=VARCHAR},  <!-- 支付时间 -->
+			</if>
+		</set>
+		WHERE  pay_id = #{pay_id}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM orders_pay WHERE  pay_id = #{pay_id}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.OrdersPayPO">
+		SELECT
+		<include refid="column" />
+		FROM orders_pay WHERE  pay_id = #{pay_id}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.OrdersPayPO">
+		SELECT
+		    <include refid="column" />
+		FROM orders_pay
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.OrdersPayPO">
+		SELECT
+			<include refid="column" />	
+		FROM orders_pay
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.OrdersPayPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM orders_pay
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.OrdersPayPO">
+		SELECT
+			<include refid="column" />	
+		FROM orders_pay
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.OrdersPayPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FRoM orders_pay
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM orders_pay
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM orders_pay
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  pay_id,  <!-- 主键 -->
+		  pay_amt,  <!-- 支付金额 -->
+		  co_id,  <!-- 订单ID -->
+		  pay_source,  <!-- 支付类型，0：微信，1：支付宝，2:钱包 -->
+		  pay_type,  <!-- 消费类型，0：充值，1：支付充电，2：押金 -->
+		  pay_direction,  <!-- 计算方向，1：增加，-1：减少 -->
+		  create_date,  <!-- 创建时间 -->
+		  is_del,  <!-- 是否删除，0：未删除，1：已删除 -->
+		  oper_id,  <!-- 操作人 -->
+		  user_id,  <!-- user_id -->
+		  status,  <!-- 状态，0：未支付，1：已支付 -->
+		  success_date, 
+		  out_trade_no,
+		  voucher_id
+		  
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  orders_pay.pay_id,  <!-- 主键 -->
+		  orders_pay.pay_amt,  <!-- 支付金额 -->
+		  orders_pay.co_id,  <!-- 订单ID -->
+		  orders_pay.pay_source,  <!-- 支付类型，0：微信，1：支付宝，2:钱包 -->
+		  orders_pay.pay_type,  <!-- 消费类型，0：充值，1：支付充电，2：押金 -->
+		  orders_pay.pay_direction,  <!-- 计算方向，1：增加，-1：减少 -->
+		  orders_pay.create_date,  <!-- 创建时间 -->
+		  orders_pay.is_del,  <!-- 是否删除，0：未删除，1：已删除 -->
+		  orders_pay.oper_id,  <!-- 操作人 -->
+		  orders_pay.user_id,  <!-- user_id -->
+		  orders_pay.status,  <!-- 状态，0：未支付，1：已支付 -->
+		  orders_pay.success_date, 
+		  orders_pay.out_trade_no,
+		  orders_pay.voucher_id
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="pay_id != null and pay_id != ''">
+		      AND pay_id = #{pay_id}  <!-- 主键 -->
+		</if>
+	   <if test="pay_amt != null ">
+		      AND pay_amt = #{pay_amt}  <!-- 支付金额 -->
+		</if>
+	    <if test="co_id != null and co_id != ''">
+		      AND co_id = #{co_id}  <!-- 订单ID -->
+		</if>
+	    <if test="pay_source != null and pay_source != ''">
+		      AND pay_source = #{pay_source}  <!-- 支付类型，0：微信，1：支付宝，2:钱包 -->
+		</if>
+	    <if test="pay_type != null and pay_type != ''">
+		      AND pay_type = #{pay_type}  <!-- 消费类型，0：充值，1：支付充电，2：押金 -->
+		</if>
+	    <if test="pay_direction != null and pay_direction != ''">
+		      AND pay_direction = #{pay_direction}  <!-- 计算方向，1：增加，-1：减少 -->
+		</if>
+	    <if test="create_date != null and create_date != ''">
+		      AND create_date = #{create_date}  <!-- 创建时间 -->
+		</if>
+	    <if test="is_del != null and is_del != ''">
+		      AND is_del = #{is_del}  <!-- 是否删除，0：未删除，1：已删除 -->
+		</if>
+	    <if test="oper_id != null and oper_id != ''">
+		      AND oper_id = #{oper_id}  <!-- 操作人 -->
+		</if>
+	    <if test="user_id != null and user_id != ''">
+		      AND user_id = #{user_id}  <!-- user_id -->
+		</if>
+	    <if test="status != null and status != ''">
+		      AND status = #{status}  <!-- 状态，0：未支付，1：已支付 -->
+		</if>
+	    <if test="success_date != null and success_date != ''">
+		      AND success_date = #{success_date}  <!-- 支付时间 -->
+		</if>
+	</sql>
+	<sql id="equal2">
+	    <if test="pay_id != null and pay_id != ''">
+		      AND orders_pay.pay_id = #{pay_id}  <!-- 主键 -->
+		</if>
+	   <if test="pay_amt != null ">
+		      AND orders_pay.pay_amt = #{pay_amt}  <!-- 支付金额 -->
+		</if>
+	    <if test="co_id != null and co_id != ''">
+		      AND orders_pay.co_id = #{co_id}  <!-- 订单ID -->
+		</if>
+	    <if test="pay_source != null and pay_source != ''">
+		      AND orders_pay.pay_source = #{pay_source}  <!-- 支付类型，0：微信，1：支付宝，2:钱包 -->
+		</if>
+	    <if test="pay_type != null and pay_type != ''">
+		      AND orders_pay.pay_type = #{pay_type}  <!-- 消费类型，0：充值，1：支付充电，2：押金 -->
+		</if>
+	    <if test="pay_direction != null and pay_direction != ''">
+		      AND orders_pay.pay_direction = #{pay_direction}  <!-- 计算方向，1：增加，-1：减少 -->
+		</if>
+	    <if test="create_date != null and create_date != ''">
+		      AND orders_pay.create_date = #{create_date}  <!-- 创建时间 -->
+		</if>
+	    <if test="is_del != null and is_del != ''">
+		      AND orders_pay.is_del = #{is_del}  <!-- 是否删除，0：未删除，1：已删除 -->
+		</if>
+	    <if test="oper_id != null and oper_id != ''">
+		      AND orders_pay.oper_id = #{oper_id}  <!-- 操作人 -->
+		</if>
+	    <if test="user_id != null and user_id != ''">
+		      AND orders_pay.user_id = #{user_id}  <!-- user_id -->
+		</if>
+	    <if test="status != null and status != ''">
+		      AND orders_pay.status = #{status}  <!-- 状态，0：未支付，1：已支付 -->
+		</if>
+	    <if test="success_date != null and success_date != ''">
+		      AND orders_pay.success_date = #{success_date}  <!-- 支付时间 -->
+		</if>
+	</sql>
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="pay_id != null and pay_id != ''">
+		      AND pay_id like '%${pay_id}%'  <!-- 主键 -->
+		</if>
+	    <if test="co_id != null and co_id != ''">
+		      AND co_id like '%${co_id}%'  <!-- 订单ID -->
+		</if>
+	    <if test="pay_source != null and pay_source != ''">
+		      AND pay_source like '%${pay_source}%'  <!-- 支付类型，0：微信，1：支付宝，2:钱包 -->
+		</if>
+	    <if test="pay_type != null and pay_type != ''">
+		      AND pay_type like '%${pay_type}%'  <!-- 消费类型，0：充值，1：支付充电，2：押金 -->
+		</if>
+	    <if test="pay_direction != null and pay_direction != ''">
+		      AND pay_direction like '%${pay_direction}%'  <!-- 计算方向，1：增加，-1：减少 -->
+		</if>
+	    <if test="create_date != null and create_date != ''">
+		      AND create_date like '%${create_date}%'  <!-- 创建时间 -->
+		</if>
+	    <if test="is_del != null and is_del != ''">
+		      AND is_del like '%${is_del}%'  <!-- 是否删除，0：未删除，1：已删除 -->
+		</if>
+	    <if test="oper_id != null and oper_id != ''">
+		      AND oper_id like '%${oper_id}%'  <!-- 操作人 -->
+		</if>
+	    <if test="user_id != null and user_id != ''">
+		      AND user_id like '%${user_id}%'  <!-- user_id -->
+		</if>
+	    <if test="status != null and status != ''">
+		      AND status like '%${status}%'  <!-- 状态，0：未支付，1：已支付 -->
+		</if>
+	    <if test="success_date != null and success_date != ''">
+		      AND success_date like '%${success_date}%'  <!-- 支付时间 -->
+		</if>
+	</sql>
+	
+</mapper>

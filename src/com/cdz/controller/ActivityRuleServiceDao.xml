@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 活动规则表管理模块使用的SQL语句 -->
+<mapper namespace="ActivityRule">
+
+	<!-- 查询活动规则表列表 ,多表关联查询-->
+	<select id="listActivityRulesPage" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.ActivityRuleDao.column" />	
+			FROM activity_rule
+			<where>
+			    <include refid="dao.ActivityRuleDao.equal" />
+			</where>
+			order by param desc
+	</select>
+	<select id="listActivityRules" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.ActivityRuleDao.column" />	
+			FROM activity_rule
+			<where>
+			    <include refid="dao.ActivityRuleDao.equal" />
+			</where>
+			order by param desc
+	</select>
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 用户管理模块使用的SQL语句 -->
+<mapper namespace="User">
+
+	<!-- 查询用户列表 -->
+	<select id="listUsersPage" resultType="Dto" parameterType="Dto">
+			SELECT
+                <include refid="aos.framework.dao.AosUserDao.column2" />
+            FROM base_user
+            WHERE 1=1
+			    <if test="na_ != null and na_ != ''">
+				    AND base_user.account_ LIKE '%${na_}%'
+				</if>
+				<if test="is_del_ != null and is_del_ != ''">
+				    AND base_user.is_del_ = #{is_del_} 
+				</if>
+				<if test="type_ != null and type_ != ''">
+				    AND base_user.type_ = #{type_} 
+				</if>
+			 ORDER BY base_user.create_time_ DESC
+	</select>
+	
+	<!-- 查询用户所属角色列表 -->
+	<select id="listRolesOfUser" resultType="AosRolePO" parameterType="String">
+			SELECT
+                <include refid="aos.system.dao.AosRoleDao.column" />
+            FROM base_role
+            WHERE id_ IN (SELECT role_id_ FROM base_user_role WHERE user_id_ = #{user_id_})
+			ORDER BY id_ DESC
+	</select>
+	
+	<!-- 查询可选角色列表 -->
+	<select id="listToSelectRoles" resultType="Dto" parameterType="Dto">
+	        SELECT * FROM(
+			     SELECT
+                <include refid="aos.system.dao.AosRoleDao.column" />
+	            FROM base_role
+	          WHERE id_ NOT IN (SELECT role_id_ FROM base_user_role WHERE user_id_ = #{user_id_})
+				ORDER BY id_ DESC
+			) t 
+	</select>
+	
+	<!-- 查询已选角色列表 -->
+	<select id="listSelectedRoles" resultType="Dto" parameterType="Dto">
+			     SELECT
+			        base_user_role.id_ as user_role_id_,
+                   <include refid="aos.system.dao.AosRoleDao.column2" />
+                 FROM  base_role
+                 LEFT JOIN base_user_role ON base_user_role.role_id_ = base_role.id_
+                 WHERE base_user_role.user_id_ = #{user_id_}
+                 <if test="name_ != null and name_ != ''">
+			        AND base_role.name_ IKE '%${name_}%'
+				</if>
+	</select>
+	<select id="getExpertsListPage" resultType="Dto" parameterType="Dto">
+			    SELECT * FROM base_user WHERE type_='2'
+			    <if test="name_ != null and name_ != ''">
+			        AND name_ LIKE '%${name_}%'
+				</if>
+				order by article_num DESC
+	</select>
+	<select id="getFollowExpertsListPage" resultType="Dto" parameterType="Dto">
+			    SELECT a.*,f.id FROM (
+			    SELECT * FROM base_user WHERE type_='2'
+			    <if test="name_ != null and name_ != ''">
+			        AND name_ LIKE '%${name_}%'
+				</if>
+				<if test="expert_id != null and expert_id != ''">
+			        AND id_ =#{expert_id}
+				</if>
+			    ) a LEFT JOIN follow f ON a.id_=f.experts_id AND f.user_id=#{user_id}
+				order by article_num DESC
+	</select>
+	<select id="getFollowedExpertsListPage" resultType="Dto" parameterType="Dto">
+			    SELECT a.*,f.id FROM (
+			    SELECT * FROM base_user WHERE type_='2'
+			    <if test="name_ != null and name_ != ''">
+			        AND name_ LIKE '%${name_}%'
+				</if>
+				<if test="expert_id != null and expert_id != ''">
+			        AND id_ =#{expert_id}
+				</if>
+			    ) a ,follow f where a.id_=f.experts_id AND f.user_id=#{user_id}
+				order by article_num DESC
+	</select>			
+
+</mapper>
