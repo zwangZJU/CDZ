@@ -111,7 +111,7 @@ public class AppApiService extends CDZBaseController {
 		Dto odto = Dtos.newDto();
 	
 		String phone = qDto.getString("phone");
-		phone = "15547245873";
+		//phone = "15547245873";
 
 		if (!qDto.containsKey("phone") || AOSUtils.isEmpty(phone)) {
 			this.failMsg(odto, "phone值不能为空");
@@ -164,7 +164,7 @@ public class AppApiService extends CDZBaseController {
 		Dto odto = Dtos.newDto();
 
 		String id = qDto.getString("id");
-		id = "4gw123456";
+		//id = "4gw123456";
 		Dto pDto = Dtos.newDto("device_id", id);
 		DevicePO devicePO = deviceDao.selectOne(pDto);
 		if (null == devicePO) {

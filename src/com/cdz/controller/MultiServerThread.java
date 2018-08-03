@@ -31,6 +31,7 @@ import aos.framework.web.httpclient.AOSHttpClient;
 import aos.framework.web.httpclient.HttpRequestVO;
 import aos.framework.web.httpclient.HttpResponseVO;
 import aos.system.common.utils.SystemCons;
+import cn.com.tcc.TCC;
 import dao.ChargingOrdersDao;
 import dao.ChargingPileDao;
 import dao.CommonLogsDao;
@@ -46,6 +47,8 @@ import cn.com.tcc.State;
 import cn.com.tcc.TCC;
 
 import com.sun.jna.Function;
+
+//import com.sun.jna.Function;
 
 //package com.microwisdom.utils;
 
@@ -126,6 +129,16 @@ public class MultiServerThread extends Thread {
 	        return new String(baos.toByteArray());
 	    }
 	    
+	    public static String strTo16(String s) {
+		    String str = "";
+		    for (int i = 0; i < s.length(); i++) {
+		        int ch = (int) s.charAt(i);
+		        String s4 = Integer.toHexString(ch);
+		        str = str + s4;
+		    }
+		    return str;
+		}
+	    
 	    public void run() {
 
 	        try (
@@ -147,24 +160,27 @@ public class MultiServerThread extends Thread {
 		        i++;
 		        System.out.println("iiiiiiii:"+i);
 
-	            
-		        TCC.init("./tcc");
+		     // 初始化TCC
+				TCC.init("./tcc");
 
 				// 编译C文件
-				State state = new State();
-				state.compile("./runCFunction.c");
+				cn.com.tcc.State state = new cn.com.tcc.State();
+				try {
+					state.compile("./function.c");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				state.relocateAuto();
 
 				// 获取C文件里面定义的函数
-				Function sumFunc = state.getFunction("sum");
-
-				// 调用函数
-				System.out.println(String.format("%d + %d = %d", 3, 5,
-						sumFunc.invokeInt(new Object[] { 3, 5 })));
-				System.out.println(String.format("%d + %d = %d", 10, 99,
-						sumFunc.invokeInt(new Object[] { 10, 99 })));
-
-				state.delete();
+				//Function sumFunc = state.getFunction("sum");
+				Function sumFunc = state.getFunction("use_aesDecrypt");
+				
+				byte[] Key = null;
+				
+				String hex;
 		        
 		        
 	            while ((length = in.read(data_in)) > 0) {
@@ -172,79 +188,14 @@ public class MultiServerThread extends Thread {
 	            	System.out.println("data_in_toString():"+data_in.toString());
 	            	//System.out.println("length:"+length);
 	                byte[] data = new byte[length];
-	                //System.out.println("data:"+data.toString());
-	                
-	                /*String a = AESUtil.encrypt("1234","1");
-	                System.out.println("a:"+a);
-	                
-	                String d = AESUtil.decrypt("jIpgIPoJo1tgQ96sy0PqSQ==","1");
-	                System.out.println("d:"+d);
-	                
-	                String b = AESUtil.decrypt("5A291C6E41C0AE3E7DD4BAC02F693FF6"," 7b91117c0021833");
-	                System.out.println("b:"+b);
-	                
-	                String c = AESUtil.decrypt("5A291C6E41C0AE3E7DD4BAC02F693FF636A8BED709FC34B2F26888AFD1A73CF8"," 7b91117c0021833");
-	                System.out.println("c:"+c);*/
-	                //String content1 = "123456789";
-	                String content1 = "1121111111111111";
-	                //String content1 = "E202131000000000000000000000000000000000000000000000000000000000";
-	                //String password = "20376239313131376330303231383333";
-	                //String password = " 7b91117c0021833";
-	                //String password = "0123456789abcdef";
-	                String password = "1111111111111111";
-	                System.out.println("加密之前：" + content1);
-	                // 加密
-	                byte[] encrypt = encode.encrypt(content1, password);
-	                System.out.println("加密后的内容：" + new String(encrypt));
-	                
-	                //如果想要加密内容不显示乱码，可以先将密文转换为16进制
-	                String hexStrResult = encode.parseByte2HexStr(encrypt);
-	                System.out.println("16进制的密文："  + hexStrResult);
-	                
-	                //如果的到的是16进制密文，别忘了先转为2进制再解密
-	                //byte[] twoStrResult = encode.parseHexStr2Byte("5A291C6E41C0AE3E7DD4BAC02F693FF636A8BED709FC34B2F26888AFD1A73CF8");
-	                byte[] twoStrResult = encode.parseHexStr2Byte(hexStrResult);
-	                        
-	                // 解密
-	                byte[] decrypt = encode.decrypt(encrypt, password);
-	                System.out.println("解密后的内容：" + new String(decrypt));
-	                
-	             // 解密
-	                byte[] decrypt1 = encode.decrypt(twoStrResult, password);
-	                System.out.println("解密后的内容：" + new String(decrypt1));
-	                
-	                
-	                String data1 = new String(data);
-	                String data2 = new String(data_in,"UTF-8");
-	                String data3 = new String(data_in,"ASCII");
-	                String data4 = new String(data_in,"GB2312");
-	                String data5 = new String(data_in,"GBK");
-	                String data6 = new String(data_in,"Unicode");
-	                  //convertHexToString
-	                //System.out.println("data1:"+data1);
-	                System.out.println("data2:"+data2);
-	                System.out.println("data3:"+data3);
-	                
-	                byte[] bs1 = new byte[]{90, 41, 28, 41,28};
-	                String s = new String(bs1,"UTF-8");
-	                String ss = new String(new byte[] {90});
-	                String sss = new String(new byte[] {90, 41, 28, 41,28,90,89});
-	                System.out.println("s:"+s);
-	                
-	                //System.out.println("data11:"+AESUtil.encrypt("1234", "1"));
-	                //System.out.println("data11:"+AESUtil.decrypt("jIpgIPoJo1tgQ96sy0PqSQ==".getBytes(), "1"));
-	                //System.out.println("data22:"+AESUtil.decrypt(data_in, "20376239313131376330303231383333"));
-	                //System.out.println("data22:"+AESUtil.decrypt(data2, "20376239313131376330303231383333"));
-	                //System.out.println("data22:"+AESUtil.decrypt("5A291C6E41C0AE3E7DD4BAC02F693FF636A8BED709FC34B2F26888AFD1A73CF8", "20376239313131376330303231383333"));
-	                //this.saveLogs("--->>"+new String(data_in), "");
 	                
 	                System.arraycopy(data_in, 0, data, 0, length);
-	                //System.out.println("data23:"+AESUtil.decrypt("5A291C6E41C0AE3E7DD4BAC02F693FF636A8BED709FC34B2F26888AFD1A73CF8".getBytes(), "20376239313131376330303231383333"));
-	                String hex = DatatypeConverter.printHexBinary(data);
+	                System.out.println(data);
+	                
+	                hex = DatatypeConverter.printHexBinary(data);
 	                System.out.println("hex:"+hex);
 	                String data_string = decode(hex.toString());
 			        String data_string_1 = hex.toString();
-	                //System.out.println("data.toCharArray():"+data.toCharArray());
 	                
 	                char[] hex_byte= hex.toCharArray();
 	                String msgType=String.valueOf(hex_byte, 2, 2);   // cmd
@@ -314,22 +265,22 @@ public class MultiServerThread extends Thread {
 	                	String Key9 =new BigInteger(String.valueOf(hex_byte, 44, 2), 16).toString();
 	                	String Key8 =new BigInteger(String.valueOf(hex_byte, 46, 2), 16).toString();*/
 	                	
-	                	String Key7 =String.valueOf(hex_byte, 16, 2);
-	                	String Key6 =String.valueOf(hex_byte, 18, 2);
-	                	String Key5 =String.valueOf(hex_byte, 20, 2);
-	                	String Key4 =String.valueOf(hex_byte, 22, 2);
-	                	String Key3 =String.valueOf(hex_byte, 24, 2);
-	                	String Key2 =String.valueOf(hex_byte, 26, 2);
-	                	String Key1 =String.valueOf(hex_byte, 28, 2);
-	                	String Key0 =String.valueOf(hex_byte, 30, 2);
-	                	String Key15 =String.valueOf(hex_byte, 32, 2);
-	                	String Key14 =String.valueOf(hex_byte, 34, 2);
-	                	String Key13 =String.valueOf(hex_byte, 36, 2);
-	                	String Key12 =String.valueOf(hex_byte, 38, 2);
-	                	String Key11 =String.valueOf(hex_byte, 40, 2);
-	                	String Key10 =String.valueOf(hex_byte, 42, 2);
-	                	String Key9 =String.valueOf(hex_byte, 44, 2);
-	                	String Key8 =String.valueOf(hex_byte, 46, 2);
+	                	byte Key7 =(byte) Integer.parseInt(String.valueOf(hex_byte, 16, 2));
+	                	byte Key6 =(byte) Integer.parseInt(String.valueOf(hex_byte, 18, 2));
+	                	byte Key5 =(byte) Integer.parseInt(String.valueOf(hex_byte, 20, 2));
+	                	byte Key4 =(byte) Integer.parseInt(String.valueOf(hex_byte, 22, 2));
+	                	byte Key3 =(byte) Integer.parseInt(String.valueOf(hex_byte, 24, 2));
+	                	byte Key2 =(byte) Integer.parseInt(String.valueOf(hex_byte, 26, 2));
+	                	byte Key1 =(byte) Integer.parseInt(String.valueOf(hex_byte, 28, 2));
+	                	byte Key0 =(byte) Integer.parseInt(String.valueOf(hex_byte, 30, 2));
+	                	byte Key15 =(byte) Integer.parseInt(String.valueOf(hex_byte, 32, 2));
+	                	byte Key14 =(byte) Integer.parseInt(String.valueOf(hex_byte, 34, 2));
+	                	byte Key13 =(byte) Integer.parseInt(String.valueOf(hex_byte, 36, 2));
+	                	byte Key12 =(byte) Integer.parseInt(String.valueOf(hex_byte, 38, 2));
+	                	byte Key11 =(byte) Integer.parseInt(String.valueOf(hex_byte, 40, 2));
+	                	byte Key10 =(byte) Integer.parseInt(String.valueOf(hex_byte, 42, 2));
+	                	byte Key9 =(byte) Integer.parseInt(String.valueOf(hex_byte, 44, 2));
+	                	byte Key8 =(byte) Integer.parseInt(String.valueOf(hex_byte, 46, 2));
 	                	
 	                	String ICode1 =new BigInteger(String.valueOf(hex_byte, 48, 2), 16).toString();
 	                	String ICode2 =new BigInteger(String.valueOf(hex_byte, 50, 2), 16).toString();
@@ -344,6 +295,12 @@ public class MultiServerThread extends Thread {
 	                			Key9+Key10+Key11+Key12+Key13+Key14+Key15); 
 	                	System.out.println("ICode_all:"+ICode1+ICode2+ICode3+ICode4+ICode5+ICode6+ICode7+ICode8); 
 	                	
+	                	//byte[] key = {Key0,Key1,Key2,Key3,Key4,Key5,Key6,Key7,Key8,
+	                			//Key9,Key10,Key11,Key12,Key13,Key14,Key15};
+	                	byte[] key = {data_in[15],data_in[14],data_in[13],data_in[12],data_in[11],data_in[10],
+	                			data_in[9],data_in[8],data_in[23],data_in[22],data_in[21],data_in[20],
+	                			data_in[19],data_in[18],data_in[17],data_in[16]};
+	                	Key= key;
 	                	
 	                	Helper.socketMap.put(this.ascii1, this.socket);//保存socket对象
 	                	if("0x01".equals(Corp_ID)){
@@ -352,8 +309,11 @@ public class MultiServerThread extends Thread {
 	                		Corp_ID="xx公司";
 	                	}
 	                	ChargingPilePO  chargingPilePO=chargingPileDao.selectByKey(this.ascii);
+	                	//ChargingPilePO  chargingPilePO=chargingPileDao.selectByKey("1");
 	                	
-	                	DevicePO devicePO = deviceDao.selectByKey(this.ascii1);
+	                	//DevicePO devicePO = deviceDao.selectByKey(this.ascii1);
+	                	//DevicePO devicePO = null;
+	                	DevicePO devicePO = deviceDao.selectByKey(Corp_ID);
 	                	
 	                	if(null==chargingPilePO){//新增对象
 	                		ChargingPilePO  chargingPilePO_=new ChargingPilePO();
@@ -414,7 +374,7 @@ public class MultiServerThread extends Thread {
 	                		
 	                		//chargingPilePO_.setElectricity(new BigDecimal(AOSCxt.getParam("electricity")));
 	                		
-	                		//deviceDao.insert(devicePO_);
+	                		deviceDao.insert(devicePO_);
 	                		System.out.println("yes two");
 	                		
 	                	}else {//已存在，则修改状态
@@ -425,103 +385,56 @@ public class MultiServerThread extends Thread {
 	                	String content="CS①注册转换后参数：：：ascii:"+this.ascii+" 充电状态:"+chongdianzhuantai+" 桩的型号:"+TYPE_ID+" 桩生产公司:"+Corp_ID;
 	                	System.out.println(content);
 	                	this.saveLogs(content,this.ascii,"CS①");
-	                }else if("02".equals(msgType)){//心跳
-	                	System.out.println("心跳："+hex);
-	                	 this.saveLogs("CS②心跳原始数据:"+hex,this.ascii,"CS②");
-	                	//心跳信息
-	                	String wangluofangshi=new BigInteger(String.valueOf(hex_byte, 6, 2), 16).toString();
-	                	String xinhaozhiliang=new BigInteger(String.valueOf(hex_byte, 8, 2), 16).toString();
-	                	String shifoujihuo=new BigInteger(String.valueOf(hex_byte, 10, 2), 16).toString();
-	                	String qiangzhuantai=new BigInteger(String.valueOf(hex_byte, 12, 2), 16).toString();
-	                	String chongdianzhuantai=new BigInteger(String.valueOf(hex_byte, 14, 2), 16).toString();
-	                	String guzhangma=new BigInteger(String.valueOf(hex_byte, 16, 2), 16).toString();
-	                	String yichongdian_tian=new BigInteger(String.valueOf(hex_byte, 18, 2), 16).toString();
-	                	String yichongdian_shi=new BigInteger(String.valueOf(hex_byte, 20, 2), 16).toString();
-	                	String yichongdian_fen=new BigInteger(String.valueOf(hex_byte, 22, 2), 16).toString();
-	                	String yichongdiandushu=new BigInteger(String.valueOf(hex_byte, 24, 4), 16).toString();
-	                	//BigInteger srch = new BigInteger(h, 16);//十六进制转十进制
-	                	String ascii_msg="";
-	                	if(AOSUtils.isEmpty(this.ascii)){
-	                		ascii_msg="：：：：：没有收到CS①注册数据";
-	                	}
+	                }else if(1==1){//心跳
+	                	/*
+	                	String hex_1 = hex.substring(0,2);
+	                	byte databuffer1 =Byte.parseByte(hex.substring(0,2));
+	                	byte databuffer2 =(byte) Integer.parseInt(String.valueOf(hex_byte, 2, 2));
+	                	byte databuffer3 =(byte) Integer.parseInt(String.valueOf(hex_byte, 4, 2));
+	                	byte databuffer4 =(byte) Integer.parseInt(String.valueOf(hex_byte, 6, 2));
+	                	byte databuffer5 =(byte) Integer.parseInt(String.valueOf(hex_byte, 8, 2));
+	                	byte databuffer6 =(byte) Integer.parseInt(String.valueOf(hex_byte, 10, 2));
+	                	byte databuffer7 =(byte) Integer.parseInt(String.valueOf(hex_byte, 12, 2));
+	                	byte databuffer8 =(byte) Integer.parseInt(String.valueOf(hex_byte, 14, 2));
+	                	byte databuffer9 =(byte) Integer.parseInt(String.valueOf(hex_byte, 16, 2));
+	                	byte databuffer10 =(byte) Integer.parseInt(String.valueOf(hex_byte, 18, 2));
+	                	byte databuffer11 =(byte) Integer.parseInt(String.valueOf(hex_byte, 20, 2));
+	                	byte databuffer12 =(byte) Integer.parseInt(String.valueOf(hex_byte, 22, 2));
+	                	byte databuffer13 =(byte) Integer.parseInt(String.valueOf(hex_byte, 24, 2));
+	                	byte databuffer14 =(byte) Integer.parseInt(String.valueOf(hex_byte, 26, 2));
+	                	byte databuffer15 =(byte) Integer.parseInt(String.valueOf(hex_byte, 28, 2));
+	                	byte databuffer16 =(byte) Integer.parseInt(String.valueOf(hex_byte, 30, 2));
 	                	
-	                	String content="CS②心跳转换后参数：：：网络方式:"+wangluofangshi+"  信号质量:"+xinhaozhiliang+"  是否激活:"+shifoujihuo+"  是否插枪:"+qiangzhuantai+"  充电状态:"+chongdianzhuantai+"  故障码:"+guzhangma+"  已充电时间（天）:"+yichongdian_tian+"  已充电时间（时）:"+yichongdian_shi+"  已充电时间（分）:"+yichongdian_fen+"  已充电度数:"+yichongdiandushu+ascii_msg;
-	                	System.out.println(content);
-	                	//确认心跳 "E20203"
-	                	String que_ren_xin_tiao=Helper.fillString('0', 32*2);
-	                	que_ren_xin_tiao=que_ren_xin_tiao.replaceFirst("^000000", "E20203");
-	                	out.write(Helper.hexStringToByteArray(que_ren_xin_tiao));
-	                	System.out.println("发出心跳确认指令。。"+que_ren_xin_tiao);
-	                	this.saveLogs("SC②服务器发出心跳确认指令："+que_ren_xin_tiao,this.ascii,"SC②");
+	                	byte[] databuffer = {databuffer1,databuffer2,databuffer3,databuffer4,databuffer5,
+	                			databuffer6,databuffer7,databuffer8,databuffer9,databuffer10,
+	                			databuffer11,databuffer12,databuffer13,databuffer14,databuffer15,databuffer16};
+	                			*/
+	                	System.out.println("12345");
+	                	byte[] databuffer = new byte[16];
+	                	for(int k=0;k<16;k++)
+	                		databuffer[k] = data_in[k];
 	                	
-	                	//更新充电桩及订单状态
-	                	ChargingPilePO  chargingPilePO_=new ChargingPilePO();
-                		chargingPilePO_.setCp_id(this.ascii);
-                		chargingPilePO_.setNet_way(wangluofangshi);
-                		chargingPilePO_.setSignal_quality(xinhaozhiliang);
-                		chargingPilePO_.setIs_activation(shifoujihuo);
-                		if("0".equals(chongdianzhuantai)){
-                			chargingPilePO_.setCp_status("1");
-                		}else if("3".equals(chongdianzhuantai)){
-                			chargingPilePO_.setCp_status("3");
-                			chargingPilePO_.setFault_code(guzhangma);
-                		}else if("1".equals(chongdianzhuantai)){
-                			chargingPilePO_.setCp_status("2");
-                		}else if("2".equals(chongdianzhuantai)&&"1".equals(qiangzhuantai)){
-                			chargingPilePO_.setCp_status("2");
-                		}else if("2".equals(chongdianzhuantai)&&"0".equals(qiangzhuantai)){
-                			chargingPilePO_.setCp_status("1");
-                		}else{
-                			chargingPilePO_.setCp_status("1");
-                		}
-                		chargingPilePO_.setUpdate_date(AOSUtils.getDateTime());
-                		chargingPileDao.updateByKey(chargingPilePO_);
-                		
-                		Dto pDto=Dtos.newDto("cp_id",this.ascii);
-                		ChargingOrdersPO chargingOrdersPO=new ChargingOrdersPO();
-                		List<Dto> list=sqlDao.list("ChargingOrders.listChargingOrderssSocket", pDto);//获取最新订单
-                		if(null!=list&&list.size()>0){
-                			AOSUtils.copyProperties(list.get(0), chargingOrdersPO);
-                			BigDecimal yichongdian_tian_=new BigDecimal(yichongdian_tian).multiply(new BigDecimal(24*60));
-                			BigDecimal yichongdian_shi_=new BigDecimal(yichongdian_shi).multiply(new BigDecimal(60));
-                			chargingOrdersPO.setDateed(yichongdian_tian_.add(yichongdian_shi_).add(new BigDecimal(yichongdian_fen)));//保存换算为分钟
-                			chargingOrdersPO.setPut_gun(qiangzhuantai);
-                			chargingOrdersPO.setElectricity(new BigDecimal(yichongdiandushu));
-                			//充满或故障，订单充电完成
-                			if("2".equals(chongdianzhuantai)||"3".equals(chongdianzhuantai)){
-                				chargingOrdersPO.setStatus_("1");
-                				chargingOrdersPO.setComplete_date(AOSUtils.getDateTime());
-                			}
-                			if("0".equals(qiangzhuantai)&&"1".equals(chargingOrdersPO.getStatus_())){//拔枪
-                				chargingOrdersPO.setPuted_gun_date(AOSUtils.getDateTime());
-                			}else if("1".equals(qiangzhuantai)&&"0".equals(chongdianzhuantai)){//插枪
-                				chargingOrdersPO.setPut_gun_date(AOSUtils.getDateTime());
-                			}
-                			//更新已充电金额
-                			if(null!=chargingOrdersPO.getElectricity()){
-                			chargingOrdersPO.setAmounted(chargingOrdersPO.getElectricity().multiply(new BigDecimal(AOSCxt.getParam("electricity"))));
-                			chargingOrdersPO.setTotal_amt(chargingOrdersPO.getAmounted());
-                			chargingOrdersPO.setDeduction_amt(new BigDecimal("0"));
-                			chargingOrdersPO.setReal_amt(chargingOrdersPO.getTotal_amt());
-                			}
-                			chargingOrdersDao.updateByKey(chargingOrdersPO);
-                		}
-                		
-	                	this.saveLogs(content,this.ascii,"CS②");
+	                	byte[] databuffer1= {0x5A,0x29,0x1C,0x6E,0x41,(byte) 0xC0,(byte) 0xAE,0x3E,0x7D,(byte) 0xD4,(byte) 0xBA,(byte) 0xC0,0x2F,0x69,0x3F,(byte) 0xF6};
+	            		byte[] Key1={0x20,0x37,0x62,0x39,0x31,0x31,0x31,0x37,0x63,0x30,0x30,0x32,0x31,0x38,0x33,0x33};
+	            		byte[] data1 = new byte[16];
 	                	
-	                	
-	                	
-	                	//激活
-	                	/*if("0".equals(shifoujihuo)){
-	                		
-	                		que_ren_xin_tiao=Helper.fillString('0', 32*2);
-		                	que_ren_xin_tiao=que_ren_xin_tiao.replaceFirst("^00000000", "E20A0401");
-		                	content="SC⑩服务器发出激活指令："+que_ren_xin_tiao;
-		                	System.out.println(content);
-		                	this.saveLogs(content,this.ascii);
-		                	out.write(Helper.hexStringToByteArray(que_ren_xin_tiao));
-		                	
-	                	}*/
+	                	Object[] object = new Object[]{ databuffer , Key,data1};
+	            		//string =
+	            		//System.out.println(sumFunc.invokePointer(object));
+	            		String b= sumFunc.invokeString(object, false);
+	            		//String s = sumFunc.invokeObject(object).toString();
+	            		System.out.println("b:"+b);
+	            		String c = strTo16(b.substring(1));
+	            		System.out.println(c);
+	            		//System.out.println(c.substring(2, 3));
+	            		System.out.println(c.substring(2, 4));
+	            		//System.out.println(c.substring(4, 5));
+	            		System.out.println(c.substring(4, 6));
+	            		if(c.substring(2, 4).equals("4f")&&c.substring(4, 6).equals("4b"))
+	            			System.out.println("xintiao");
+	            		//if(c.substring(2, 3))
+	            		//String a = sumFunc.invokeString(object, false);
+	            		//Pointer b = sumFunc.invokePointer(object);
 	                	
 	                	
 	                	
