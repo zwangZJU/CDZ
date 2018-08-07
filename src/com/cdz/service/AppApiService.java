@@ -195,29 +195,22 @@ public class AppApiService extends CDZBaseController {
 		//String co_type=qDto.getString("co_type");
 		//String co_num=qDto.getString("co_num");
 		
-		/*if(!qDto.containsKey("device_id")||AOSUtils.isEmpty(device_id)){
-			this.fail(odto, "device_id不能为空");
-		}else if(!qDto.containsKey("cmd")||AOSUtils.isEmpty(cmd)){
-				this.fail(odto, "cmd不能为空");*/
-		
-		boolean a = sendCharging(device_id,cmd);
-		//boolean a = true;
-						if(a == true){
-							System.out.println("发送成功");
-							/*
-							ChargingOrdersPO chargingOrdersPO=new ChargingOrdersPO();
-							chargingOrdersPO.setCo_id(AOSId.appId(SystemCons.ID.SYSTEM));
-							chargingOrdersPO.setCreate_date(AOSUtils.getDateTime());
-							chargingOrdersPO.setUser_id(userModel.getId_());
-							chargingOrdersPO.setCp_id(cp_id);
-							chargingOrdersPO.setCo_type(co_type);
-							chargingOrdersPO.setStatus_("-2");
-							chargingOrdersPO.setCo_num(new BigDecimal(co_num));
-							chargingOrdersDao.insert(chargingOrdersPO);
-							*/
-							odto.put("status", "1");
-							odto.put("msg", "成功");
-							odto.put("deploy_status","1" );
+		boolean flag = sendCharging(device_id,cmd);
+		if(flag == true){
+			System.out.println("发送成功");
+			
+			Dto pDto = Dtos.newDto("device_id", device_id);
+			DevicePO devicePO = deviceDao.selectOne(pDto);
+
+			Dto newDto = Dtos.newDto();
+			newDto.put("device_id", devicePO.getArrange_withdraw());
+			
+			System.out.println(newDto);
+			
+			//odto.put("data", newDto);
+			odto.put("status", "1");
+			odto.put("msg", "成功");
+			odto.put("deploy_status","1" );
 				
 			}else{
 				odto.put("status", "0");
@@ -244,32 +237,30 @@ public class AppApiService extends CDZBaseController {
 		String finalResult = cmd_app;
 		//cmd=cmd+"00000000"+finalResult;
 		cmd = "e1"+"0"+finalResult+"0410"+"000000000000000000000000";
-		//msg_welcome =msg_welcome.replaceFirst("^00000000000000000000000000000000", cmd);
 		System.out.println("cmd:"+cmd);
 		data_out= Helper.hexStringToByteArray(cmd);
 		try {
-			//sg_id=Helper.AsciiStringToString(sg_id).substring(1);
 			sg_id= sg_id.substring(1);
 			System.out.println("sg_id:"+sg_id);
 			Socket socket=Helper.socketMap.get(sg_id);
 			if(null!=socket){
 				socket.getOutputStream().write(data_out);
-				System.out.println("APP发送充电请求数据:"+cmd);
-				saveLogs3("SC④ APP发送充电请求数据:"+cmd,sg_id,"SC④");
+				System.out.println("APP发送布防撤防请求数据:"+cmd);
+				saveLogs3("APP发送布防撤防请求数据:"+cmd,sg_id,"SC④");
 				flag=true;
 			}else{
 				//this.failMsg(odto, "充电桩未连接");
-				System.out.println("APP发送充电请求数据:充电桩未连接"+msg_welcome);
-				saveLogs3("SC④ APP发送充电请求数据:充电桩未连接",sg_id,"SC④");
+				System.out.println("APP发送布防撤防请求数据:模块未连接"+msg_welcome);
+				saveLogs3("APP发送布防撤防请求数据:模块未连接",sg_id,"SC④");
 			}
 			
 			
 		} catch (IOException e) {
 			if("Socket is closed".equals(e.getMessage())){
-				saveLogs3("APP发送充电请求数据异常:充电桩未连接"+msg_welcome,sg_id,"SC④");
+				saveLogs3("APP发送布防撤防请求数据:模块未连接"+msg_welcome,sg_id,"SC④");
 				//this.failMsg(odto, "APP发送充电请求数据异常:充电桩未连接");
 			}else{
-				saveLogs3("APP发送充电请求数据异常:"+msg_welcome,sg_id,"SC④");
+				saveLogs3("APP发送布防撤防请求数据异常:"+msg_welcome,sg_id,"SC④");
 				//this.failMsg(odto, "APP发送充电请求数据异常");
 			}
 			

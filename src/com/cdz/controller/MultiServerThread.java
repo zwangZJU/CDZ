@@ -24,6 +24,7 @@ import aos.framework.core.dao.SqlDao;
 import aos.framework.core.id.AOSId;
 import aos.framework.core.typewrap.Dto;
 import aos.framework.core.typewrap.Dtos;
+import aos.framework.core.utils.AOSCodec;
 import aos.framework.core.utils.AOSCxt;
 import aos.framework.core.utils.AOSJson;
 import aos.framework.core.utils.AOSUtils;
@@ -35,6 +36,7 @@ import cn.com.tcc.TCC;
 import dao.ChargingOrdersDao;
 import dao.ChargingPileDao;
 import dao.CommonLogsDao;
+import po.Basic_userPO;
 import po.ChargingOrdersPO;
 import po.ChargingPilePO;
 import po.CommonLogsPO;
@@ -181,6 +183,8 @@ public class MultiServerThread extends Thread {
 				byte[] Key = null;
 				
 				String hex;
+				
+				boolean fang = false;
 		        
 		        
 	            while ((length = in.read(data_in)) > 0) {
@@ -361,21 +365,6 @@ public class MultiServerThread extends Thread {
 	                		DevicePO  devicePO_=new DevicePO();
 	                		devicePO_.setId_(this.ascii1);
 	                		devicePO_.setDevice_id(Corp_ID);
-	                		//devicePO_.setId_("10000");
-	                		//chargingPilePO_.setCp_no(this.ascii);
-	                		//chargingPilePO_.setCp_type(TYPE_ID);
-	                		//chargingPilePO_.setSupplier(Corp_ID);
-	                		//chargingPilePO_.setCreate_date(AOSUtils.getDateTime());
-	                		//chargingPilePO_.setOper_id("socket");
-	                		//if("0".equals(chongdianzhuantai)){
-	                		//	chargingPilePO_.setCp_status("1");
-	                		//}else if("0".equals(chongdianzhuantai)){
-	                		//	chargingPilePO_.setCp_status("0");
-	                		//}else{
-	                		//	chargingPilePO_.setCp_status(chongdianzhuantai);
-	                		//}
-	                		
-	                		//chargingPilePO_.setElectricity(new BigDecimal(AOSCxt.getParam("electricity")));
 	                		
 	                		deviceDao.insert(devicePO_);
 	                		System.out.println("yes two");
@@ -384,67 +373,72 @@ public class MultiServerThread extends Thread {
 	                		System.out.println("no");
 	                	}
 	                	
-	                	//String content="注册转换后参数：：：充电状态"+chongdianzhuantai+"  ICode[1]:"+ICode1+"  ICode[2]:"+ICode2+"  ICode[3]:"+ICode3+"  ICode[4]:"+ICode4+"  ICode[5]:"+ICode5+"  ICode[6]:"+ICode6+"  ICode[7]:"+ICode7+"  ICode[8]:"+ICode8+"  ICode[9]:"+ICode9+"  ICode[10]:"+ICode10+"  ICode[11]:"+ICode11+"  ICode[12]:"+ICode12+"  ICode[13]:"+ICode13+"  ICode[14]:"+ICode14+"  ICode[15]:"+ICode15+"  ICode[16]:"+ICode16+"  TYPE_ID:"+TYPE_ID+"  Corp_ID:"+Corp_ID;
 	                	String content="CS①注册转换后参数：：：ascii:"+this.ascii+" 充电状态:"+chongdianzhuantai+" 桩的型号:"+TYPE_ID+" 桩生产公司:"+Corp_ID;
 	                	System.out.println(content);
 	                	this.saveLogs(content,this.ascii,"CS①");
 	                }else {//心跳
-	                	/*
-	                	String hex_1 = hex.substring(0,2);
-	                	byte databuffer1 =Byte.parseByte(hex.substring(0,2));
-	                	byte databuffer2 =(byte) Integer.parseInt(String.valueOf(hex_byte, 2, 2));
-	                	byte databuffer3 =(byte) Integer.parseInt(String.valueOf(hex_byte, 4, 2));
-	                	byte databuffer4 =(byte) Integer.parseInt(String.valueOf(hex_byte, 6, 2));
-	                	byte databuffer5 =(byte) Integer.parseInt(String.valueOf(hex_byte, 8, 2));
-	                	byte databuffer6 =(byte) Integer.parseInt(String.valueOf(hex_byte, 10, 2));
-	                	byte databuffer7 =(byte) Integer.parseInt(String.valueOf(hex_byte, 12, 2));
-	                	byte databuffer8 =(byte) Integer.parseInt(String.valueOf(hex_byte, 14, 2));
-	                	byte databuffer9 =(byte) Integer.parseInt(String.valueOf(hex_byte, 16, 2));
-	                	byte databuffer10 =(byte) Integer.parseInt(String.valueOf(hex_byte, 18, 2));
-	                	byte databuffer11 =(byte) Integer.parseInt(String.valueOf(hex_byte, 20, 2));
-	                	byte databuffer12 =(byte) Integer.parseInt(String.valueOf(hex_byte, 22, 2));
-	                	byte databuffer13 =(byte) Integer.parseInt(String.valueOf(hex_byte, 24, 2));
-	                	byte databuffer14 =(byte) Integer.parseInt(String.valueOf(hex_byte, 26, 2));
-	                	byte databuffer15 =(byte) Integer.parseInt(String.valueOf(hex_byte, 28, 2));
-	                	byte databuffer16 =(byte) Integer.parseInt(String.valueOf(hex_byte, 30, 2));
-	                	
-	                	byte[] databuffer = {databuffer1,databuffer2,databuffer3,databuffer4,databuffer5,
-	                			databuffer6,databuffer7,databuffer8,databuffer9,databuffer10,
-	                			databuffer11,databuffer12,databuffer13,databuffer14,databuffer15,databuffer16};
-	                			*/
-	                	System.out.println("12345");
 	                	byte[] databuffer = new byte[16];
 	                	for(int k=0;k<16;k++)
 	                		databuffer[k] = data_in[k];
 	                	
-	                	byte[] databuffer1= {0x5A,0x29,0x1C,0x6E,0x41,(byte) 0xC0,(byte) 0xAE,0x3E,0x7D,(byte) 0xD4,(byte) 0xBA,(byte) 0xC0,0x2F,0x69,0x3F,(byte) 0xF6};
-	            		byte[] Key1={0x20,0x37,0x62,0x39,0x31,0x31,0x31,0x37,0x63,0x30,0x30,0x32,0x31,0x38,0x33,0x33};
+	                	//byte[] databuffer1= {0x5A,0x29,0x1C,0x6E,0x41,(byte) 0xC0,(byte) 0xAE,0x3E,0x7D,(byte) 0xD4,(byte) 0xBA,(byte) 0xC0,0x2F,0x69,0x3F,(byte) 0xF6};
+	            		//byte[] Key1={0x20,0x37,0x62,0x39,0x31,0x31,0x31,0x37,0x63,0x30,0x30,0x32,0x31,0x38,0x33,0x33};
 	            		byte[] data1 = new byte[16];
 	                	
 	                	Object[] object = new Object[]{ databuffer , Key,data1};
-	            		//string =
-	            		//System.out.println(sumFunc.invokePointer(object));
 	            		String b= sumFunc.invokeString(object, false);
-	            		//String s = sumFunc.invokeObject(object).toString();
 	            		System.out.println("b:"+b);
 	            		String c = strTo16(b.substring(1));
-	            		System.out.println(c);
-	            		//System.out.println(c.substring(2, 3));
-	            		System.out.println(c.substring(2, 4));
-	            		//System.out.println(c.substring(4, 5));
-	            		System.out.println(c.substring(4, 6));
 	            		if(c.substring(2, 4).equals("4f")&&c.substring(4, 6).equals("4b")&&!c.substring(6,8).equals("30"))
 	            			System.out.println("xintiao");
-	            		if(c.substring(6,8).equals("30")&&c.substring(1,2).equals("5"))
+	            		
+	            		Dto pDto=Dtos.newDto("device_id",this.ascii1);
+	            		List<DevicePO> deviceDtos = deviceDao.like(pDto);
+	            		String device_id = deviceDtos.get(0).getDevice_id();
+	            		
+	            		Dto pDto1 = Dtos.newDto("device_id", device_id);
+	    				DevicePO devicePO1 = deviceDao.selectOne(pDto1);
+	    				//Dto newDto = Dtos.newDto();
+	    				//newDto.put("device_id", devicePO1.getArrange_withdraw());
+	    				//System.out.println(newDto);
+	    				if(devicePO1.getArrange_withdraw().equals("撤防"))
+	    					fang=false;
+	    				else if(devicePO1.getArrange_withdraw().equals("布防"))
+	    					fang=true;
+	    				
+	            		if(c.substring(6,8).equals("30")&&c.substring(1,2).equals("5")&&fang==false)
+	            		{
 	            			System.out.println("bufang");
-	            		if(c.substring(6,8).equals("30")&&c.substring(1,2).equals("4"))	
-	            			System.out.println("chefang");
-	            		//if(c.substring(2, 3))
-	            		//String a = sumFunc.invokeString(object, false);
-	            		//Pointer b = sumFunc.invokePointer(object);
-	                	
-	                	
-	                	
+		            		System.out.println("yes");
+	                		
+		            		//Dto pDto=Dtos.newDto("device_id",this.ascii1);
+		            		//List<DevicePO> deviceDtos = deviceDao.like(pDto);
+		            		pDto = Dtos.newDto("device_id",device_id);
+		        			DevicePO devicePO=deviceDao.selectOne(pDto);
+							devicePO.setArrange_withdraw("布防");
+							deviceDao.updateByKey(devicePO);
+							
+							fang = true;
+	            		}else if(c.substring(6,8).equals("30")&&c.substring(1,2).equals("5")&&fang==true)
+	            		{
+	            			System.out.println("chefang");	
+			            	System.out.println("yes");
+			            	   
+		            		pDto = Dtos.newDto("device_id",device_id);
+		        			DevicePO devicePO=deviceDao.selectOne(pDto);
+							devicePO.setArrange_withdraw("撤防");
+							deviceDao.updateByKey(devicePO);
+							
+							fang = false;
+		                		
+			            	/*
+		                	DevicePO  devicePO_=new DevicePO();
+		                	devicePO_.setId_(this.ascii1);
+		                	devicePO_.setDevice_id(Corp_ID);
+	                		
+		                	deviceDao.insert(devicePO_);
+		                	*/
+	            		}
 	                }
 	            }  
 	            this.socket.close();
