@@ -9,6 +9,9 @@
 		<include refid="dao.DeviceDao.column" />
 		FROM device
 		<where>
+		 <if test="phone != null and phone != ''">
+				      AND phone like '%${phone}%'  <!-- 地址 -->
+				</if>
  		</where>
 	</select>
 </mapper>

@@ -101,6 +101,11 @@
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/TCC4Java-0.3-test.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/TCC4Java-0.3.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jna-4.1.0.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/protobuf-java-2.5.0.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/gexin-rp-fastjson-1.0.0.1.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/gexin-rp-sdk-base-4.0.0.22.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/gexin-rp-sdk-http-4.0.1.17.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/gexin-rp-sdk-template-4.0.0.16.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v9.0 (2)"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="webapp/WEB-INF/classes"/>

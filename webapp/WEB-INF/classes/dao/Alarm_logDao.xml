@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- alarm_log[alarm_log]SQLMapper自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2018-08-06 22:34:53 -->
+
+<mapper namespace="dao.Alarm_logDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.Alarm_logPO">
+		INSERT INTO alarm_log (
+		<if test="device_id != null and device_id != ''">
+	         device_id, <!-- 设备id -->
+		</if>
+		<if test="user_phone != null and user_phone != ''">
+	         user_phone, <!-- 用户手机号 -->
+		</if>
+		<if test="alarm_time != null and alarm_time != ''">
+	         alarm_time, <!-- 报警时间 -->
+		</if>
+		<if test="response_time != null and response_time != ''">
+	         response_time, <!-- 出警时间 -->
+		</if>
+		<if test="type_ != null and type_ != ''">
+	         type_, <!-- 报警方式 -->
+		</if>
+		<if test="handler_ != null and handler_ != ''">
+	         handler_, <!-- 处理者 -->
+		</if>
+		<if test="handler_phone != null and handler_phone != ''">
+	         handler_phone, <!-- 处理者电话 -->
+		</if>
+		<if test="reason_ != null and reason_ != ''">
+	         reason_, <!-- 报警原因 -->
+		</if>
+		<if test="alarm_release != null and alarm_release != ''">
+	         alarm_release, <!-- 报警解除 -->
+		</if>
+		<if test="is_cancel != null and is_cancel != ''">
+	         is_cancel, <!-- 取消报警 -->
+		</if>
+		<if test="beiyong1_ != null and beiyong1_ != ''">
+	         beiyong1_, <!-- 备用1 -->
+		</if>
+		<if test="beiyong2_ != null and beiyong2_ != ''">
+	         beiyong2_, <!-- 备用2 -->
+		</if>
+		<if test="beiyong3_ != null and beiyong3_ != ''">
+	         beiyong3_, <!-- 备用3 -->
+		</if>
+		<if test="alarm_id != null and alarm_id != ''">
+	          alarm_id  <!-- 报警序号 -->
+	   </if>
+		)VALUES(
+		<if test="device_id != null and device_id != ''">
+	          #{device_id, jdbcType=VARCHAR}, <!-- 设备id -->
+	    </if>
+		<if test="user_phone != null and user_phone != ''">
+	          #{user_phone, jdbcType=VARCHAR}, <!-- 用户手机号 -->
+	    </if>
+		<if test="alarm_time != null and alarm_time != ''">
+	          #{alarm_time, jdbcType=VARCHAR}, <!-- 报警时间 -->
+	    </if>
+		<if test="response_time != null and response_time != ''">
+	          #{response_time, jdbcType=VARCHAR}, <!-- 出警时间 -->
+	    </if>
+		<if test="type_ != null and type_ != ''">
+	          #{type_, jdbcType=VARCHAR}, <!-- 报警方式 -->
+	    </if>
+		<if test="handler_ != null and handler_ != ''">
+	          #{handler_, jdbcType=VARCHAR}, <!-- 处理者 -->
+	    </if>
+		<if test="handler_phone != null and handler_phone != ''">
+	          #{handler_phone, jdbcType=VARCHAR}, <!-- 处理者电话 -->
+	    </if>
+		<if test="reason_ != null and reason_ != ''">
+	          #{reason_, jdbcType=VARCHAR}, <!-- 报警原因 -->
+	    </if>
+		<if test="alarm_release != null and alarm_release != ''">
+	          #{alarm_release, jdbcType=VARCHAR}, <!-- 报警解除 -->
+	    </if>
+		<if test="is_cancel != null and is_cancel != ''">
+	          #{is_cancel, jdbcType=VARCHAR}, <!-- 取消报警 -->
+	    </if>
+		<if test="beiyong1_ != null and beiyong1_ != ''">
+	          #{beiyong1_, jdbcType=VARCHAR}, <!-- 备用1 -->
+	    </if>
+		<if test="beiyong2_ != null and beiyong2_ != ''">
+	          #{beiyong2_, jdbcType=VARCHAR}, <!-- 备用2 -->
+	    </if>
+		<if test="beiyong3_ != null and beiyong3_ != ''">
+	          #{beiyong3_, jdbcType=VARCHAR}, <!-- 备用3 -->
+	    </if>
+		<if test="alarm_id != null and alarm_id != ''">
+		     #{alarm_id, jdbcType=VARCHAR}  <!-- 报警序号 -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.Alarm_logPO">
+		INSERT INTO alarm_log (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{alarm_id, jdbcType=VARCHAR},  <!-- 报警序号 -->
+		    #{device_id, jdbcType=VARCHAR},  <!-- 设备id -->
+		    #{user_phone, jdbcType=VARCHAR},  <!-- 用户手机号 -->
+		    #{alarm_time, jdbcType=VARCHAR},  <!-- 报警时间 -->
+		    #{response_time, jdbcType=VARCHAR},  <!-- 出警时间 -->
+		    #{type_, jdbcType=VARCHAR},  <!-- 报警方式 -->
+		    #{handler_, jdbcType=VARCHAR},  <!-- 处理者 -->
+		    #{handler_phone, jdbcType=VARCHAR},  <!-- 处理者电话 -->
+		    #{reason_, jdbcType=VARCHAR},  <!-- 报警原因 -->
+		    #{alarm_release, jdbcType=VARCHAR},  <!-- 报警解除 -->
+		    #{is_cancel, jdbcType=VARCHAR},  <!-- 取消报警 -->
+		    #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
+		    #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+		    #{beiyong3_, jdbcType=VARCHAR}  <!-- 备用3 -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.Alarm_logPO">
+		UPDATE alarm_log
+		<set>
+			<if test="alarm_id != null">
+		          alarm_id = #{alarm_id, jdbcType=VARCHAR},  <!-- 报警序号 -->
+			</if>
+			<if test="device_id != null">
+		          device_id = #{device_id, jdbcType=VARCHAR},  <!-- 设备id -->
+			</if>
+			<if test="user_phone != null">
+		          user_phone = #{user_phone, jdbcType=VARCHAR},  <!-- 用户手机号 -->
+			</if>
+			<if test="alarm_time != null">
+		          alarm_time = #{alarm_time, jdbcType=VARCHAR},  <!-- 报警时间 -->
+			</if>
+			<if test="response_time != null">
+		          response_time = #{response_time, jdbcType=VARCHAR},  <!-- 出警时间 -->
+			</if>
+			<if test="type_ != null">
+		          type_ = #{type_, jdbcType=VARCHAR},  <!-- 报警方式 -->
+			</if>
+			<if test="handler_ != null">
+		          handler_ = #{handler_, jdbcType=VARCHAR},  <!-- 处理者 -->
+			</if>
+			<if test="handler_phone != null">
+		          handler_phone = #{handler_phone, jdbcType=VARCHAR},  <!-- 处理者电话 -->
+			</if>
+			<if test="reason_ != null">
+		          reason_ = #{reason_, jdbcType=VARCHAR},  <!-- 报警原因 -->
+			</if>
+			<if test="alarm_release != null">
+		          alarm_release = #{alarm_release, jdbcType=VARCHAR},  <!-- 报警解除 -->
+			</if>
+			<if test="is_cancel != null">
+		          is_cancel = #{is_cancel, jdbcType=VARCHAR},  <!-- 取消报警 -->
+			</if>
+			<if test="beiyong1_ != null">
+		          beiyong1_ = #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
+			</if>
+			<if test="beiyong2_ != null">
+		          beiyong2_ = #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+			</if>
+			<if test="beiyong3_ != null">
+		          beiyong3_ = #{beiyong3_, jdbcType=VARCHAR},  <!-- 备用3 -->
+			</if>
+		</set>
+		WHERE  alarm_id = #{alarm_id}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM alarm_log WHERE  alarm_id = #{alarm_id}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.Alarm_logPO">
+		SELECT
+		<include refid="column" />
+		FROM alarm_log WHERE  alarm_id = #{alarm_id}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.Alarm_logPO">
+		SELECT
+		    <include refid="column" />
+		FROM alarm_log
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.Alarm_logPO">
+		SELECT
+			<include refid="column" />	
+		FROM alarm_log
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.Alarm_logPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM alarm_log
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.Alarm_logPO">
+		SELECT
+			<include refid="column" />	
+		FROM alarm_log
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.Alarm_logPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM alarm_log
+		<where>
+		    <include refid="like" />
+		</where>	
+		
+		
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM alarm_log
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM alarm_log
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  alarm_id,  <!-- 报警序号 -->
+		  device_id,  <!-- 设备id -->
+		  user_phone,  <!-- 用户手机号 -->
+		  alarm_time,  <!-- 报警时间 -->
+		  response_time,  <!-- 出警时间 -->
+		  type_,  <!-- 报警方式 -->
+		  handler_,  <!-- 处理者 -->
+		  handler_phone,  <!-- 处理者电话 -->
+		  reason_,  <!-- 报警原因 -->
+		  alarm_release,  <!-- 报警解除 -->
+		  is_cancel,  <!-- 取消报警 -->
+		  beiyong1_,  <!-- 备用1 -->
+		  beiyong2_,  <!-- 备用2 -->
+		  beiyong3_  <!-- 备用3 -->
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  alarm_log.alarm_id,  <!-- 报警序号 -->
+		  alarm_log.device_id,  <!-- 设备id -->
+		  alarm_log.user_phone,  <!-- 用户手机号 -->
+		  alarm_log.alarm_time,  <!-- 报警时间 -->
+		  alarm_log.response_time,  <!-- 出警时间 -->
+		  alarm_log.type_,  <!-- 报警方式 -->
+		  alarm_log.handler_,  <!-- 处理者 -->
+		  alarm_log.handler_phone,  <!-- 处理者电话 -->
+		  alarm_log.reason_,  <!-- 报警原因 -->
+		  alarm_log.alarm_release,  <!-- 报警解除 -->
+		  alarm_log.is_cancel,  <!-- 取消报警 -->
+		  alarm_log.beiyong1_,  <!-- 备用1 -->
+		  alarm_log.beiyong2_,  <!-- 备用2 -->
+		  alarm_log.beiyong3_  <!-- 备用3 -->
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="alarm_id != null and alarm_id != ''">
+		      AND alarm_id = #{alarm_id}  <!-- 报警序号 -->
+		</if>
+	    <if test="device_id != null and device_id != ''">
+		      AND device_id = #{device_id}  <!-- 设备id -->
+		</if>
+	    <if test="user_phone != null and user_phone != ''">
+		      AND user_phone = #{user_phone}  <!-- 用户手机号 -->
+		</if>
+	    <if test="alarm_time != null and alarm_time != ''">
+		      AND alarm_time = #{alarm_time}  <!-- 报警时间 -->
+		</if>
+	    <if test="response_time != null and response_time != ''">
+		      AND response_time = #{response_time}  <!-- 出警时间 -->
+		</if>
+	    <if test="type_ != null and type_ != ''">
+		      AND type_ = #{type_}  <!-- 报警方式 -->
+		</if>
+	    <if test="handler_ != null and handler_ != ''">
+		      AND handler_ = #{handler_}  <!-- 处理者 -->
+		</if>
+	    <if test="handler_phone != null and handler_phone != ''">
+		      AND handler_phone = #{handler_phone}  <!-- 处理者电话 -->
+		</if>
+	    <if test="reason_ != null and reason_ != ''">
+		      AND reason_ = #{reason_}  <!-- 报警原因 -->
+		</if>
+	    <if test="alarm_release != null and alarm_release != ''">
+		      AND alarm_release = #{alarm_release}  <!-- 报警解除 -->
+		</if>
+	    <if test="is_cancel != null and is_cancel != ''">
+		      AND is_cancel = #{is_cancel}  <!-- 取消报警 -->
+		</if>
+	    <if test="beiyong1_ != null and beiyong1_ != ''">
+		      AND beiyong1_ = #{beiyong1_}  <!-- 备用1 -->
+		</if>
+	    <if test="beiyong2_ != null and beiyong2_ != ''">
+		      AND beiyong2_ = #{beiyong2_}  <!-- 备用2 -->
+		</if>
+	    <if test="beiyong3_ != null and beiyong3_ != ''">
+		      AND beiyong3_ = #{beiyong3_}  <!-- 备用3 -->
+		</if>
+	</sql>
+	
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="alarm_id != null and alarm_id != ''">
+		      AND alarm_id like '%${alarm_id}%'  <!-- 报警序号 -->
+		</if>
+	    <if test="device_id != null and device_id != ''">
+		      AND device_id like '%${device_id}%'  <!-- 设备id -->
+		</if>
+	    <if test="user_phone != null and user_phone != ''">
+		      AND user_phone like '%${user_phone}%'  <!-- 用户手机号 -->
+		</if>
+	    <if test="alarm_time != null and alarm_time != ''">
+		      AND alarm_time like '%${alarm_time}%'  <!-- 报警时间 -->
+		</if>
+	    <if test="response_time != null and response_time != ''">
+		      AND response_time like '%${response_time}%'  <!-- 出警时间 -->
+		</if>
+	    <if test="type_ != null and type_ != ''">
+		      AND type_ like '%${type_}%'  <!-- 报警方式 -->
+		</if>
+	    <if test="handler_ != null and handler_ != ''">
+		      AND handler_ like '%${handler_}%'  <!-- 处理者 -->
+		</if>
+	    <if test="handler_phone != null and handler_phone != ''">
+		      AND handler_phone like '%${handler_phone}%'  <!-- 处理者电话 -->
+		</if>
+	    <if test="reason_ != null and reason_ != ''">
+		      AND reason_ like '%${reason_}%'  <!-- 报警原因 -->
+		</if>
+	    <if test="alarm_release != null and alarm_release != ''">
+		      AND alarm_release like '%${alarm_release}%'  <!-- 报警解除 -->
+		</if>
+	    <if test="is_cancel != null and is_cancel != ''">
+		      AND is_cancel like '%${is_cancel}%'  <!-- 取消报警 -->
+		</if>
+	    <if test="beiyong1_ != null and beiyong1_ != ''">
+		      AND beiyong1_ like '%${beiyong1_}%'  <!-- 备用1 -->
+		</if>
+	    <if test="beiyong2_ != null and beiyong2_ != ''">
+		      AND beiyong2_ like '%${beiyong2_}%'  <!-- 备用2 -->
+		</if>
+	    <if test="beiyong3_ != null and beiyong3_ != ''">
+		      AND beiyong3_ like '%${beiyong3_}%'  <!-- 备用3 -->
+		</if>
+	</sql>
+	
+</mapper>

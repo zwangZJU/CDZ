@@ -3,10 +3,18 @@
  */
 package service;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+
+import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +28,7 @@ import aos.framework.core.service.CDZBaseController;
 import aos.framework.core.typewrap.Dto;
 import aos.framework.core.typewrap.Dtos;
 import aos.framework.core.utils.AOSCodec;
+import aos.framework.core.utils.AOSCxt;
 import aos.framework.core.utils.AOSJson;
 import aos.framework.core.utils.AOSUtils;
 import aos.framework.dao.AosParamsDao;
@@ -27,6 +36,7 @@ import aos.framework.dao.AosUserDao;
 import aos.framework.web.router.HttpModel;
 import aos.system.common.utils.SystemCons;
 import aos.system.modules.cache.CacheUserDataService;
+import controller.MultiServerThread;
 import dao.ActivityDao;
 import dao.ActivityRuleDao;
 import dao.AdvertDao;
@@ -45,7 +55,11 @@ import dao.RegionDao;
 import dao.SubscribeDao;
 import dao.VoucherDao;
 import po.Basic_userPO;
+import po.ChargingPilePO;
+import po.CommonLogsPO;
 import po.DevicePO;
+import utils.Helper;
+
 
 /**
  * @author Administrator
@@ -70,6 +84,15 @@ public class AppApiService extends CDZBaseController {
 	
 	@Autowired
 	private CacheUserDataService cacheUserDataService;
+	
+	private Socket socket = null;
+	
+	private String ascii="";
+	
+	private String ascii1="";
+	
+	private int j=0;
+	
 	@Autowired
 	AosUserDao aosUserDao;
 	
@@ -106,30 +129,202 @@ public class AppApiService extends CDZBaseController {
 	private static CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
 	
 	
+
+	public void pushToSingle(HttpModel httpModel) {
+
+
+
+		try {
+			Push.pushToSingle();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public void pushToApp(HttpModel httpModel) {
+
+		try {
+			Push.pushToApp();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void saveLogs1(String content,String cp_id){
+    	
+		CommonLogsPO commonLogsPO=new CommonLogsPO();
+		commonLogsPO.setLog_id(AOSId.appId(SystemCons.ID.SYSTEM));
+		commonLogsPO.setCreate_date(AOSUtils.getDateTime());
+		commonLogsPO.setIs_del("0");
+		commonLogsPO.setContent(content);
+		commonLogsPO.setOper_id(cp_id);
+		commonLogsPO.setOper_name("socket");
+		this.commonLogsDao.insert(commonLogsPO);
+		//System.out.println("保存日志进数据库....");
+	}
+	
+    public void saveLogs(String content,String cp_id,String log_type){
+    	
+		CommonLogsPO commonLogsPO=new CommonLogsPO();
+		commonLogsPO.setLog_id(AOSId.appId(SystemCons.ID.SYSTEM));
+		commonLogsPO.setCreate_date(AOSUtils.getDateTime());
+		commonLogsPO.setIs_del("0");
+		commonLogsPO.setContent(content);
+		commonLogsPO.setOper_id(cp_id);
+		commonLogsPO.setOper_name("socket");
+		commonLogsPO.setLog_type(log_type);
+		this.commonLogsDao.insert(commonLogsPO);
+		//System.out.println("保存日志进数据库....");
+	}
+    
+    /**
+	 * 撤防布防
+	 */
+    
+	public void deployDefense(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+		String device_id=qDto.getString("device_id");
+		String cmd=qDto.getString("cmd"); 
+		//String co_type=qDto.getString("co_type");
+		//String co_num=qDto.getString("co_num");
+		
+		/*if(!qDto.containsKey("device_id")||AOSUtils.isEmpty(device_id)){
+			this.fail(odto, "device_id不能为空");
+		}else if(!qDto.containsKey("cmd")||AOSUtils.isEmpty(cmd)){
+				this.fail(odto, "cmd不能为空");*/
+		
+		boolean a = sendCharging(device_id,cmd);
+		//boolean a = true;
+						if(a == true){
+							System.out.println("发送成功");
+							/*
+							ChargingOrdersPO chargingOrdersPO=new ChargingOrdersPO();
+							chargingOrdersPO.setCo_id(AOSId.appId(SystemCons.ID.SYSTEM));
+							chargingOrdersPO.setCreate_date(AOSUtils.getDateTime());
+							chargingOrdersPO.setUser_id(userModel.getId_());
+							chargingOrdersPO.setCp_id(cp_id);
+							chargingOrdersPO.setCo_type(co_type);
+							chargingOrdersPO.setStatus_("-2");
+							chargingOrdersPO.setCo_num(new BigDecimal(co_num));
+							chargingOrdersDao.insert(chargingOrdersPO);
+							*/
+							odto.put("status", "1");
+							odto.put("msg", "成功");
+							odto.put("deploy_status","1" );
+				
+			}else{
+				odto.put("status", "0");
+				odto.put("msg", "失败");
+			    odto.put("deploy_status","0" );
+			}
+		
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
+	
+	private boolean sendCharging(String sg_id,String cmd_app){
+		boolean flag=false;
+		//Integer.toHexString(); 0：金额，1：时间，2：度数，3：充满
+		 byte[] data_out;
+         String msg_welcome = Helper.fillString('0', 32*2);
+          
+         
+		String cmd="E1";
+		
+		BigDecimal co_num_=new BigDecimal(cmd_app);
+		System.out.println("co_num_:"+co_num_);
+		cmd_app=Integer.toHexString(co_num_.intValue());//转为十六进制
+		//cmd_app=String.format("%2s",cmd_app);
+		String finalResult = cmd_app;
+		//cmd=cmd+"00000000"+finalResult;
+		cmd = "e1"+"0"+finalResult+"0410"+"000000000000000000000000";
+		//msg_welcome =msg_welcome.replaceFirst("^00000000000000000000000000000000", cmd);
+		System.out.println("cmd:"+cmd);
+		data_out= Helper.hexStringToByteArray(cmd);
+		try {
+			//sg_id=Helper.AsciiStringToString(sg_id).substring(1);
+			sg_id= sg_id.substring(1);
+			System.out.println("sg_id:"+sg_id);
+			Socket socket=Helper.socketMap.get(sg_id);
+			if(null!=socket){
+				socket.getOutputStream().write(data_out);
+				System.out.println("APP发送充电请求数据:"+cmd);
+				saveLogs3("SC④ APP发送充电请求数据:"+cmd,sg_id,"SC④");
+				flag=true;
+			}else{
+				//this.failMsg(odto, "充电桩未连接");
+				System.out.println("APP发送充电请求数据:充电桩未连接"+msg_welcome);
+				saveLogs3("SC④ APP发送充电请求数据:充电桩未连接",sg_id,"SC④");
+			}
+			
+			
+		} catch (IOException e) {
+			if("Socket is closed".equals(e.getMessage())){
+				saveLogs3("APP发送充电请求数据异常:充电桩未连接"+msg_welcome,sg_id,"SC④");
+				//this.failMsg(odto, "APP发送充电请求数据异常:充电桩未连接");
+			}else{
+				saveLogs3("APP发送充电请求数据异常:"+msg_welcome,sg_id,"SC④");
+				//this.failMsg(odto, "APP发送充电请求数据异常");
+			}
+			
+			
+			e.printStackTrace();
+		}
+		return flag;
+	}
+	
+	 public void saveLogs3(String content,String cp_id){
+			CommonLogsPO commonLogsPO=new CommonLogsPO();
+			commonLogsPO.setLog_id(AOSId.appId(SystemCons.ID.SYSTEM));
+			commonLogsPO.setCreate_date(AOSUtils.getDateTime());
+			commonLogsPO.setIs_del("0");
+			commonLogsPO.setContent(content);
+			commonLogsPO.setOper_id(cp_id);
+			commonLogsPO.setOper_name("api");
+			commonLogsDao.insert(commonLogsPO);
+		}
+	 public void saveLogs3(String content,String cp_id,String log_type){
+			CommonLogsPO commonLogsPO=new CommonLogsPO();
+			commonLogsPO.setLog_id(AOSId.appId(SystemCons.ID.SYSTEM));
+			commonLogsPO.setCreate_date(AOSUtils.getDateTime());
+			commonLogsPO.setIs_del("0");
+			commonLogsPO.setContent(content);
+			commonLogsPO.setOper_id(cp_id);
+			commonLogsPO.setOper_name("api");
+			commonLogsPO.setLog_type(log_type);
+			commonLogsDao.insert(commonLogsPO);
+		}
+
+
+
+
 	public void getDeviceList(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
 	
 		String phone = qDto.getString("phone");
-		//phone = "15547245873";
+		/* System.out.println(phone); */
 
-		if (!qDto.containsKey("phone") || AOSUtils.isEmpty(phone)) {
-			this.failMsg(odto, "phone值不能为空");
-		} else {
+		Dto pDto = Dtos.newDto();
+		pDto.put("phone", phone);
+		int rows = deviceDao.rows(pDto);
+		pDto.put("limit", rows);// 默认查询出100个
 
-			/*
-			 * UserModel userModel = cacheUserDataService.getUserModel(phone); Dto pDto =
-			 * Dtos.newDto("phone1", phone);
-			 */
-			/* Dto pDto = Dtos.newDto("phone1", phone); */
-
-			Dto pDto = Dtos.newDto();
-			pDto.put("limit", 10);// 默认查询出100个
 			pDto.put("start", 0);
+
 
 			/* pDto.put("phone1", phone); */
 
-			pDto.put("phone", phone);
+		/*
+		 * pDto.put("phone", phone);
+		 * 
+		 */
 
 		List<Dto> deviceDtos = sqlDao.list("Device.listDevicesPage", pDto);
 		List<Dto> newListDtos = new ArrayList<Dto>();
@@ -152,9 +347,9 @@ public class AppApiService extends CDZBaseController {
 
 			odto.put("data", newListDtos);
 			odto.put("status", "1");
-			odto.put("msg", "共查到一条数据");
+		odto.put("msg", "共查到" + rows + "条数据");
 
-		}
+
 		httpModel.setOutMsg(AOSJson.toJson(odto));
 	}
 	
@@ -163,13 +358,10 @@ public class AppApiService extends CDZBaseController {
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
 
-		String id = qDto.getString("id");
-		//id = "4gw123456";
-		Dto pDto = Dtos.newDto("device_id", id);
+		String device_id = qDto.getString("device_id");
+
+		Dto pDto = Dtos.newDto("device_id", device_id);
 		DevicePO devicePO = deviceDao.selectOne(pDto);
-		if (null == devicePO) {
-			this.failMsg(odto, "设备id错误。");
-		} else {
 
 			/* List<Dto> newListDtos = new ArrayList<Dto>(); */
 
@@ -195,7 +387,7 @@ public class AppApiService extends CDZBaseController {
 			odto.put("status", "1");
 			odto.put("msg", "成功");
 
-		}
+		
 		httpModel.setOutMsg(AOSJson.toJson(odto));
 
 	}
@@ -213,11 +405,11 @@ public class AppApiService extends CDZBaseController {
 		Dto p1Dto = Dtos.newDto("device_id", info[0]);
 		DevicePO devicePO1 = deviceDao.selectOne(p1Dto);
 		if(null==basic_userPO){
-			this.failMsg(odto, "手机号输入错误。");
+			this.fail(odto, "手机号输入错误。");
 		}else {
 
 			if (null != devicePO1) {
-				this.failMsg(odto, "绑定失败，该设备已被绑定");
+				this.fail(odto, "绑定失败，该设备已被绑定");
 
 			} else {
 			String info1 = basic_userPO.getDevice_number();
@@ -227,6 +419,7 @@ public class AppApiService extends CDZBaseController {
 				DevicePO devicePO = new DevicePO();
 			devicePO.setId_(AOSId.appId(SystemCons.ID.SYSTEM));
 			devicePO.setUser_id(basic_userPO.getId_());
+				devicePO.setPhone(phone);
 			devicePO.setUser_address(address);
 			devicePO.setUser_type(basic_userPO.getUser_type());
 				devicePO.setDevice_id(info[0]);
@@ -259,22 +452,22 @@ public class AppApiService extends CDZBaseController {
 		//pDto.put("type_", "2");
 		Basic_userPO basic_userPO=basic_userDao.selectOne(pDto);   //用于检查账户是否存在
 		if(null==basic_userPO){
-			this.failMsg(odto, "手机号输入错误或已被删除，请重新输入。");
+			this.fail(odto, "手机号输入错误或已被删除，请重新输入。");
 		}else if(type.equals("1")) {
 			
 			String smsCode=qDto.getString("smsCode");
 			String smsSessionId=qDto.getString("smsSessionId");
 			
 			if(AOSUtils.isEmpty(smsCode)){
-				this.failMsg(odto, "smsCode不能为空");
+				this.fail(odto, "smsCode不能为空");
 			}else if(AOSUtils.isEmpty(smsSessionId)){
-				this.failMsg(odto, "smsSessionId不能为空");
+				this.fail(odto, "smsSessionId不能为空");
 			}else{
 			String sms_Code = cacheMasterDataService.getSMSCode(smsSessionId);
 				if (AOSUtils.isEmpty(sms_Code)) {
-					this.failMsg(odto, "验证码已失效!");
+					this.fail(odto, "验证码已失效!");
 				}else if (!sms_Code.equals(smsCode)) {
-					this.failMsg(odto, "验证码不正确!");
+					this.fail(odto, "验证码不正确!");
 				}else{
 			//String smsCode=AOSUtils.createRandomVcode();
 			//String sessionId=httpModel.getRequest().getSession().getId();
@@ -296,9 +489,9 @@ public class AppApiService extends CDZBaseController {
 				String password_ = AOSCodec.password(password);
 				
 				if(!StringUtils.equals(password_, basic_userPO.getPassword())){   //用于检查密码是否正确
-					this.failMsg(odto, "密码不正确，请重新输入");
+					this.fail(odto, "密码不正确，请重新输入");
 				}else {
-					//this.failMsg(odto, "密码正确");
+					//this.fail(odto, "密码正确");
 					odto.put("token", "150e18b7fdf84cb18cb2493b0d354f16");
 					odto.put("uid", "f84cb18cb2493b0d354f12");
 					odto.put("msg", "登录成功");
@@ -306,7 +499,7 @@ public class AppApiService extends CDZBaseController {
 					
 				}
 			}else 
-				this.failMsg(odto, "type不为1也不为0!");
+				this.fail(odto, "信息缺失");  //type不为1也不为0!
 		
 			Basic_userPO basic_userPO1=new Basic_userPO();
 			basic_userPO1.setToken("1");
@@ -329,9 +522,9 @@ public class AppApiService extends CDZBaseController {
 		String type=qDto.getString("type");
 		//if(AOSUtils.isEmpty(mobile)){
 		if(AOSUtils.isEmpty(phone)){
-			this.failMsg(dto, "手机号码不能为空");
+			this.fail(dto, "手机号码不能为空");
 		}else if(AOSUtils.isEmpty(type)){
-			this.failMsg(dto, "type不能为空");
+			this.fail(dto, "type不能为空");
 		}else{
 			String smsCode=AOSUtils.createRandomVcode();
 			String sessionId=httpModel.getRequest().getSession().getId();
@@ -367,14 +560,14 @@ public class AppApiService extends CDZBaseController {
 		String smsSessionId=qDto.getString("smsSessionId");
 		String role=qDto.getString("role");
 		/*if(!qDto.containsKey("account")||AOSUtils.isEmpty(account)){
-			this.failMsg(odto, "account不能为空");
+			this.fail(odto, "account不能为空");
 		}else if(!qDto.containsKey("password")||AOSUtils.isEmpty(password)){
-			this.failMsg(odto, "password不能为空");
+			this.fail(odto, "password不能为空");
 		}else if(!qDto.containsKey("sms_code")||AOSUtils.isEmpty(sms_code)){
-			this.failMsg(odto, "sms_code不能为空");
+			this.fail(odto, "sms_code不能为空");
 		}else */
 		if(!qDto.containsKey("smsSessionId")||AOSUtils.isEmpty(smsSessionId)){
-			this.failMsg(odto, "smsSessionId不能为空");
+			this.fail(odto, "smsSessionId不能为空");
 		}else{
 			Dto pDto=Dtos.newDto("account", account);
 			pDto.put("is_del_", "0");   //0表示未删除
@@ -383,11 +576,11 @@ public class AppApiService extends CDZBaseController {
 			Basic_userPO basic_userPO1=basic_userDao.selectOne(pDto);
 			String smsCode = cacheMasterDataService.getSMSCode(smsSessionId);
 			if(null!=basic_userPO1){
-				this.failMsg(odto, "当前手机号已存在，请重新输入。");
+				this.fail(odto, "当前手机号已存在，请重新输入。");
 			}else if (AOSUtils.isEmpty(smsCode)) {
-				this.failMsg(odto, "验证码已失效!");
+				this.fail(odto, "验证码已失效!");
 			} else if (!smsCode.equals(sms_code)) {
-				this.failMsg(odto, "验证码不正确!");
+				this.fail(odto, "验证码不正确!");
 			}else{
 				String password_ = AOSCodec.password(password);
 				Basic_userPO basic_userPO=new Basic_userPO();
@@ -451,22 +644,22 @@ public class AppApiService extends CDZBaseController {
 		String sms_code=qDto.getString("smsCode");
 		//String confirm_pwd=qDto.getString("confirmPwd");
 		String smsSessionId=qDto.getString("smsSessionId");
-		//this.failMsg(odto, new_pwd);
+		//this.fail(odto, new_pwd);
 		/*
 		if(!qDto.containsKey("mobile")||AOSUtils.isEmpty(mobile)){
-			this.failMsg(odto, "mobile不能为空");
+			this.fail(odto, "mobile不能为空");
 		}else if(!qDto.containsKey("new_pwd")||AOSUtils.isEmpty(new_pwd)){
-			this.failMsg(odto, "new_pwd不能为空");
+			this.fail(odto, "new_pwd不能为空");
 		}else if(!qDto.containsKey("sms_code")||AOSUtils.isEmpty(sms_code)){
-			this.failMsg(odto, "sms_code不能为空");
+			this.fail(odto, "sms_code不能为空");
 		}else if(!qDto.containsKey("confirm_pwd")||AOSUtils.isEmpty(confirm_pwd)){
-			this.failMsg(odto, "confirm_pwd不能为空");
+			this.fail(odto, "confirm_pwd不能为空");
 		}else 
 		if(!confirm_pwd.equals(new_pwd)){
-			this.failMsg(odto, "新密码与确认密码不一致");
+			this.fail(odto, "新密码与确认密码不一致");
 		}else */
 		if(!qDto.containsKey("smsSessionId")||AOSUtils.isEmpty(smsSessionId)){
-			this.failMsg(odto, "smsSessionId不能为空");
+			this.fail(odto, "smsSessionId不能为空");
 		}else{
 			Dto pDto=Dtos.newDto("account", mobile);
 			pDto.put("is_del", "0");
@@ -474,13 +667,13 @@ public class AppApiService extends CDZBaseController {
 			Basic_userPO basic_userPO=basic_userDao.selectOne(pDto);
 			
 			if(null==basic_userPO){
-				this.failMsg(odto, "手机号码不存在，请重新输入。");
+				this.fail(odto, "手机号码不存在，请重新输入。");
 			}else{
 				String smsCode = cacheMasterDataService.getSMSCode(smsSessionId);
 				if (AOSUtils.isEmpty(smsCode)) {
-					this.failMsg(odto, "验证码已失效!");
+					this.fail(odto, "验证码已失效!");
 				} else if (!smsCode.equals(sms_code)) {
-					this.failMsg(odto, "验证码不正确!");
+					this.fail(odto, "验证码不正确!");
 				} else {
 					//new_pwd = "1234567890";
 					String password = AOSCodec.password(new_pwd);
@@ -509,7 +702,7 @@ public class AppApiService extends CDZBaseController {
 		//pDto.put("type_", "2");
 		Basic_userPO basic_userPO=basic_userDao.selectOne(pDto);   //用于检查账户是否存在
 		if(null==basic_userPO){
-			this.failMsg(odto, "手机号输入错误或已被删除，请重新输入。");
+			this.fail(odto, "手机号输入错误或已被删除，请重新输入。");
 		}else {
 			
 			Basic_userPO basic_userPO1=new Basic_userPO();

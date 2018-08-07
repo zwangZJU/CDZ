@@ -215,6 +215,11 @@ public class CDZBaseController {
 		return outMap;
     }
     
+    public void fail(Dto dto,String msg){
+    	dto.put("status", AOSCons.ERROR);
+		dto.put("msg", msg);
+    }
+    
     public void failMsg(Dto dto,String msg){
     	dto.put(AOSCons.APPCODE_KEY, AOSCons.ERROR);
 		dto.put(AOSCons.APPMSG_KEY, msg);

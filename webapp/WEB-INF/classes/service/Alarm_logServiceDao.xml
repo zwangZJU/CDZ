@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--报警日志[alarm_log]SQL语句 -->
+<mapper namespace="Alarm_log">
+
+	<select id="listAlarm_logsPage" parameterType="Dto" resultType="Dto">
+		SELECT
+		
+		<include refid="dao.Alarm_logDao.column" />
+		FROM alarm_log
+		<where>
+ 		</where>
+	</select>
+</mapper>

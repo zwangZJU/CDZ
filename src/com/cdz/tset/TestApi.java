@@ -31,6 +31,23 @@ public class TestApi {
 	public static void main(String[] args) throws IOException {
 
 	}
+	
+	@Test
+	public void pushToSingle() {
+		HttpRequestVO httpRequestVO = new HttpRequestVO("http://localhost:9090/cdz/api/do.jhtml?router=appApiService.pushToSingle");
+
+		HttpResponseVO httpResponseVO = AOSHttpClient.execute(httpRequestVO);
+
+
+	}
+
+	@Test
+	public void pushToApp() {
+		HttpRequestVO httpRequestVO = new HttpRequestVO("http://localhost:9090/cdz/api/do.jhtml?router=appApiService.pushToApp");
+
+		HttpResponseVO httpResponseVO = AOSHttpClient.execute(httpRequestVO);
+
+	}
 	@Test
 	public  void  getArticle(){
 		HttpRequestVO httpRequestVO = new HttpRequestVO("http://116.62.215.62:80/cdz/api/do.jhtml?router=appApiService.getArticle");
