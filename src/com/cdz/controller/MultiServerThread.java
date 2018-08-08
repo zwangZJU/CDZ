@@ -11,11 +11,14 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.DatatypeConverter;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 //import com.sun.org.apache.xpath.internal.functions.Function;
 
@@ -70,7 +73,10 @@ public class MultiServerThread extends Thread {
 	    private CommonLogsDao commonLogsDao ;
 	    private SqlDao sqlDao;
 	    
-	    private DeviceDao deviceDao;
+	    //private DeviceDao deviceDao;
+	    
+		@Autowired
+		DeviceDao deviceDao;
 	    
 	    private int i=0;
 	    private int j=0;
@@ -133,11 +139,14 @@ public class MultiServerThread extends Thread {
 	    
 	    public static String strTo16(String s) {
 		    String str = "";
+		    String str1= "";
 		    for (int i = 0; i < s.length(); i++) {
 		        int ch = (int) s.charAt(i);
 		        String s4 = Integer.toHexString(ch);
-		        str = str + s4;
+		        str = str +s4;
+		        str1= str1+" "+s4;
 		    }
+		    System.out.println("str1:"+str1);
 		    return str;
 		}
 	    
@@ -384,13 +393,22 @@ public class MultiServerThread extends Thread {
 	                	//byte[] databuffer1= {0x5A,0x29,0x1C,0x6E,0x41,(byte) 0xC0,(byte) 0xAE,0x3E,0x7D,(byte) 0xD4,(byte) 0xBA,(byte) 0xC0,0x2F,0x69,0x3F,(byte) 0xF6};
 	            		//byte[] Key1={0x20,0x37,0x62,0x39,0x31,0x31,0x31,0x37,0x63,0x30,0x30,0x32,0x31,0x38,0x33,0x33};
 	            		byte[] data1 = new byte[16];
+	            		String Q = null;
+	            		String EEE = null;
+	            		String GG = null;
+	            		String CCC = null;
 	                	
 	                	Object[] object = new Object[]{ databuffer , Key,data1};
 	            		String b= sumFunc.invokeString(object, false);
 	            		System.out.println("b:"+b);
 	            		String c = strTo16(b.substring(1));
-	            		if(c.substring(2, 4).equals("4f")&&c.substring(4, 6).equals("4b")&&!c.substring(6,8).equals("30"))
-	            			System.out.println("xintiao");
+	            		System.out.println("c:"+c);
+	            		System.out.println("c.length():"+c.length());
+	            		
+	            		if(c.length()>1) {
+		            		if(c.substring(2, 4).equals("4f")&&c.substring(4, 6).equals("4b")&&!c.substring(6,8).equals("30"))
+		            			System.out.println("xintiao");
+	            		}
 	            		
 	            		Dto pDto=Dtos.newDto("device_id",this.ascii1);
 	            		List<DevicePO> deviceDtos = deviceDao.like(pDto);
@@ -401,43 +419,80 @@ public class MultiServerThread extends Thread {
 	    				//Dto newDto = Dtos.newDto();
 	    				//newDto.put("device_id", devicePO1.getArrange_withdraw());
 	    				//System.out.println(newDto);
+	    				
+	    				/*
 	    				if(devicePO1.getArrange_withdraw().equals("撤防"))
 	    					fang=false;
 	    				else if(devicePO1.getArrange_withdraw().equals("布防"))
 	    					fang=true;
-	    				
-	            		if(c.substring(6,8).equals("30")&&c.substring(1,2).equals("5")&&fang==false)
-	            		{
-	            			System.out.println("bufang");
-		            		System.out.println("yes");
-	                		
-		            		//Dto pDto=Dtos.newDto("device_id",this.ascii1);
-		            		//List<DevicePO> deviceDtos = deviceDao.like(pDto);
-		            		pDto = Dtos.newDto("device_id",device_id);
-		        			DevicePO devicePO=deviceDao.selectOne(pDto);
-							devicePO.setArrange_withdraw("布防");
-							deviceDao.updateByKey(devicePO);
-							
-							fang = true;
-	            		}else if(c.substring(6,8).equals("30")&&c.substring(1,2).equals("5")&&fang==true)
-	            		{
-	            			System.out.println("chefang");	
-			            	System.out.println("yes");
-			            	   
-		            		pDto = Dtos.newDto("device_id",device_id);
-		        			DevicePO devicePO=deviceDao.selectOne(pDto);
-							devicePO.setArrange_withdraw("撤防");
-							deviceDao.updateByKey(devicePO);
-							
-							fang = false;
+	    					*/
+	    				if(c.length()>5) {
+		            		if(c.substring(6,8).equals("30")&&c.substring(1,2).equals("5")&&fang==false)
+		            		{
+		            			System.out.println("bufang");
+			            		System.out.println("yes");
 		                		
-			            	/*
-		                	DevicePO  devicePO_=new DevicePO();
-		                	devicePO_.setId_(this.ascii1);
-		                	devicePO_.setDevice_id(Corp_ID);
-	                		
-		                	deviceDao.insert(devicePO_);
-		                	*/
+			            		//Dto pDto=Dtos.newDto("device_id",this.ascii1);
+			            		//List<DevicePO> deviceDtos = deviceDao.like(pDto);
+			            		pDto = Dtos.newDto("device_id",device_id);
+			        			DevicePO devicePO=deviceDao.selectOne(pDto);
+								devicePO.setArrange_withdraw("布防");
+								devicePO.setArrange_date(AOSUtils.getDateTime());
+								deviceDao.updateByKey(devicePO);
+								
+								fang = true;
+		            		}else if(c.substring(6,8).equals("30")&&c.substring(1,2).equals("5")&&fang==true)
+		            		{
+		            			System.out.println("chefang");	
+				            	System.out.println("yes");
+				            	   
+			            		pDto = Dtos.newDto("device_id",device_id);
+			        			DevicePO devicePO=deviceDao.selectOne(pDto);
+								devicePO.setArrange_withdraw("撤防");
+								devicePO.setWithdraw_date(AOSUtils.getDateTime());
+								deviceDao.updateByKey(devicePO);
+								
+								fang = false;
+			                		
+				            	/*
+			                	DevicePO  devicePO_=new DevicePO();
+			                	devicePO_.setId_(this.ascii1);
+			                	devicePO_.setDevice_id(Corp_ID);
+		                		
+			                	deviceDao.insert(devicePO_);
+			                	*/
+		            		}
+	    				}
+	            		if(c.length()>20)
+	            		{
+	            			System.out.println("c.length()>20");	
+	            			System.out.println(c.substring(13, 15));	
+	            			System.out.println(c.substring(15, 17));
+		            		if(c.substring(13, 15).equals("31")&&c.substring(15, 17).equals("38")) {
+		            			System.out.println("baojing");	
+				            	
+		            			if(c.substring(17, 19).equals("31"))	
+			            			Q = "触发";
+		            			else if(c.substring(17, 19).equals("33"))
+		            				Q = "恢复";
+		            			
+		            			EEE = c.substring(19, 25);
+		            			
+		            			GG = c.substring(25, 29);
+		            			
+		            			//CCC = c.substring(25, 29);
+		            			
+			            		Dto pDto2;
+			            		pDto2 = Dtos.newDto("device_id",device_id);
+			            		DevicePO devicePO2=deviceDao.selectOne(pDto2);
+		
+								devicePO2.setIs_alarming(Q);
+								//devicePO2.set
+						
+								deviceDao.updateByKey(devicePO2);
+		            			
+		            			
+		            		}
 	            		}
 	                }
 	            }  

@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- repair_log[repair_log]SQLMapper自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2018-08-07 12:33:47 -->
+
+<mapper namespace="dao.Repair_logDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.Repair_logPO">
+		INSERT INTO repair_log (
+		<if test="device_id != null and device_id != ''">
+	         device_id, <!-- 设备id -->
+		</if>
+		<if test="user_phone != null and user_phone != ''">
+	         user_phone, <!-- 用户手机号 -->
+		</if>
+		<if test="repair_content != null and repair_content != ''">
+	         repair_content, <!-- 报修内容 -->
+		</if>
+		<if test="repair_time != null and repair_time != ''">
+	         repair_time, <!-- 报修时间 -->
+		</if>
+		<if test="renovate_time != null and renovate_time != ''">
+	         renovate_time, <!-- 修复时间 -->
+		</if>
+		<if test="processing_state != null and processing_state != ''">
+	         processing_state, <!-- 处理状态 -->
+		</if>
+		<if test="state_info != null and state_info != ''">
+	         state_info, <!-- 状态信息 -->
+		</if>
+		<if test="handler_ != null and handler_ != ''">
+	         handler_, <!-- 处理者 -->
+		</if>
+		<if test="handler_phone != null and handler_phone != ''">
+	         handler_phone, <!-- 处理者电话 -->
+		</if>
+		<if test="error_reason != null and error_reason != ''">
+	         error_reason, <!-- 故障原因 -->
+		</if>
+		<if test="is_completed != null and is_completed != ''">
+	         is_completed, <!-- 修理完成 -->
+		</if>
+		<if test="beiyong1_ != null and beiyong1_ != ''">
+	         beiyong1_, <!-- 备用1 -->
+		</if>
+		<if test="beiyong2_ != null and beiyong2_ != ''">
+	         beiyong2_, <!-- 备用2 -->
+		</if>
+		<if test="baiyong3_ != null and baiyong3_ != ''">
+	         baiyong3_, <!-- 备用3 -->
+		</if>
+		<if test="repair_id != null and repair_id != ''">
+	          repair_id  <!-- 报修序号 -->
+	   </if>
+		)VALUES(
+		<if test="device_id != null and device_id != ''">
+	          #{device_id, jdbcType=VARCHAR}, <!-- 设备id -->
+	    </if>
+		<if test="user_phone != null and user_phone != ''">
+	          #{user_phone, jdbcType=VARCHAR}, <!-- 用户手机号 -->
+	    </if>
+		<if test="repair_content != null and repair_content != ''">
+	          #{repair_content, jdbcType=VARCHAR}, <!-- 报修内容 -->
+	    </if>
+		<if test="repair_time != null and repair_time != ''">
+	          #{repair_time, jdbcType=VARCHAR}, <!-- 报修时间 -->
+	    </if>
+		<if test="renovate_time != null and renovate_time != ''">
+	          #{renovate_time, jdbcType=VARCHAR}, <!-- 修复时间 -->
+	    </if>
+		<if test="processing_state != null and processing_state != ''">
+	          #{processing_state, jdbcType=VARCHAR}, <!-- 处理状态 -->
+	    </if>
+		<if test="state_info != null and state_info != ''">
+	          #{state_info, jdbcType=VARCHAR}, <!-- 状态信息 -->
+	    </if>
+		<if test="handler_ != null and handler_ != ''">
+	          #{handler_, jdbcType=VARCHAR}, <!-- 处理者 -->
+	    </if>
+		<if test="handler_phone != null and handler_phone != ''">
+	          #{handler_phone, jdbcType=VARCHAR}, <!-- 处理者电话 -->
+	    </if>
+		<if test="error_reason != null and error_reason != ''">
+	          #{error_reason, jdbcType=VARCHAR}, <!-- 故障原因 -->
+	    </if>
+		<if test="is_completed != null and is_completed != ''">
+	          #{is_completed, jdbcType=VARCHAR}, <!-- 修理完成 -->
+	    </if>
+		<if test="beiyong1_ != null and beiyong1_ != ''">
+	          #{beiyong1_, jdbcType=VARCHAR}, <!-- 备用1 -->
+	    </if>
+		<if test="beiyong2_ != null and beiyong2_ != ''">
+	          #{beiyong2_, jdbcType=VARCHAR}, <!-- 备用2 -->
+	    </if>
+		<if test="baiyong3_ != null and baiyong3_ != ''">
+	          #{baiyong3_, jdbcType=VARCHAR}, <!-- 备用3 -->
+	    </if>
+		<if test="repair_id != null and repair_id != ''">
+		     #{repair_id, jdbcType=VARCHAR}  <!-- 报修序号 -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.Repair_logPO">
+		INSERT INTO repair_log (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{repair_id, jdbcType=VARCHAR},  <!-- 报修序号 -->
+		    #{device_id, jdbcType=VARCHAR},  <!-- 设备id -->
+		    #{user_phone, jdbcType=VARCHAR},  <!-- 用户手机号 -->
+		    #{repair_content, jdbcType=VARCHAR},  <!-- 报修内容 -->
+		    #{repair_time, jdbcType=VARCHAR},  <!-- 报修时间 -->
+		    #{renovate_time, jdbcType=VARCHAR},  <!-- 修复时间 -->
+		    #{processing_state, jdbcType=VARCHAR},  <!-- 处理状态 -->
+		    #{state_info, jdbcType=VARCHAR},  <!-- 状态信息 -->
+		    #{handler_, jdbcType=VARCHAR},  <!-- 处理者 -->
+		    #{handler_phone, jdbcType=VARCHAR},  <!-- 处理者电话 -->
+		    #{error_reason, jdbcType=VARCHAR},  <!-- 故障原因 -->
+		    #{is_completed, jdbcType=VARCHAR},  <!-- 修理完成 -->
+		    #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
+		    #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+		    #{baiyong3_, jdbcType=VARCHAR}  <!-- 备用3 -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.Repair_logPO">
+		UPDATE repair_log
+		<set>
+			<if test="repair_id != null">
+		          repair_id = #{repair_id, jdbcType=VARCHAR},  <!-- 报修序号 -->
+			</if>
+			<if test="device_id != null">
+		          device_id = #{device_id, jdbcType=VARCHAR},  <!-- 设备id -->
+			</if>
+			<if test="user_phone != null">
+		          user_phone = #{user_phone, jdbcType=VARCHAR},  <!-- 用户手机号 -->
+			</if>
+			<if test="repair_content != null">
+		          repair_content = #{repair_content, jdbcType=VARCHAR},  <!-- 报修内容 -->
+			</if>
+			<if test="repair_time != null">
+		          repair_time = #{repair_time, jdbcType=VARCHAR},  <!-- 报修时间 -->
+			</if>
+			<if test="renovate_time != null">
+		          renovate_time = #{renovate_time, jdbcType=VARCHAR},  <!-- 修复时间 -->
+			</if>
+			<if test="processing_state != null">
+		          processing_state = #{processing_state, jdbcType=VARCHAR},  <!-- 处理状态 -->
+			</if>
+			<if test="state_info != null">
+		          state_info = #{state_info, jdbcType=VARCHAR},  <!-- 状态信息 -->
+			</if>
+			<if test="handler_ != null">
+		          handler_ = #{handler_, jdbcType=VARCHAR},  <!-- 处理者 -->
+			</if>
+			<if test="handler_phone != null">
+		          handler_phone = #{handler_phone, jdbcType=VARCHAR},  <!-- 处理者电话 -->
+			</if>
+			<if test="error_reason != null">
+		          error_reason = #{error_reason, jdbcType=VARCHAR},  <!-- 故障原因 -->
+			</if>
+			<if test="is_completed != null">
+		          is_completed = #{is_completed, jdbcType=VARCHAR},  <!-- 修理完成 -->
+			</if>
+			<if test="beiyong1_ != null">
+		          beiyong1_ = #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
+			</if>
+			<if test="beiyong2_ != null">
+		          beiyong2_ = #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+			</if>
+			<if test="baiyong3_ != null">
+		          baiyong3_ = #{baiyong3_, jdbcType=VARCHAR},  <!-- 备用3 -->
+			</if>
+		</set>
+		WHERE  repair_id = #{repair_id}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM repair_log WHERE  repair_id = #{repair_id}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.Repair_logPO">
+		SELECT
+		<include refid="column" />
+		FROM repair_log WHERE  repair_id = #{repair_id}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.Repair_logPO">
+		SELECT
+		    <include refid="column" />
+		FROM repair_log
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.Repair_logPO">
+		SELECT
+			<include refid="column" />	
+		FROM repair_log
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.Repair_logPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM repair_log
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.Repair_logPO">
+		SELECT
+			<include refid="column" />	
+		FROM repair_log
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.Repair_logPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM repair_log
+		<where>
+		    <include refid="like" />
+		</where>	
+		
+		
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM repair_log
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM repair_log
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  repair_id,  <!-- 报修序号 -->
+		  device_id,  <!-- 设备id -->
+		  user_phone,  <!-- 用户手机号 -->
+		  repair_content,  <!-- 报修内容 -->
+		  repair_time,  <!-- 报修时间 -->
+		  renovate_time,  <!-- 修复时间 -->
+		  processing_state,  <!-- 处理状态 -->
+		  state_info,  <!-- 状态信息 -->
+		  handler_,  <!-- 处理者 -->
+		  handler_phone,  <!-- 处理者电话 -->
+		  error_reason,  <!-- 故障原因 -->
+		  is_completed,  <!-- 修理完成 -->
+		  beiyong1_,  <!-- 备用1 -->
+		  beiyong2_,  <!-- 备用2 -->
+		  baiyong3_  <!-- 备用3 -->
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  repair_log.repair_id,  <!-- 报修序号 -->
+		  repair_log.device_id,  <!-- 设备id -->
+		  repair_log.user_phone,  <!-- 用户手机号 -->
+		  repair_log.repair_content,  <!-- 报修内容 -->
+		  repair_log.repair_time,  <!-- 报修时间 -->
+		  repair_log.renovate_time,  <!-- 修复时间 -->
+		  repair_log.processing_state,  <!-- 处理状态 -->
+		  repair_log.state_info,  <!-- 状态信息 -->
+		  repair_log.handler_,  <!-- 处理者 -->
+		  repair_log.handler_phone,  <!-- 处理者电话 -->
+		  repair_log.error_reason,  <!-- 故障原因 -->
+		  repair_log.is_completed,  <!-- 修理完成 -->
+		  repair_log.beiyong1_,  <!-- 备用1 -->
+		  repair_log.beiyong2_,  <!-- 备用2 -->
+		  repair_log.baiyong3_  <!-- 备用3 -->
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="repair_id != null and repair_id != ''">
+		      AND repair_id = #{repair_id}  <!-- 报修序号 -->
+		</if>
+	    <if test="device_id != null and device_id != ''">
+		      AND device_id = #{device_id}  <!-- 设备id -->
+		</if>
+	    <if test="user_phone != null and user_phone != ''">
+		      AND user_phone = #{user_phone}  <!-- 用户手机号 -->
+		</if>
+	    <if test="repair_content != null and repair_content != ''">
+		      AND repair_content = #{repair_content}  <!-- 报修内容 -->
+		</if>
+	    <if test="repair_time != null and repair_time != ''">
+		      AND repair_time = #{repair_time}  <!-- 报修时间 -->
+		</if>
+	    <if test="renovate_time != null and renovate_time != ''">
+		      AND renovate_time = #{renovate_time}  <!-- 修复时间 -->
+		</if>
+	    <if test="processing_state != null and processing_state != ''">
+		      AND processing_state = #{processing_state}  <!-- 处理状态 -->
+		</if>
+	    <if test="state_info != null and state_info != ''">
+		      AND state_info = #{state_info}  <!-- 状态信息 -->
+		</if>
+	    <if test="handler_ != null and handler_ != ''">
+		      AND handler_ = #{handler_}  <!-- 处理者 -->
+		</if>
+	    <if test="handler_phone != null and handler_phone != ''">
+		      AND handler_phone = #{handler_phone}  <!-- 处理者电话 -->
+		</if>
+	    <if test="error_reason != null and error_reason != ''">
+		      AND error_reason = #{error_reason}  <!-- 故障原因 -->
+		</if>
+	    <if test="is_completed != null and is_completed != ''">
+		      AND is_completed = #{is_completed}  <!-- 修理完成 -->
+		</if>
+	    <if test="beiyong1_ != null and beiyong1_ != ''">
+		      AND beiyong1_ = #{beiyong1_}  <!-- 备用1 -->
+		</if>
+	    <if test="beiyong2_ != null and beiyong2_ != ''">
+		      AND beiyong2_ = #{beiyong2_}  <!-- 备用2 -->
+		</if>
+	    <if test="baiyong3_ != null and baiyong3_ != ''">
+		      AND baiyong3_ = #{baiyong3_}  <!-- 备用3 -->
+		</if>
+	</sql>
+	
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="repair_id != null and repair_id != ''">
+		      AND repair_id like '%${repair_id}%'  <!-- 报修序号 -->
+		</if>
+	    <if test="device_id != null and device_id != ''">
+		      AND device_id like '%${device_id}%'  <!-- 设备id -->
+		</if>
+	    <if test="user_phone != null and user_phone != ''">
+		      AND user_phone like '%${user_phone}%'  <!-- 用户手机号 -->
+		</if>
+	    <if test="repair_content != null and repair_content != ''">
+		      AND repair_content like '%${repair_content}%'  <!-- 报修内容 -->
+		</if>
+	    <if test="repair_time != null and repair_time != ''">
+		      AND repair_time like '%${repair_time}%'  <!-- 报修时间 -->
+		</if>
+	    <if test="renovate_time != null and renovate_time != ''">
+		      AND renovate_time like '%${renovate_time}%'  <!-- 修复时间 -->
+		</if>
+	    <if test="processing_state != null and processing_state != ''">
+		      AND processing_state like '%${processing_state}%'  <!-- 处理状态 -->
+		</if>
+	    <if test="state_info != null and state_info != ''">
+		      AND state_info like '%${state_info}%'  <!-- 状态信息 -->
+		</if>
+	    <if test="handler_ != null and handler_ != ''">
+		      AND handler_ like '%${handler_}%'  <!-- 处理者 -->
+		</if>
+	    <if test="handler_phone != null and handler_phone != ''">
+		      AND handler_phone like '%${handler_phone}%'  <!-- 处理者电话 -->
+		</if>
+	    <if test="error_reason != null and error_reason != ''">
+		      AND error_reason like '%${error_reason}%'  <!-- 故障原因 -->
+		</if>
+	    <if test="is_completed != null and is_completed != ''">
+		      AND is_completed like '%${is_completed}%'  <!-- 修理完成 -->
+		</if>
+	    <if test="beiyong1_ != null and beiyong1_ != ''">
+		      AND beiyong1_ like '%${beiyong1_}%'  <!-- 备用1 -->
+		</if>
+	    <if test="beiyong2_ != null and beiyong2_ != ''">
+		      AND beiyong2_ like '%${beiyong2_}%'  <!-- 备用2 -->
+		</if>
+	    <if test="baiyong3_ != null and baiyong3_ != ''">
+		      AND baiyong3_ like '%${baiyong3_}%'  <!-- 备用3 -->
+		</if>
+	</sql>
+	
+</mapper>

@@ -25,8 +25,9 @@ public class Push{
 	static String CID1 = "54a82355b8988f1f3622361a7d234d6d";
 	static String CID2 = "";
 	// 别名推送方式
-	/* static String Alias = "18392888103"; */
+	static String Alias = "18392888103";
 	static String host = "http://sdk.open.api.igexin.com/apiex.htm";
+
 
 	public static void pushToSingle() throws Exception {
 		IGtPush push = new IGtPush(host, appKey, masterSecret);
@@ -42,7 +43,8 @@ public class Push{
 		message.setPushNetWorkType(0);
 		Target target = new Target();
 		target.setAppId(appId);
-		target.setClientId(CID);
+		/* target.setClientId(CID); */
+		target.setAlias(Alias);
 		IPushResult ret = null;
 		try {
 			ret = push.pushMessageToSingle(message, target);
@@ -128,7 +130,7 @@ public class Push{
 		style.setTitle("请输入通知栏标题");
 		style.setText("请输入通知栏内容");
 		// 配置通知栏图标
-		style.setLogo("icon.png");
+		style.setLogo("icon.png");// 即使不能使用某些功能，也不能删除，否则不能推送。
 		// 配置通知栏网络图标
 		style.setLogoUrl("");
 		// 设置通知是否响铃，震动，或者可清除
@@ -162,6 +164,7 @@ public class Push{
 
 		// 设置打开的网址地址
 		template.setUrl("http://xueshu.baidu.com/");
+		// 即使不能使用某些功能，也不能删除，否则不能推送。比如网址，不能为空*****************************************
 
 
 		return template;

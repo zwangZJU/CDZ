@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--报修日志[repair_log]SQL语句 -->
+<mapper namespace="Repair_log">
+	
+	<select id="listRepair_logsPage" parameterType="Dto" resultType="Dto">
+		SELECT
+		
+		<include refid="dao.Repair_logDao.column" />
+		FROM repair_log
+		<where>
+				<if test="user_phone != null and user_phone != ''">
+				      AND user_phone like '%${user_phone}%'  <!-- 地址 -->
+				</if>
+ 		</where>
+	</select>
+	<select id="listRepair_logsPage2" parameterType="Dto" resultType="Dto">
+		SELECT
+		
+		<include refid="dao.Repair_logDao.column" />
+		FROM repair_log
+		<where>
+		<if test="user_phone != null and user_phone != ''">
+				      AND user_phone = #{user_phone} <!-- 地址 -->
+				  
+				</if>
+				AND is_completed=0
+ 		</where>
+	</select>
+</mapper>

@@ -9,10 +9,14 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -41,6 +45,7 @@ import dao.ActivityDao;
 import dao.ActivityRuleDao;
 import dao.AdvertDao;
 import dao.AdvertTrafficDao;
+import dao.Alarm_logDao;
 import dao.ArticleDao;
 import dao.Basic_userDao;
 import dao.ChargingOrdersDao;
@@ -52,12 +57,15 @@ import dao.MembersDao;
 import dao.MessagesDao;
 import dao.OrdersPayDao;
 import dao.RegionDao;
+import dao.Repair_logDao;
 import dao.SubscribeDao;
 import dao.VoucherDao;
+import po.Alarm_logPO;
 import po.Basic_userPO;
 import po.ChargingPilePO;
 import po.CommonLogsPO;
 import po.DevicePO;
+import po.Repair_logPO;
 import utils.Helper;
 
 
@@ -125,10 +133,182 @@ public class AppApiService extends CDZBaseController {
 	SubscribeDao subscribeDao;
 	@Autowired
 	DeviceDao deviceDao;
+	@Autowired
+	Repair_logDao repair_logDao;
+	@Autowired
+	Alarm_logDao alarm_logDao;
 
 	private static CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
+	static String Alias = "18392888103";
+	/* ############################################报警######################### */
+	public void getAlarmLogList(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		String phone = qDto.getString("phone");
+		
+
+		Dto pDto = Dtos.newDto();
+		pDto.put("user_phone", phone);
+		int rows = alarm_logDao.rows(pDto);
+		pDto.put("limit", rows);// 默认查询出100个
+
+		pDto.put("start", 0);
+
+		List<Dto> alarmDtos = sqlDao.list("Alarm_log.listAlarm_logsPage", pDto);
+		List<Dto> newListDtos = new ArrayList<Dto>();
+		if (rows != 0) {
+
+		for (Dto dto : alarmDtos) {
+				Dto newDto = Dtos.newDto();
+
+			newDto.put("alarm_time", dto.getString("alarm_time"));
+			newDto.put("device_id", dto.getString("device_id"));
+
+			String deviceid = dto.getString("device_id");
+			String type = dto.getString("type_");
+			String useraddress = "";
+			if (type.equals("1")) {
+				useraddress = "";
+
+			} else {
+				Dto pDto1 = Dtos.newDto("device_id", deviceid);
+				DevicePO devicePO1 = deviceDao.selectOne(pDto1);
+				useraddress = devicePO1.getUser_address();
+			}
+
+			newDto.put("user_address", useraddress);
+			newDto.put("reason", dto.getString("reason_"));
+			newDto.put("type", dto.getString("type_"));
+				newListDtos.add(newDto);
+				odto.put("data", newListDtos);
+				odto.put("status", "1");
+				odto.put("msg", "查询成功");
+
+		}
+		} else {
+			Dto newDto = Dtos.newDto();
+			newDto.put("alarm_time", "");
+			newDto.put("device_id", "");
+			newDto.put("user_address", "");
+			newDto.put("reason", "");
+			newDto.put("type", "");
+			newListDtos.add(newDto);
+			odto.put("data", newListDtos);
+			odto.put("status", "-1");
+			odto.put("msg", "查询失败");
+
+		}
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
+
+	public void sos(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		String phone = qDto.getString("phone");
+		
+		Alarm_logPO alarm_logPO = new Alarm_logPO();
+		alarm_logPO.setAlarm_id(AOSId.appId(SystemCons.ID.SYSTEM));
+		alarm_logPO.setUser_phone(phone);
+		alarm_logPO.setAlarm_time(new Date());
+		alarm_logPO.setType_("1");
+		alarm_logDao.insert(alarm_logPO);
+
+
+
+		odto.put("status", "1");
+		odto.put("msg", "报警成功");
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+
+	}
 	
-	
+	/*
+	 * 报修 #### ########,同一个手机号，is_complete,必须只有一个为0，正在维修，其他为1表示已完成
+	 */
+
+	public void deviceFaultReport(HttpModel httpModel) {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+		// TODO
+		String phone = qDto.getString("phone");// phone,即为登陆时的用户手机号,15356002207
+		String device_id = qDto.getString("device_id");
+		String fault_description = qDto.getString("fault_description");
+		
+		Dto pDto = Dtos.newDto("user_phone", phone);
+		// Repair_logPO repair_logPO = repair_logDao.selectOne(pDto);
+		// phone不能为空非空，否则有问题，实际不会空，判断一下。 //selectone,只能返回一列值。即pdto唯一性
+		int rows = repair_logDao.rows(pDto);
+		pDto.put("limit", rows);//
+
+		pDto.put("start", 0);
+		List<Dto> repairDtos = sqlDao.list("Repair_log.listRepair_logsPage2", pDto);
+
+		if (null != repairDtos && !repairDtos.isEmpty()) {
+
+				this.fail(odto, "报修失败，您有正在维修的设备");
+
+		} else {
+
+			Repair_logPO repair_logPO = new Repair_logPO();
+			repair_logPO.setRepair_id(AOSId.appId(SystemCons.ID.SYSTEM));
+			repair_logPO.setDevice_id(device_id);
+			repair_logPO.setUser_phone(phone);
+			repair_logPO.setRepair_time(new Date());
+			repair_logPO.setRepair_content(fault_description);
+
+			repair_logPO.setState_info("已报修" + "%" + formatter.format(new Date()));
+			repair_logPO.setProcessing_state("0");
+			repair_logPO.setIs_completed("0");
+			repair_logDao.insert(repair_logPO);
+
+			odto.put("status", "1");
+			odto.put("msg", "报修成功");
+		}
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
+
+
+	public void getRepairProgress(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		String phone = qDto.getString("phone");
+
+		Dto pDto = Dtos.newDto("user_phone", phone);
+
+		int rows = repair_logDao.rows(pDto);
+		pDto.put("limit", rows);
+
+		pDto.put("start", 0);
+		
+		Timer timer=new Timer();//实例化Timer类   
+	    timer.schedule(new TimerTask(){   
+	    public void run(){   
+	    System.out.println("退出");   
+	    this.cancel();}},3000);//五百毫秒 
+
+		List<Dto> repairDtos = sqlDao.list("Repair_log.listRepair_logsPage2", pDto);
+		if (null != repairDtos && !repairDtos.isEmpty()) {
+			for (Dto dto : repairDtos) {
+			odto.put("processing_state", dto.getString("processing_state"));
+			odto.put("state_info", dto.getString("state_info"));
+			odto.put("status", "1");
+			odto.put("msg", "查询成功");
+			}
+		} else {
+
+			odto.put("processing_state", "");
+			odto.put("state_info", "");
+			odto.put("status", "-1");
+			odto.put("msg", "查询失败");
+		}
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+
+
+	}
 
 	public void pushToSingle(HttpModel httpModel) {
 
@@ -148,6 +328,7 @@ public class AppApiService extends CDZBaseController {
 
 		try {
 			Push.pushToApp();
+			sendSms("18392888103,15356002207", "1", null);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -185,9 +366,10 @@ public class AppApiService extends CDZBaseController {
     
     /**
 	 * 撤防布防
+     * 
 	 */
     
-	public void deployDefense(HttpModel httpModel) {
+	public void deployDefense(HttpModel httpModel) throws InterruptedException {
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
 		String device_id=qDto.getString("device_id");
@@ -195,27 +377,62 @@ public class AppApiService extends CDZBaseController {
 		//String co_type=qDto.getString("co_type");
 		//String co_num=qDto.getString("co_num");
 		
+		Dto pDto = Dtos.newDto("device_id", device_id);
+		DevicePO devicePO = deviceDao.selectOne(pDto);
+		Dto newDto = Dtos.newDto();
+		newDto.put("device_id", devicePO.getArrange_withdraw());
+		System.out.println(newDto);
+		
 		boolean flag = sendCharging(device_id,cmd);
+		
+		int i = 0;
+		
 		if(flag == true){
+			
 			System.out.println("发送成功");
 			
-			Dto pDto = Dtos.newDto("device_id", device_id);
-			DevicePO devicePO = deviceDao.selectOne(pDto);
-
-			Dto newDto = Dtos.newDto();
-			newDto.put("device_id", devicePO.getArrange_withdraw());
+			//run();
+			//Thread(1000);
 			
-			System.out.println(newDto);
+			Thread.sleep(1000);//毫秒   
 			
-			//odto.put("data", newDto);
-			odto.put("status", "1");
-			odto.put("msg", "成功");
-			odto.put("deploy_status","1" );
+			while((cmd.equals("4")&&devicePO.getArrange_withdraw().equals("撤防"))||(cmd.equals("5")&&devicePO.getArrange_withdraw().equals("布防")));
+			
+			
+			while(i<10)
+			{
+				Thread.sleep(1000);//毫秒
+				i++;
+				if(cmd.equals("4")&&devicePO.getArrange_withdraw().equals("布防"))
+				{	
+					odto.put("status", "1");
+					odto.put("msg", "成功");
+					odto.put("deploy_status","1" );
+					i=15;
+				}
+				if(cmd.equals("5")&&devicePO.getArrange_withdraw().equals("撤防"))
+				{
+					odto.put("status", "1");
+					odto.put("msg", "成功");
+					odto.put("deploy_status","0" );
+					i=15;
+				}
+			}
 				
-			}else{
-				odto.put("status", "0");
-				odto.put("msg", "失败");
-			    odto.put("deploy_status","0" );
+		}
+		if(flag == false||i==10){
+				if(devicePO.getArrange_withdraw().equals("布防"))
+				{
+					odto.put("status", "0");
+					odto.put("msg", "失败");
+				    odto.put("deploy_status","1" );
+				}
+				if(devicePO.getArrange_withdraw().equals("撤防"))
+				{
+					odto.put("status", "0");
+					odto.put("msg", "失败");
+				    odto.put("deploy_status","0" );
+				}
 			}
 		
 		httpModel.setOutMsg(AOSJson.toJson(odto));
@@ -416,7 +633,7 @@ public class AppApiService extends CDZBaseController {
 				devicePO.setDevice_id(info[0]);
 			devicePO.setProduct_type(info[1]);
 			devicePO.setProduction_date(info[2]);
-			
+			devicePO.setInstall_date(new Date());
 
 			deviceDao.insert(devicePO);
 			basic_userDao.updateByKey(basic_userPO);
