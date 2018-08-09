@@ -283,12 +283,6 @@ public class AppApiService extends CDZBaseController {
 		pDto.put("limit", rows);
 
 		pDto.put("start", 0);
-		
-		Timer timer=new Timer();//实例化Timer类   
-	    timer.schedule(new TimerTask(){   
-	    public void run(){   
-	    System.out.println("退出");   
-	    this.cancel();}},3000);//五百毫秒 
 
 		List<Dto> repairDtos = sqlDao.list("Repair_log.listRepair_logsPage2", pDto);
 		if (null != repairDtos && !repairDtos.isEmpty()) {
@@ -369,23 +363,23 @@ public class AppApiService extends CDZBaseController {
      * 
 	 */
     
-	public void deployDefense(HttpModel httpModel) throws InterruptedException {
-		Dto qDto = httpModel.getInDto();
-		Dto odto = Dtos.newDto();
-		String device_id=qDto.getString("device_id");
-		String cmd=qDto.getString("cmd"); 
+	public void deployDefense(final HttpModel httpModel) throws InterruptedException {
+		final Dto qDto = httpModel.getInDto();
+		final Dto odto = Dtos.newDto();
+		final String device_id=qDto.getString("device_id");
+		final String cmd=qDto.getString("cmd"); 
 		//String co_type=qDto.getString("co_type");
 		//String co_num=qDto.getString("co_num");
 		
-		Dto pDto = Dtos.newDto("device_id", device_id);
-		DevicePO devicePO = deviceDao.selectOne(pDto);
-		Dto newDto = Dtos.newDto();
+		final Dto pDto = Dtos.newDto("device_id", device_id);
+		final DevicePO devicePO = deviceDao.selectOne(pDto);
+		final Dto newDto = Dtos.newDto();
 		newDto.put("device_id", devicePO.getArrange_withdraw());
 		System.out.println(newDto);
 		
-		boolean flag = sendCharging(device_id,cmd);
+		final boolean flag = sendCharging(device_id,cmd);
 		
-		int i = 0;
+		
 		
 		if(flag == true){
 			
@@ -393,49 +387,47 @@ public class AppApiService extends CDZBaseController {
 			
 			//run();
 			//Thread(1000);
-			
-			Thread.sleep(1000);//毫秒   
-			
-			while((cmd.equals("4")&&devicePO.getArrange_withdraw().equals("撤防"))||(cmd.equals("5")&&devicePO.getArrange_withdraw().equals("布防")));
-			
-			
-			while(i<10)
-			{
-				Thread.sleep(1000);//毫秒
-				i++;
-				if(cmd.equals("4")&&devicePO.getArrange_withdraw().equals("布防"))
-				{	
-					odto.put("status", "1");
-					odto.put("msg", "成功");
-					odto.put("deploy_status","1" );
-					i=15;
-				}
-				if(cmd.equals("5")&&devicePO.getArrange_withdraw().equals("撤防"))
-				{
-					odto.put("status", "1");
-					odto.put("msg", "成功");
-					odto.put("deploy_status","0" );
-					i=15;
-				}
-			}
-				
-		}
-		if(flag == false||i==10){
-				if(devicePO.getArrange_withdraw().equals("布防"))
-				{
-					odto.put("status", "0");
-					odto.put("msg", "失败");
-				    odto.put("deploy_status","1" );
-				}
-				if(devicePO.getArrange_withdraw().equals("撤防"))
-				{
-					odto.put("status", "0");
-					odto.put("msg", "失败");
-				    odto.put("deploy_status","0" );
-				}
-			}
 		
+			
+			//while((cmd.equals("4")&&devicePO.getArrange_withdraw().equals("撤防"))||(cmd.equals("5")&&devicePO.getArrange_withdraw().equals("布防")));
+		
+						
+						//if(cmd.equals("4")&&devicePO.getArrange_withdraw().equals("1"))  //布防
+						if(cmd.equals("4"))
+						{	
+							odto.put("status", "1");
+							odto.put("msg", "成功");
+							odto.put("deploy_status","0" );
+							
+						}
+						//if(cmd.equals("5")&&devicePO.getArrange_withdraw().equals("0"))  //撤防
+						
+						if(cmd.equals("5"))
+						{
+							odto.put("status", "1");
+							odto.put("msg", "成功");
+							odto.put("deploy_status","1" );
+							
+						}
+					}
+					
+					if(flag == false){
+						if(devicePO.getArrange_withdraw().equals("1"))
+						{
+							odto.put("status", "0");
+							odto.put("msg", "失败");
+						    odto.put("deploy_status","1" );
+						}
+						if(devicePO.getArrange_withdraw().equals("0"))
+						{
+							odto.put("status", "0");
+							odto.put("msg", "失败");
+						    odto.put("deploy_status","0" );
+						}
+						
+					}
 		httpModel.setOutMsg(AOSJson.toJson(odto));
+		
 	}
 	
 	private boolean sendCharging(String sg_id,String cmd_app){
@@ -544,7 +536,8 @@ public class AppApiService extends CDZBaseController {
 			newDto.put("user_id", dto.getString("user_id"));
 			newDto.put("user_name", dto.getString("user_name"));
 			newDto.put("user_address", dto.getString("user_address"));
-			newDto.put("status",dto.getString("status"));
+			//newDto.put("status",dto.getString("status"));
+			newDto.put("arrange_withdraw",dto.getString("arrange_withdraw"));
 				newDto.put("is_alarming", dto.getString("is_alarming"));
 			newDto.put("head", dto.getString("head"));
 			newDto.put("head_phone", dto.getString("head_phone"));
@@ -576,7 +569,8 @@ public class AppApiService extends CDZBaseController {
 			Dto newDto = Dtos.newDto();
 			newDto.put("device_id", devicePO.getDevice_id());
 			newDto.put("product_type", devicePO.getProduct_type());
-			newDto.put("status", devicePO.getStatus());
+			//newDto.put("status", devicePO.getStatus());
+			newDto.put("arrange_withdraw", devicePO.getArrange_withdraw());
 			newDto.put("is_alarming", devicePO.getIs_alarming());
 			newDto.put("production_date", devicePO.getProduction_date());
 			newDto.put("install_date", devicePO.getInstall_date());

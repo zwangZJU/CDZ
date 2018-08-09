@@ -36,9 +36,11 @@ import aos.framework.web.httpclient.HttpRequestVO;
 import aos.framework.web.httpclient.HttpResponseVO;
 import aos.system.common.utils.SystemCons;
 import cn.com.tcc.TCC;
+import dao.Alarm_logDao;
 import dao.ChargingOrdersDao;
 import dao.ChargingPileDao;
 import dao.CommonLogsDao;
+import po.Alarm_logPO;
 import po.Basic_userPO;
 import po.ChargingOrdersPO;
 import po.ChargingPilePO;
@@ -56,6 +58,7 @@ import com.sun.jna.Function;
 //import com.sun.jna.Function;
 
 //package com.microwisdom.utils;
+
 
 
 /**
@@ -77,6 +80,8 @@ public class MultiServerThread extends Thread {
 	    
 		@Autowired
 		DeviceDao deviceDao;
+		@Autowired
+		Alarm_logDao alarm_logDao;
 	    
 	    private int i=0;
 	    private int j=0;
@@ -97,6 +102,7 @@ public class MultiServerThread extends Thread {
 	        chargingOrdersDao=(ChargingOrdersDao)AOSBeanLoader.getSpringBean("chargingOrdersDao");
 	        
 	        deviceDao = (DeviceDao)AOSBeanLoader.getSpringBean("deviceDao");
+	        alarm_logDao = (Alarm_logDao)AOSBeanLoader.getSpringBean("alarm_logDao");
 	    }
 	    public void saveLogs(String content,String cp_id){
 	    	
@@ -147,6 +153,7 @@ public class MultiServerThread extends Thread {
 		        str1= str1+" "+s4;
 		    }
 		    System.out.println("str1:"+str1);
+		    
 		    return str;
 		}
 	    
@@ -194,6 +201,8 @@ public class MultiServerThread extends Thread {
 				String hex;
 				
 				boolean fang = false;
+				
+				
 		        
 		        
 	            while ((length = in.read(data_in)) > 0) {
@@ -393,6 +402,7 @@ public class MultiServerThread extends Thread {
 	                	//byte[] databuffer1= {0x5A,0x29,0x1C,0x6E,0x41,(byte) 0xC0,(byte) 0xAE,0x3E,0x7D,(byte) 0xD4,(byte) 0xBA,(byte) 0xC0,0x2F,0x69,0x3F,(byte) 0xF6};
 	            		//byte[] Key1={0x20,0x37,0x62,0x39,0x31,0x31,0x31,0x37,0x63,0x30,0x30,0x32,0x31,0x38,0x33,0x33};
 	            		byte[] data1 = new byte[16];
+	            		byte[] data2 = new byte[16];
 	            		String Q = null;
 	            		String EEE = null;
 	            		String GG = null;
@@ -403,7 +413,7 @@ public class MultiServerThread extends Thread {
 	            		System.out.println("b:"+b);
 	            		String c = strTo16(b.substring(1));
 	            		System.out.println("c:"+c);
-	            		System.out.println("c.length():"+c.length());
+	            		System.out.println("c.length():"+c.length());            		
 	            		
 	            		if(c.length()>1) {
 		            		if(c.substring(2, 4).equals("4f")&&c.substring(4, 6).equals("4b")&&!c.substring(6,8).equals("30"))
@@ -412,31 +422,35 @@ public class MultiServerThread extends Thread {
 	            		
 	            		Dto pDto=Dtos.newDto("device_id",this.ascii1);
 	            		List<DevicePO> deviceDtos = deviceDao.like(pDto);
-	            		String device_id = deviceDtos.get(0).getDevice_id();
+	            		//String device_id = deviceDtos.get(0).getDevice_id();
+	            		String device_id = "26666666";
 	            		
 	            		Dto pDto1 = Dtos.newDto("device_id", device_id);
 	    				DevicePO devicePO1 = deviceDao.selectOne(pDto1);
+	    				
 	    				//Dto newDto = Dtos.newDto();
 	    				//newDto.put("device_id", devicePO1.getArrange_withdraw());
 	    				//System.out.println(newDto);
 	    				
-	    				/*
-	    				if(devicePO1.getArrange_withdraw().equals("撤防"))
+	    				
+	    				if(devicePO1.getArrange_withdraw().equals("0"))   //撤防
 	    					fang=false;
-	    				else if(devicePO1.getArrange_withdraw().equals("布防"))
+	    				else if(devicePO1.getArrange_withdraw().equals("1"))  //布防
 	    					fang=true;
-	    					*/
+	    					
 	    				if(c.length()>5) {
 		            		if(c.substring(6,8).equals("30")&&c.substring(1,2).equals("5")&&fang==false)
 		            		{
 		            			System.out.println("bufang");
 			            		System.out.println("yes");
+			            		Q = "1";  //触发
 		                		
 			            		//Dto pDto=Dtos.newDto("device_id",this.ascii1);
 			            		//List<DevicePO> deviceDtos = deviceDao.like(pDto);
 			            		pDto = Dtos.newDto("device_id",device_id);
 			        			DevicePO devicePO=deviceDao.selectOne(pDto);
-								devicePO.setArrange_withdraw("布防");
+								devicePO.setArrange_withdraw("1");  //布防
+								devicePO.setIs_alarming(Q);
 								devicePO.setArrange_date(AOSUtils.getDateTime());
 								deviceDao.updateByKey(devicePO);
 								
@@ -445,10 +459,12 @@ public class MultiServerThread extends Thread {
 		            		{
 		            			System.out.println("chefang");	
 				            	System.out.println("yes");
+				            	Q = "0";  //恢复
 				            	   
 			            		pDto = Dtos.newDto("device_id",device_id);
 			        			DevicePO devicePO=deviceDao.selectOne(pDto);
-								devicePO.setArrange_withdraw("撤防");
+								devicePO.setArrange_withdraw("0"); //撤防
+								devicePO.setIs_alarming(Q);
 								devicePO.setWithdraw_date(AOSUtils.getDateTime());
 								deviceDao.updateByKey(devicePO);
 								
@@ -465,6 +481,20 @@ public class MultiServerThread extends Thread {
 	    				}
 	            		if(c.length()>20)
 	            		{
+	            			byte[] databuffer2 = new byte[16];
+	            			for(int u=0;u<6;u++)
+	            				databuffer2[u] = 1;
+		                	for(int n=16;n<26;n++)
+		                		databuffer2[n-10] = data_in[n];
+		            		
+		            		Object[] object2 = new Object[]{ databuffer2 , Key,data2};
+		            		String b2= sumFunc.invokeString(object2, false);
+		            		System.out.println("b2:"+b2);
+		            		String c2 = strTo16(b2.substring(0,3));
+		            		System.out.println("c2:"+c2);
+		            		System.out.println("c2.length():"+c2.length());	
+	            			
+		            		
 	            			System.out.println("c.length()>20");	
 	            			System.out.println(c.substring(13, 15));	
 	            			System.out.println(c.substring(15, 17));
@@ -472,28 +502,43 @@ public class MultiServerThread extends Thread {
 		            			System.out.println("baojing");	
 				            	
 		            			if(c.substring(17, 19).equals("31"))	
-			            			Q = "触发";
+			            			Q = "1";  //触发
 		            			else if(c.substring(17, 19).equals("33"))
-		            				Q = "恢复";
+		            				Q = "0";  //恢复
 		            			
 		            			EEE = c.substring(19, 25);
+		            			System.out.println("EEE:"+EEE);
+		            			String str_EEE = decode(EEE);
+		            			
 		            			
 		            			GG = c.substring(25, 29);
 		            			
 		            			//CCC = c.substring(25, 29);
 		            			
+		            			/*
 			            		Dto pDto2;
 			            		pDto2 = Dtos.newDto("device_id",device_id);
 			            		DevicePO devicePO2=deviceDao.selectOne(pDto2);
-		
 								devicePO2.setIs_alarming(Q);
 								//devicePO2.set
-						
 								deviceDao.updateByKey(devicePO2);
+								*/
 		            			
+		            			Dto pDto2 = Dtos.newDto("device_id", device_id);
+		            			DevicePO devicePO = deviceDao.selectOne(pDto2);
+		            			//Dto newDto = Dtos.newDto();
+		            			
+		            			Alarm_logPO alarm_logPO = new Alarm_logPO();
+		            			alarm_logPO.setAlarm_id(AOSId.appId(SystemCons.ID.SYSTEM));
+		            			alarm_logPO.setUser_phone(devicePO.getPhone());
+		            			alarm_logPO.setAlarm_time(new Date());
+		            			alarm_logPO.setBeiyong1_(str_EEE);
+		            			alarm_logPO.setType_("1");
+		            			alarm_logDao.insert(alarm_logPO);
 		            			
 		            		}
 	            		}
+	    
 	                }
 	            }  
 	            this.socket.close();
