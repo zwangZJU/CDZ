@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -49,17 +50,17 @@ import utils.Helper;
 
 import dao.DeviceDao;
 import po.DevicePO;
-
+import service.AppApiService;
+import service.Push;
 import cn.com.tcc.State;
 import cn.com.tcc.TCC;
 
+import com.cloopen.rest.sdk.CCPRestSmsSDK;
 import com.sun.jna.Function;
 
 //import com.sun.jna.Function;
 
 //package com.microwisdom.utils;
-
-
 
 /**
  * @author Administrator
@@ -85,6 +86,8 @@ public class MultiServerThread extends Thread {
 	    
 	    private int i=0;
 	    private int j=0;
+	    
+	    private static CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
 	    
 	    public MultiServerThread(Socket socket) {
 	        super("MultiServerThread");
@@ -324,7 +327,15 @@ public class MultiServerThread extends Thread {
 	                	byte[] key = {data_in[15],data_in[14],data_in[13],data_in[12],data_in[11],data_in[10],
 	                			data_in[9],data_in[8],data_in[23],data_in[22],data_in[21],data_in[20],
 	                			data_in[19],data_in[18],data_in[17],data_in[16]};
-	                	Key= key;
+	                	Key= key;  //密钥
+	                	
+	                	//String str_ACCT = decode(ACCT1+ACCT2+ACCT3+ACCT4);
+	                	//String ICode = decode(ICode1+ICode2+ICode3+ICode4+ICode5+ICode6+ICode7+ICode8);
+	                	//String str_ascii = decode(this.ascii1);
+	                	
+	                	String str_ACCT =null;
+	                	String ICode = null;
+	                	String str_ascii = null;
 	                	
 	                	Helper.socketMap.put(this.ascii1, this.socket);//保存socket对象
 	                	System.out.println("this.ascii1："+this.ascii1);
@@ -339,6 +350,8 @@ public class MultiServerThread extends Thread {
 	                	//DevicePO devicePO = deviceDao.selectByKey(this.ascii1);
 	                	//DevicePO devicePO = null;
 	                	DevicePO devicePO = deviceDao.selectByKey(Corp_ID);
+	                	
+	                	//DevicePO devicePO = deviceDao.selectByKey(ICode);
 	                	
 	                	if(null==chargingPilePO){//新增对象
 	                		ChargingPilePO  chargingPilePO_=new ChargingPilePO();
@@ -381,14 +394,23 @@ public class MultiServerThread extends Thread {
 	                		System.out.println("yes");
 	                		
 	                		DevicePO  devicePO_=new DevicePO();
-	                		devicePO_.setId_(this.ascii1);
-	                		devicePO_.setDevice_id(Corp_ID);
+	                		//devicePO_.setId_(this.ascii1);
+	                		//devicePO_.setDevice_id(Corp_ID);
 	                		
+	                		devicePO_.setDevice_id(str_ascii);
+	                		devicePO_.setUser_id(str_ACCT);
 	                		deviceDao.insert(devicePO_);
 	                		System.out.println("yes two");
 	                		
 	                	}else {//已存在，则修改状态
-	                		System.out.println("no");
+	                		Dto pDto;
+		            		
+		            		//pDto = Dtos.newDto("device_id",str_ascii);
+		        			//DevicePO devicePO3=deviceDao.selectOne(pDto);
+		        			//devicePO3.setUser_id(str_ACCT);
+							//deviceDao.updateByKey(devicePO3);
+							
+	                		System.out.println("update");
 	                	}
 	                	
 	                	String content="CS①注册转换后参数：：：ascii:"+this.ascii+" 充电状态:"+chongdianzhuantai+" 桩的型号:"+TYPE_ID+" 桩生产公司:"+Corp_ID;
@@ -482,15 +504,15 @@ public class MultiServerThread extends Thread {
 	            		if(c.length()>20)
 	            		{
 	            			byte[] databuffer2 = new byte[16];
-	            			for(int u=0;u<6;u++)
-	            				databuffer2[u] = 1;
-		                	for(int n=16;n<26;n++)
-		                		databuffer2[n-10] = data_in[n];
+	            			//for(int u=0;u<6;u++)
+	            				//databuffer2[u] = 1;
+		                	for(int n=16;n<32;n++)
+		                		databuffer2[n-16] = data_in[n];
 		            		
 		            		Object[] object2 = new Object[]{ databuffer2 , Key,data2};
 		            		String b2= sumFunc.invokeString(object2, false);
 		            		System.out.println("b2:"+b2);
-		            		String c2 = strTo16(b2.substring(0,3));
+		            		String c2 = strTo16(b2);
 		            		System.out.println("c2:"+c2);
 		            		System.out.println("c2.length():"+c2.length());	
 	            			
@@ -536,6 +558,9 @@ public class MultiServerThread extends Thread {
 		            			alarm_logPO.setType_("1");
 		            			alarm_logDao.insert(alarm_logPO);
 		            			
+		            			Push.pushToSingle(devicePO.getPhone());
+		            			
+		            			sendSms(devicePO.getPhone(),"1",str_EEE);
 		            		}
 	            		}
 	    
@@ -627,6 +652,7 @@ public class MultiServerThread extends Thread {
 	            
 	        }
 	    }
+	    
 		public static  Map<String,String>  getLocationinfor(String latlng){//
 			HttpRequestVO httpRequestVO = new HttpRequestVO("http://getlocat.market.alicloudapi.com/api/getLocationinfor");
 			 Map<String,String> paramMap =new HashMap<String,String>();
@@ -648,5 +674,35 @@ public class MultiServerThread extends Thread {
 		    	 return null;
 		     }
 			
+		}
+		
+		private void initSmsConfig(){
+			restAPI.init(AOSCxt.getParam("sms_url"), AOSCxt.getParam("sms_port"));
+			restAPI.setAccount(AOSCxt.getParam("account_sid"), AOSCxt.getParam("auth_token"));
+			restAPI.setAppId(AOSCxt.getParam("app_id"));
+			//restAPI.init("app.cloopen.com", "8883");
+			//restAPI.setAccount("8aaf07086436008b01643c2a00dd05b7", "bcf4e77d8e0b41c88732e51eeb6139db");
+			//restAPI.setAppId("8aaf07086436008b01643c2a014105be");
+		}
+		private void sendSms(String mobile,String templateId,String smsCode){
+			this.initSmsConfig();
+			HashMap<String, Object> result= restAPI.sendTemplateSMS(mobile,templateId,new String[]{smsCode,"2"});
+			this.printSmsInfo(result, "");
+			
+		}
+		private void printSmsInfo(HashMap<String, Object> result,String mobile){
+			saveLogs("printSmsInfo:短信发送 手机号:"+mobile+"  SDKTestGetSubAccounts result=" + result,null);
+			if("000000".equals(result.get("statusCode"))){
+				//正常返回输出data包体信息（map）
+				HashMap<String,Object> data = (HashMap<String, Object>) result.get("data");
+				Set<String> keySet = data.keySet();
+				for(String key:keySet){
+					Object object = data.get(key);
+					System.out.println(key +" = "+object);
+				}
+			}else{
+				//异常返回输出错误码和错误信息
+				saveLogs("printSmsInfo:错误码=" + result.get("statusCode") +" 错误信息= "+result.get("statusMsg"),null);
+			}
 		}
 }

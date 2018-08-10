@@ -232,21 +232,24 @@ public class AppApiService extends CDZBaseController {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
-		// TODO
+
 		String phone = qDto.getString("phone");// phone,即为登陆时的用户手机号,15356002207
 		String device_id = qDto.getString("device_id");
 		String fault_description = qDto.getString("fault_description");
 		
 		Dto pDto = Dtos.newDto("user_phone", phone);
-		// Repair_logPO repair_logPO = repair_logDao.selectOne(pDto);
-		// phone不能为空非空，否则有问题，实际不会空，判断一下。 //selectone,只能返回一列值。即pdto唯一性
+		Dto pDto1 = Dtos.newDto("phone", phone);
+		pDto1.put("device_id", device_id);// 默认查
+		
 		int rows = repair_logDao.rows(pDto);
-		pDto.put("limit", rows);//
+		pDto.put("limit", rows);// 默认查
 
 		pDto.put("start", 0);
 		List<Dto> repairDtos = sqlDao.list("Repair_log.listRepair_logsPage2", pDto);
+		List<Dto> repairDtos1 = sqlDao.list("Device.listDevicesPage3", pDto1);
+		if (null != repairDtos1 && !repairDtos1.isEmpty()) {
 
-		if (null != repairDtos && !repairDtos.isEmpty()) {
+			if (null != repairDtos && !repairDtos.isEmpty()) {
 
 				this.fail(odto, "报修失败，您有正在维修的设备");
 
@@ -263,13 +266,18 @@ public class AppApiService extends CDZBaseController {
 			repair_logPO.setProcessing_state("0");
 			repair_logPO.setIs_completed("0");
 			repair_logDao.insert(repair_logPO);
+			
 
 			odto.put("status", "1");
 			odto.put("msg", "报修成功");
 		}
+
+		} else {
+			this.fail(odto, "报修失败，这不是您的设备");
+
+		}
 		httpModel.setOutMsg(AOSJson.toJson(odto));
 	}
-
 
 	public void getRepairProgress(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
@@ -289,6 +297,7 @@ public class AppApiService extends CDZBaseController {
 			for (Dto dto : repairDtos) {
 			odto.put("processing_state", dto.getString("processing_state"));
 			odto.put("state_info", dto.getString("state_info"));
+			odto.put("repair_content", dto.getString("repair_content"));
 			odto.put("status", "1");
 			odto.put("msg", "查询成功");
 			}
@@ -296,6 +305,7 @@ public class AppApiService extends CDZBaseController {
 
 			odto.put("processing_state", "");
 			odto.put("state_info", "");
+			odto.put("repair_content", "");
 			odto.put("status", "-1");
 			odto.put("msg", "查询失败");
 		}
@@ -303,20 +313,72 @@ public class AppApiService extends CDZBaseController {
 
 
 	}
+	public void getRepairLogList(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
 
-	public void pushToSingle(HttpModel httpModel) {
+		String phone = qDto.getString("phone");
+	
 
+		Dto pDto = Dtos.newDto();
+		pDto.put("user_phone", phone);
+		int rows = repair_logDao.rows(pDto);
+		pDto.put("limit", rows);// 默认查询出100个
 
+		pDto.put("start", 0);
 
-		try {
-			Push.pushToSingle();
+		List<Dto> repairDtos = sqlDao.list("Repair_log.listRepair_logsPage", pDto);
+		List<Dto> newListDtos = new ArrayList<Dto>();
+		if (rows != 0) {
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			for (Dto dto : repairDtos) {
+				Dto newDto = Dtos.newDto();
+				newDto.put("device_id", dto.getString("device_id"));
+				newDto.put("repair_time", dto.getString("repair_time"));
+				newDto.put("renovate_time", dto.getString("renovate_time"));
+				newDto.put("handler_", dto.getString("handler_"));
+				newDto.put("handler_phone", dto.getString("handler_phone"));
+				newDto.put("error_reason", dto.getString("error_reason"));
+				newDto.put("processing_state", dto.getString("processing_state"));
+				
+				newDto.put("repair_content", dto.getString("repair_content"));
+				newListDtos.add(newDto);
+				odto.put("data", newListDtos);
+				odto.put("status", "1");
+				odto.put("msg", "查询成功");
+
+			}
+		} else {
+			Dto newDto = Dtos.newDto();
+			newDto.put("device_id", "");
+			newDto.put("repair_time", "");
+			newDto.put("renovate_time", "");
+			newDto.put("handler_", "");
+			newDto.put("handler_phone", "");
+			newDto.put("error_reason", "");
+			newListDtos.add(newDto);
+			odto.put("data", newListDtos);
+			odto.put("status", "-1");
+			odto.put("msg", "查询失败");
+
 		}
 
+		httpModel.setOutMsg(AOSJson.toJson(odto));
 	}
+
+//	public void pushToSingle(HttpModel httpModel) {
+//
+//
+//
+//		try {
+//			Push.pushToSingle();
+//
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//	}
 
 	public void pushToApp(HttpModel httpModel) {
 
@@ -620,7 +682,7 @@ public class AppApiService extends CDZBaseController {
 			// TODO
 				DevicePO devicePO = new DevicePO();
 			devicePO.setId_(AOSId.appId(SystemCons.ID.SYSTEM));
-			devicePO.setUser_id(basic_userPO.getId_());
+			devicePO.setUser_id("");
 				devicePO.setPhone(phone);
 			devicePO.setUser_address(address);
 			devicePO.setUser_type(basic_userPO.getUser_type());
@@ -923,12 +985,12 @@ public class AppApiService extends CDZBaseController {
 	
 	
 	private void initSmsConfig(){
-		//restAPI.init(AOSCxt.getParam("sms_url"), AOSCxt.getParam("sms_port"));
-		//restAPI.setAccount(AOSCxt.getParam("account_sid"), AOSCxt.getParam("auth_token"));
-		//restAPI.setAppId(AOSCxt.getParam("app_id"));
-		restAPI.init("app.cloopen.com", "8883");
-		restAPI.setAccount("8aaf07086436008b01643c2a00dd05b7", "bcf4e77d8e0b41c88732e51eeb6139db");
-		restAPI.setAppId("8aaf07086436008b01643c2a014105be");
+		restAPI.init(AOSCxt.getParam("sms_url"), AOSCxt.getParam("sms_port"));
+		restAPI.setAccount(AOSCxt.getParam("account_sid"), AOSCxt.getParam("auth_token"));
+		restAPI.setAppId(AOSCxt.getParam("app_id"));
+		//restAPI.init("app.cloopen.com", "8883");
+		//restAPI.setAccount("8aaf07086436008b01643c2a00dd05b7", "bcf4e77d8e0b41c88732e51eeb6139db");
+		//restAPI.setAppId("8aaf07086436008b01643c2a014105be");
 	}
 	private void sendSms(String mobile,String templateId,String smsCode){
 		this.initSmsConfig();

@@ -25,11 +25,11 @@ public class Push{
 	static String CID1 = "54a82355b8988f1f3622361a7d234d6d";
 	static String CID2 = "";
 	// 别名推送方式
-	static String Alias = "18392888103";
+	//static String Alias = "18392888103";
 	static String host = "http://sdk.open.api.igexin.com/apiex.htm";
 
 
-	public static void pushToSingle() throws Exception {
+	public static void pushToSingle(String phone) throws Exception {
 		IGtPush push = new IGtPush(host, appKey, masterSecret);
 		NotificationTemplate template = notificationTemplate(appId, appKey);
 		/* TransmissionTemplate template = transmissionTemplate(); */
@@ -44,7 +44,7 @@ public class Push{
 		Target target = new Target();
 		target.setAppId(appId);
 		/* target.setClientId(CID); */
-		target.setAlias(Alias);
+		target.setAlias(phone);
 		IPushResult ret = null;
 		try {
 			ret = push.pushMessageToSingle(message, target);
@@ -127,8 +127,8 @@ public class Push{
 
 		Style0 style = new Style0();
 		// 设置通知栏标题与内容
-		style.setTitle("请输入通知栏标题");
-		style.setText("请输入通知栏内容");
+		style.setTitle("报警");
+		style.setText("你的设备突然发生警情");
 		// 配置通知栏图标
 		style.setLogo("icon.png");// 即使不能使用某些功能，也不能删除，否则不能推送。
 		// 配置通知栏网络图标

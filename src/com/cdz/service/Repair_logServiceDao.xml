@@ -29,4 +29,21 @@
 				AND is_completed=0
  		</where>
 	</select>
+	<select id="listRepair_logsPage3" parameterType="Dto" resultType="Dto">
+		SELECT
+		
+		<include refid="dao.Repair_logDao.column" />
+		FROM repair_log
+		<where>
+		<if test="user_phone != null and user_phone != ''">
+				      AND user_phone = #{user_phone} <!-- 地址 -->
+				  
+				</if>
+		<if test="device_id != null and device_id != ''">
+				      AND device_id = #{device_id} <!-- 地址 -->
+				  
+				</if>		
+				
+ 		</where>
+ 		</select>
 </mapper>

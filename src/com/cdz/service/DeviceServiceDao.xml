@@ -14,4 +14,21 @@
 				</if>
  		</where>
 	</select>
+	<select id="listDevicesPage3" parameterType="Dto" resultType="Dto">
+		SELECT
+		
+		<include refid="dao.DeviceDao.column" />
+		FROM device
+		<where>
+		<if test="phone != null and phone != ''">
+				      AND phone = #{phone} <!-- 地址 -->
+				  
+				</if>
+		<if test="device_id != null and device_id != ''">
+				      AND device_id = #{device_id} <!-- 地址 -->
+				  
+				</if>		
+				
+ 		</where>
+ 		</select>
 </mapper>
