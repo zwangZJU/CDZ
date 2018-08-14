@@ -472,7 +472,7 @@ public class MultiServerThread extends Thread {
 			            		pDto = Dtos.newDto("device_id",device_id);
 			        			DevicePO devicePO=deviceDao.selectOne(pDto);
 								devicePO.setArrange_withdraw("1");  //布防
-								devicePO.setIs_alarming(Q);
+								//devicePO.setIs_alarming(Q);
 								devicePO.setArrange_date(AOSUtils.getDateTime());
 								deviceDao.updateByKey(devicePO);
 								
@@ -486,7 +486,7 @@ public class MultiServerThread extends Thread {
 			            		pDto = Dtos.newDto("device_id",device_id);
 			        			DevicePO devicePO=deviceDao.selectOne(pDto);
 								devicePO.setArrange_withdraw("0"); //撤防
-								devicePO.setIs_alarming(Q);
+								//devicePO.setIs_alarming(Q);
 								devicePO.setWithdraw_date(AOSUtils.getDateTime());
 								deviceDao.updateByKey(devicePO);
 								
@@ -560,7 +560,12 @@ public class MultiServerThread extends Thread {
 		            			
 		            			Push.pushToSingle(devicePO.getPhone());
 		            			
-		            			sendSms(devicePO.getPhone(),"1",str_EEE);
+		            			//sendSms(devicePO.getPhone(),"1",str_EEE);
+		            			
+		            			pDto = Dtos.newDto("device_id",device_id);
+			        			DevicePO devicePO4=deviceDao.selectOne(pDto);
+								devicePO4.setIs_alarming(Q);
+								deviceDao.updateByKey(devicePO4);
 		            		}
 	            		}
 	    

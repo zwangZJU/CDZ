@@ -11,6 +11,7 @@
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>
 												<aos:dockeditem text="删除" tooltip="删除" onclick="_delete" icon="del.png" />
 												<aos:dockeditem text="导出" tooltip="导出" onclick="_exportexcel" icon="icon70.png" />
+												<%-- <aos:dockeditem text="操作" tooltip="操作" onclick="_f_role_u_save" icon="icon70.png" /> --%>
 								<aos:dockeditem xtype="tbseparator" />
 				               			</aos:docked>
 			<aos:column type="rowno" />
@@ -30,8 +31,21 @@
 			    						      			       <aos:column header="备用1" dataIndex="beiyong1_"   width="255" />
 			    						      			       <aos:column header="备用2" dataIndex="beiyong2_"   width="255" />
 			    						      			       <aos:column header="备用3" dataIndex="beiyong3_"   width="255" />
+			    						      			       <aos:column header="操作" rendererFn="fn_button_render" align="center" width="80" />
 			    			 		</aos:gridpanel>
 	</aos:viewport>
+	
+	<aos:window id="_w_role_u" title="接警">
+		<aos:formpanel id="_f_role_u" width="500" layout="anchor" labelWidth="65">
+			<aos:hiddenfield name="alarm_id" />
+			<aos:textfield name="handler_" fieldLabel="处理者" allowBlank="false" maxLength="50" />
+		</aos:formpanel>
+		<aos:docked dock="bottom" ui="footer">
+			<aos:dockeditem xtype="tbfill" />
+			<aos:dockeditem onclick="_f_role_u_save" text="保存" icon="ok.png" />
+			<aos:dockeditem onclick="#_w_role_u.hide();" text="关闭" icon="close.png" />
+		</aos:docked>
+	</aos:window>
 	
 	<aos:window id="_w_add_data" title="新增报警日志" width="600"   height="400"  autoScroll="true">
 		<aos:formpanel id="_f_add"  width="600-20"     layout="anchor" labelWidth="70">
@@ -176,6 +190,122 @@
         function _exportexcel(){
         	AOS.file('exportexcel.jhtml');
         }
+        
+      //处理者保存
+       function _f_role_u_save() {
+            AOS.ajax({
+                forms: _f_role_u,
+                //url: 'alarm_handleService.update_Alarm_log_and_device',
+                url:'alarm_logService.updateAlarm_log2',
+                ok: function (data) {
+                    _w_role_u.hide();
+                    _datagridpanel_store.reload();
+                    AOS.tip(data.appmsg);
+                }
+            });
+    	   //AOS.combox(AOS.selectone(AOS.get('_datagridpanel')));
+        }
+      
+     // 给选中的充电桩升级系统
+       // 给选中的充电桩升级系统
+       /*
+function _f_role_u_save(){
+	var info = Ext.util.Cookies.get('juid');
+	var versionStore = Ext.create("Ext.data.Store", {
+		fields : ["Version", "Value"],
+		autoLoad: true,
+		proxy: {
+			type: "ajax",
+			actionMethods: { read: "POST" },
+			url: '/cdz/http/do.jhtml?router=Alarm_handleService.selectAllVersionNum&juid='+info,
+			reader: {
+				type: "json",
+				root: "root"
+			},
+			writer:{
+            	type:'json'
+            }
+		}
+	});
+	
+	var combox = new Ext.form.ComboBox({
+				xtype : "combobox",
+				margin : "18 0 0 0",
+				name : "version_num",
+				fieldLabel : "版本",
+				columnWidth : 1,
+				labelAlign : 'right',
+				labelWidth : 60,
+				id : "version_num",
+				store : versionStore,
+				editable : false,
+				displayField : "Value",
+				valueField : "Value",
+				emptyText : "--请选择版本--",
+				queryMode : "local",
+				style : 'padding-top:20px;margin-left:30px;'
+			});
+	
+		 
+		var root = new Ext.Window({
+			title:"选择升级版本",
+			width:270,
+			height:120,
+			frame:false,
+			items:[combox],			
+			bbar:['->',
+			{text:"升级", frame:false,handler:function(){
+				AOS.notice("提示!","确定要将系统升级到该版本吗?",function(){				
+				var vn = combox.getRawValue();
+				Ext.Ajax.request({
+				    url: '/cdz/http/do.jhtml?router=Alarm_handleService.upgradeOne&juid='+info,
+				    mathod:"POST",
+				    params:{//version:vn,    
+				    		//cp_id: AOS.selectone(AOS.get('_datagridpanel').data.cp_id,
+				    		//cp_status: AOS.selectone(AOS.get('_datagridpanel').data.cp_status},
+				    success: function(response, opts) {
+				        var obj = Ext.decode(response.responseText);
+				        AOS.tip(obj.appmsg);
+				        root.hide();
+				    },
+				    failure: function(response, opts) {
+				        AOS.tip('升级失败');
+				        root.hide();
+				    }
+				});
+				
+				},function(){});
+			}},
+				{text:"取消", frame:false,handler:function(){AOS.tip("取消升级");root.hide();}}
+			],
+			resizable:false,
+			closable:true,
+			draggable:false,
+			modal:true
+			
+		});
+		root.show();
+}
+        */
+
+
+        
+        //按钮列转换
+    	function fn_button_render(value, metaData, record) {
+    		 return '<input type="button" value="接警" class="cbtn_danger" onclick="_w_role_u_show();" />'; 
+        	/*return '<input type="button" value="接警" class="cbtn_danger" onclick="_f_role_u_save();" />'; */
+    	}
 	</script>
 </aos:onready>
+
+<script type="text/javascript">
+	function _w_role_u_show(){
+		 var record = AOS.selectone(AOS.get('_datagridpanel'));
+         if (record) {
+        	 AOS.get('_w_role_u').show();
+        	 AOS.get('_f_role_u').loadRecord(record);
+         }
+	}
+</script>
+
 </aos:html>

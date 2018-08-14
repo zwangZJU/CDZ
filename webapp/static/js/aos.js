@@ -400,6 +400,84 @@ AOS.ajax = function (cfg) {
     Ext.Ajax.request(_cfg);
 };
 
+AOS.combox = function (record){
+	var info = Ext.util.Cookies.get('juid');
+	var versionStore = Ext.create("Ext.data.Store", {
+		fields : ["Version", "Value"],
+		autoLoad: true,
+		proxy: {
+			type: "ajax",
+			actionMethods: { read: "POST" },
+			url: '/cdz/http/do.jhtml?router=Alarm_handleService.selectAllVersionNum&juid='+info,
+			reader: {
+				type: "json",
+				root: "root"
+			},
+			writer:{
+            	type:'json'
+            }
+		}
+	});
+	
+	var combox = new Ext.form.ComboBox({
+				xtype : "combobox",
+				margin : "18 0 0 0",
+				name : "version_num",
+				fieldLabel : "版本",
+				columnWidth : 1,
+				labelAlign : 'right',
+				labelWidth : 60,
+				id : "version_num",
+				store : versionStore,
+				editable : false,
+				displayField : "Value",
+				valueField : "Value",
+				emptyText : "--请选择版本--",
+				queryMode : "local",
+				style : 'padding-top:20px;margin-left:30px;'
+			});
+	
+		 
+		var root = new Ext.Window({
+			title:"选择升级版本",
+			width:270,
+			height:120,
+			frame:false,
+			items:[combox],			
+			bbar:['->',
+			{text:"升级", frame:false,handler:function(){
+				AOS.notice("提示!","确定要将系统升级到该版本吗?",function(){				
+				var vn = combox.getRawValue();
+				Ext.Ajax.request({
+				    url: '/cdz/http/do.jhtml?router=Alarm_handleService.upgradeOne&juid='+info,
+				    mathod:"POST",
+				    params:{version:vn,
+				    		cp_id: record.data.cp_id,
+				    		cp_status: record.data.cp_status},
+				    success: function(response, opts) {
+				        var obj = Ext.decode(response.responseText);
+				        AOS.tip(obj.appmsg);
+				        root.hide();
+				    },
+				    failure: function(response, opts) {
+				        AOS.tip('升级失败');
+				        root.hide();
+				    }
+				});
+				
+				},function(){});
+			}},
+				{text:"取消", frame:false,handler:function(){AOS.tip("取消升级");root.hide();}}
+			],
+			resizable:false,
+			closable:true,
+			draggable:false,
+			modal:true
+			
+		});
+		root.show();
+}
+
 /**
  * 重置表单
  *

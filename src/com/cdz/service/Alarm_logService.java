@@ -9,17 +9,25 @@ import org.springframework.transaction.annotation.Transactional;
 import aos.framework.core.id.AOSId;
 import aos.framework.core.service.CDZBaseController;
 import aos.framework.core.typewrap.Dto;
+import aos.framework.core.typewrap.Dtos;
 import aos.framework.core.utils.AOSJson;
 import aos.framework.web.router.HttpModel;
 import aos.system.common.utils.SystemCons;
 import dao.Alarm_logDao;
+import dao.Basic_userDao;
+import dao.DeviceDao;
 import po.Alarm_logPO;
+import po.Basic_userPO;
+import po.DevicePO;
 
 @Service
 public class Alarm_logService extends CDZBaseController {
 
 	@Autowired
 	private Alarm_logDao alarm_logDao;
+	
+	@Autowired
+	DeviceDao deviceDao;
 
 	/**
 	 * charging_pile管理页面初始化
@@ -84,6 +92,26 @@ public class Alarm_logService extends CDZBaseController {
 		alarm_logPO.copyProperties(inDto);
 		alarm_logDao.updateByKey(alarm_logPO);
 		httpModel.setOutMsg("修改成功。");
+	}
+	
+	public void updateAlarm_log2(HttpModel httpModel) {
+		Dto inDto = httpModel.getInDto();
+		Alarm_logPO alarm_logPO = new Alarm_logPO();
+		alarm_logPO.copyProperties(inDto);
+		System.out.println(alarm_logPO.getHandler_());
+		alarm_logDao.updateByKey(alarm_logPO);
+		httpModel.setOutMsg("修改成功。");
+		
+		Dto pDto = Dtos.newDto("alarm_id",alarm_logPO.getAlarm_id() );
+		Alarm_logPO alarm_logPO1 =alarm_logDao.selectOne(pDto); // 用
+		
+		DevicePO devicePO=new DevicePO();
+		devicePO.setIs_alarming("0");
+		devicePO.setDevice_id(alarm_logPO1.getDevice_id());
+		deviceDao.updateByKey(devicePO);
+		
+		System.out.println(alarm_logPO1.getDevice_id());
+		System.out.println("deviceDao.updateByKey(devicePO)");
 	}
 
 	/**

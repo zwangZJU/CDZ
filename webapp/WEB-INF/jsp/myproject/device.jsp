@@ -30,6 +30,7 @@
 			    						      			       <aos:column header="交叉路" dataIndex="cross_road"   width="255" />
 			    						      			       <aos:column header="用户类型" dataIndex="user_type"   width="255" />
 			    						      			       <aos:column header="报警状态" dataIndex="is_alarming"   width="255" />
+			    						      			    
 			    						      			       <aos:column header="主机类型" dataIndex="host_type"   width="255" />
 			    						      			       <aos:column header="视频联动" dataIndex="video_linkage"   width="255" />
 			    						      			       <aos:column header="负责人" dataIndex="head"   width="255" />

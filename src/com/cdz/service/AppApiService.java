@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -140,6 +141,80 @@ public class AppApiService extends CDZBaseController {
 
 	private static CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
 	static String Alias = "18392888103";
+	
+	
+	/* ############################################保存头像######################### */
+	public void uploadUserAvatar(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		String phone = qDto.getString("phone");
+		String avatar = qDto.getString("avatar");
+		
+		
+        Dto pDto = Dtos.newDto("account", phone);
+		Basic_userPO basic_userPO = basic_userDao.selectOne(pDto); // 用于检
+
+		Dto outDto = Dtos.newDto();
+		outDto = this.base64ToFile(httpModel.getRequest(), httpModel.getResponse(), avatar, outDto);
+		if (SystemCons.SUCCESS.equals(outDto.getAppCode())) {
+
+			basic_userPO.setAvatar(outDto.getAppMsg().replace("\\", "/"));
+			avatar = "http://118.126.95.215:9090/cdz/myupload" + outDto.getAppMsg().replace("\\", "/");
+			basic_userDao.updateByKey(basic_userPO);
+
+			odto.put("avatar", avatar);
+
+			odto.put("msg", "更新成功");
+			odto.put("status", "1");
+		}
+		else {
+			odto.put("avatar", "");
+
+			odto.put("msg", "更新失败");
+			odto.put("status", "-1");
+
+		}
+
+
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
+
+	
+	
+	
+	public void getUserBasicInfo(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		String phone = qDto.getString("phone");
+
+
+	
+
+		Dto pDto = Dtos.newDto("account", phone);
+		Basic_userPO basic_userPO = basic_userDao.selectOne(pDto); // 用
+		String avatar = basic_userPO.getAvatar();
+		if (null != avatar && !avatar.isEmpty()) {
+			avatar = "http://118.126.95.215:9090/cdz/myupload" + basic_userPO.getAvatar();
+
+		} else {
+			avatar = "";
+
+		}
+
+
+		odto.put("name", basic_userPO.getName());
+		odto.put("is_cert", basic_userPO.getIs_cert());
+		odto.put("avatar", avatar);
+
+		odto.put("msg", "查询成功");
+		odto.put("status", "1");
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
+
 	/* ############################################报警######################### */
 	public void getAlarmLogList(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
@@ -229,7 +304,7 @@ public class AppApiService extends CDZBaseController {
 	 */
 
 	public void deviceFaultReport(HttpModel httpModel) {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+		//SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
 
@@ -261,8 +336,15 @@ public class AppApiService extends CDZBaseController {
 			repair_logPO.setUser_phone(phone);
 			repair_logPO.setRepair_time(new Date());
 			repair_logPO.setRepair_content(fault_description);
+			Calendar cal = Calendar.getInstance();
+			int year = cal.get(Calendar.YEAR);// 获取年份
+			int month = (cal.get(Calendar.MONTH) + 1);// 获取月份
+			int day = cal.get(Calendar.DAY_OF_MONTH);// 获取日
+			int hour = cal.get(Calendar.HOUR_OF_DAY);// 小时
+			int minute = cal.get(Calendar.MINUTE);// 分
 
-			repair_logPO.setState_info("已报修" + "%" + formatter.format(new Date()));
+			repair_logPO.setState_info("已报修" + "%" + year + "年" + month + "月" + day + "日" + hour + ":" + minute);
+			
 			repair_logPO.setProcessing_state("0");
 			repair_logPO.setIs_completed("0");
 			repair_logDao.insert(repair_logPO);
