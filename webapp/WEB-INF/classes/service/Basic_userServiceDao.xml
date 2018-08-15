@@ -11,4 +11,15 @@
 		<where>
  		</where>
 	</select>
+	
+	<select id="listHandler1" parameterType="Dto" resultType="Dto">
+		SELECT
+		 account AS value, CONCAT(name,account) AS display
+		
+		FROM basic_user
+		<where>
+		    user_type=3
+		</where>
+		
+ 		</select>
 </mapper>

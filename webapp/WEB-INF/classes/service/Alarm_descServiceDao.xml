@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--警情代码对照表[alarm_desc]SQL语句 -->
+<mapper namespace="Alarm_desc">
+	<select id="listAlarm_descsPage" parameterType="Dto" resultType="Dto">
+		SELECT
+		<include refid="dao.Alarm_descDao.column" />
+		FROM alarm_desc
+		<where>
+ 		</where>
+	</select>
+</mapper>

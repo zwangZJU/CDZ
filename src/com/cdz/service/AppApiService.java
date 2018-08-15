@@ -150,7 +150,7 @@ public class AppApiService extends CDZBaseController {
 
 		String phone = qDto.getString("phone");
 		String avatar = qDto.getString("avatar");
-		
+		//avatar = avatar.replaceAll(" ", "+");
 		
         Dto pDto = Dtos.newDto("account", phone);
 		Basic_userPO basic_userPO = basic_userDao.selectOne(pDto); // 用于检

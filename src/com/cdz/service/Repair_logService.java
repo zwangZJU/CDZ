@@ -9,10 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import aos.framework.core.id.AOSId;
 import aos.framework.core.service.CDZBaseController;
 import aos.framework.core.typewrap.Dto;
+import aos.framework.core.typewrap.Dtos;
 import aos.framework.core.utils.AOSJson;
 import aos.framework.web.router.HttpModel;
 import aos.system.common.utils.SystemCons;
+import dao.Basic_userDao;
 import dao.Repair_logDao;
+import po.Basic_userPO;
 import po.Repair_logPO;
 
 @Service
@@ -20,6 +23,9 @@ public class Repair_logService extends CDZBaseController {
 
 	@Autowired
 	private Repair_logDao repair_logDao;
+	@Autowired
+	Basic_userDao basic_userDao;
+
 
 	/**
 	 * charging_pile管理页面初始化
@@ -82,6 +88,29 @@ public class Repair_logService extends CDZBaseController {
 		Dto inDto = httpModel.getInDto();
 		Repair_logPO repair_logPO = new Repair_logPO();
 		repair_logPO.copyProperties(inDto);
+		repair_logDao.updateByKey(repair_logPO);
+		httpModel.setOutMsg("修改成功。");
+	}
+	
+	
+	@Transactional
+	public void updateRepair_log2(HttpModel httpModel) {
+		String name = "";
+
+		Dto inDto = httpModel.getInDto();
+
+		Repair_logPO repair_logPO = new Repair_logPO();
+		repair_logPO.copyProperties(inDto);
+
+		String account = repair_logPO.getHandler_phone();
+		if (null != account && !account.isEmpty()) {
+			Dto pDto = Dtos.newDto("account", account);
+			Basic_userPO basic_userPO = basic_userDao.selectOne(pDto);
+			name = basic_userPO.getName();
+
+		}
+
+		repair_logPO.setHandler_(name);
 		repair_logDao.updateByKey(repair_logPO);
 		httpModel.setOutMsg("修改成功。");
 	}

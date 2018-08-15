@@ -22,6 +22,7 @@
 			    						      			       <aos:column header="报修内容" dataIndex="repair_content"   width="160" />
 			    						      			       <aos:column header="报修时间" dataIndex="repair_time"   width="150" />
 			    						      			       <aos:column header="修复时间" dataIndex="renovate_time"   width="150" />
+			    						      			        <aos:column header="接单" rendererFn="fn_button_render" align="center" width="80" />
 			    						      			       <aos:column header="处理状态" dataIndex="processing_state"   width="70" />
 			    						      			       <aos:column header="状态信息" dataIndex="state_info"   width="70" />
 			    						      			       <aos:column header="处理者" dataIndex="handler_"   width="70" />
@@ -81,6 +82,28 @@
 			<aos:dockeditem xtype="tbfill" />
 			<aos:dockeditem onclick="_f_update_save" text="保存" icon="ok.png" />
 			<aos:dockeditem onclick="#_w_update_data.hide();" text="关闭" icon="close.png" />
+		</aos:docked>
+	</aos:window>
+	<aos:window id="_w_jiedan_u" title="接单">
+		<aos:formpanel id="_f_jiedan_u" width="500" layout="anchor" labelWidth="65">
+			<aos:hiddenfield name="repair_id" />
+			 <aos:textfield name="repair_content" fieldLabel="报修内容"  maxLength="255"    	         />
+			
+			   
+			    <aos:combobox fieldLabel="处理状态" name="processing_state" editable="false" allowBlank="false" emptyText="是否确认接单？" columnWidth="0.5">
+						<aos:option value="1" display="确认接单" />
+					</aos:combobox> 
+			  <%--  <aos:combobox name="handler_phone" fieldLabel="处理者电话"  url="basic_userService.listHandler"    	         /> --%>
+	      	   <%--  <aos:textfield name="handler_" fieldLabel="处理者"  maxLength="255"    	         />   --%>
+	      	   
+	      	   <aos:combobox  fieldLabel="处理者" name="handler_phone"  columnWidth="0.5"
+						url="basic_userService.listHandler1" />
+		
+		</aos:formpanel>
+		<aos:docked dock="bottom" ui="footer">
+			<aos:dockeditem xtype="tbfill" />
+			<aos:dockeditem onclick="_f_jiedan_u_save" text="保存" icon="ok.png" />
+			<aos:dockeditem onclick="#_w_jiedan_u.hide();" text="关闭" icon="close.png" />
 		</aos:docked>
 	</aos:window>
 	
@@ -179,6 +202,41 @@
         function _exportexcel(){
         	AOS.file('exportexcel.jhtml');
         }
+        
+        function fn_button_render(value, metaData, record) {
+    		return '<input type="button" value="接单" class="cbtn_danger" onclick="_w_jiedan_u_show();" />';
+    	}
+        
+        function _f_jiedan_u_save() {
+            AOS.ajax({
+                forms: _f_jiedan_u,
+                url: 'repair_logService.updateRepair_log2',
+                 ok: function (data) {
+                    _w_jiedan_u.hide();
+                    _datagridpanel_store.reload();
+                    AOS.tip(data.appmsg);
+                } 
+            });
+        }
 	</script>
 </aos:onready>
+
+<script type="text/javascript">
+
+
+  function _w_jiedan_u_show(){
+	  
+	
+	  var record = AOS.selectone(AOS.get('_datagridpanel'));
+    if (record) { 
+	 
+  	  AOS.get('_w_jiedan_u').show(); 
+  	  AOS.get('_f_jiedan_u').loadRecord(record); 
+  /* 	 id_list_store.load();    */
+ 
+   } 
+} 
+  
+ 
+</script>
 </aos:html>

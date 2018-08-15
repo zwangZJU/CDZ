@@ -86,6 +86,12 @@ public class Basic_userService extends CDZBaseController {
 		List<Dto> basic_userDtos = sqlDao.list("Basic_user.listBasic_usersPage", qDto);
 		httpModel.setOutMsg(AOSJson.toGridJson(basic_userDtos, qDto.getPageTotal()));
 	}
+	
+	public void listHandler1(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		List<Dto> list = sqlDao.list("Basic_user.listHandler1", httpModel.getInDto());
+		httpModel.setOutMsg(AOSJson.toGridJson(list));
+	}
 	/**
 	 * 查询charging_pile信息
 	 * 

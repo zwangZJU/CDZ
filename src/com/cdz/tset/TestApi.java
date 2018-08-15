@@ -3,20 +3,30 @@
  */
 package tset;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import aos.framework.core.id.AOSId;
 import aos.framework.web.httpclient.AOSHttpClient;
 import aos.framework.web.httpclient.HttpRequestVO;
 import aos.framework.web.httpclient.HttpResponseVO;
+import aos.system.common.utils.SystemCons;
+import dao.Alarm_descDao;
+import po.Alarm_descPO;
+import service.dataParse;
 
 /**
  * @author Administrator
@@ -28,6 +38,10 @@ public class TestApi {
 	 * @param args
 	 * @throws IOException 
 	 */
+	
+	@Autowired
+	Alarm_descDao alarm_descDao;
+	
 	public static void main(String[] args) throws IOException {
 
 	}
@@ -350,6 +364,54 @@ public class TestApi {
 	     System.out.println("HTTP状态码：" + httpResponseVO.getStatus());
 	     System.out.println("返回值：" + httpResponseVO.getOut());
 		
+	}
+	
+	@Test
+	public static ArrayList<Alarm_descPO> readTxt(String path) throws Exception {
+		File file = new File(path);
+		//����һ����ȡ�ļ���������
+		FileReader fileReader = new FileReader(file);
+		BufferedReader bufferedReader = new BufferedReader(fileReader);
+		ArrayList<Alarm_descPO> al= new ArrayList();	
+		ArrayList<String> arry = new ArrayList();
+		//ȥ�����в���ȡ
+		String line = "";
+		while ((line = bufferedReader.readLine()) != null) {
+			 if(!line.equals("")){
+				 arry.add(line);	                   
+	            }    
+		}	
+		// �ͷ���Դ
+		bufferedReader.close();
+		// ��������
+		for (String s : arry) {
+			String s1=s.trim();
+			if(s1.equals("")){
+                continue;
+                }  
+			
+			//ȥ�����������
+			String result = s1.substring(0,s1.length()-2);
+			String s2=result.trim();    
+			if(s2.equals("")){
+                continue;
+                }			
+			//��ʾ����λ��ʼ������
+			String s3=s2.trim().substring(3,s2.length());
+			//��ʾǰ��λ������
+			String s4=s2.trim().substring(0,3);		
+			Alarm_descPO type = new Alarm_descPO();
+			//�����������ͺͱ��
+			type.setAlarm_type(s3);	  
+			type.setEee(s4);          
+			al.add(type);								
+		}
+		return al;		
+		}	
+	
+	@Test
+	public void zbc(){
+		System.out.println("1234");
 	}
 	
 }

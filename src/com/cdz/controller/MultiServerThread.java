@@ -3,7 +3,10 @@
  */
 package controller;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,6 +14,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,10 +41,12 @@ import aos.framework.web.httpclient.HttpRequestVO;
 import aos.framework.web.httpclient.HttpResponseVO;
 import aos.system.common.utils.SystemCons;
 import cn.com.tcc.TCC;
+import dao.Alarm_descDao;
 import dao.Alarm_logDao;
 import dao.ChargingOrdersDao;
 import dao.ChargingPileDao;
 import dao.CommonLogsDao;
+import po.Alarm_descPO;
 import po.Alarm_logPO;
 import po.Basic_userPO;
 import po.ChargingOrdersPO;
@@ -83,11 +89,57 @@ public class MultiServerThread extends Thread {
 		DeviceDao deviceDao;
 		@Autowired
 		Alarm_logDao alarm_logDao;
+		@Autowired
+		Alarm_descDao alarm_descDao;
 	    
 	    private int i=0;
 	    private int j=0;
 	    
 	    private static CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
+	    
+	    public static ArrayList<Alarm_descPO> readTxt(String path) throws Exception {
+			File file = new File(path);
+			//����һ����ȡ�ļ���������
+			FileReader fileReader = new FileReader(file);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			ArrayList<Alarm_descPO> al= new ArrayList();	
+			ArrayList<String> arry = new ArrayList();
+			//ȥ�����в���ȡ
+			String line = "";
+			while ((line = bufferedReader.readLine()) != null) {
+				 if(!line.equals("")){
+					 arry.add(line);	                   
+		            }    
+			}	
+			// �ͷ���Դ
+			bufferedReader.close();
+			// ��������
+			for (String s : arry) {
+				String s1=s.trim();
+				if(s1.equals("")){
+	                continue;
+	                }  
+				
+				//ȥ�����������
+				String result = s1.substring(0,s1.length()-2);
+				String s2=result.trim();    
+				if(s2.equals("")){
+	                continue;
+	                }			
+				//��ʾ����λ��ʼ������
+				String s3=s2.trim().substring(3,s2.length());
+				//��ʾǰ��λ������
+				String s4=s2.trim().substring(0,3);		
+				Alarm_descPO type = new Alarm_descPO();
+				//�����������ͺͱ��
+				type.setAlarm_type(s3);	  
+				type.setEee(s4);          
+				al.add(type);								
+			}
+			return al;		
+			}	
+		
+		
 	    
 	    public MultiServerThread(Socket socket) {
 	        super("MultiServerThread");
@@ -106,6 +158,7 @@ public class MultiServerThread extends Thread {
 	        
 	        deviceDao = (DeviceDao)AOSBeanLoader.getSpringBean("deviceDao");
 	        alarm_logDao = (Alarm_logDao)AOSBeanLoader.getSpringBean("alarm_logDao");
+	        alarm_descDao = (Alarm_descDao)AOSBeanLoader.getSpringBean("alarm_descDao");
 	    }
 	    public void saveLogs(String content,String cp_id){
 	    	
@@ -546,16 +599,24 @@ public class MultiServerThread extends Thread {
 								deviceDao.updateByKey(devicePO2);
 								*/
 		            			
+		            			Dto pDto3 = Dtos.newDto("eee", str_EEE);
+		            			Alarm_descPO alarm_descPO = alarm_descDao.selectOne(pDto3);
+		            			
+		            			Dto pDto4 = Dtos.newDto("device_id", "10000000");
+		            			DevicePO devicePO5 = deviceDao.selectOne(pDto4);
+		            			
 		            			Dto pDto2 = Dtos.newDto("device_id", device_id);
 		            			DevicePO devicePO = deviceDao.selectOne(pDto2);
 		            			//Dto newDto = Dtos.newDto();
 		            			
 		            			Alarm_logPO alarm_logPO = new Alarm_logPO();
 		            			alarm_logPO.setAlarm_id(AOSId.appId(SystemCons.ID.SYSTEM));
+		            			alarm_logPO.setDevice_id(device_id);
 		            			alarm_logPO.setUser_phone(devicePO.getPhone());
 		            			alarm_logPO.setAlarm_time(new Date());
+		            			alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
 		            			alarm_logPO.setBeiyong1_(str_EEE);
-		            			alarm_logPO.setType_("1");
+		            			alarm_logPO.setType_("0");
 		            			alarm_logDao.insert(alarm_logPO);
 		            			
 		            			Push.pushToSingle(devicePO.getPhone());
@@ -566,6 +627,7 @@ public class MultiServerThread extends Thread {
 			        			DevicePO devicePO4=deviceDao.selectOne(pDto);
 								devicePO4.setIs_alarming(Q);
 								deviceDao.updateByKey(devicePO4);
+								
 		            		}
 	            		}
 	    
