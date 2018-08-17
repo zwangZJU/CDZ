@@ -48,6 +48,7 @@
 		</aos:docked>
 	</aos:window>
 	
+	
 	<script type="text/javascript">
 		function _datagridpanel_query() {
 			var params = {
@@ -143,6 +144,7 @@
         function _exportexcel(){
         	AOS.file('exportexcel.jhtml');
         }
+        
 	</script>
 </aos:onready>
 </aos:html>

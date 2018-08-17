@@ -44,7 +44,7 @@
 			    						      			       <aos:column header="镇所" dataIndex="town"   width="255" />
 			    						      			       <aos:column header="镇所电话" dataIndex="town_phone"   width="255" />
 			    						      			       <aos:column header="所属派出所" dataIndex="police_station"   width="255" />
-			    						      			       <aos:column header="网络" dataIndex="network"   width="400" />
+			    						      			       <aos:column header="地址标签" dataIndex="loc_label"   width="400" />
 			    						      			       <aos:column header="派出所电话" dataIndex="police_phone"   width="255" />
 			    						      			       <aos:column header="主机位置" dataIndex="host_address"   width="255" />
 			    						      			       <aos:column header="安装日期" dataIndex="install_date"   width="160" />
@@ -118,7 +118,7 @@
 					<aos:textfield name="code42" fieldLabel="42代码" maxLength="255" />
 					<aos:textfield name="test_period" fieldLabel="测试间隔" maxLength="255" />
 					<aos:textfield name="alarm_sound" fieldLabel="报警声音方案" maxLength="255" />
-					<aos:textfield name="network" fieldLabel="网络" maxLength="400" />
+					<aos:textfield name="loc_label" fieldLabel="地址标签" maxLength="400" />
 					<aos:textfield name="host_alarm_sms" fieldLabel="主机报警短信号码" maxLength="255" />
 
 
@@ -271,7 +271,7 @@
 	      	    	        	   	       	        <aos:textfield name="town" fieldLabel="镇所"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="town_phone" fieldLabel="镇所电话"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="police_station" fieldLabel="所属派出所"  maxLength="255"    	         />
-	      	    	        	   	       	        <aos:textfield name="network" fieldLabel="网络"  maxLength="400"    	         />
+	      	    	        	   	       	        <aos:textfield name="loc_label" fieldLabel="地址标签"  maxLength="400"    	         />
 	      	    	        	   	       	        <aos:textfield name="police_phone" fieldLabel="派出所电话"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="host_address" fieldLabel="主机位置"  maxLength="255"    	         />
 	      	    	        	      	       <aos:datefield name="install_date" fieldLabel="安装日期"   	                 format="Y-m-d 00:00:00"     editable="true"/>

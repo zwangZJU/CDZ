@@ -138,9 +138,9 @@ public class DevicePO extends PO {
 	private String police_station;
 	
 	/**
-	 * 网络
+	 * 地址标签
 	 */
-	private String network;
+	private String loc_label;
 	
 	/**
 	 * 派出所电话
@@ -580,12 +580,13 @@ public class DevicePO extends PO {
 	}
 	
 	/**
-	 * 网络
+	 * 地址标签
 	 * 
-	 * @return network
+	 * @return loc_label
+	 * 
 	 */
-	public String getNetwork() {
-		return network;
+	public String getLoc_label() {
+		return loc_label;
 	}
 	
 	/**
@@ -1202,12 +1203,12 @@ public class DevicePO extends PO {
 	}
 	
 	/**
-	 * 网络
+	 * 地址标签
 	 * 
 	 * @param network
 	 */
-	public void setNetwork(String network) {
-		this.network = network;
+	public void setLoc_label(String loc_label) {
+		this.loc_label = loc_label;
 	}
 	
 	/**

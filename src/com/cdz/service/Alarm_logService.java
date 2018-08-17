@@ -113,6 +113,34 @@ public class Alarm_logService extends CDZBaseController {
 		System.out.println(alarm_logPO1.getDevice_id());
 		System.out.println("deviceDao.updateByKey(devicePO)");
 	}
+	
+	public void updateAlarm_log3(HttpModel httpModel) {
+		/*Dto inDto = httpModel.getInDto();
+		Alarm_logPO alarm_logPO = new Alarm_logPO();
+		alarm_logPO.copyProperties(inDto);
+		System.out.println(alarm_logPO.getHandler_());
+		//alarm_logDao.updateByKey(alarm_logPO);
+		
+		Dto pDto = Dtos.newDto("alarm_id",alarm_logPO.getAlarm_id());
+		Alarm_logPO alarm_logPO1 =alarm_logDao.selectOne(pDto); */
+		
+		Dto newDto = Dtos.newDto();
+		//newDto.put("handler_phone", alarm_logPO1.getHandler_phone());
+		
+		/*Dto pDto1 = Dtos.newDto("device_id",alarm_logPO.getDevice_id());
+		DevicePO devicePO =deviceDao.selectOne(pDto1); 
+		
+		//newDto.put("user_address", devicePO.getUser_address());*/
+		
+		newDto.put("user_address", "123");
+		
+		httpModel.setOutMsg(AOSJson.toJson(newDto));
+		
+		
+		/*Dto qDto = httpModel.getInDto();
+		List<Dto> list = sqlDao.list("Basic_user.listHandler1", httpModel.getInDto());
+		httpModel.setOutMsg(AOSJson.toGridJson(list));*/
+	}
 
 	/**
 	 * 删除charging_pile

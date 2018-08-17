@@ -1,5 +1,6 @@
 package service;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,6 +104,21 @@ public class Repair_logService extends CDZBaseController {
 		repair_logPO.copyProperties(inDto);
 
 		String account = repair_logPO.getHandler_phone();
+		String repair_id = repair_logPO.getRepair_id();
+		Dto pDto1 = Dtos.newDto("repair_id", repair_id);
+		Repair_logPO repair_logPO1 = repair_logDao.selectOne(pDto1);
+		String state_info = repair_logPO1.getState_info();
+
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);// 获取年份
+		int month = (cal.get(Calendar.MONTH) + 1);// 获取月份
+		int day = cal.get(Calendar.DAY_OF_MONTH);// 获取日
+		int hour = cal.get(Calendar.HOUR_OF_DAY);// 小时
+		int minute = cal.get(Calendar.MINUTE);// 分
+		state_info = state_info + "#已接单%" + year + "年" + month + "月" + day + "日" + hour + ":" + minute;
+		
+		
+		
 		if (null != account && !account.isEmpty()) {
 			Dto pDto = Dtos.newDto("account", account);
 			Basic_userPO basic_userPO = basic_userDao.selectOne(pDto);
@@ -111,6 +127,7 @@ public class Repair_logService extends CDZBaseController {
 		}
 
 		repair_logPO.setHandler_(name);
+		repair_logPO.setState_info(state_info);
 		repair_logDao.updateByKey(repair_logPO);
 		httpModel.setOutMsg("修改成功。");
 	}

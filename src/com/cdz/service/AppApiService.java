@@ -366,6 +366,23 @@ public class AppApiService extends CDZBaseController {
 		Dto odto = Dtos.newDto();
 
 		String phone = qDto.getString("phone");
+		String repair_id = qDto.getString("repair_id");
+	
+		if (null != repair_id && !repair_id.isEmpty()) {
+			
+			Dto pDto = Dtos.newDto("repair_id", repair_id);
+			Repair_logPO repair_logPO = repair_logDao.selectOne(pDto);
+			
+			odto.put("processing_state", repair_logPO.getProcessing_state());
+			odto.put("state_info", repair_logPO.getState_info());
+			odto.put("repair_content", repair_logPO.getRepair_content());
+
+			odto.put("status", "1");
+			odto.put("msg", "查询成功");
+			
+			
+
+		} else {
 
 		Dto pDto = Dtos.newDto("user_phone", phone);
 
@@ -374,12 +391,13 @@ public class AppApiService extends CDZBaseController {
 
 		pDto.put("start", 0);
 
+
 		List<Dto> repairDtos = sqlDao.list("Repair_log.listRepair_logsPage2", pDto);
 		if (null != repairDtos && !repairDtos.isEmpty()) {
 			for (Dto dto : repairDtos) {
 			odto.put("processing_state", dto.getString("processing_state"));
 			odto.put("state_info", dto.getString("state_info"));
-			odto.put("repair_content", dto.getString("repair_content"));
+				odto.put("repair_content", dto.getString("repair_content"));
 			odto.put("status", "1");
 			odto.put("msg", "查询成功");
 			}
@@ -391,10 +409,12 @@ public class AppApiService extends CDZBaseController {
 			odto.put("status", "-1");
 			odto.put("msg", "查询失败");
 		}
+		}
 		httpModel.setOutMsg(AOSJson.toJson(odto));
 
 
 	}
+
 	public void getRepairLogList(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
@@ -405,7 +425,7 @@ public class AppApiService extends CDZBaseController {
 		Dto pDto = Dtos.newDto();
 		pDto.put("user_phone", phone);
 		int rows = repair_logDao.rows(pDto);
-		pDto.put("limit", rows);// 默认查询出100个
+		pDto.put("limit", rows);// 
 
 		pDto.put("start", 0);
 
@@ -416,6 +436,7 @@ public class AppApiService extends CDZBaseController {
 			for (Dto dto : repairDtos) {
 				Dto newDto = Dtos.newDto();
 				newDto.put("device_id", dto.getString("device_id"));
+				newDto.put("repair_id", dto.getString("repair_id"));
 				newDto.put("repair_time", dto.getString("repair_time"));
 				newDto.put("renovate_time", dto.getString("renovate_time"));
 				newDto.put("handler_", dto.getString("handler_"));
@@ -433,6 +454,7 @@ public class AppApiService extends CDZBaseController {
 		} else {
 			Dto newDto = Dtos.newDto();
 			newDto.put("device_id", "");
+			newDto.put("repair_id","");
 			newDto.put("repair_time", "");
 			newDto.put("renovate_time", "");
 			newDto.put("handler_", "");
@@ -684,6 +706,7 @@ public class AppApiService extends CDZBaseController {
 			newDto.put("arrange_withdraw",dto.getString("arrange_withdraw"));
 				newDto.put("is_alarming", dto.getString("is_alarming"));
 			newDto.put("head", dto.getString("head"));
+			newDto.put("loc_label", dto.getString("loc_label"));
 			newDto.put("head_phone", dto.getString("head_phone"));
 			newDto.put("police_station", dto.getString("police_station"));
 			newListDtos.add(newDto);
@@ -719,7 +742,7 @@ public class AppApiService extends CDZBaseController {
 			newDto.put("production_date", devicePO.getProduction_date());
 			newDto.put("install_date", devicePO.getInstall_date());
 			newDto.put("guarantee_time", devicePO.getGuarantee_time());
-
+			newDto.put("loc_label", devicePO.getLoc_label());
 			newDto.put("user_address", devicePO.getUser_address());
 			newDto.put("repair_record", devicePO.getRepair_record());
 			newDto.put("repair_progress", devicePO.getRepair_progress());
@@ -744,6 +767,7 @@ public class AppApiService extends CDZBaseController {
 		// TODO
 		String phone = qDto.getString("phone");// phone,即为登陆时的用户手机号,15356002207
 		String address = qDto.getString("address");
+		String loc_label = qDto.getString("loc_label");
 		String deviceInfo = qDto.getString("deviceInfo");
 		String[] info = deviceInfo.split("#");
 		Dto pDto=Dtos.newDto("account", phone);
@@ -771,6 +795,7 @@ public class AppApiService extends CDZBaseController {
 				devicePO.setDevice_id(info[0]);
 			devicePO.setProduct_type(info[1]);
 			devicePO.setProduction_date(info[2]);
+			devicePO.setLoc_label(loc_label);
 			devicePO.setInstall_date(new Date());
 
 			deviceDao.insert(devicePO);

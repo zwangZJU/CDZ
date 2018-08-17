@@ -78,8 +78,8 @@
 		<if test="police_station != null and police_station != ''">
 	         police_station, <!-- 所属派出所 -->
 		</if>
-		<if test="network != null and network != ''">
-	         network, <!-- 网络 -->
+		<if test="loc_label != null and loc_label != ''">
+	         loc_label, <!-- 网络 -->
 		</if>
 		<if test="police_phone != null and police_phone != ''">
 	         police_phone, <!-- 派出所电话 -->
@@ -286,8 +286,8 @@
 		<if test="police_station != null and police_station != ''">
 	          #{police_station, jdbcType=VARCHAR}, <!-- 所属派出所 -->
 	    </if>
-		<if test="network != null and network != ''">
-	          #{network, jdbcType=VARCHAR}, <!-- 网络 -->
+		<if test="loc_label != null and loc_label != ''">
+	          #{loc_label, jdbcType=VARCHAR}, <!-- 网络 -->
 	    </if>
 		<if test="police_phone != null and police_phone != ''">
 	          #{police_phone, jdbcType=VARCHAR}, <!-- 派出所电话 -->
@@ -457,7 +457,7 @@
 		    #{town, jdbcType=VARCHAR},  <!-- 镇所 -->
 		    #{town_phone, jdbcType=VARCHAR},  <!-- 镇所电话 -->
 		    #{police_station, jdbcType=VARCHAR},  <!-- 所属派出所 -->
-		    #{network, jdbcType=VARCHAR},  <!-- 网络 -->
+		    #{loc_label, jdbcType=VARCHAR},  <!-- 网络 -->
 		    #{police_phone, jdbcType=VARCHAR},  <!-- 派出所电话 -->
 		    #{host_address, jdbcType=VARCHAR},  <!-- 主机位置 -->
 		    #{install_date, jdbcType=VARCHAR},  <!-- 安装日期 -->
@@ -581,8 +581,8 @@
 			<if test="police_station != null">
 		          police_station = #{police_station, jdbcType=VARCHAR},  <!-- 所属派出所 -->
 			</if>
-			<if test="network != null">
-		          network = #{network, jdbcType=VARCHAR},  <!-- 网络 -->
+			<if test="loc_label != null">
+		          loc_label = #{loc_label, jdbcType=VARCHAR},  <!-- 网络 -->
 			</if>
 			<if test="police_phone != null">
 		          police_phone = #{police_phone, jdbcType=VARCHAR},  <!-- 派出所电话 -->
@@ -831,7 +831,7 @@
 		  town,  <!-- 镇所 -->
 		  town_phone,  <!-- 镇所电话 -->
 		  police_station,  <!-- 所属派出所 -->
-		  network,  <!-- 网络 -->
+		  loc_label,  <!-- 地址标签 -->
 		  police_phone,  <!-- 派出所电话 -->
 		  host_address,  <!-- 主机位置 -->
 		  install_date,  <!-- 安装日期 -->
@@ -904,7 +904,7 @@
 		  device.town,  <!-- 镇所 -->
 		  device.town_phone,  <!-- 镇所电话 -->
 		  device.police_station,  <!-- 所属派出所 -->
-		  device.network,  <!-- 网络 -->
+		  device.loc_label,  <!-- 地址标签 -->
 		  device.police_phone,  <!-- 派出所电话 -->
 		  device.host_address,  <!-- 主机位置 -->
 		  device.install_date,  <!-- 安装日期 -->
@@ -1025,8 +1025,8 @@
 	    <if test="police_station != null and police_station != ''">
 		      AND police_station = #{police_station}  <!-- 所属派出所 -->
 		</if>
-	    <if test="network != null and network != ''">
-		      AND network = #{network}  <!-- 网络 -->
+	    <if test="loc_label != null and loc_label != ''">
+		      AND loc_label = #{loc_label}  <!-- 网络 -->
 		</if>
 	    <if test="police_phone != null and police_phone != ''">
 		      AND police_phone = #{police_phone}  <!-- 派出所电话 -->
@@ -1236,8 +1236,8 @@
 	    <if test="police_station != null and police_station != ''">
 		      AND police_station like '%${police_station}%'  <!-- 所属派出所 -->
 		</if>
-	    <if test="network != null and network != ''">
-		      AND network like '%${network}%'  <!-- 网络 -->
+	    <if test="loc_label != null and loc_label != ''">
+		      AND loc_label like '%${loc_label}%'  <!-- 网络 -->
 		</if>
 	    <if test="police_phone != null and police_phone != ''">
 		      AND police_phone like '%${police_phone}%'  <!-- 派出所电话 -->

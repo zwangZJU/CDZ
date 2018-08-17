@@ -1,11 +1,52 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ include file="/WEB-INF/jsp/common/tags.jsp"%>
 <aos:html title="alarm_log" base="http" lib="ext">
+<head>
+ <script type="text/javascript">
+ /*
+ Ext.onReady(function ()
+		 {
+		     //初始化提示
+		     Ext.QuickTips.init();
+		     var productForm = Ext.create("Ext.form.Panel", {
+		         title: "表单加载示例",
+		         width: 300,
+		         frame: true,
+		         fieldDefaults: {
+		             labelSeparator: ":",
+		             labelWidth: 80,
+		             width: 250,
+		             margin:5
+		         },
+		         renderTo: Ext.getBody(),
+		         items: [
+		             { fieldLabel: "产品名称", xtype: "textfield", name: "productName", value: "U盘" },
+		             { fieldLabel: "金额", xtype: "numberfield", name: "price", value: 100 },
+		             { fieldLabel: "生产日期", xtype: "datefield", format: "Y-m-d", name: "date", value: new Date() },
+		             { xtype: "hidden", name: "productId", value: "001" },
+		             { fieldLabel: "产品简介", name: "introduction", xtype: "textarea" }
+		         ],
+		         buttons: [
+		             { text: "加载简介", handler: loadIntroduction }
+		         ]
+		     });
+		     */
+		     var store = Ext.create('Ext.data.Store', {
+		    	   id : 'statesid',
+		    	   fields: ['abbr', 'name'],
+		    	   data : [
+		    	      {"abbr":"HTML", "name":"HTML"},
+		    	      {"abbr":"CSS", "name":"CSS"},
+		    	      {"abbr":"JS", "name":"JavaScript"}
+		    	   ]
+		    	});
+ </script>
+</head>
 <aos:body>
 </aos:body>
 <aos:onready>
 	<aos:viewport layout="fit">
-		<aos:gridpanel id="_datagridpanel" url="alarm_logService.listAlarm_log" onrender="_datagridpanel_query" onitemdblclick="_w_update_show"  forceFit="false">
+		<aos:gridpanel id="_datagridpanel" url="alarm_logService.listAlarm_log" onrender="_datagridpanel_query" onitemdblclick="_w_update_show_all"  forceFit="false">
 			<aos:docked>
 			    			 	<aos:dockeditem text="新增" tooltip="新增"  onclick="_w_add_show" icon="add.png"/>
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>
@@ -138,6 +179,106 @@
 				_w_update_data.show();
 				_f_update.loadRecord(record);
 			}
+		}
+		
+		/*function _w_update_show_all()
+		{
+			 AOS.ajax({
+	                forms: _f_role_u,
+	                //url: 'alarm_handleService.update_Alarm_log_and_device',
+	                url:'alarm_logService.updateAlarm_log3',
+	                ok: function (data) {
+	                   // _w_role_u.hide();
+	                   // _datagridpanel_store.reload();
+	                   // AOS.tip(data.appmsg);
+	                	_w_update_data.show();
+	    				_f_update.loadRecord(data.appmsg);
+	                }
+	            });
+		}*/
+		
+		function _w_update_show_all()
+		{
+			//var selection = AOS.selection(_datagridpanel, 'alarm_id');
+			
+			//var info = Ext.util.Cookies.get('juid');
+			Ext.Ajax.request({
+    url: '/cdz/http/do.jhtml?router=alarm_logService.updateAlarm_log3',
+    params: {
+        id: 1
+    },
+    success: function(response){
+        var text = response.responseText;
+        // process server response here
+        
+        Ext.getCmp("a").setValue(text);
+    }
+});
+			
+			    var productForm = Ext.create("Ext.form.Panel", {
+			        title: "表单加载示例",
+			        width: 300,
+			        height: 400,
+			        frame: true,
+			         fieldDefaults: {
+			            labelSeparator: ":",
+			            labelWidth: 80,
+			            width: 250,
+			            margin:5
+			        }, 
+			        renderTo: Ext.getBody(),
+			         items: [
+			            { fieldLabel: "产品名称", id:"a",xtype: "textfield", name: "productName", value: "U盘" },
+			            { fieldLabel: "金额", xtype: "numberfield", name: "price", value: 100 },
+			            { fieldLabel: "生产日期", xtype: "datefield", format: "Y-m-d", name: "date", value: new Date() },
+			            { xtype: "hidden", name: "productId", value: "001" },
+			            { fieldLabel: "产品简介", name: "introduction", xtype: "textarea" }
+			        ] 
+			       /*  buttons: [
+			            { text: "加载简介", handler: loadIntroduction }
+			        ] */
+			    });
+			    
+			
+				var root = new Ext.Window({
+					title:"报警处理",
+					width:600,
+					height:400,
+					frame:false,
+					items:[productForm],	
+					/*
+					bbar:['->',
+					{text:"升级", frame:false,handler:function(){
+						AOS.notice("提示!","确定要将系统升级到该版本吗?",function(){				
+						var vn = combox.getRawValue();
+						Ext.Ajax.request({
+						    url: '/cdz/http/do.jhtml?router=upgradeHardwareController.upgradeAll&juid='+info,
+						    mathod:"POST",
+						    params:{version:vn,
+						    	aos_rows_: selection},
+						    success: function(response, opts) {
+						        var obj = Ext.decode(response.responseText);
+						        AOS.tip(obj.appmsg);
+						        root.hide();
+						    },
+						    failure: function(response, opts) {
+						        AOS.tip('升级失败');
+						        root.hide();
+						    }
+						});
+						
+						},function(){});
+					}},
+						{text:"取消", frame:false,handler:function(){AOS.tip("取消升级");root.hide();}}*/
+							
+
+					resizable:false,
+					closable:true,
+					draggable:false,
+					modal:true
+					
+				});
+				root.show();
 		}
 	    
 	   //修改   报警日志
@@ -306,6 +447,7 @@ function _f_role_u_save(){
         	 AOS.get('_f_role_u').loadRecord(record);
          }
 	}
-</script>
+	
 
+</script>
 </aos:html>

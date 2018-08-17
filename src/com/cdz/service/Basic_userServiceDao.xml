@@ -22,4 +22,15 @@
 		</where>
 		
  		</select>
+ 		
+ 		<select id="listHandler2" parameterType="Dto" resultType="Dto">
+		SELECT
+		 account 
+		
+		FROM basic_user
+		<where>
+		    user_type=3
+		</where>
+		
+ 		</select>
 </mapper>
