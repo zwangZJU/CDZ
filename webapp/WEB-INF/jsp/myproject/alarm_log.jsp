@@ -199,24 +199,31 @@
 		
 		function _w_update_show_all()
 		{
-			//var selection = AOS.selection(_datagridpanel, 'alarm_id');
+			var alarm_id = AOS.selection(_datagridpanel, 'alarm_id');
 			
 			//var info = Ext.util.Cookies.get('juid');
 			Ext.Ajax.request({
-    url: '/cdz/http/do.jhtml?router=alarm_logService.updateAlarm_log3',
-    params: {
-        id: 1
-    },
-    success: function(response){
-        var text = response.responseText;
-        // process server response here
-        
-        Ext.getCmp("a").setValue(text);
-    }
-});
+			    url: '/cdz/http/do.jhtml?router=alarm_logService.updateAlarm_log3',
+			    params: {
+			        id: alarm_id
+	    		},
+			    success: function(response){
+			        var text = Ext.decode(response.responseText);
+			        // process server response here
+			        //var value1=text["user_address"];
+			   
+			        Ext.getCmp("a").setValue(text.user_id);
+			        Ext.getCmp("b").setValue(text.user_name);
+			        Ext.getCmp("c").setValue(text.user_address);
+			        Ext.getCmp("d").setValue(text.user_phone);
+			        Ext.getCmp("e").setValue(text.device_id);
+			        Ext.getCmp("f").setValue(text.alarm_time);
+			        
+			    	}
+			});
 			
 			    var productForm = Ext.create("Ext.form.Panel", {
-			        title: "表单加载示例",
+			        title: "信息表",
 			        width: 300,
 			        height: 400,
 			        frame: true,
@@ -228,11 +235,17 @@
 			        }, 
 			        renderTo: Ext.getBody(),
 			         items: [
-			            { fieldLabel: "产品名称", id:"a",xtype: "textfield", name: "productName", value: "U盘" },
-			            { fieldLabel: "金额", xtype: "numberfield", name: "price", value: 100 },
-			            { fieldLabel: "生产日期", xtype: "datefield", format: "Y-m-d", name: "date", value: new Date() },
-			            { xtype: "hidden", name: "productId", value: "001" },
-			            { fieldLabel: "产品简介", name: "introduction", xtype: "textarea" }
+			        	 { fieldLabel: "用户编号", id:"a",xtype: "textfield", name: "user_id", value: "/" },
+			        	 { fieldLabel: "用户名称", id:"b",xtype: "textfield", name: "user_name", value: "/" },
+			        	 { fieldLabel: "用户地址", id:"c",xtype: "textfield", name: "user_address", value: "/" },
+			        	 { fieldLabel: "用户手机号", id:"d",xtype: "textfield", name: "user_phone", value: "/" },
+			        	 { fieldLabel: "设备编号", id:"e",xtype: "textfield", name: "device_id", value: "/" },
+			        	 { fieldLabel: "报警时间", id:"f",xtype: "textfield", name: "alarm_time", value: "/" }
+			            //{ fieldLabel: "产品名称", id:"a",xtype: "textfield", name: "productName", value: "U盘" },
+			            //{ fieldLabel: "金额", xtype: "numberfield", name: "price", value: 100 },
+			            //{ fieldLabel: "生产日期", xtype: "datefield", format: "Y-m-d", name: "date", value: new Date() },
+			            //{ xtype: "hidden", name: "productId", value: "001" },
+			            //{ fieldLabel: "产品简介", name: "introduction", xtype: "textarea" }
 			        ] 
 			       /*  buttons: [
 			            { text: "加载简介", handler: loadIntroduction }
@@ -275,7 +288,12 @@
 					resizable:false,
 					closable:true,
 					draggable:false,
-					modal:true
+					modal:true,
+					
+					buttons: [
+				        { xtype: "button", text: "确定", handler: function () { this.up("window").close(); } },
+				        { xtype: "button", text: "取消", handler: function () { this.up("window").close(); } }
+				    ]
 					
 				});
 				root.show();

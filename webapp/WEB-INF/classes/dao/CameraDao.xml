@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- camera[camera]SQLMapper自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2018-08-20 13:01:21 -->
+
+<mapper namespace="dao.CameraDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.CameraPO">
+		INSERT INTO camera (
+		<if test="device_id != null and device_id != ''">
+	         device_id, <!-- 设备id -->
+		</if>
+		<if test="camera_serial != null and camera_serial != ''">
+	         camera_serial, <!-- 摄像头序列号 -->
+		</if>
+		<if test="camera_no != null and camera_no != ''">
+	         camera_no, <!-- 设备通道号 -->
+		</if>
+		<if test="osd_ != null and osd_ != ''">
+	         osd_, <!-- 视频当前时间 -->
+		</if>
+		<if test="access_token != null and access_token != ''">
+	         access_token, <!-- 访问令牌 -->
+		</if>
+		<if test="verification_code != null and verification_code != ''">
+	         verification_code, <!-- 验证码 -->
+		</if>
+		<if test="camera_type != null and camera_type != ''">
+	         camera_type, <!-- 摄像头型号 -->
+		</if>
+		<if test="camera_label != null and camera_label != ''">
+	         camera_label, <!-- 标签 -->
+		</if>
+		<if test="cloud_service != null and cloud_service != ''">
+	         cloud_service, <!-- 云服务 -->
+		</if>
+		<if test="beiyong1_ != null and beiyong1_ != ''">
+	         beiyong1_, <!-- 备用1 -->
+		</if>
+		<if test="beiyong2_ != null and beiyong2_ != ''">
+	         beiyong2_, <!-- 备用2 -->
+		</if>
+		<if test="baiyong3_ != null and baiyong3_ != ''">
+	         baiyong3_, <!-- 备用3 -->
+		</if>
+		<if test="camera_id != null and camera_id != ''">
+	          camera_id  <!-- 序号 -->
+	   </if>
+		)VALUES(
+		<if test="device_id != null and device_id != ''">
+	          #{device_id, jdbcType=VARCHAR}, <!-- 设备id -->
+	    </if>
+		<if test="camera_serial != null and camera_serial != ''">
+	          #{camera_serial, jdbcType=VARCHAR}, <!-- 摄像头序列号 -->
+	    </if>
+		<if test="camera_no != null and camera_no != ''">
+	          #{camera_no, jdbcType=VARCHAR}, <!-- 设备通道号 -->
+	    </if>
+		<if test="osd_ != null and osd_ != ''">
+	          #{osd_, jdbcType=VARCHAR}, <!-- 视频当前时间 -->
+	    </if>
+		<if test="access_token != null and access_token != ''">
+	          #{access_token, jdbcType=VARCHAR}, <!-- 访问令牌 -->
+	    </if>
+		<if test="verification_code != null and verification_code != ''">
+	          #{verification_code, jdbcType=VARCHAR}, <!-- 验证码 -->
+	    </if>
+		<if test="camera_type != null and camera_type != ''">
+	          #{camera_type, jdbcType=VARCHAR}, <!-- 摄像头型号 -->
+	    </if>
+		<if test="camera_label != null and camera_label != ''">
+	          #{camera_label, jdbcType=VARCHAR}, <!-- 标签 -->
+	    </if>
+		<if test="cloud_service != null and cloud_service != ''">
+	          #{cloud_service, jdbcType=VARCHAR}, <!-- 云服务 -->
+	    </if>
+		<if test="beiyong1_ != null and beiyong1_ != ''">
+	          #{beiyong1_, jdbcType=VARCHAR}, <!-- 备用1 -->
+	    </if>
+		<if test="beiyong2_ != null and beiyong2_ != ''">
+	          #{beiyong2_, jdbcType=VARCHAR}, <!-- 备用2 -->
+	    </if>
+		<if test="baiyong3_ != null and baiyong3_ != ''">
+	          #{baiyong3_, jdbcType=VARCHAR}, <!-- 备用3 -->
+	    </if>
+		<if test="camera_id != null and camera_id != ''">
+		     #{camera_id, jdbcType=VARCHAR}  <!-- 序号 -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.CameraPO">
+		INSERT INTO camera (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{camera_id, jdbcType=VARCHAR},  <!-- 序号 -->
+		    #{device_id, jdbcType=VARCHAR},  <!-- 设备id -->
+		    #{camera_serial, jdbcType=VARCHAR},  <!-- 摄像头序列号 -->
+		    #{camera_no, jdbcType=VARCHAR},  <!-- 设备通道号 -->
+		    #{osd_, jdbcType=VARCHAR},  <!-- 视频当前时间 -->
+		    #{access_token, jdbcType=VARCHAR},  <!-- 访问令牌 -->
+		    #{verification_code, jdbcType=VARCHAR},  <!-- 验证码 -->
+		    #{camera_type, jdbcType=VARCHAR},  <!-- 摄像头型号 -->
+		    #{camera_label, jdbcType=VARCHAR},  <!-- 标签 -->
+		    #{cloud_service, jdbcType=VARCHAR},  <!-- 云服务 -->
+		    #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
+		    #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+		    #{baiyong3_, jdbcType=VARCHAR}  <!-- 备用3 -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.CameraPO">
+		UPDATE camera
+		<set>
+			<if test="camera_id != null">
+		          camera_id = #{camera_id, jdbcType=VARCHAR},  <!-- 序号 -->
+			</if>
+			<if test="device_id != null">
+		          device_id = #{device_id, jdbcType=VARCHAR},  <!-- 设备id -->
+			</if>
+			<if test="camera_serial != null">
+		          camera_serial = #{camera_serial, jdbcType=VARCHAR},  <!-- 摄像头序列号 -->
+			</if>
+			<if test="camera_no != null">
+		          camera_no = #{camera_no, jdbcType=VARCHAR},  <!-- 设备通道号 -->
+			</if>
+			<if test="osd_ != null">
+		          osd_ = #{osd_, jdbcType=VARCHAR},  <!-- 视频当前时间 -->
+			</if>
+			<if test="access_token != null">
+		          access_token = #{access_token, jdbcType=VARCHAR},  <!-- 访问令牌 -->
+			</if>
+			<if test="verification_code != null">
+		          verification_code = #{verification_code, jdbcType=VARCHAR},  <!-- 验证码 -->
+			</if>
+			<if test="camera_type != null">
+		          camera_type = #{camera_type, jdbcType=VARCHAR},  <!-- 摄像头型号 -->
+			</if>
+			<if test="camera_label != null">
+		          camera_label = #{camera_label, jdbcType=VARCHAR},  <!-- 标签 -->
+			</if>
+			<if test="cloud_service != null">
+		          cloud_service = #{cloud_service, jdbcType=VARCHAR},  <!-- 云服务 -->
+			</if>
+			<if test="beiyong1_ != null">
+		          beiyong1_ = #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
+			</if>
+			<if test="beiyong2_ != null">
+		          beiyong2_ = #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+			</if>
+			<if test="baiyong3_ != null">
+		          baiyong3_ = #{baiyong3_, jdbcType=VARCHAR},  <!-- 备用3 -->
+			</if>
+		</set>
+		WHERE  camera_id = #{camera_id}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM camera WHERE  camera_id = #{camera_id}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.CameraPO">
+		SELECT
+		<include refid="column" />
+		FROM camera WHERE  camera_id = #{camera_id}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.CameraPO">
+		SELECT
+		    <include refid="column" />
+		FROM camera
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.CameraPO">
+		SELECT
+			<include refid="column" />	
+		FROM camera
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.CameraPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM camera
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.CameraPO">
+		SELECT
+			<include refid="column" />	
+		FROM camera
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.CameraPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM camera
+		<where>
+		    <include refid="like" />
+		</where>	
+		
+		
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM camera
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM camera
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  camera_id,  <!-- 序号 -->
+		  device_id,  <!-- 设备id -->
+		  camera_serial,  <!-- 摄像头序列号 -->
+		  camera_no,  <!-- 设备通道号 -->
+		  osd_,  <!-- 视频当前时间 -->
+		  access_token,  <!-- 访问令牌 -->
+		  verification_code,  <!-- 验证码 -->
+		  camera_type,  <!-- 摄像头型号 -->
+		  camera_label,  <!-- 标签 -->
+		  cloud_service,  <!-- 云服务 -->
+		  beiyong1_,  <!-- 备用1 -->
+		  beiyong2_,  <!-- 备用2 -->
+		  baiyong3_  <!-- 备用3 -->
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  camera.camera_id,  <!-- 序号 -->
+		  camera.device_id,  <!-- 设备id -->
+		  camera.camera_serial,  <!-- 摄像头序列号 -->
+		  camera.camera_no,  <!-- 设备通道号 -->
+		  camera.osd_,  <!-- 视频当前时间 -->
+		  camera.access_token,  <!-- 访问令牌 -->
+		  camera.verification_code,  <!-- 验证码 -->
+		  camera.camera_type,  <!-- 摄像头型号 -->
+		  camera.camera_label,  <!-- 标签 -->
+		  camera.cloud_service,  <!-- 云服务 -->
+		  camera.beiyong1_,  <!-- 备用1 -->
+		  camera.beiyong2_,  <!-- 备用2 -->
+		  camera.baiyong3_  <!-- 备用3 -->
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="camera_id != null and camera_id != ''">
+		      AND camera_id = #{camera_id}  <!-- 序号 -->
+		</if>
+	    <if test="device_id != null and device_id != ''">
+		      AND device_id = #{device_id}  <!-- 设备id -->
+		</if>
+	    <if test="camera_serial != null and camera_serial != ''">
+		      AND camera_serial = #{camera_serial}  <!-- 摄像头序列号 -->
+		</if>
+	    <if test="camera_no != null and camera_no != ''">
+		      AND camera_no = #{camera_no}  <!-- 设备通道号 -->
+		</if>
+	    <if test="osd_ != null and osd_ != ''">
+		      AND osd_ = #{osd_}  <!-- 视频当前时间 -->
+		</if>
+	    <if test="access_token != null and access_token != ''">
+		      AND access_token = #{access_token}  <!-- 访问令牌 -->
+		</if>
+	    <if test="verification_code != null and verification_code != ''">
+		      AND verification_code = #{verification_code}  <!-- 验证码 -->
+		</if>
+	    <if test="camera_type != null and camera_type != ''">
+		      AND camera_type = #{camera_type}  <!-- 摄像头型号 -->
+		</if>
+	    <if test="camera_label != null and camera_label != ''">
+		      AND camera_label = #{camera_label}  <!-- 标签 -->
+		</if>
+	    <if test="cloud_service != null and cloud_service != ''">
+		      AND cloud_service = #{cloud_service}  <!-- 云服务 -->
+		</if>
+	    <if test="beiyong1_ != null and beiyong1_ != ''">
+		      AND beiyong1_ = #{beiyong1_}  <!-- 备用1 -->
+		</if>
+	    <if test="beiyong2_ != null and beiyong2_ != ''">
+		      AND beiyong2_ = #{beiyong2_}  <!-- 备用2 -->
+		</if>
+	    <if test="baiyong3_ != null and baiyong3_ != ''">
+		      AND baiyong3_ = #{baiyong3_}  <!-- 备用3 -->
+		</if>
+	</sql>
+	
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="camera_id != null and camera_id != ''">
+		      AND camera_id like '%${camera_id}%'  <!-- 序号 -->
+		</if>
+	    <if test="device_id != null and device_id != ''">
+		      AND device_id like '%${device_id}%'  <!-- 设备id -->
+		</if>
+	    <if test="camera_serial != null and camera_serial != ''">
+		      AND camera_serial like '%${camera_serial}%'  <!-- 摄像头序列号 -->
+		</if>
+	    <if test="camera_no != null and camera_no != ''">
+		      AND camera_no like '%${camera_no}%'  <!-- 设备通道号 -->
+		</if>
+	    <if test="osd_ != null and osd_ != ''">
+		      AND osd_ like '%${osd_}%'  <!-- 视频当前时间 -->
+		</if>
+	    <if test="access_token != null and access_token != ''">
+		      AND access_token like '%${access_token}%'  <!-- 访问令牌 -->
+		</if>
+	    <if test="verification_code != null and verification_code != ''">
+		      AND verification_code like '%${verification_code}%'  <!-- 验证码 -->
+		</if>
+	    <if test="camera_type != null and camera_type != ''">
+		      AND camera_type like '%${camera_type}%'  <!-- 摄像头型号 -->
+		</if>
+	    <if test="camera_label != null and camera_label != ''">
+		      AND camera_label like '%${camera_label}%'  <!-- 标签 -->
+		</if>
+	    <if test="cloud_service != null and cloud_service != ''">
+		      AND cloud_service like '%${cloud_service}%'  <!-- 云服务 -->
+		</if>
+	    <if test="beiyong1_ != null and beiyong1_ != ''">
+		      AND beiyong1_ like '%${beiyong1_}%'  <!-- 备用1 -->
+		</if>
+	    <if test="beiyong2_ != null and beiyong2_ != ''">
+		      AND beiyong2_ like '%${beiyong2_}%'  <!-- 备用2 -->
+		</if>
+	    <if test="baiyong3_ != null and baiyong3_ != ''">
+		      AND baiyong3_ like '%${baiyong3_}%'  <!-- 备用3 -->
+		</if>
+	</sql>
+	
+</mapper>

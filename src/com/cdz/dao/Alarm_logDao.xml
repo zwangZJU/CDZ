@@ -7,6 +7,20 @@
 
 <mapper namespace="dao.Alarm_logDao">
 	
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByDeviceId" parameterType="java.lang.String" resultType="po.Alarm_logPO">
+		SELECT
+		*
+		FROM alarm_log WHERE device_id = #{device_id}
+	</select>
+	
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByAlarmId" parameterType="java.lang.String" resultType="po.Alarm_logPO">
+		SELECT
+		*
+		FROM alarm_log WHERE alarm_id = #{alarm_id}
+	</select>
+	
 	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
 	<insert id="insert"  parameterType="po.Alarm_logPO">
 		INSERT INTO alarm_log (

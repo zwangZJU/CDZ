@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import aos.framework.core.annotation.Dao;
 import aos.framework.core.typewrap.Dto;
+import po.Alarm_logPO;
 import po.DevicePO;
 
 /**
@@ -32,6 +33,7 @@ public interface DeviceDao {
 	int insert(DevicePO devicePO);
 	void deleteById(String id_);
 	
+	DevicePO selectByDeviceId(String device_id);
 	
 	/**
 	 * 插入一个数据持久化对象(含所有字段)

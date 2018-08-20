@@ -138,6 +138,10 @@ public class AppApiService extends CDZBaseController {
 	Repair_logDao repair_logDao;
 	@Autowired
 	Alarm_logDao alarm_logDao;
+	
+	public void init(HttpModel httpModel) {
+		httpModel.setViewPath("myproject/map.jsp");
+	}
 
 	private static CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
 	static String Alias = "18392888103";
@@ -727,6 +731,8 @@ public class AppApiService extends CDZBaseController {
 		Dto odto = Dtos.newDto();
 
 		String device_id = qDto.getString("device_id");
+		if(device_id.length()<3)
+			this.fail(odto, "绑定失败，该设备已被绑定");
 
 		Dto pDto = Dtos.newDto("device_id", device_id);
 		DevicePO devicePO = deviceDao.selectOne(pDto);
@@ -810,6 +816,13 @@ public class AppApiService extends CDZBaseController {
 		httpModel.setOutMsg(AOSJson.toJson(odto));
 	}
 	
+	public void userLogout(HttpModel httpModel) {
+		
+		Dto odto = Dtos.newDto();
+		odto.put("msg", "登出成功");
+		odto.put("status", "1");
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
 	
 	public void userLogin(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();

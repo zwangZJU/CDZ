@@ -1,5 +1,6 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import aos.framework.core.id.AOSId;
 import aos.framework.core.service.CDZBaseController;
 import aos.framework.core.typewrap.Dto;
+import aos.framework.core.typewrap.Dtos;
 import aos.framework.core.utils.AOSJson;
 import aos.framework.web.router.HttpModel;
 import aos.system.common.utils.SystemCons;
@@ -53,6 +55,44 @@ public class DeviceService extends CDZBaseController {
 		DevicePO devicePO = deviceDao.selectByKey(inDto.getString("device_id"));
 		httpModel.setOutMsg(AOSJson.toJson(devicePO));
 	}
+	
+	public void listCoordinate(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		/*
+		 * List<Dto> list = sqlDao.list("Repair_log.listHandler", httpModel.getInDto());
+		 */
+		Dto odto = Dtos.newDto();
+
+		/* odto.put("hhhh", "44"); */
+
+		Dto pDto = Dtos.newDto();
+		int rows = deviceDao.rows(pDto);
+		pDto.put("limit", rows);
+		pDto.put("start", 0);
+		List<Dto> deviceDtos = sqlDao.list("Device.listDevicesPage", pDto);
+		List<Dto> newListDtos = new ArrayList<Dto>();
+
+		for (Dto dto : deviceDtos) {
+			Dto newDto = Dtos.newDto();
+			String user_address = dto.getString("user_address");
+			String[] info = user_address.split(" ");
+			String lat = info[1];
+			lat = lat.replace(",", "");
+			String lon = info[3];
+			newDto.put("lat", lat);
+			newDto.put("lon", lon);
+			newDto.put("number", Integer.toString(rows));
+
+			newListDtos.add(newDto);
+
+		}
+
+		odto.put("coor", newListDtos);
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+
+	}
+
 
 	/**
 	 * 保存charging_pile

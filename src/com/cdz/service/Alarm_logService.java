@@ -118,24 +118,38 @@ public class Alarm_logService extends CDZBaseController {
 		/*Dto inDto = httpModel.getInDto();
 		Alarm_logPO alarm_logPO = new Alarm_logPO();
 		alarm_logPO.copyProperties(inDto);
-		System.out.println(alarm_logPO.getHandler_());
+		System.out.println(alarm_logPO.getHandler_());*/
 		//alarm_logDao.updateByKey(alarm_logPO);
 		
-		Dto pDto = Dtos.newDto("alarm_id",alarm_logPO.getAlarm_id());
-		Alarm_logPO alarm_logPO1 =alarm_logDao.selectOne(pDto); */
+		Alarm_logPO alarm_logPO = new Alarm_logPO();
+		Dto qDto = httpModel.getInDto();
+		Dto pDto = Dtos.newDto();
+		String alarm_id = qDto.getString("id");
+		//pDto.put("alarm_id", "1808091745501987");
+		//pDto.put("device_id", device_id);
+		
+		//Dto pDto = Dtos.newDto("alarm_id",alarm_logPO.getAlarm_id());
+		//Alarm_logPO alarm_logPO1 =alarm_logDao.selectOne(pDto); 
+		Alarm_logPO alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id.substring(0,alarm_id.length()-1)); 
 		
 		Dto newDto = Dtos.newDto();
 		//newDto.put("handler_phone", alarm_logPO1.getHandler_phone());
+		newDto.put("handler_phone", alarm_logPO1.getAlarm_time());
+		newDto.put("user_phone", alarm_logPO1.getUser_phone());
+		newDto.put("device_id", alarm_logPO1.getDevice_id());
 		
-		/*Dto pDto1 = Dtos.newDto("device_id",alarm_logPO.getDevice_id());
-		DevicePO devicePO =deviceDao.selectOne(pDto1); 
+		//Dto pDto1 = Dtos.newDto("device_id",alarm_logPO.getDevice_id());
+		//DevicePO devicePO =deviceDao.selectByDeviceId(device_id.substring(0,device_id.length()-1));
+		DevicePO devicePO =deviceDao.selectByDeviceId(alarm_logPO1.getDevice_id());
 		
-		//newDto.put("user_address", devicePO.getUser_address());*/
+		newDto.put("user_address", devicePO.getUser_address());
+		newDto.put("user_name", devicePO.getUser_name());
+		newDto.put("user_id", devicePO.getUser_id());
 		
-		newDto.put("user_address", "123");
+		//newDto.put("user_address","123");
 		
 		httpModel.setOutMsg(AOSJson.toJson(newDto));
-		
+		//httpModel.setOutMsg(alarm_logPO1.getHandler_phone()+"#"+devicePO.getUser_address());
 		
 		/*Dto qDto = httpModel.getInDto();
 		List<Dto> list = sqlDao.list("Basic_user.listHandler1", httpModel.getInDto());

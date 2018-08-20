@@ -6,101 +6,97 @@ import org.apache.ibatis.annotations.Param;
 
 import aos.framework.core.annotation.Dao;
 import aos.framework.core.typewrap.Dto;
-import po.Alarm_logPO;
+import po.CameraPO;
 
 /**
- * <b>alarm_log[alarm_log]数据访问接口</b>
+ * <b>camera[camera]数据访问接口</b>
  * 
  * <p>
  * 注意:此文件由AOS平台自动生成-禁止手工修改
  * </p>
  * 
  * @author Administrator
- * @date 2018-08-06 22:34:53
+ * @date 2018-08-20 13:01:21
  */
 @Dao
-public interface Alarm_logDao {
-	
-	Alarm_logPO selectByDeviceId(String device_id);
-	
-	Alarm_logPO selectByAlarmId(String alarm_id);
+public interface CameraDao {
 
 	/**
 	 * 插入一个数据持久化对象(插入字段为传入PO实体的非空属性)
 	 * <p> 防止DB字段缺省值需要程序中再次赋值
 	 *
-	 * @param alarm_logPO
+	 * @param cameraPO
 	 *            要插入的数据持久化对象
 	 * @return 返回影响行数
 	 */
-	int insert(Alarm_logPO alarm_logPO);
+	int insert(CameraPO cameraPO);
 	
 	/**
 	 * 插入一个数据持久化对象(含所有字段)
 	 * 
-	 * @param alarm_logPO
+	 * @param cameraPO
 	 *            要插入的数据持久化对象
 	 * @return 返回影响行数
 	 */
-	int insertAll(Alarm_logPO alarm_logPO);
+	int insertAll(CameraPO cameraPO);
 
 	/**
 	 * 根据主键修改数据持久化对象
 	 * 
-	 * @param alarm_logPO
+	 * @param cameraPO
 	 *            要修改的数据持久化对象
 	 * @return int 返回影响行数
 	 */
-	int updateByKey(Alarm_logPO alarm_logPO);
+	int updateByKey(CameraPO cameraPO);
 
 	/**
 	 * 根据主键查询并返回数据持久化对象
 	 * 
-	 * @return Alarm_logPO
+	 * @return CameraPO
 	 */
-	Alarm_logPO selectByKey(@Param(value = "alarm_id") String alarm_id);
+	CameraPO selectByKey(@Param(value = "camera_id") String camera_id);
 
 	/**
 	 * 根据唯一组合条件查询并返回数据持久化对象
 	 * 
-	 * @return Alarm_logPO
+	 * @return CameraPO
 	 */
-	Alarm_logPO selectOne(Dto pDto);
+	CameraPO selectOne(Dto pDto);
 
 	/**
 	 * 根据Dto查询并返回数据持久化对象集合
 	 * 
-	 * @return List<Alarm_logPO>
+	 * @return List<CameraPO>
 	 */
-	List<Alarm_logPO> list(Dto pDto);
+	List<CameraPO> list(Dto pDto);
 
 	/**
 	 * 根据Dto查询并返回分页数据持久化对象集合
 	 * 
-	 * @return List<Alarm_logPO>
+	 * @return List<CameraPO>
 	 */
-	List<Alarm_logPO> listPage(Dto pDto);
+	List<CameraPO> listPage(Dto pDto);
 		
 	/**
 	 * 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配)
 	 * 
-	 * @return List<Alarm_logPO>
+	 * @return List<CameraPO>
 	 */
-	List<Alarm_logPO> like(Dto pDto);
+	List<CameraPO> like(Dto pDto);
 
 	/**
 	 * 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配)
 	 * 
-	 * @return List<Alarm_logPO>
+	 * @return List<CameraPO>
 	 */
-	List<Alarm_logPO> likePage(Dto pDto);
+	List<CameraPO> likePage(Dto pDto);
 
 	/**
 	 * 根据主键删除数据持久化对象
 	 *
 	 * @return 影响行数
 	 */
-	int deleteByKey(@Param(value = "alarm_id") String alarm_id);
+	int deleteByKey(@Param(value = "camera_id") String camera_id);
 	
 	/**
 	 * 根据Dto统计行数
