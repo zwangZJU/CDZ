@@ -109,6 +109,20 @@ public class HttpModel implements Serializable{
 		}
 	}
 	
+	public void setOutMsg1(String outMsg) {
+		if (AOSUtils.isEmpty(outMsg)) {
+			this.outMsg = StringUtils.EMPTY;
+		}else{
+			//if (StringUtils.indexOf(outMsg, "{") == -1 && !StringUtils.equals(outMsg, "[]")) {
+				//Dto dto = Dtos.newDto();
+				//dto.put(AOSCons.APPCODE_KEY, AOSCons.SUCCESS);
+				//dto.put(AOSCons.APPMSG_KEY, outMsg);
+				//outMsg = AOSJson.toJson(dto);
+			//}
+			this.outMsg = outMsg;
+		}
+	}
+	
 	/**
 	 * 设置请求request作用域的属性
 	 * @param key

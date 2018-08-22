@@ -79,9 +79,16 @@ public class DeviceService extends CDZBaseController {
 			String lat = info[1];
 			lat = lat.replace(",", "");
 			String lon = info[3];
+			String address = info[0];
+			address = address.replace("#latitude:", "");
 			newDto.put("lat", lat);
 			newDto.put("lon", lon);
 			newDto.put("number", Integer.toString(rows));
+			newDto.put("device_id", dto.getString("device_id"));
+			newDto.put("user_name", dto.getString("user_name"));
+			newDto.put("phone", dto.getString("phone"));
+			newDto.put("user_address", address);
+			newDto.put("is_alarming", dto.getString("is_alarming"));
 
 			newListDtos.add(newDto);
 

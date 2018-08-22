@@ -1,5 +1,11 @@
 package service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +85,38 @@ public class Alarm_logService extends CDZBaseController {
 		httpModel.setOutMsg("新增成功。");
 	}
 
+	@Transactional
+	public void updateWebpage(HttpModel httpModel) {
+		//Dto inDto = httpModel.getInDto();
+		
+		Dto newDto = Dtos.newDto();
+		//newDto.put("handler_phone", alarm_logPO1.getHandler_phone());
+		newDto.put("data","<name>"+"1234567890"+"</name>");
+		
+		//httpModel.setOutMsg1("<response>"+"<br/>"+"<name>"+"1234567890"+"</name>"+"<br/>"+"</response>"+"<br/>");
+		//ByteArrayOutputStream os=new ByteArrayOutputStream();
+		PrintWriter pw=null;
+		try {
+			pw = httpModel.getResponse().getWriter();
+			pw.write("<response>"+"<br/>"+"<name>"+"1234567890"+"</name>"+"<br/>"+"</response>"+"<br/>");
+			pw.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			pw.close();
+		}
+		
+		//byte[] buff = pw.toByteArray(); 
+	   // for (int i = 0; i < buff.length; i++) 
+	       // pw.println(buff[i]); 
+		//os.println("456");
+		//os.close();
+		//os.close(); 
+		//httpModel.setOutMsg1("<name>"+"1234567890"+"</name>");
+		//httpModel.setOutMsg1("</response>");
+	}
+	
 	/**
 	 * 修改charging_pile
 	 * 
@@ -134,7 +172,7 @@ public class Alarm_logService extends CDZBaseController {
 		
 		Dto newDto = Dtos.newDto();
 		//newDto.put("handler_phone", alarm_logPO1.getHandler_phone());
-		newDto.put("handler_phone", alarm_logPO1.getAlarm_time());
+		newDto.put("alarm_time", alarm_logPO1.getAlarm_time());
 		newDto.put("user_phone", alarm_logPO1.getUser_phone());
 		newDto.put("device_id", alarm_logPO1.getDevice_id());
 		

@@ -1,5 +1,6 @@
 ﻿<%@ page contentType="text/html; charset=utf-8"%>
 <%@ include file="/WEB-INF/jsp/common/tags.jsp"%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*" %>
@@ -11,7 +12,7 @@
 	<title>设备地图</title>
 	<style type="text/css">
 		body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
-		#l-map{height:500px;width:100%;}
+		#l-map{height:510px;width:100%;}
 		#r-result{width:100%; font-size:14px;line-height:20px;}
 	</style>
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ThTvAqi8T9m1Y9sKYtoAUi65eTQmRa7j"></script>
@@ -20,6 +21,7 @@
 	<div id="l-map"></div>
 	<div id="r-result">
 		<!-- <input type="button" value="批量反地址解析+商圈" onclick="bdGEO(0)" /> -->
+		
 		<div id="result"></div>
 	</div>
 </body>
@@ -27,6 +29,10 @@
 <script type="text/javascript">
 
 var info = Ext.util.Cookies.get('juid'); 
+setInterval(map,10000); 
+
+
+function map(){
 
 Ext.Ajax.request({
 					    url: '/cdz/http/do.jhtml?router=deviceService.listCoordinate&juid='+info,
@@ -35,58 +41,74 @@ Ext.Ajax.request({
 					  },
 					    success: function(response, opts) {
 					        var obj = Ext.decode(response.responseText); 
-					     
-					  
 					        var ss =obj.coor;
-					        var ss1=ss[0]; 
-					        var lat=ss1.lat;
-					        var lon=ss1.lon;
-					        var num=ss1.number;
-					        /*  var num1 = Integer.parseInt(num);  */
-					        
+					        var ss2=ss[0]; 
+					        var lat1=ss2.lat;
+					        var lon1=ss2.lon;
+					       /*  AOS.tip("777"); */
+					        var num=ss2.number;
 					        var map = new BMap.Map("l-map");
-					      
-					    	map.centerAndZoom(new BMap.Point(121.56251,29.91279), 10);
+					    	map.centerAndZoom(new BMap.Point(lon1,lat1), 13);
 					    	map.enableScrollWheelZoom(true);
 					    	var index = 0;
 					    	var myGeo = new BMap.Geocoder();
-					    /* 	var adds = [
-					    		/* new BMap.Point(116.307852,40.057031),
-					    		new BMap.Point(116.313082,40.047674),
-					    		new BMap.Point(116.328749,40.026922),
-					    		new BMap.Point(116.347571,39.988698),
-					    		new BMap.Point(116.316163,39.997753),
-					    		new BMap.Point(116.345867,39.998333),
-					    		new BMap.Point(116.403472,39.999411),
-					    		new BMap.Point(116.307901,40.05901) */
-					    	/* ];  */
-					    	 
+					         var opts = {
+				                      width : 250,     // 信息窗口宽度
+				                      height: 100,     // 信息窗口高度
+				                      title : "设备信息" , // 信息窗口标题
+				                      enableMessage:true//设置允许信息窗发送短息
+			                         }; 
 					    	for(var i = 0; i<num; i++){
-					    		
 					    		var ss1=ss[i]; 
 						        var lat=ss1.lat;
 						        var lon=ss1.lon;
-						       
-					    		var marker = new BMap.Marker(new BMap.Point(lon,lat));
-					    		map.addOverlay(marker);
+						        var point5=new BMap.Point(lon,lat);
+						        var id=ss1.device_id;
+						        var alarm=ss1.is_alarming;
+	                            var name=ss1.user_name;
+						        var phone=ss1.phone;
+						        var address=ss1.user_address;
+						  
+						   
+					    		var marker = new BMap.Marker(point5);
+					    		var content ='<div >' +
+			                    '设备编号:'+id+'<br/>'+'用户姓名:'+name+'<br/>'+'用户电话:'+phone+'<br/>'+'用户地址:'+address+'<br/>'+
+			                  '</div>';
+			              	map.addOverlay(marker);
+			              	 if (alarm=="1"){
+							      
+			              		 marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画 *
+						        }
+
+					    	 	addClickHandler(content,marker);
 					    		marker.setLabel(new BMap.Label("设备:"+(i+1),{offset:new BMap.Size(20,-10)}));
+					    	
 					    	}
-					      
-					    
-					
-					      
-					    
-					      /*   var last=JSON.stringify(obj); */
-					       
-					     /*    Ext.getCmp(aa即为id)。setValue即为setxxx(obj.xxx);//将得到的后台数据，处理，根据id和属性放到jsp中 */
-					       
-					  /*       root.hide(); */
+					    	
+					    	function addClickHandler(content,marker){
+					    		marker.addEventListener("click",function(e){
+					    			var p = e.target;
+						    	 	var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat); 
+						    		var infoWindow = new BMap.InfoWindow(content);  // 创建信息窗口对象 
+						    		map.openInfoWindow(infoWindow,point); //开启信息窗口
+					    			
+					    			
+					    			}
+					    		);
+					    	}
+					    	
+					    	//缩放控件********
+					    	var top_right_navigation = new BMap.NavigationControl({
+					    		anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL
+					    				});
+							map.addControl(top_right_navigation); 
 					    },
 					    failure: function(response, opts) {
 					        AOS.tip('失败');
 					        root.hide();
 					    }
 					});
+}
 
    
 	// 百度地图API功能

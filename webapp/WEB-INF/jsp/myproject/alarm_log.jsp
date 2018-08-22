@@ -1,49 +1,79 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ include file="/WEB-INF/jsp/common/tags.jsp"%>
 <aos:html title="alarm_log" base="http" lib="ext">
-<head>
- <script type="text/javascript">
- /*
- Ext.onReady(function ()
-		 {
-		     //初始化提示
-		     Ext.QuickTips.init();
-		     var productForm = Ext.create("Ext.form.Panel", {
-		         title: "表单加载示例",
-		         width: 300,
-		         frame: true,
-		         fieldDefaults: {
-		             labelSeparator: ":",
-		             labelWidth: 80,
-		             width: 250,
-		             margin:5
-		         },
-		         renderTo: Ext.getBody(),
-		         items: [
-		             { fieldLabel: "产品名称", xtype: "textfield", name: "productName", value: "U盘" },
-		             { fieldLabel: "金额", xtype: "numberfield", name: "price", value: 100 },
-		             { fieldLabel: "生产日期", xtype: "datefield", format: "Y-m-d", name: "date", value: new Date() },
-		             { xtype: "hidden", name: "productId", value: "001" },
-		             { fieldLabel: "产品简介", name: "introduction", xtype: "textarea" }
-		         ],
-		         buttons: [
-		             { text: "加载简介", handler: loadIntroduction }
-		         ]
-		     });
-		     */
-		     var store = Ext.create('Ext.data.Store', {
-		    	   id : 'statesid',
-		    	   fields: ['abbr', 'name'],
-		    	   data : [
-		    	      {"abbr":"HTML", "name":"HTML"},
-		    	      {"abbr":"CSS", "name":"CSS"},
-		    	      {"abbr":"JS", "name":"JavaScript"}
-		    	   ]
-		    	});
- </script>
-</head>
-<aos:body>
-</aos:body>
+
+<script type="text/javascript">
+
+var XMLHttpReq;
+  //创建XMLHttpRequest对象       
+  function createXMLHttpRequest() {
+  if(window.XMLHttpRequest) { //Mozilla 浏览器
+   XMLHttpReq = new XMLHttpRequest();
+  }
+  else if (window.ActiveXObject) { // IE浏览器
+   try {
+    XMLHttpReq = new ActiveXObject("Msxml2.XMLHTTP");
+   } catch (e) {
+    try {
+     XMLHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
+    } catch (e) {}
+   }
+  }
+ }
+ //发送请求函数
+ function sendRequest() {
+  createXMLHttpRequest();
+        var url = "do.jhtml?router=alarm_logService.updateWebpage&juid=a28937399c4243838e22941929e4e464";
+  XMLHttpReq.open("GET", url, true);
+  XMLHttpReq.onreadystatechange = processResponse;//指定响应函数
+  XMLHttpReq.send(null);  // 发送请求
+ }
+ // 处理返回信息函数
+    function processResponse() {
+     if (XMLHttpReq.readyState == 4) { // 判断对象状态
+         if (XMLHttpReq.status == 200) { // 信息已经成功返回，开始处理信息
+        	// var name = XMLHttpReq.responseXML.getElementsByTagName("name")[0].firstChild.nodeValue;
+        	    alert(XMLHttpReq.responseText);
+			    DisplayHot();
+			    setTimeout("sendRequest()", 2000);
+            } else { //页面不正常
+                window.alert("您所请求的页面有异常。");
+            }
+        }
+    }
+    function DisplayHot() {
+     //var name = XMLHttpReq.responseXML.getElementsByTagName("name")[0].firstChild.nodeValue;
+     //var count = XMLHttpReq.responseXML.getElementsByTagName("count")[0].firstChild.nodeValue;
+ 
+           //document.getElementById("cheh").innerHTML = "T-"+name+"次列车"; 
+    //document.getElementById("price").innerHTML = count+"元"; 
+    
+    //var text = Ext.decode(response.responseText);
+			        // process server response here
+			        //var value1=text["user_address"];
+			   
+	//Ext.getCmp("a").setValue(text.data);
+	
+    
+    
+    var msg1 = 'AOS应用基础平台基于JavaEE技术体系，以“标准功能可复用、通用模块可配置、行业需求快速开发、异构系统无缝集成”为目标，为软件开发团队提供高效可控、随需应变、快速实现业务需求的全栈式技术解决方案。帮助企业落实IT策略、屏蔽技术壁垒，快速实现业务愿景。使其获得更低成本、更高质量、更快交付业务和运维支持的核心技术竞争力。';
+    	Ext.create(
+				'widget.uxNotification',
+				{
+					position : 'br',
+					title : '<span class="app-container-title-normal"><i class="fa fa-bell-o"></i> 通知</span>',
+					closable : false,
+					autoCloseDelay : 2000,
+					slideInDuration : 200,
+					useXAxis : false,
+					width : 400,
+					html : msg1
+				}).show();
+    }
+    
+</script>   
+<body onload = sendRequest()>
+</body>
 <aos:onready>
 	<aos:viewport layout="fit">
 		<aos:gridpanel id="_datagridpanel" url="alarm_logService.listAlarm_log" onrender="_datagridpanel_query" onitemdblclick="_w_update_show_all"  forceFit="false">
@@ -51,7 +81,8 @@
 			    			 	<aos:dockeditem text="新增" tooltip="新增"  onclick="_w_add_show" icon="add.png"/>
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>
 												<aos:dockeditem text="删除" tooltip="删除" onclick="_delete" icon="del.png" />
-												<aos:dockeditem text="导出" tooltip="导出" onclick="_exportexcel" icon="icon70.png" />
+												<aos:dockeditem text="导出" tooltip="导出" onclick="fnnoti1()" icon="icon70.png" /> 
+												<%-- <aos:dockeditem text="导出" tooltip="导出" onclick="_exportexcel" icon="icon70.png" /> --%>
 												<%-- <aos:dockeditem text="操作" tooltip="操作" onclick="_f_role_u_save" icon="icon70.png" /> --%>
 								<aos:dockeditem xtype="tbseparator" />
 				               			</aos:docked>
@@ -454,6 +485,24 @@ function _f_role_u_save(){
     		 return '<input type="button" value="接警" class="cbtn_danger" onclick="_w_role_u_show();" />'; 
         	/*return '<input type="button" value="接警" class="cbtn_danger" onclick="_f_role_u_save();" />'; */
     	}
+        
+        var msg1 = 'AOS应用基础平台基于JavaEE技术体系，以“标准功能可复用、通用模块可配置、行业需求快速开发、异构系统无缝集成”为目标，为软件开发团队提供高效可控、随需应变、快速实现业务需求的全栈式技术解决方案。帮助企业落实IT策略、屏蔽技术壁垒，快速实现业务愿景。使其获得更低成本、更高质量、更快交付业务和运维支持的核心技术竞争力。';
+    	
+        function fnnoti1() {
+    		Ext.create(
+    						'widget.uxNotification',
+    						{
+    							position : 'br',
+    							title : '<span class="app-container-title-normal"><i class="fa fa-bell-o"></i> 通知</span>',
+    							closable : false,
+    							autoCloseDelay : 2000,
+    							slideInDuration : 200,
+    							useXAxis : false,
+    							width : 400,
+    							html : msg1
+    						}).show();
+    	}
+        
 	</script>
 </aos:onready>
 
@@ -465,7 +514,6 @@ function _f_role_u_save(){
         	 AOS.get('_f_role_u').loadRecord(record);
          }
 	}
-	
 
 </script>
 </aos:html>
