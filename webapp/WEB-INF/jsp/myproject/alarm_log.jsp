@@ -33,9 +33,13 @@ var XMLHttpReq;
      if (XMLHttpReq.readyState == 4) { // 判断对象状态
          if (XMLHttpReq.status == 200) { // 信息已经成功返回，开始处理信息
         	// var name = XMLHttpReq.responseXML.getElementsByTagName("name")[0].firstChild.nodeValue;
-        	    alert(XMLHttpReq.responseText);
-			    DisplayHot();
-			    setTimeout("sendRequest()", 2000);
+        	    //alert(XMLHttpReq.responseText);
+        	    var a = XMLHttpReq.responseText;
+			    if(a == "1"){
+			    	DisplayHot();
+			    	setTimeout("window.location.reload()",2000);
+			    }
+			    setTimeout("sendRequest()", 4000);
             } else { //页面不正常
                 window.alert("您所请求的页面有异常。");
             }

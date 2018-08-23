@@ -24,6 +24,8 @@ public interface Alarm_logDao {
 	Alarm_logPO selectByDeviceId(String device_id);
 	
 	Alarm_logPO selectByAlarmId(String alarm_id);
+	
+	int row_num();
 
 	/**
 	 * 插入一个数据持久化对象(插入字段为传入PO实体的非空属性)
@@ -117,5 +119,9 @@ public interface Alarm_logDao {
 	 * @return String
 	 */
 	String calc(Dto pDto);
+
+	/**
+	 * @return
+	 */
 	
 }

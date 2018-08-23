@@ -7,6 +7,13 @@
 
 <mapper namespace="dao.Alarm_logDao">
 	
+	<!-- 根据主键查询并返回数据持久化对象-->
+	<select id="row_num" resultType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM alarm_log
+	</select> 
+	
 	<!-- 根据主键查询并返回数据持久化对象 -->
 	<select id="selectByDeviceId" parameterType="java.lang.String" resultType="po.Alarm_logPO">
 		SELECT

@@ -252,6 +252,26 @@
 		    <include refid="equal" />
 		</where>
 	</select>
+	<select id="rows1" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM repair_log
+		<where>
+		    <if test="repair_id != null and repair_id != ''">
+				      AND repair_id like '%${repair_id}%'  <!-- 地址 -->
+		</if>
+		<if test="device_id != null and device_id != ''">
+				      AND device_id like '%${device_id}%'  <!-- 地址 -->
+				</if>
+		<if test="user_phone != null and user_phone != ''">
+				      AND user_phone like '%${user_phone}%'  <!-- 地址 -->
+				</if>
+		<if test="handler_ != null and handler_ != ''">
+				      AND handler_ like '%${handler_}%'  <!-- 地址 -->
+				</if>
+		<if test="handler_phone != null and handler_phone != ''">
+				      AND handler_phone like '%${handler_phone}%'  <!-- 地址 -->
+				</if>
+		</where>
+	</select>
 	
 	<!-- 根据数学表达式进行数学运算 -->
 	<select id="calc" parameterType="Dto" resultType="String">

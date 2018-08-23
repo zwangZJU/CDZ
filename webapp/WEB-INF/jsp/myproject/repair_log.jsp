@@ -4,7 +4,24 @@
 <aos:body>
 </aos:body>
 <aos:onready>
-	<aos:viewport layout="fit">
+	<aos:viewport layout="border">
+	    <aos:formpanel id="_f_query" layout="column" labelWidth="70" header="false" region="north" >
+			<aos:docked forceBoder="0 0 1 0">
+				<aos:dockeditem xtype="tbtext" text="查询条件" />
+			</aos:docked>
+			 <aos:textfield   name="repair_id" fieldLabel="报修序号" columnWidth="0.2"     maxLength="255"    	         />
+	      	 <aos:textfield   name="device_id" fieldLabel="设备id" columnWidth="0.2"    maxLength="255"    	         />
+	      	 <aos:textfield name="user_phone" fieldLabel="用户手机号" columnWidth="0.2" maxLength="255"    	         />
+	      	    <aos:textfield name="handler_" fieldLabel="处理者" columnWidth="0.2" maxLength="255"    	         />
+	      	   	<aos:textfield name="handler_phone" fieldLabel="处理者电话" columnWidth="0.2" maxLength="255"    	         />
+			<aos:docked dock="bottom" ui="footer" margin="0 0 8 0">
+				<aos:dockeditem xtype="tbfill" />
+				<aos:dockeditem xtype="button" text="查询" onclick="_datagridpanel_query" icon="query.png" />
+				<aos:dockeditem xtype="button" text="重置" onclick="AOS.reset(_f_query);" icon="refresh.png" />
+				<aos:dockeditem xtype="button" text="导出" onclick="fn_export_excel" icon="icon70.png" />
+				<aos:dockeditem xtype="tbfill" />
+			</aos:docked>
+		</aos:formpanel>
 		<aos:gridpanel id="_datagridpanel" url="repair_logService.listRepair_log" onrender="_datagridpanel_query" onitemdblclick="_w_update_show"  forceFit="false">
 			<aos:docked>
 			    			 	<aos:dockeditem text="新增" tooltip="新增"  onclick="_w_add_show" icon="add.png"/>
@@ -22,8 +39,8 @@
 			    						      			       <aos:column header="报修内容" dataIndex="repair_content"   width="160" />
 			    						      			       <aos:column header="报修时间" dataIndex="repair_time"   width="150" />
 			    						      			       <aos:column header="修复时间" dataIndex="renovate_time"   width="150" />
-			    						      			        <aos:column header="接单" rendererFn="fn_button_render" align="center" width="80" />
-			    						      			       <aos:column header="处理状态" dataIndex="processing_state"   width="70" />
+
+			    						      			       <aos:column header="接单处理" dataIndex="processing_state"  rendererFn="fn_balance_render7" width="70" />
 			    						      			       <aos:column header="状态信息" dataIndex="state_info"   width="70" />
 			    						      			       <aos:column header="处理者" dataIndex="handler_"   width="70" />
 			    						      			       <aos:column header="处理者电话" dataIndex="handler_phone"   width="100" />
@@ -108,10 +125,27 @@
 	</aos:window>
 	
 	<script type="text/javascript">
+	//刷新
+	setInterval(_datagridpanel_query,60*60*1000);
+	
+	 var info = Ext.util.Cookies.get('juid'); 
+	/*  setInterval(get_num,3000);  */
+	 
+	 var num2=0;
+	var num3;
+	setInterval(is_load,60*1000);
+	
+	 function is_load() {
+		 var rr=get_num();
+		 num3=rr.length;
+		
+		if (num3>num2){
+			num2=num3;
+			_datagridpanel_query();
+		}
+	 }
 		function _datagridpanel_query() {
-			var params = {
-			                     			  
-			};
+			var params = AOS.getValue('_f_query');
 			_datagridpanel_store.getProxy().extraParams = params;
 			_datagridpanel_store.loadPage(1);
 		}
@@ -218,10 +252,48 @@
                 } 
             });
         }
+        
+        
+function fn_export_excel(){
+	 		
+	 		
+			var params = AOS.getValue('_f_query');
+			var params_url="";
+			for(var v in params){
+				
+				params_url+="&"+v+"="+params[v];
+				
+			}
+			
+			AOS.file('/cdz/http/do.jhtml?router=repair_logService.exportExcel&juid='+info+params_url);
+		
+			
+			 
+		}
 	</script>
 </aos:onready>
 
 <script type="text/javascript">
+function fn_balance_render7(value, metaData, record, rowIndex, colIndex,
+		store) {
+	
+	
+    
+    if ( value==0) {
+    	
+    	
+    	 return '<input type="button" value="未接单" class="cbtn_danger" onclick="_w_jiedan_u_show();"  />'; 
+ 	 
+		/*  metaData.style = 'background-color:#990099'; 
+		return value; */
+	} else {
+/* 		metaData.style = 'background-color:#0099CC';  */
+	
+		 return '<input type="button" value="已接单" class="cbtn" onclick=""  />'; 
+	}
+	
+  
+}
 
 
   function _w_jiedan_u_show(){
@@ -236,6 +308,41 @@
  
    } 
 } 
+ 
+  function get_num(){
+	 
+  
+	  var result;	
+	  var info = Ext.util.Cookies.get('juid'); 
+	  Ext.Ajax.request({
+	  	url: '/cdz/http/do.jhtml?router=repair_logService.listrepair3&juid='+info,
+	      async:false,		
+	      mathod:"POST",
+	     
+	      params:{version:5
+	    },
+
+	      success: function(response, opts) {
+	      	  
+
+	          var obj = Ext.decode(response.responseText); 
+	          var ss =obj.coor;
+	         /*  var ss2=ss[0]; 
+	          var lat1=ss2.lat;*/
+	         result=ss;
+	        return result;
+	      },
+	      failure: function(response, opts) {
+	          AOS.tip('失败');
+	          root.hide();
+	          
+	      }
+	     
+	  });
+
+	
+	  return result;
+	  }
   
  
 </script>

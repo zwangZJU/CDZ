@@ -1,7 +1,16 @@
 package service;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +21,14 @@ import aos.framework.core.service.CDZBaseController;
 import aos.framework.core.typewrap.Dto;
 import aos.framework.core.typewrap.Dtos;
 import aos.framework.core.utils.AOSJson;
+import aos.framework.core.utils.AOSUtils;
 import aos.framework.web.router.HttpModel;
 import aos.system.common.utils.SystemCons;
 import dao.Basic_userDao;
 import dao.Repair_logDao;
 import po.Basic_userPO;
 import po.Repair_logPO;
+import utils.ExcelUtils;
 
 @Service
 public class Repair_logService extends CDZBaseController {
@@ -59,6 +70,49 @@ public class Repair_logService extends CDZBaseController {
 		Dto inDto = httpModel.getInDto();
 		Repair_logPO repair_logPO = repair_logDao.selectByKey(inDto.getString("repair_id"));
 		httpModel.setOutMsg(AOSJson.toJson(repair_logPO));
+	}
+	
+	public void listrepair3(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		/*
+		 * List<Dto> list = sqlDao.list("Repair_log.listHandler", httpModel.getInDto());
+		 */
+		Dto odto = Dtos.newDto();
+
+		/* odto.put("hhhh", "44"); */
+
+		Dto pDto = Dtos.newDto();
+		int rows = repair_logDao.rows(pDto);
+		pDto.put("limit", rows);
+		pDto.put("start", 0);
+		List<Dto> deviceDtos = sqlDao.list("Repair_log.listRepair_logsPage4", pDto);
+		List<Dto> newListDtos = new ArrayList<Dto>();
+		int num = deviceDtos.size();
+
+		for (Dto dto : deviceDtos) {
+			Dto newDto = Dtos.newDto();
+
+			newDto.put("device_id", dto.getString("device_id"));
+			newDto.put("repair_id", dto.getString("repair_id"));
+			newDto.put("repair_time", dto.getString("repair_time"));
+			newDto.put("renovate_time", dto.getString("renovate_time"));
+			newDto.put("handler_", dto.getString("handler_"));
+			newDto.put("handler_phone", dto.getString("handler_phone"));
+			newDto.put("error_reason", dto.getString("error_reason"));
+			newDto.put("processing_state", dto.getString("processing_state"));
+
+			newDto.put("repair_content", dto.getString("repair_content"));
+
+			newDto.put("number", Integer.toString(num));
+
+			newListDtos.add(newDto);
+
+		}
+
+		odto.put("coor", newListDtos);
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+
 	}
 
 	/**
@@ -160,6 +214,68 @@ public class Repair_logService extends CDZBaseController {
 
 		}
 		httpModel.setOutMsg("删除成功。");
+	}
+	
+	public void exportExcel(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		int rows = repair_logDao.rows1(qDto);
+		qDto.put("limit", rows);// 默认查询出100个
+
+		qDto.put("start", 0);
+
+		HttpServletResponse response = httpModel.getResponse();
+		String filename = AOSUtils.encodeChineseDownloadFileName(httpModel.getRequest().getHeader("USER-AGENT"), "报修日志导出列表.xlsx");
+		response.setHeader("Content-Disposition", "attachment; filename=" + filename + ";");
+		String path = httpModel.getRequest().getServletContext().getRealPath("/");
+		File templetFile = new File(path + "/templet/repair.xlsx");
+		BufferedInputStream in;
+		ServletOutputStream os = null;
+		try {
+			in = new BufferedInputStream(new FileInputStream(templetFile));
+			ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
+			byte[] temp = new byte[1024];
+			int size = 0;
+			while ((size = in.read(temp)) != -1) {
+				out.write(temp, 0, size);
+			}
+			in.close();
+			os = response.getOutputStream();
+
+			List<String[]> datas = new ArrayList<String[]>();
+			/*
+			 * String[] s = new String[127]; for (int j = 0; j < 10; j++) { for (int i = 0;
+			 * i < s.length; i++) { s[i] = i + "数据"; } datas.add(s); }
+			 */
+			List<Dto> membersDtos = sqlDao.list("Repair_log.listRepair_logsPage", qDto);
+			for (Dto dto : membersDtos) {
+				String[] s = new String[12];
+				s[0] = dto.getString("repair_id");
+				s[1] = dto.getString("device_id");
+				s[2] = dto.getString("user_phone");
+				s[3] = dto.getString("repair_content");
+				s[4] = dto.getString("repair_time");
+				s[5] = dto.getString("renovate_time");
+				s[6] = dto.getString("processing_state");
+				s[7] = dto.getString("state_info");
+				s[8] = dto.getString("handler_");
+				s[9] = dto.getString("handler_phone");
+				s[10] = dto.getString("error_reason");
+				s[11] = dto.getString("is_completed");
+
+				datas.add(s);
+			}
+			ExcelUtils.exportExcel(1, templetFile, datas, os, 12);
+			os.write(out.toByteArray());
+			os.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				os.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

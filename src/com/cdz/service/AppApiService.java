@@ -752,7 +752,7 @@ public class AppApiService extends CDZBaseController {
 			newDto.put("user_address", devicePO.getUser_address());
 			newDto.put("repair_record", devicePO.getRepair_record());
 			newDto.put("repair_progress", devicePO.getRepair_progress());
-
+			newDto.put("camera_serial", "C26259491");
 			newDto.put("head", devicePO.getHead());
 			newDto.put("head_phone", devicePO.getHead_phone());
 			newDto.put("police_station", devicePO.getPolice_station());

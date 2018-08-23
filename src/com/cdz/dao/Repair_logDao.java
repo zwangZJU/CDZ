@@ -105,6 +105,7 @@ public interface Repair_logDao {
 	 * @return
 	 */
 	int rows(Dto pDto);
+	int rows1(Dto pDto);
 	
 	/**
 	 * 根据数学表达式进行数学运算

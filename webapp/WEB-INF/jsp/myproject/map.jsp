@@ -29,7 +29,7 @@
 <script type="text/javascript">
 
 var info = Ext.util.Cookies.get('juid'); 
-setInterval(map,10000); 
+setInterval(map,30000); 
 
 
 function map(){

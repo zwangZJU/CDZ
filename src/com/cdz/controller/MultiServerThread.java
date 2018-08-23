@@ -389,6 +389,7 @@ public class MultiServerThread extends Thread {
 	                	String str_ACCT =null;
 	                	String ICode = null;
 	                	String str_ascii = null;
+	                	//String str_ascii = "4gw765431";
 	                	
 	                	Helper.socketMap.put(this.ascii1, this.socket);//保存socket对象
 	                	System.out.println("this.ascii1："+this.ascii1);
@@ -402,8 +403,8 @@ public class MultiServerThread extends Thread {
 	                	
 	                	//DevicePO devicePO = deviceDao.selectByKey(this.ascii1);
 	                	//DevicePO devicePO = null;
-	                	DevicePO devicePO = deviceDao.selectByKey(Corp_ID);
-	                	
+	                	//DevicePO devicePO = deviceDao.selectByKey(Corp_ID);
+	                	DevicePO devicePO = deviceDao.selectByKey("4gw765431");
 	                	//DevicePO devicePO = deviceDao.selectByKey(ICode);
 	                	
 	                	if(null==chargingPilePO){//新增对象

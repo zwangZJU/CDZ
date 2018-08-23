@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class Alarm_logService extends CDZBaseController {
 	
 	@Autowired
 	DeviceDao deviceDao;
+	
+	int num_before = 0;
 
 	/**
 	 * charging_pile管理页面初始化
@@ -54,6 +57,7 @@ public class Alarm_logService extends CDZBaseController {
 	public void listAlarm_log(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
 		List<Dto> alarm_logDtos = sqlDao.list("Alarm_log.listAlarm_logsPage", qDto);
+		//Collections.reverse(alarm_logDtos);
 		httpModel.setOutMsg(AOSJson.toGridJson(alarm_logDtos, qDto.getPageTotal()));
 	}
 	
@@ -93,20 +97,24 @@ public class Alarm_logService extends CDZBaseController {
 		//newDto.put("handler_phone", alarm_logPO1.getHandler_phone());
 		newDto.put("data","<name>"+"1234567890"+"</name>");
 		
-		//httpModel.setOutMsg1("<response>"+"<br/>"+"<name>"+"1234567890"+"</name>"+"<br/>"+"</response>"+"<br/>");
-		//ByteArrayOutputStream os=new ByteArrayOutputStream();
-		PrintWriter pw=null;
-		try {
-			pw = httpModel.getResponse().getWriter();
-			pw.write("<response>"+"<br/>"+"<name>"+"1234567890"+"</name>"+"<br/>"+"</response>"+"<br/>");
-			pw.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			pw.close();
-		}
+		int num = alarm_logDao.row_num();
+		System.out.println(num);
 		
+		if(num > num_before)
+		{
+			PrintWriter pw=null;
+			try {
+				pw = httpModel.getResponse().getWriter();
+				pw.write("1");
+				pw.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				pw.close();
+			}
+			num_before = num;
+		}
 		//byte[] buff = pw.toByteArray(); 
 	   // for (int i = 0; i < buff.length; i++) 
 	       // pw.println(buff[i]); 
