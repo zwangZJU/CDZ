@@ -22,7 +22,7 @@
 				<aos:dockeditem xtype="tbfill" />
 			</aos:docked>
 		</aos:formpanel>
-		<aos:gridpanel id="_datagridpanel" url="repair_logService.listRepair_log" onrender="_datagridpanel_query" onitemdblclick="_w_update_show"  forceFit="false">
+		<aos:gridpanel id="_datagridpanel" url="repair_logService.listRepair_log" onrender="_datagridpanel_query" onitemdblclick="_w_update_show" region="center" forceFit="false">
 			<aos:docked>
 			    			 	<aos:dockeditem text="新增" tooltip="新增"  onclick="_w_add_show" icon="add.png"/>
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>

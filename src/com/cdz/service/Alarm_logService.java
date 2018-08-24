@@ -160,7 +160,7 @@ public class Alarm_logService extends CDZBaseController {
 		System.out.println("deviceDao.updateByKey(devicePO)");
 	}
 	
-	public void updateAlarm_log3(HttpModel httpModel) {
+	public void receive_alarmAlarm_log(HttpModel httpModel) {
 		/*Dto inDto = httpModel.getInDto();
 		Alarm_logPO alarm_logPO = new Alarm_logPO();
 		alarm_logPO.copyProperties(inDto);
@@ -173,16 +173,21 @@ public class Alarm_logService extends CDZBaseController {
 		String alarm_id = qDto.getString("id");
 		//pDto.put("alarm_id", "1808091745501987");
 		//pDto.put("device_id", device_id);
-		
+		Alarm_logPO alarm_logPO1;
 		//Dto pDto = Dtos.newDto("alarm_id",alarm_logPO.getAlarm_id());
 		//Alarm_logPO alarm_logPO1 =alarm_logDao.selectOne(pDto); 
-		Alarm_logPO alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id.substring(0,alarm_id.length()-1)); 
+		if(alarm_id.substring(alarm_id.length()-1,alarm_id.length()).equals(","))
+			alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id.substring(0,alarm_id.length()-1)); 
+		else
+			alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id); 
 		
 		Dto newDto = Dtos.newDto();
 		//newDto.put("handler_phone", alarm_logPO1.getHandler_phone());
 		newDto.put("alarm_time", alarm_logPO1.getAlarm_time());
 		newDto.put("user_phone", alarm_logPO1.getUser_phone());
 		newDto.put("device_id", alarm_logPO1.getDevice_id());
+		newDto.put("handler_", alarm_logPO1.getHandler_());
+		newDto.put("handler_phone", alarm_logPO1.getHandler_phone());
 		
 		//Dto pDto1 = Dtos.newDto("device_id",alarm_logPO.getDevice_id());
 		//DevicePO devicePO =deviceDao.selectByDeviceId(device_id.substring(0,device_id.length()-1));
@@ -200,6 +205,29 @@ public class Alarm_logService extends CDZBaseController {
 		/*Dto qDto = httpModel.getInDto();
 		List<Dto> list = sqlDao.list("Basic_user.listHandler1", httpModel.getInDto());
 		httpModel.setOutMsg(AOSJson.toGridJson(list));*/
+	}
+	
+	public void receiveAlarmSave(HttpModel httpModel) {
+		Alarm_logPO alarm_logPO = new Alarm_logPO();
+		Dto qDto = httpModel.getInDto();
+		Dto pDto = Dtos.newDto();
+		String alarm_id = qDto.getString("id");
+		
+		Alarm_logPO alarm_logPO1;
+		if(alarm_id.substring(alarm_id.length()-1,alarm_id.length()).equals(","))
+			alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id.substring(0,alarm_id.length()-1)); 
+		else
+			alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id); 
+		
+		DevicePO devicePO =deviceDao.selectByDeviceId(alarm_logPO1.getDevice_id());
+		devicePO.setIs_alarming("0");  
+		deviceDao.updateByKey(devicePO);
+		
+		Dto newDto = Dtos.newDto();
+		//newDto.put("handler_phone", alarm_logPO1.getHandler_phone());
+		newDto.put("is_alarming","0");
+		
+		httpModel.setOutMsg(AOSJson.toJson(newDto));
 	}
 
 	/**

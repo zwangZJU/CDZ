@@ -147,6 +147,25 @@ public class AppApiService extends CDZBaseController {
 	static String Alias = "18392888103";
 	
 	
+
+	/* ############################################weixiu######################### */
+	public void uploadRepairResult(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		
+
+			odto.put("msg", "上传结果成功");
+			odto.put("status", "1");
+
+		
+
+
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
+	
+	
 	/* ############################################保存头像######################### */
 	public void uploadUserAvatar(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
@@ -547,11 +566,11 @@ public class AppApiService extends CDZBaseController {
 		newDto.put("device_id", devicePO.getArrange_withdraw());
 		System.out.println(newDto);
 		
-		final boolean flag = sendCharging(device_id,cmd);
+		 String flag = sendCharging(device_id,cmd);
 		
 		
 		
-		if(flag == true){
+		if(flag == "1"){
 			
 			System.out.println("发送成功");
 			
@@ -581,17 +600,19 @@ public class AppApiService extends CDZBaseController {
 						}
 					}
 					
-					if(flag == false){
+					if(flag != "1"){
 						if(devicePO.getArrange_withdraw().equals("1"))
 						{
 							odto.put("status", "0");
-							odto.put("msg", "失败");
+							//odto.put("msg", "失败");
+							odto.put("msg", flag);
 						    odto.put("deploy_status","1" );
 						}
 						if(devicePO.getArrange_withdraw().equals("0"))
 						{
 							odto.put("status", "0");
-							odto.put("msg", "失败");
+							//odto.put("msg", "失败");
+							odto.put("msg", flag);
 						    odto.put("deploy_status","0" );
 						}
 						
@@ -600,8 +621,8 @@ public class AppApiService extends CDZBaseController {
 		
 	}
 	
-	private boolean sendCharging(String sg_id,String cmd_app){
-		boolean flag=false;
+	private String sendCharging(String sg_id,String cmd_app){
+		String flag="0";
 		//Integer.toHexString(); 0：金额，1：时间，2：度数，3：充满
 		 byte[] data_out;
          String msg_welcome = Helper.fillString('0', 32*2);
@@ -626,24 +647,24 @@ public class AppApiService extends CDZBaseController {
 				socket.getOutputStream().write(data_out);
 				System.out.println("APP发送布防撤防请求数据:"+cmd);
 				saveLogs3("APP发送布防撤防请求数据:"+cmd,sg_id,"SC④");
-				flag=true;
+				flag="1";
 			}else{
 				//this.failMsg(odto, "充电桩未连接");
 				System.out.println("APP发送布防撤防请求数据:模块未连接"+msg_welcome);
 				saveLogs3("APP发送布防撤防请求数据:模块未连接",sg_id,"SC④");
+				flag = "设备不在线，请检查";
 			}
 			
 			
 		} catch (IOException e) {
 			if("Socket is closed".equals(e.getMessage())){
 				saveLogs3("APP发送布防撤防请求数据:模块未连接"+msg_welcome,sg_id,"SC④");
-				//this.failMsg(odto, "APP发送充电请求数据异常:充电桩未连接");
+				//this.failMsg(odto, "APP发送充电请求数据异常:充电桩未连接")
+				
 			}else{
 				saveLogs3("APP发送布防撤防请求数据异常:"+msg_welcome,sg_id,"SC④");
 				//this.failMsg(odto, "APP发送充电请求数据异常");
 			}
-			
-			
 			e.printStackTrace();
 		}
 		return flag;

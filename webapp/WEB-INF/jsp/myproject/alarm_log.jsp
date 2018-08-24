@@ -92,12 +92,12 @@ var XMLHttpReq;
 				               			</aos:docked>
 			<aos:column type="rowno" />
 			<aos:selmodel type="checkbox" mode="multi" />
-		 
+		 										<aos:column header="操作"  align="center"  rendererFn="fn_button_render" width="80" />
 						      			       <aos:column header="报警序号" dataIndex="alarm_id"   width="255" />
 			    						      			       <aos:column header="设备id" dataIndex="device_id"   width="255" />
 			    						      			       <aos:column header="用户手机号" dataIndex="user_phone"   width="255" />
 			    						      			       <aos:column header="报警时间" dataIndex="alarm_time"   width="160" />
-			    						      			       <aos:column header="出警时间" dataIndex="response_time"   width="160" />
+			    						      			       <aos:column header="出警时间" dataIndex="response_time"  width="160" />
 			    						      			       <aos:column header="报警方式" dataIndex="type_"   width="255" />
 			    						      			       <aos:column header="处理者" dataIndex="handler_"   width="255" />
 			    						      			       <aos:column header="处理者电话" dataIndex="handler_phone"   width="255" />
@@ -107,7 +107,6 @@ var XMLHttpReq;
 			    						      			       <aos:column header="备用1" dataIndex="beiyong1_"   width="255" />
 			    						      			       <aos:column header="备用2" dataIndex="beiyong2_"   width="255" />
 			    						      			       <aos:column header="备用3" dataIndex="beiyong3_"   width="255" />
-			    						      			       <aos:column header="操作" rendererFn="fn_button_render" align="center" width="80" />
 			    			 		</aos:gridpanel>
 	</aos:viewport>
 	
@@ -235,10 +234,10 @@ var XMLHttpReq;
 		function _w_update_show_all()
 		{
 			var alarm_id = AOS.selection(_datagridpanel, 'alarm_id');
-			
+
 			//var info = Ext.util.Cookies.get('juid');
 			Ext.Ajax.request({
-			    url: '/cdz/http/do.jhtml?router=alarm_logService.updateAlarm_log3',
+			    url: '/cdz/http/do.jhtml?router=alarm_logService.receive_alarmAlarm_log',
 			    params: {
 			        id: alarm_id
 	    		},
@@ -253,11 +252,14 @@ var XMLHttpReq;
 			        Ext.getCmp("d").setValue(text.user_phone);
 			        Ext.getCmp("e").setValue(text.device_id);
 			        Ext.getCmp("f").setValue(text.alarm_time);
-			        
+			        Ext.getCmp("g").setValue(text.handler_);
+			        Ext.getCmp("h").setValue(text.handler_phone);
+			        //Ext.getCmp("i").setValue(text.alarm_time);
 			    	}
 			});
 			
 			    var productForm = Ext.create("Ext.form.Panel", {
+			    	id:"receiveAlarmSave",
 			        title: "信息表",
 			        width: 300,
 			        height: 400,
@@ -275,7 +277,10 @@ var XMLHttpReq;
 			        	 { fieldLabel: "用户地址", id:"c",xtype: "textfield", name: "user_address", value: "/" },
 			        	 { fieldLabel: "用户手机号", id:"d",xtype: "textfield", name: "user_phone", value: "/" },
 			        	 { fieldLabel: "设备编号", id:"e",xtype: "textfield", name: "device_id", value: "/" },
-			        	 { fieldLabel: "报警时间", id:"f",xtype: "textfield", name: "alarm_time", value: "/" }
+			        	 { fieldLabel: "报警时间", id:"f",xtype: "textfield", name: "alarm_time", value: "/" },
+			        	 { fieldLabel: "处理人", id:"g",xtype: "textfield", name: "handler_", value: "/" },
+			        	 { fieldLabel: "处理人手机号", id:"h",xtype: "textfield", name: "handler_phone", value: "/" }
+			        	 //{ fieldLabel: "接警人", value: "/" }
 			            //{ fieldLabel: "产品名称", id:"a",xtype: "textfield", name: "productName", value: "U盘" },
 			            //{ fieldLabel: "金额", xtype: "numberfield", name: "price", value: 100 },
 			            //{ fieldLabel: "生产日期", xtype: "datefield", format: "Y-m-d", name: "date", value: new Date() },
@@ -289,6 +294,7 @@ var XMLHttpReq;
 			    
 			
 				var root = new Ext.Window({
+					
 					title:"报警处理",
 					width:600,
 					height:400,
@@ -326,13 +332,34 @@ var XMLHttpReq;
 					modal:true,
 					
 					buttons: [
-				        { xtype: "button", text: "确定", handler: function () { this.up("window").close(); } },
+				        { xtype: "button", text: "确定", 
+				        	handler: function () { 
+				        		//receive_alarm_save();
+				        		Ext.Ajax.request({
+				    			    url: '/cdz/http/do.jhtml?router=alarm_logService.receiveAlarmSave',
+				    			    params: {
+				    			        id: alarm_id
+				    	    		},
+				    			    success: function(response){
+				    			    	alert("在接警");
+				    			        var text = Ext.decode(response.responseText);
+				    			        Ext.getCmp("x").setValue(text.is_alarming);
+				    			    	//if("x" == "0")
+				    			    	//	alert("接警成功");
+				    			    	//else
+				    			    	//	alert("接警失败");
+				    			    	}
+				    			});
+				        		this.up("window").close();
+				        	} },	
 				        { xtype: "button", text: "取消", handler: function () { this.up("window").close(); } }
 				    ]
 					
 				});
 				root.show();
 		}
+		
+		
 	    
 	   //修改   报警日志
 		function _f_update_save(){
@@ -483,11 +510,11 @@ function _f_role_u_save(){
         */
 
 
-        
         //按钮列转换
     	function fn_button_render(value, metaData, record) {
-    		 return '<input type="button" value="接警" class="cbtn_danger" onclick="_w_role_u_show();" />'; 
+    		 return '<input type="button" value="接警" class="cbtn_danger" onclick="_w_update_show_all_button();" />'; 
         	/*return '<input type="button" value="接警" class="cbtn_danger" onclick="_f_role_u_save();" />'; */
+        	//return '<input type="text" value="接警" class="cbtn_danger" onclick="_w_role_u_show();"
     	}
         
         var msg1 = 'AOS应用基础平台基于JavaEE技术体系，以“标准功能可复用、通用模块可配置、行业需求快速开发、异构系统无缝集成”为目标，为软件开发团队提供高效可控、随需应变、快速实现业务需求的全栈式技术解决方案。帮助企业落实IT策略、屏蔽技术壁垒，快速实现业务愿景。使其获得更低成本、更高质量、更快交付业务和运维支持的核心技术竞争力。';
@@ -517,6 +544,113 @@ function _f_role_u_save(){
         	 AOS.get('_w_role_u').show();
         	 AOS.get('_f_role_u').loadRecord(record);
          }
+	}
+	
+	function _w_update_show_all_button()
+	{
+		var record = AOS.selectone(AOS.get('_datagridpanel'));
+
+		//var info = Ext.util.Cookies.get('juid');
+		Ext.Ajax.request({
+		    url: '/cdz/http/do.jhtml?router=alarm_logService.receive_alarmAlarm_log',
+		    params: {
+		        id: record.data.alarm_id
+    		},
+		    success: function(response){
+		        var text = Ext.decode(response.responseText);
+		        // process server response here
+		        //var value1=text["user_address"];
+		   
+		        Ext.getCmp("a").setValue(text.user_id);
+		        Ext.getCmp("b").setValue(text.user_name);
+		        Ext.getCmp("c").setValue(text.user_address);
+		        Ext.getCmp("d").setValue(text.user_phone);
+		        Ext.getCmp("e").setValue(text.device_id);
+		        Ext.getCmp("f").setValue(text.alarm_time);
+		        Ext.getCmp("g").setValue(text.handler_);
+		        Ext.getCmp("h").setValue(text.handler_phone);
+		        //Ext.getCmp("i").setValue(text.alarm_time);
+		    	}
+		});
+		
+		    var productForm = Ext.create("Ext.form.Panel", {
+		        title: "信息表",
+		        width: 300,
+		        height: 400,
+		        frame: true,
+		         fieldDefaults: {
+		            labelSeparator: ":",
+		            labelWidth: 80,
+		            width: 250,
+		            margin:5
+		        }, 
+		        renderTo: Ext.getBody(),
+		         items: [
+		        	 { fieldLabel: "用户编号", id:"a",xtype: "textfield", name: "user_id", value: "/" },
+		        	 { fieldLabel: "用户名称", id:"b",xtype: "textfield", name: "user_name", value: "/" },
+		        	 { fieldLabel: "用户地址", id:"c",xtype: "textfield", name: "user_address", value: "/" },
+		        	 { fieldLabel: "用户手机号", id:"d",xtype: "textfield", name: "user_phone", value: "/" },
+		        	 { fieldLabel: "设备编号", id:"e",xtype: "textfield", name: "device_id", value: "/" },
+		        	 { fieldLabel: "报警时间", id:"f",xtype: "textfield", name: "alarm_time", value: "/" },
+		        	 { fieldLabel: "处理人", id:"g",xtype: "textfield", name: "handler_", value: "/" },
+		        	 { fieldLabel: "处理人手机号", id:"h",xtype: "textfield", name: "handler_phone", value: "/" }
+		        	 //{ fieldLabel: "接警人", value: "/" }
+		            //{ fieldLabel: "产品名称", id:"a",xtype: "textfield", name: "productName", value: "U盘" },
+		            //{ fieldLabel: "金额", xtype: "numberfield", name: "price", value: 100 },
+		            //{ fieldLabel: "生产日期", xtype: "datefield", format: "Y-m-d", name: "date", value: new Date() },
+		            //{ xtype: "hidden", name: "productId", value: "001" },
+		            //{ fieldLabel: "产品简介", name: "introduction", xtype: "textarea" }
+		        ] 
+		       /*  buttons: [
+		            { text: "加载简介", handler: loadIntroduction }
+		        ] */
+		    });
+		    
+		
+			var root = new Ext.Window({
+				title:"报警处理",
+				width:600,
+				height:400,
+				frame:false,
+				items:[productForm],	
+				/*
+				bbar:['->',
+				{text:"升级", frame:false,handler:function(){
+					AOS.notice("提示!","确定要将系统升级到该版本吗?",function(){				
+					var vn = combox.getRawValue();
+					Ext.Ajax.request({
+					    url: '/cdz/http/do.jhtml?router=upgradeHardwareController.upgradeAll&juid='+info,
+					    mathod:"POST",
+					    params:{version:vn,
+					    	aos_rows_: selection},
+					    success: function(response, opts) {
+					        var obj = Ext.decode(response.responseText);
+					        AOS.tip(obj.appmsg);
+					        root.hide();
+					    },
+					    failure: function(response, opts) {
+					        AOS.tip('升级失败');
+					        root.hide();
+					    }
+					});
+					
+					},function(){});
+				}},
+					{text:"取消", frame:false,handler:function(){AOS.tip("取消升级");root.hide();}}*/
+						
+
+				resizable:false,
+				closable:true,
+				draggable:false,
+				modal:true,
+				
+				buttons: [
+			        { xtype: "button", text: "确定", handler: function () { this.up("window").close(); } },
+			        { xtype: "button", text: "取消", handler: function () { this.up("window").close(); } }
+			    ]
+				
+			});
+			root.show();
 	}
 
 </script>
