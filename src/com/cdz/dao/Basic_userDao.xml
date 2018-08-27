@@ -6,6 +6,14 @@
 <!--  注意:此文件由AOS平台自动生成-禁止手工修改 2018-07-10 20:05:26 -->
 <mapper namespace="dao.Basic_userDao">
 	
+	
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByAccount" parameterType="java.lang.String" resultType="po.Basic_userPO">
+		SELECT
+		*
+		FROM basic_user WHERE account_ = #{account_}
+	</select>
+	
 	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
 	<insert id="insert"  parameterType="po.Basic_userPO">
 		INSERT INTO basic_user (

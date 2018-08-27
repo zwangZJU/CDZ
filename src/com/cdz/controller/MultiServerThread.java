@@ -617,6 +617,7 @@ public class MultiServerThread extends Thread {
 		            			alarm_logPO.setAlarm_time(new Date());
 		            			alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
 		            			alarm_logPO.setBeiyong1_(str_EEE);
+		            			alarm_logPO.setBeiyong2_("0");
 		            			alarm_logPO.setType_("0");
 		            			alarm_logDao.insert(alarm_logPO);
 		            			

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import aos.framework.core.annotation.Dao;
 import aos.framework.core.typewrap.Dto;
+import po.Alarm_logPO;
 import po.Basic_userPO;
 
 /**
@@ -22,6 +23,9 @@ import po.Basic_userPO;
 @Dao
 public interface Basic_userDao {
 
+	Basic_userPO selectByAccount(String account);
+	
+	
 	/**
 	 * 插入一个数据持久化对象(插入字段为传入PO实体的非空属性)
 	 * <p> 防止DB字段缺省值需要程序中再次赋值

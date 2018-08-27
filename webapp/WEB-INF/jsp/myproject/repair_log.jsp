@@ -13,7 +13,10 @@
 	      	 <aos:textfield   name="device_id" fieldLabel="设备id" columnWidth="0.2"    maxLength="255"    	         />
 	      	 <aos:textfield name="user_phone" fieldLabel="用户手机号" columnWidth="0.2" maxLength="255"    	         />
 	      	    <aos:textfield name="handler_" fieldLabel="处理者" columnWidth="0.2" maxLength="255"    	         />
+	      	   	
 	      	   	<aos:textfield name="handler_phone" fieldLabel="处理者电话" columnWidth="0.2" maxLength="255"    	         />
+			 <aos:datefield id="date_start" name="date_start" fieldLabel="报修时间"  columnWidth="0.25"/>
+			<aos:datefield id="date_end" name="date_end" fieldLabel="至"  columnWidth="0.25"/>
 			<aos:docked dock="bottom" ui="footer" margin="0 0 8 0">
 				<aos:dockeditem xtype="tbfill" />
 				<aos:dockeditem xtype="button" text="查询" onclick="_datagridpanel_query" icon="query.png" />

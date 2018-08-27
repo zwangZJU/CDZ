@@ -86,27 +86,28 @@ var XMLHttpReq;
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>
 												<aos:dockeditem text="删除" tooltip="删除" onclick="_delete" icon="del.png" />
 												<aos:dockeditem text="导出" tooltip="导出" onclick="fnnoti1()" icon="icon70.png" /> 
+												<aos:dockeditem text="多个接警" tooltip="多个接警" onclick="receive_alarm_many()" icon="icon70.png" />
 												<%-- <aos:dockeditem text="导出" tooltip="导出" onclick="_exportexcel" icon="icon70.png" /> --%>
 												<%-- <aos:dockeditem text="操作" tooltip="操作" onclick="_f_role_u_save" icon="icon70.png" /> --%>
 								<aos:dockeditem xtype="tbseparator" />
 				               			</aos:docked>
 			<aos:column type="rowno" />
 			<aos:selmodel type="checkbox" mode="multi" />
-		 										<aos:column header="操作"  align="center"  rendererFn="fn_button_render" width="80" />
-						      			       <aos:column header="报警序号" dataIndex="alarm_id"   width="255" />
-			    						      			       <aos:column header="设备id" dataIndex="device_id"   width="255" />
-			    						      			       <aos:column header="用户手机号" dataIndex="user_phone"   width="255" />
-			    						      			       <aos:column header="报警时间" dataIndex="alarm_time"   width="160" />
-			    						      			       <aos:column header="出警时间" dataIndex="response_time"  width="160" />
-			    						      			       <aos:column header="报警方式" dataIndex="type_"   width="255" />
-			    						      			       <aos:column header="处理者" dataIndex="handler_"   width="255" />
-			    						      			       <aos:column header="处理者电话" dataIndex="handler_phone"   width="255" />
-			    						      			       <aos:column header="报警原因" dataIndex="reason_"   width="255" />
-			    						      			       <aos:column header="报警解除" dataIndex="alarm_release"   width="255" />
-			    						      			       <aos:column header="取消报警" dataIndex="is_cancel"   width="255" />
-			    						      			       <aos:column header="备用1" dataIndex="beiyong1_"   width="255" />
-			    						      			       <aos:column header="备用2" dataIndex="beiyong2_"   width="255" />
-			    						      			       <aos:column header="备用3" dataIndex="beiyong3_"   width="255" />
+		 										<aos:column header="操作"  align="center" dataIndex="beiyong2_" rendererFn="fn_balance_render7" width="80" />
+						      			       <aos:column header="报警序号" dataIndex="alarm_id"   width="100" />
+			    						      			       <aos:column header="设备id" dataIndex="device_id"   width="100" />
+			    						      			       <aos:column header="用户手机号" dataIndex="user_phone"   width="100" />
+			    						      			       <aos:column header="报警时间" dataIndex="alarm_time"   width="100" />
+			    						      			       <aos:column header="出警时间" dataIndex="response_time"  width="100" />
+			    						      			       <aos:column header="报警方式" dataIndex="type_"   width="100" />
+			    						      			       <aos:column header="处理者" dataIndex="handler_"   width="100" />
+			    						      			       <aos:column header="处理者电话" dataIndex="handler_phone"   width="100" />
+			    						      			       <aos:column header="报警原因" dataIndex="reason_"   width="100" />
+			    						      			       <aos:column header="报警解除" dataIndex="alarm_release"   width="100" />
+			    						      			       <aos:column header="取消报警" dataIndex="is_cancel"   width="100" />
+			    						      			       <aos:column header="备用1" dataIndex="beiyong1_"   width="100" />
+			    						      			       <%-- <aos:column header="备用2" dataIndex="beiyong2_"   width="255" />  --%>
+			    						      			       <%-- <aos:column header="备用3" dataIndex="beiyong3_"   width="100" /> --%>
 			    			 		</aos:gridpanel>
 	</aos:viewport>
 	
@@ -254,6 +255,8 @@ var XMLHttpReq;
 			        Ext.getCmp("f").setValue(text.alarm_time);
 			        Ext.getCmp("g").setValue(text.handler_);
 			        Ext.getCmp("h").setValue(text.handler_phone);
+			        
+			        
 			        //Ext.getCmp("i").setValue(text.alarm_time);
 			    	}
 			});
@@ -272,14 +275,14 @@ var XMLHttpReq;
 			        }, 
 			        renderTo: Ext.getBody(),
 			         items: [
-			        	 { fieldLabel: "用户编号", id:"a",xtype: "textfield", name: "user_id", value: "/" },
-			        	 { fieldLabel: "用户名称", id:"b",xtype: "textfield", name: "user_name", value: "/" },
-			        	 { fieldLabel: "用户地址", id:"c",xtype: "textfield", name: "user_address", value: "/" },
-			        	 { fieldLabel: "用户手机号", id:"d",xtype: "textfield", name: "user_phone", value: "/" },
-			        	 { fieldLabel: "设备编号", id:"e",xtype: "textfield", name: "device_id", value: "/" },
-			        	 { fieldLabel: "报警时间", id:"f",xtype: "textfield", name: "alarm_time", value: "/" },
-			        	 { fieldLabel: "处理人", id:"g",xtype: "textfield", name: "handler_", value: "/" },
-			        	 { fieldLabel: "处理人手机号", id:"h",xtype: "textfield", name: "handler_phone", value: "/" }
+			        	 { fieldLabel: "用户编号", id:"a",xtype: "textfield", name: "user_id"  },
+			        	 { fieldLabel: "用户名称", id:"b",xtype: "textfield", name: "user_name"},
+			        	 { fieldLabel: "用户地址", id:"c",xtype: "textfield", name: "user_address"  },
+			        	 { fieldLabel: "用户手机号", id:"d",xtype: "textfield", name: "user_phone" },
+			        	 { fieldLabel: "设备编号", id:"e",xtype: "textfield", name: "device_id" },
+			        	 { fieldLabel: "报警时间", id:"f",xtype: "textfield", name: "alarm_time" },
+			        	 { fieldLabel: "处理人", id:"g",xtype: "textfield", name: "handler_" },
+			        	 { fieldLabel: "处理人手机号", id:"h",xtype: "textfield", name: "handler_phone" }
 			        	 //{ fieldLabel: "接警人", value: "/" }
 			            //{ fieldLabel: "产品名称", id:"a",xtype: "textfield", name: "productName", value: "U盘" },
 			            //{ fieldLabel: "金额", xtype: "numberfield", name: "price", value: 100 },
@@ -341,13 +344,22 @@ var XMLHttpReq;
 				    			        id: alarm_id
 				    	    		},
 				    			    success: function(response){
-				    			    	alert("在接警");
-				    			        var text = Ext.decode(response.responseText);
-				    			        Ext.getCmp("x").setValue(text.is_alarming);
+				    			    	//alert("在接警");
+				    			        //var text = Ext.decode(response.responseText);
+				    			        //Ext.getCmp("x").setValue(text.is_alarming);
 				    			    	//if("x" == "0")
 				    			    	//	alert("接警成功");
 				    			    	//else
 				    			    	//	alert("接警失败");
+				    			    	
+				    			    	if(response.appcode === -1){
+			 								AOS.err(response.appmsg);
+			 								return ;
+			 							}
+				    			    	window.location.reload();
+			 							AOS.tip("接警成功");
+			 							//_datagridpanel_store.reload();
+			 							
 				    			    	}
 				    			});
 				        		this.up("window").close();
@@ -427,90 +439,41 @@ var XMLHttpReq;
     	   //AOS.combox(AOS.selectone(AOS.get('_datagridpanel')));
         }
       
-     // 给选中的充电桩升级系统
-       // 给选中的充电桩升级系统
-       /*
-function _f_role_u_save(){
-	var info = Ext.util.Cookies.get('juid');
-	var versionStore = Ext.create("Ext.data.Store", {
-		fields : ["Version", "Value"],
-		autoLoad: true,
-		proxy: {
-			type: "ajax",
-			actionMethods: { read: "POST" },
-			url: '/cdz/http/do.jhtml?router=Alarm_handleService.selectAllVersionNum&juid='+info,
-			reader: {
-				type: "json",
-				root: "root"
-			},
-			writer:{
-            	type:'json'
-            }
-		}
-	});
-	
-	var combox = new Ext.form.ComboBox({
-				xtype : "combobox",
-				margin : "18 0 0 0",
-				name : "version_num",
-				fieldLabel : "版本",
-				columnWidth : 1,
-				labelAlign : 'right',
-				labelWidth : 60,
-				id : "version_num",
-				store : versionStore,
-				editable : false,
-				displayField : "Value",
-				valueField : "Value",
-				emptyText : "--请选择版本--",
-				queryMode : "local",
-				style : 'padding-top:20px;margin-left:30px;'
-			});
-	
-		 
-		var root = new Ext.Window({
-			title:"选择升级版本",
-			width:270,
-			height:120,
-			frame:false,
-			items:[combox],			
-			bbar:['->',
-			{text:"升级", frame:false,handler:function(){
-				AOS.notice("提示!","确定要将系统升级到该版本吗?",function(){				
-				var vn = combox.getRawValue();
-				Ext.Ajax.request({
-				    url: '/cdz/http/do.jhtml?router=Alarm_handleService.upgradeOne&juid='+info,
-				    mathod:"POST",
-				    params:{//version:vn,    
-				    		//cp_id: AOS.selectone(AOS.get('_datagridpanel').data.cp_id,
-				    		//cp_status: AOS.selectone(AOS.get('_datagridpanel').data.cp_status},
-				    success: function(response, opts) {
-				        var obj = Ext.decode(response.responseText);
-				        AOS.tip(obj.appmsg);
-				        root.hide();
-				    },
-				    failure: function(response, opts) {
-				        AOS.tip('升级失败');
-				        root.hide();
-				    }
+      //多个同时接警
+      function receive_alarm_many()
+      {
+    	  var selection = AOS.selection(_datagridpanel, 'alarm_id');
+			if(AOS.empty(selection)){
+				AOS.tip('多个接警请先选中数据。');
+				return;
+			}
+			var rows = AOS.rows(_datagridpanel);
+			var msg =  AOS.merge('确认要接警选中的{0}项目吗？', rows);
+			AOS.confirm(msg, function(btn){
+				if(btn === 'cancel'){
+					AOS.tip('多个接警操作被取消。');
+					return;
+				}
+				AOS.ajax({
+					url : 'alarm_logService.receiveAlarmMany',
+					params:{
+						aos_rows_: selection
+					},
+					ok : function(data) {
+						if(data.appcode === -1){
+							AOS.err(data.appmsg);
+							return ;
+						}
+						window.location.reload();
+						AOS.tip("多个接警成功");
+						
+					}
 				});
-				
-				},function(){});
-			}},
-				{text:"取消", frame:false,handler:function(){AOS.tip("取消升级");root.hide();}}
-			],
-			resizable:false,
-			closable:true,
-			draggable:false,
-			modal:true
-			
-		});
-		root.show();
-}
-        */
+			});
+      }
 
 
-        //按钮列转换
+        //按钮列转换,这个是不变颜色的接警 按钮
     	function fn_button_render(value, metaData, record) {
     		 return '<input type="button" value="接警" class="cbtn_danger" onclick="_w_update_show_all_button();" />'; 
         	/*return '<input type="button" value="接警" class="cbtn_danger" onclick="_f_role_u_save();" />'; */
@@ -613,31 +576,6 @@ function _f_role_u_save(){
 				height:400,
 				frame:false,
 				items:[productForm],	
-				/*
-				bbar:['->',
-				{text:"升级", frame:false,handler:function(){
-					AOS.notice("提示!","确定要将系统升级到该版本吗?",function(){				
-					var vn = combox.getRawValue();
-					Ext.Ajax.request({
-					    url: '/cdz/http/do.jhtml?router=upgradeHardwareController.upgradeAll&juid='+info,
-					    mathod:"POST",
-					    params:{version:vn,
-					    	aos_rows_: selection},
-					    success: function(response, opts) {
-					        var obj = Ext.decode(response.responseText);
-					        AOS.tip(obj.appmsg);
-					        root.hide();
-					    },
-					    failure: function(response, opts) {
-					        AOS.tip('升级失败');
-					        root.hide();
-					    }
-					});
-					
-					},function(){});
-				}},
-					{text:"取消", frame:false,handler:function(){AOS.tip("取消升级");root.hide();}}*/
-						
 
 				resizable:false,
 				closable:true,
@@ -645,7 +583,38 @@ function _f_role_u_save(){
 				modal:true,
 				
 				buttons: [
-			        { xtype: "button", text: "确定", handler: function () { this.up("window").close(); } },
+					{ xtype: "button", text: "确定", 
+			        	handler: function () { 
+			        		//receive_alarm_save();
+			        		
+			        		Ext.Ajax.request({
+			    			    url: '/cdz/http/do.jhtml?router=alarm_logService.receiveAlarmSave',
+			    			    params: {
+			    			        id: record.data.alarm_id
+			    	    		},
+			    			    success: function(response){
+			    			    	//alert("在接警");
+			    			        //var text = Ext.decode(response.responseText);
+			    			        //Ext.getCmp("x").setValue(text.is_alarming);
+			    			    	//if("x" == "0")
+			    			    	//	alert("接警成功");
+			    			    	//else
+			    			    	//	alert("接警失败");
+			    			    	
+			    			    	//if(response.appcode === -1){
+		 							//	AOS.err(response.appmsg);
+		 							//	return ;
+		 							//}
+			    			    	//_datagridpanel_store.reload();
+			    			    	window.location.reload();
+		 							AOS.tip("接警成功");
+		 							//_w_add_data.hide();
+		 	    					
+		 							
+			    			    	}
+			    			});
+			        		this.up("window").close();
+			        	} },	
 			        { xtype: "button", text: "取消", handler: function () { this.up("window").close(); } }
 			    ]
 				
@@ -653,5 +622,26 @@ function _f_role_u_save(){
 			root.show();
 	}
 
+	function fn_balance_render7(value, metaData, record, rowIndex, colIndex,
+			store) {
+		
+		
+	    
+	    if ( value==0) {
+	    	
+	    	
+	    	 return '<input type="button" value="未接警" class="cbtn_danger" onclick="_w_update_show_all_button();"  />'; 
+	 	 
+			/*  metaData.style = 'background-color:#990099'; 
+			return value; */
+		} else {
+	/* 		metaData.style = 'background-color:#0099CC';  */
+		
+			 return '<input type="button" value="已接警" class="cbtn" onclick=""  />'; 
+		}
+		
+	  
+	}
+	
 </script>
 </aos:html>

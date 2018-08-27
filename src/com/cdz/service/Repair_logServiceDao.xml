@@ -26,6 +26,12 @@
 		<if test="handler_phone != null and handler_phone != ''">
 				      AND handler_phone like '%${handler_phone}%'  <!-- 地址 -->
 				</if>
+		 <if test="date_start != null and date_start != ''">
+				   AND repair_log.repair_time <![CDATA[ >= ]]> #{date_start}  
+				</if>
+		<if test="date_end != null and date_end != ''">
+				   AND repair_log.repair_time <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>		
 				
  		</where>
 	</select>
