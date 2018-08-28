@@ -3,6 +3,10 @@
 <aos:html title="alarm_log" base="http" lib="ext">
 
 <script type="text/javascript">
+/* var audio = document.getElementById("bgMusic"); */
+
+//播放(继续播放)
+ 
 
 var XMLHttpReq;
   //创建XMLHttpRequest对象       
@@ -38,10 +42,14 @@ var XMLHttpReq;
         	    //alert(XMLHttpReq.responseText);
         	    var a = XMLHttpReq.responseText;
 			    if(a == "1"){
+			    	/* audio.play(); */
 			    	DisplayHot();
+			    	/*  */
 			    	setTimeout("window.location.reload()",2000);
+			    	
 			    }
 			    setTimeout("sendRequest()", 4000);
+			   
             } else { //页面不正常
                 window.alert("您所请求的页面有异常。");
             }
@@ -60,8 +68,8 @@ var XMLHttpReq;
 			   
 	//Ext.getCmp("a").setValue(text.data);
 	
-    
-    
+    var audio = document.getElementById("bgMusic");
+    audio.play();
     var msg1 = 'AOS应用基础平台基于JavaEE技术体系，以“标准功能可复用、通用模块可配置、行业需求快速开发、异构系统无缝集成”为目标，为软件开发团队提供高效可控、随需应变、快速实现业务需求的全栈式技术解决方案。帮助企业落实IT策略、屏蔽技术壁垒，快速实现业务愿景。使其获得更低成本、更高质量、更快交付业务和运维支持的核心技术竞争力。';
     	Ext.create(
 				'widget.uxNotification',
@@ -79,6 +87,11 @@ var XMLHttpReq;
     
 </script>   
 <body onload = sendRequest()>
+ <audio id="bgMusic">
+    <source  src="http://118.126.95.215:9090/cdz/static/music/alarm.wav" >
+    <source  src="hangge.ogg" type="audio/ogg">
+</audio> 
+
 </body>
 <aos:onready>
 	<aos:viewport layout="border">
@@ -195,6 +208,8 @@ var XMLHttpReq;
 	</aos:window>
 	
 	<script type="text/javascript">
+	 
+	
 	
 	 var info = Ext.util.Cookies.get('juid'); 
 	 
