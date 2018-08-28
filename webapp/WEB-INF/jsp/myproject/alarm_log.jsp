@@ -22,8 +22,10 @@ var XMLHttpReq;
  }
  //发送请求函数
  function sendRequest() {
+  var info = Ext.util.Cookies.get('juid');
   createXMLHttpRequest();
-        var url = "do.jhtml?router=alarm_logService.updateWebpage&juid=a28937399c4243838e22941929e4e464";
+  //var url = "do.jhtml?router=alarm_logService.updateWebpage&juid=a28937399c4243838e22941929e4e464";
+  var url = "do.jhtml?router=alarm_logService.updateWebpage&juid="+info;
   XMLHttpReq.open("GET", url, true);
   XMLHttpReq.onreadystatechange = processResponse;//指定响应函数
   XMLHttpReq.send(null);  // 发送请求
@@ -79,8 +81,29 @@ var XMLHttpReq;
 <body onload = sendRequest()>
 </body>
 <aos:onready>
-	<aos:viewport layout="fit">
-		<aos:gridpanel id="_datagridpanel" url="alarm_logService.listAlarm_log" onrender="_datagridpanel_query" onitemdblclick="_w_update_show_all"  forceFit="false">
+	<aos:viewport layout="border">
+	<aos:formpanel id="_f_query" layout="column" labelWidth="70" header="false" region="north" >
+			<aos:docked forceBoder="0 0 1 0">
+				<aos:dockeditem xtype="tbtext" text="查询条件" />
+			</aos:docked>
+			 <aos:textfield   name="alarm_id" fieldLabel="报警序号" columnWidth="0.2"     maxLength="255"    	         />
+	      	 <aos:textfield   name="device_id" fieldLabel="设备id" columnWidth="0.2"    maxLength="255"    	         />
+	      	 <aos:textfield name="user_phone" fieldLabel="用户手机号" columnWidth="0.2" maxLength="255"    	         />
+	      	    <aos:textfield name="handler_" fieldLabel="处理者" columnWidth="0.2" maxLength="255"    	         />
+	      	   	
+	      	   	<aos:textfield name="handler_phone" fieldLabel="处理者电话" columnWidth="0.2" maxLength="255"    	         />
+			 <aos:datefield id="date_start" name="date_start" fieldLabel="报警时间"  columnWidth="0.25"/>
+			<aos:datefield id="date_end" name="date_end" fieldLabel="至"  columnWidth="0.25"/>
+			<aos:docked dock="bottom" ui="footer" margin="0 0 8 0">
+				<aos:dockeditem xtype="tbfill" />
+				<aos:dockeditem xtype="button" text="查询" onclick="_datagridpanel_query" icon="query.png" />
+				<aos:dockeditem xtype="button" text="重置" onclick="AOS.reset(_f_query);" icon="refresh.png" />
+				<aos:dockeditem xtype="button" text="导出" onclick="fn_export_excel" icon="icon70.png" />
+				<aos:dockeditem xtype="tbfill" />
+			</aos:docked>
+		</aos:formpanel>
+		
+		<aos:gridpanel id="_datagridpanel" url="alarm_logService.listAlarm_log" onrender="_datagridpanel_query" onitemdblclick="_w_update_show_all"  region="center" forceFit="false">
 			<aos:docked>
 			    			 	<aos:dockeditem text="新增" tooltip="新增"  onclick="_w_add_show" icon="add.png"/>
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>
@@ -172,10 +195,11 @@ var XMLHttpReq;
 	</aos:window>
 	
 	<script type="text/javascript">
+	
+	 var info = Ext.util.Cookies.get('juid'); 
+	 
 		function _datagridpanel_query() {
-			var params = {
-			                    			  
-			};
+			var params = AOS.getValue('_f_query');
 			_datagridpanel_store.getProxy().extraParams = params;
 			_datagridpanel_store.loadPage(1);
 		}
@@ -234,6 +258,9 @@ var XMLHttpReq;
 		
 		function _w_update_show_all()
 		{
+			var value  = AOS.selection(_datagridpanel, 'beiyong2_');
+			if(value == "0,")
+			{
 			var alarm_id = AOS.selection(_datagridpanel, 'alarm_id');
 
 			//var info = Ext.util.Cookies.get('juid');
@@ -246,12 +273,15 @@ var XMLHttpReq;
 			        var text = Ext.decode(response.responseText);
 			        // process server response here
 			        //var value1=text["user_address"];
-			   
-			        Ext.getCmp("a").setValue(text.user_id);
+			   		if(text.device_id == null)
+		        		Ext.getCmp("e").setValue("无设备");
+		        	else
+		        		Ext.getCmp("e").setValue(text.device_id);
+			        //Ext.getCmp("a").setValue(text.user_id);
 			        Ext.getCmp("b").setValue(text.user_name);
 			        Ext.getCmp("c").setValue(text.user_address);
 			        Ext.getCmp("d").setValue(text.user_phone);
-			        Ext.getCmp("e").setValue(text.device_id);
+			      
 			        Ext.getCmp("f").setValue(text.alarm_time);
 			        Ext.getCmp("g").setValue(text.handler_);
 			        Ext.getCmp("h").setValue(text.handler_phone);
@@ -275,7 +305,7 @@ var XMLHttpReq;
 			        }, 
 			        renderTo: Ext.getBody(),
 			         items: [
-			        	 { fieldLabel: "用户编号", id:"a",xtype: "textfield", name: "user_id"  },
+			        	 //{ fieldLabel: "用户编号", id:"a",xtype: "textfield", name: "user_id"  },
 			        	 { fieldLabel: "用户名称", id:"b",xtype: "textfield", name: "user_name"},
 			        	 { fieldLabel: "用户地址", id:"c",xtype: "textfield", name: "user_address"  },
 			        	 { fieldLabel: "用户手机号", id:"d",xtype: "textfield", name: "user_phone" },
@@ -369,6 +399,7 @@ var XMLHttpReq;
 					
 				});
 				root.show();
+			}
 		}
 		
 		
@@ -497,6 +528,15 @@ var XMLHttpReq;
     						}).show();
     	}
         
+		function fn_export_excel(){
+			var params = AOS.getValue('_f_query');
+			var params_url="";
+			for(var v in params){
+				params_url+="&"+v+"="+params[v];
+			}
+			AOS.file('/cdz/http/do.jhtml?router=alarm_logService.exportExcel&juid='+info+params_url);	 
+		}
+        
 	</script>
 </aos:onready>
 
@@ -524,15 +564,21 @@ var XMLHttpReq;
 		        // process server response here
 		        //var value1=text["user_address"];
 		   
-		        Ext.getCmp("a").setValue(text.user_id);
+		        if(text.device_id == null)
+		        	Ext.getCmp("e").setValue("无设备");
+		        else
+		        	Ext.getCmp("e").setValue(text.device_id);
+		        //Ext.getCmp("a").setValue(text.user_id);
 		        Ext.getCmp("b").setValue(text.user_name);
 		        Ext.getCmp("c").setValue(text.user_address);
 		        Ext.getCmp("d").setValue(text.user_phone);
-		        Ext.getCmp("e").setValue(text.device_id);
+		        
 		        Ext.getCmp("f").setValue(text.alarm_time);
 		        Ext.getCmp("g").setValue(text.handler_);
 		        Ext.getCmp("h").setValue(text.handler_phone);
 		        //Ext.getCmp("i").setValue(text.alarm_time);
+		        
+	
 		    	}
 		});
 		
@@ -549,7 +595,7 @@ var XMLHttpReq;
 		        }, 
 		        renderTo: Ext.getBody(),
 		         items: [
-		        	 { fieldLabel: "用户编号", id:"a",xtype: "textfield", name: "user_id", value: "/" },
+		        	 //{ fieldLabel: "用户编号", id:"a",xtype: "textfield", name: "user_id", value: "/" },
 		        	 { fieldLabel: "用户名称", id:"b",xtype: "textfield", name: "user_name", value: "/" },
 		        	 { fieldLabel: "用户地址", id:"c",xtype: "textfield", name: "user_address", value: "/" },
 		        	 { fieldLabel: "用户手机号", id:"d",xtype: "textfield", name: "user_phone", value: "/" },
@@ -636,7 +682,7 @@ var XMLHttpReq;
 			return value; */
 		} else {
 	/* 		metaData.style = 'background-color:#0099CC';  */
-		
+			
 			 return '<input type="button" value="已接警" class="cbtn" onclick=""  />'; 
 		}
 		

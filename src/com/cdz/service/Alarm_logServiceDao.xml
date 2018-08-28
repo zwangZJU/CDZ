@@ -11,9 +11,27 @@
 		<include refid="dao.Alarm_logDao.column" />
 		FROM alarm_log
 		<where>
-		<if test="user_phone != null and user_phone != ''">
-				      AND user_phone like '%${user_phone}%'  <!-- 地址 --><!-- like和=，，，有区别，但对于手机号而言位数一样，所以可以使用 -->
+		<if test="alarm_id != null and alarm_id != ''">
+				      AND alarm_id like '%${alarm_id}%'  <!-- 地址 -->
+		</if>
+		<if test="device_id != null and device_id != ''">
+				      AND device_id like '%${device_id}%'  <!-- 地址 -->
 				</if>
+		<if test="user_phone != null and user_phone != ''">
+				      AND user_phone like '%${user_phone}%'  <!-- 地址 -->
+				</if>
+		<if test="handler_ != null and handler_ != ''">
+				      AND handler_ like '%${handler_}%'  <!-- 地址 -->
+				</if>
+		<if test="handler_phone != null and handler_phone != ''">
+				      AND handler_phone like '%${handler_phone}%'  <!-- 地址 -->
+				</if>
+		 <if test="date_start != null and date_start != ''">
+				   AND alarm_log.alarm_time <![CDATA[ >= ]]> #{date_start}  
+				</if>
+		<if test="date_end != null and date_end != ''">
+				   AND alarm_log.alarm_time <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
+				</if>	
  		</where>
  		order by beiyong2_ ASC, alarm_id DESC
 	</select>

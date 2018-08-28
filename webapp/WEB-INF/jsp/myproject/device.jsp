@@ -6,8 +6,26 @@
 <aos:body>
 </aos:body>
 <aos:onready>
-	<aos:viewport layout="fit">
-		<aos:gridpanel id="_datagridpanel" url="deviceService.listDevice" onrender="_datagridpanel_query" onitemdblclick="_w_update_show"  forceFit="false">
+	<aos:viewport layout="border">
+	    <aos:formpanel id="_f_query" layout="column"   labelWidth="70" header="false" region="north" >
+			<aos:docked forceBoder="0 0 1 0">
+				<aos:dockeditem xtype="tbtext" text="查询条件" />
+			</aos:docked>
+			     <aos:textfield name="device_id" fieldLabel="设备编号" columnWidth="0.2" maxLength="255"    	         />
+	      	     <aos:textfield name="user_id"  fieldLabel="用户编号" columnWidth="0.2" maxLength="255"    	         />
+	      	<aos:textfield name="phone"  fieldLabel="电话" columnWidth="0.2" maxLength="255" />
+	      	
+			    <aos:datefield id="date_start" name="date_start" fieldLabel="安装日期"  columnWidth="0.2"/>
+			<aos:datefield id="date_end" name="date_end" fieldLabel="至"  columnWidth="0.2"/>
+			<aos:docked dock="bottom" ui="footer" margin="0 0 8 0">
+				<aos:dockeditem xtype="tbfill" />
+				<aos:dockeditem xtype="button" text="查询" onclick="_datagridpanel_query" icon="query.png" />
+				<aos:dockeditem xtype="button" text="重置" onclick="AOS.reset(_f_query);" icon="refresh.png" />
+				<aos:dockeditem xtype="button" text="导出" onclick="fn_export_excel" icon="icon70.png" />
+				<aos:dockeditem xtype="tbfill" />
+			</aos:docked>
+		</aos:formpanel>
+		<aos:gridpanel id="_datagridpanel" url="deviceService.listDevice" onrender="_datagridpanel_query" onitemdblclick="_w_update_show" region="center" forceFit="false">
 			<aos:docked>
 			    			 	<aos:dockeditem text="新增" tooltip="新增"  onclick="_w_add_show" icon="add.png"/>
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>
@@ -325,10 +343,10 @@
 	</aos:window>
 	
 	<script type="text/javascript">
+	 var info = Ext.util.Cookies.get('juid'); 
+	 setInterval(_datagridpanel_query,30000); 
 		function _datagridpanel_query() {
-			var params = {
-			                                                                           			  
-			};
+			var params = AOS.getValue('_f_query');
 			_datagridpanel_store.getProxy().extraParams = params;
 			_datagridpanel_store.loadPage(1);
 		}
@@ -416,9 +434,22 @@
 	 					});
 	 				});
 	 			}
-        function _exportexcel(){
-        	AOS.file('exportexcel.jhtml');
-        }
+function fn_export_excel(){
+	 		
+	 		
+			var params = AOS.getValue('_f_query');
+			var params_url="";
+			for(var v in params){
+				
+				params_url+="&"+v+"="+params[v];
+				
+			}
+			
+			AOS.file('/cdz/http/do.jhtml?router=deviceService.exportExcel&juid='+info+params_url);
+		
+			
+			 
+		}
 	</script>
 </aos:onready>
 </aos:html>

@@ -11,7 +11,7 @@
 	<select id="selectByAccount" parameterType="java.lang.String" resultType="po.Basic_userPO">
 		SELECT
 		*
-		FROM basic_user WHERE account_ = #{account_}
+		FROM basic_user WHERE account = #{account}
 	</select>
 	
 	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->

@@ -12,7 +12,7 @@
 	<title>设备地图</title>
 	<style type="text/css">
 		body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
-		#l-map{height:510px;width:100%;}
+		#l-map{height:100%;width:100%;}
 		#r-result{width:100%; font-size:14px;line-height:20px;}
 	</style>
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ThTvAqi8T9m1Y9sKYtoAUi65eTQmRa7j"></script>
@@ -29,8 +29,8 @@
 <script type="text/javascript">
 
 var info = Ext.util.Cookies.get('juid'); 
-setInterval(map,30000); 
-
+map();
+ setInterval(map,20000);  
 
 function map(){
 
@@ -40,6 +40,7 @@ Ext.Ajax.request({
 					    params:{version:5
 					  },
 					    success: function(response, opts) {
+					    	
 					        var obj = Ext.decode(response.responseText); 
 					        var ss =obj.coor;
 					        var ss2=ss[0]; 
