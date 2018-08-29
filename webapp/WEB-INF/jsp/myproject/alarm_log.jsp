@@ -8,82 +8,7 @@
 //播放(继续播放)
  
 
-var XMLHttpReq;
-  //创建XMLHttpRequest对象       
-  function createXMLHttpRequest() {
-  if(window.XMLHttpRequest) { //Mozilla 浏览器
-   XMLHttpReq = new XMLHttpRequest();
-  }
-  else if (window.ActiveXObject) { // IE浏览器
-   try {
-    XMLHttpReq = new ActiveXObject("Msxml2.XMLHTTP");
-   } catch (e) {
-    try {
-     XMLHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
-    } catch (e) {}
-   }
-  }
- }
- //发送请求函数
- function sendRequest() {
-  var info = Ext.util.Cookies.get('juid');
-  createXMLHttpRequest();
-  //var url = "do.jhtml?router=alarm_logService.updateWebpage&juid=a28937399c4243838e22941929e4e464";
-  var url = "do.jhtml?router=alarm_logService.updateWebpage&juid="+info;
-  XMLHttpReq.open("GET", url, true);
-  XMLHttpReq.onreadystatechange = processResponse;//指定响应函数
-  XMLHttpReq.send(null);  // 发送请求
- }
- // 处理返回信息函数
-    function processResponse() {
-     if (XMLHttpReq.readyState == 4) { // 判断对象状态
-         if (XMLHttpReq.status == 200) { // 信息已经成功返回，开始处理信息
-        	// var name = XMLHttpReq.responseXML.getElementsByTagName("name")[0].firstChild.nodeValue;
-        	    //alert(XMLHttpReq.responseText);
-        	    var a = XMLHttpReq.responseText;
-			    if(a == "1"){
-			    	/* audio.play(); */
-			    	DisplayHot();
-			    	/*  */
-			    	setTimeout("window.location.reload()",2000);
-			    	
-			    }
-			    setTimeout("sendRequest()", 4000);
-			   
-            } else { //页面不正常
-                window.alert("您所请求的页面有异常。");
-            }
-        }
-    }
-    function DisplayHot() {
-     //var name = XMLHttpReq.responseXML.getElementsByTagName("name")[0].firstChild.nodeValue;
-     //var count = XMLHttpReq.responseXML.getElementsByTagName("count")[0].firstChild.nodeValue;
- 
-           //document.getElementById("cheh").innerHTML = "T-"+name+"次列车"; 
-    //document.getElementById("price").innerHTML = count+"元"; 
-    
-    //var text = Ext.decode(response.responseText);
-			        // process server response here
-			        //var value1=text["user_address"];
-			   
-	//Ext.getCmp("a").setValue(text.data);
-	
-    var audio = document.getElementById("bgMusic");
-    audio.play();
-    var msg1 = 'AOS应用基础平台基于JavaEE技术体系，以“标准功能可复用、通用模块可配置、行业需求快速开发、异构系统无缝集成”为目标，为软件开发团队提供高效可控、随需应变、快速实现业务需求的全栈式技术解决方案。帮助企业落实IT策略、屏蔽技术壁垒，快速实现业务愿景。使其获得更低成本、更高质量、更快交付业务和运维支持的核心技术竞争力。';
-    	Ext.create(
-				'widget.uxNotification',
-				{
-					position : 'br',
-					title : '<span class="app-container-title-normal"><i class="fa fa-bell-o"></i> 通知</span>',
-					closable : false,
-					autoCloseDelay : 2000,
-					slideInDuration : 200,
-					useXAxis : false,
-					width : 400,
-					html : msg1
-				}).show();
-    }
+
     
 </script>   
 <body onload = sendRequest()>
@@ -208,11 +133,98 @@ var XMLHttpReq;
 	</aos:window>
 	
 	<script type="text/javascript">
-	 
-	
-	
 	 var info = Ext.util.Cookies.get('juid'); 
 	 
+	 sendRequest();
+	 
+	var XMLHttpReq;
+	  //创建XMLHttpRequest对象       
+	  function createXMLHttpRequest() {
+	  if(window.XMLHttpRequest) { //Mozilla 浏览器
+	   XMLHttpReq = new XMLHttpRequest();
+	  }
+	  else if (window.ActiveXObject) { // IE浏览器
+	   try {
+	    XMLHttpReq = new ActiveXObject("Msxml2.XMLHTTP");
+	   } catch (e) {
+	    try {
+	     XMLHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
+	    } catch (e) {}
+	   }
+	  }
+	 }
+	 //发送请求函数
+	 function sendRequest() {
+	  var info = Ext.util.Cookies.get('juid');
+	  createXMLHttpRequest();
+	  //var url = "do.jhtml?router=alarm_logService.updateWebpage&juid=a28937399c4243838e22941929e4e464";
+	  var url = "do.jhtml?router=alarm_logService.updateWebpage&juid="+info;
+	  XMLHttpReq.open("GET", url, true);
+	  XMLHttpReq.onreadystatechange = processResponse;//指定响应函数
+	  XMLHttpReq.send(null);  // 发送请求
+	 }
+	 // 处理返回信息函数
+	    function processResponse() {
+	     if (XMLHttpReq.readyState == 4) { // 判断对象状态
+	         if (XMLHttpReq.status == 200) { // 信息已经成功返回，开始处理信息
+	        	// var name = XMLHttpReq.responseXML.getElementsByTagName("name")[0].firstChild.nodeValue;
+	        	    //alert(XMLHttpReq.responseText);
+	        	    var a = XMLHttpReq.responseText;
+				    if(a == "1"){
+				    	/* audio.play(); */
+				    	DisplayHot();
+				    	/*  */
+				    	//setTimeout("window.location.reload()",2000);
+				    	setTimeout(_datagridpanel_query,2000);
+				    	//setInterval(_datagridpanel_query,2000);
+				    }
+				    setTimeout(sendRequest, 4000);
+				  
+				   
+	            } else { //页面不正常
+	                window.alert("您所请求的页面有异常。");
+	            }
+	        }
+	    }
+	 
+	    function _datagridpanel_query() {
+			var params = AOS.getValue('_f_query');
+			_datagridpanel_store.getProxy().extraParams = params;
+			_datagridpanel_store.loadPage(1);
+		}
+	    
+	    function DisplayHot() {
+	     //var name = XMLHttpReq.responseXML.getElementsByTagName("name")[0].firstChild.nodeValue;
+	     //var count = XMLHttpReq.responseXML.getElementsByTagName("count")[0].firstChild.nodeValue;
+	 
+	           //document.getElementById("cheh").innerHTML = "T-"+name+"次列车"; 
+	    //document.getElementById("price").innerHTML = count+"元"; 
+	    
+	    //var text = Ext.decode(response.responseText);
+				        // process server response here
+				        //var value1=text["user_address"];
+				   
+		//Ext.getCmp("a").setValue(text.data);
+		
+	    var audio = document.getElementById("bgMusic");
+	    audio.play();
+	    var msg1 = 'AOS应用基础平台基于JavaEE技术体系，以“标准功能可复用、通用模块可配置、行业需求快速开发、异构系统无缝集成”为目标，为软件开发团队提供高效可控、随需应变、快速实现业务需求的全栈式技术解决方案。帮助企业落实IT策略、屏蔽技术壁垒，快速实现业务愿景。使其获得更低成本、更高质量、更快交付业务和运维支持的核心技术竞争力。';
+	    	Ext.create(
+					'widget.uxNotification',
+					{
+						position : 'br',
+						title : '<span class="app-container-title-normal"><i class="fa fa-bell-o"></i> 通知</span>',
+						closable : false,
+						autoCloseDelay : 2000,
+						slideInDuration : 200,
+						useXAxis : false,
+						width : 400,
+						html : msg1
+					}).show();
+	    }
+	
+	
+	
 		function _datagridpanel_query() {
 			var params = AOS.getValue('_f_query');
 			_datagridpanel_store.getProxy().extraParams = params;

@@ -30,6 +30,7 @@
 			    			 	<aos:dockeditem text="新增" tooltip="新增"  onclick="_w_add_show" icon="add.png"/>
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>
 												<aos:dockeditem text="删除" tooltip="删除" onclick="_delete" icon="del.png" />
+												<aos:dockeditem text="全屏显示" tooltip="全屏显示" onclick="winopen" icon="max.png" />
 												<%-- <aos:dockeditem text="导出" tooltip="导出" onclick="_exportexcel" icon="icon70.png" /> --%>
 								<aos:dockeditem xtype="tbseparator" />
 				                			</aos:docked>
@@ -129,7 +130,20 @@
 	
 	<script type="text/javascript">
 	//刷新
-	setInterval(_datagridpanel_query,60*60*1000);
+	function winopen(){
+		
+		 
+			
+		  var info = Ext.util.Cookies.get('juid'); 
+		var targeturl="http://localhost:9090/cdz/http/do.jhtml?router=repair_logService.initRepair&juid="+info;
+		
+		 window.open(targeturl,"","fullscreen=1,menubar=0,toolbar=0,directories=0,location=0,status=0,scrollbars=0");  
+		//window.close();
+		/* fkey(); */
+	
+		
+	} 
+	 setInterval(_datagridpanel_query,60*60*1000); 
 	
 	 var info = Ext.util.Cookies.get('juid'); 
 	/*  setInterval(get_num,3000);  */

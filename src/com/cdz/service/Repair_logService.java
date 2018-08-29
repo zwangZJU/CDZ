@@ -1,5 +1,8 @@
 package service;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,6 +49,11 @@ public class Repair_logService extends CDZBaseController {
 	 * @return
 	 */
 	public void init(HttpModel httpModel) {
+		httpModel.setViewPath("myproject/repair_log.jsp");
+	}
+	public void initRepair(HttpModel httpModel) throws AWTException {
+		Robot rb = new Robot();
+		rb.keyPress(KeyEvent.VK_F11);
 		httpModel.setViewPath("myproject/repair_log.jsp");
 	}
 

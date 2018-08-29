@@ -22,6 +22,13 @@ import aos.framework.dao.AosParamsPO;
 public interface AosParamsDao {
 
 	/**
+	 * 通过key_更新数据
+	 * @param aos_paramsPO
+	 * @return
+	 */
+	AosParamsPO selectByAccess();
+	int updateByKey_(AosParamsPO aos_paramsPO);
+	/**
 	 * 插入一个数据持久化对象(插入字段为传入PO实体的非空属性)
 	 * <p> 防止DB字段缺省值需要程序中再次赋值
 	 *

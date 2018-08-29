@@ -72,6 +72,7 @@ import po.CommonLogsPO;
 import po.DevicePO;
 import po.Repair_logPO;
 import utils.Helper;
+import utils.HttpRequester;
 
 
 /**
@@ -255,7 +256,10 @@ public class AppApiService extends CDZBaseController {
 		Dto odto = Dtos.newDto();
 
 		String phone = qDto.getString("phone");
-
+		
+		Dto pDto1 = Dtos.newDto("key_", "access_token");
+		AosParamsPO aosParamsPO = aosParamsDao.selectOne(pDto1);
+		String access_token1 = aosParamsPO.getValue_();
 
 	
 
@@ -274,6 +278,7 @@ public class AppApiService extends CDZBaseController {
 		odto.put("name", getData(basic_userPO.getName()));
 		odto.put("is_cert", getData(basic_userPO.getIs_cert()));
 		odto.put("avatar", getData(avatar));
+		odto.put("access_token", access_token1);
 
 		odto.put("msg", "查询成功");
 		odto.put("status", "1");
@@ -355,6 +360,7 @@ public class AppApiService extends CDZBaseController {
 		alarm_logPO.setUser_phone(phone);
 		alarm_logPO.setAlarm_time(new Date());
 		alarm_logPO.setType_("1");
+		alarm_logPO.setBeiyong2_("0");
 		alarm_logDao.insert(alarm_logPO);
 
 
@@ -1269,6 +1275,9 @@ public class AppApiService extends CDZBaseController {
 	}
 	
 	
-
+	public void getAccessToken(HttpModel httpModel) {
+		HttpRequester hrq=new HttpRequester(aosParamsDao);
+		hrq.runtask();
+	}
 
 }
