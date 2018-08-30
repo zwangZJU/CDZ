@@ -7,6 +7,53 @@
 
 <mapper namespace="dao.CameraDao">
 	
+		<!-- 根据设备序列号修改数据持久化对象 -->
+	<update id="updateBySerial" parameterType="po.CameraPO">
+		UPDATE camera
+		<set>
+			<if test="camera_id != null">
+		          camera_id = #{camera_id, jdbcType=VARCHAR},  <!-- 序号 -->
+			</if>
+			<if test="device_id != null">
+		          device_id = #{device_id, jdbcType=VARCHAR},  <!-- 设备id -->
+			</if>
+			<if test="camera_serial != null">
+		          camera_serial = #{camera_serial, jdbcType=VARCHAR},  <!-- 摄像头序列号 -->
+			</if>
+			<if test="camera_no != null">
+		          camera_no = #{camera_no, jdbcType=VARCHAR},  <!-- 设备通道号 -->
+			</if>
+			<if test="osd_ != null">
+		          osd_ = #{osd_, jdbcType=VARCHAR},  <!-- 视频当前时间 -->
+			</if>
+			<if test="access_token != null">
+		          access_token = #{access_token, jdbcType=VARCHAR},  <!-- 访问令牌 -->
+			</if>
+			<if test="verification_code != null">
+		          verification_code = #{verification_code, jdbcType=VARCHAR},  <!-- 验证码 -->
+			</if>
+			<if test="camera_type != null">
+		          camera_type = #{camera_type, jdbcType=VARCHAR},  <!-- 摄像头型号 -->
+			</if>
+			<if test="camera_label != null">
+		          camera_label = #{camera_label, jdbcType=VARCHAR},  <!-- 标签 -->
+			</if>
+			<if test="cloud_service != null">
+		          cloud_service = #{cloud_service, jdbcType=VARCHAR},  <!-- 云服务 -->
+			</if>
+			<if test="beiyong1_ != null">
+		          beiyong1_ = #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
+			</if>
+			<if test="beiyong2_ != null">
+		          beiyong2_ = #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+			</if>
+			<if test="baiyong3_ != null">
+		          baiyong3_ = #{baiyong3_, jdbcType=VARCHAR},  <!-- 备用3 -->
+			</if>
+		</set>
+		WHERE  camera_serial = #{camera_serial}
+	</update>
+	
 	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
 	<insert id="insert"  parameterType="po.CameraPO">
 		INSERT INTO camera (

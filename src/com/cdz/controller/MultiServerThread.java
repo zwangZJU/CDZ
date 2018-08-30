@@ -258,67 +258,45 @@ public class MultiServerThread extends Thread {
 				
 				boolean fang = false;
 				
+				DevicePO devicePO = null;
 				
-		        
+				String device_id = null;
 		        
 	            while ((length = in.read(data_in)) > 0) {
 	            	
 	            	System.out.println("data_in_toString():"+data_in.toString());
-	            	//System.out.println("length:"+length);
 	                byte[] data = new byte[length];
 	                
-	                System.arraycopy(data_in, 0, data, 0, length);
+	                System.arraycopy(data_in, 0, data, 0, length);  //把data_in赋值给data
 	                System.out.println(data);
 	                
-	                hex = DatatypeConverter.printHexBinary(data);
+	                hex = DatatypeConverter.printHexBinary(data);  //把data转换为16进制字符串
 	                System.out.println("hex:"+hex);
-	                String data_string = decode(hex.toString());
-			        String data_string_1 = hex.toString();
 	                
-	                char[] hex_byte= hex.toCharArray();
-	                String msgType=String.valueOf(hex_byte, 2, 2);   // cmd
+	                char[] hex_byte= hex.toCharArray();  //转为字符数组
+	                String msgType=String.valueOf(hex_byte, 2, 2);   // 从第2个字节开始，取2个字节，即cmd
+	                System.out.println("msgType:"+msgType); 
 	                this.saveLogs("原始数据:"+hex,this.ascii);
 	                
-	                String eight = String.valueOf(hex_byte, 0, 64);
+	                String eight = String.valueOf(hex_byte, 0, 64);  //从第0个字节开始，取64个字节，即全部
 	                System.out.println("数据16进制:"+eight);
 	                
-	                System.out.println("msgType:"+msgType); 
-	                j++;
+	                j++;  //用来查看进入run的次数和进入if的次数
 	                System.out.println("jjjjjjjj:"+j); 
 	                
-	                if("01".equals(msgType)&&"E2".equals(String.valueOf(hex_byte, 0, 2))){//注册
+	                if("01".equals(msgType)&&"E2".equals(String.valueOf(hex_byte, 0, 2))){  //注册
 	                	 this.saveLogs("注册原始数据:"+hex,this.ascii,"CS①");
 	                	//注册信息
-	                	String chongdianzhuantai=new BigInteger(String.valueOf(hex_byte, 6, 2), 16).toString();
-	                	String ascii_=Helper.AsciiStringToString(String.valueOf(hex_byte, 8, 18));
-	                	this.ascii=ascii_;
+	                	//String chongdianzhuantai=new BigInteger(String.valueOf(hex_byte, 6, 2), 16).toString();
+	                	//String ascii_=Helper.AsciiStringToString(String.valueOf(hex_byte, 8, 18));  //
+	                	//this.ascii=ascii_;
 	                	
 	                	//String Corp_ID=new BigInteger(String.valueOf(hex_byte, 6, 2), 16).toString(); //注册包中的Corp_ID,模块型号
-	                	String Corp_ID=String.valueOf(hex_byte, 6, 2);
+	                	String Corp_ID=String.valueOf(hex_byte, 6, 2);  //corp_ID
 	                	System.out.println("Corp_ID:"+Corp_ID);
-	                	System.out.println(String.valueOf(hex_byte, 48, 14));
 	                	
-	                	String ascii_1=Helper.AsciiStringToString(String.valueOf(hex_byte, 48, 14));   //注册包中第8位开始后面总共24个位
-	                	this.ascii1=ascii_1;
-	                	/*String ICode1=new BigInteger(String.valueOf(hex_byte, 8, 2), 16).toString();
-	                	String ICode2=new BigInteger(String.valueOf(hex_byte, 10, 2), 16).toString();
-	                	String ICode3=new BigInteger(String.valueOf(hex_byte, 12, 2), 16).toString();
-	                	String ICode4=new BigInteger(String.valueOf(hex_byte, 14, 2), 16).toString();
-	                	String ICode5=new BigInteger(String.valueOf(hex_byte, 16, 2), 16).toString();
-	                	String ICode6=new BigInteger(String.valueOf(hex_byte, 18, 2), 16).toString();
-	                	String ICode7=new BigInteger(String.valueOf(hex_byte, 20, 2), 16).toString();
-	                	String ICode8=new BigInteger(String.valueOf(hex_byte, 22, 2), 16).toString();
-	                	String ICode9=new BigInteger(String.valueOf(hex_byte, 24, 2), 16).toString();
-	                	String ICode10=new BigInteger(String.valueOf(hex_byte, 26, 2), 16).toString();
-	                	String ICode11=new BigInteger(String.valueOf(hex_byte, 28, 2), 16).toString();
-	                	String ICode12=new BigInteger(String.valueOf(hex_byte, 30, 2), 16).toString();
-	                	String ICode13=new BigInteger(String.valueOf(hex_byte, 32, 2), 16).toString();
-	                	String ICode14=new BigInteger(String.valueOf(hex_byte, 34, 2), 16).toString();
-	                	String ICode15=new BigInteger(String.valueOf(hex_byte, 36, 2), 16).toString();
-	                	String ICode16=new BigInteger(String.valueOf(hex_byte, 38, 2), 16).toString();*/
-	                	String TYPE_ID=new BigInteger(String.valueOf(hex_byte, 40, 2), 16).toString();
-	                	//String Corp_ID=new BigInteger(String.valueOf(hex_byte, 42, 2), 16).toString();
-	                	Helper.socketMap.put(this.ascii, this.socket);//保存socket对象
+	                	String ascii_1=Helper.AsciiStringToString(String.valueOf(hex_byte, 48, 14));  //ICode 
+	                	this.ascii1=ascii_1;  //ICode,产品序列号
 	                	
 	                	String ACCT1 =new BigInteger(String.valueOf(hex_byte, 8, 2), 16).toString();
 	                	System.out.println("ACCT1:"+ACCT1);   	
@@ -328,22 +306,6 @@ public class MultiServerThread extends Thread {
 	                	System.out.println("ACCT3:"+ACCT3); 
 	                	String ACCT4 =new BigInteger(String.valueOf(hex_byte, 14, 2), 16).toString();
 	                	System.out.println("ACCT4:"+ACCT4); 
-	                	/*String Key7 =new BigInteger(String.valueOf(hex_byte, 16, 2), 16).toString();
-	                	String Key6 =new BigInteger(String.valueOf(hex_byte, 18, 2), 16).toString();
-	                	String Key5 =new BigInteger(String.valueOf(hex_byte, 20, 2), 16).toString();
-	                	String Key4 =new BigInteger(String.valueOf(hex_byte, 22, 2), 16).toString();
-	                	String Key3 =new BigInteger(String.valueOf(hex_byte, 24, 2), 16).toString();
-	                	String Key2 =new BigInteger(String.valueOf(hex_byte, 26, 2), 16).toString();
-	                	String Key1 =new BigInteger(String.valueOf(hex_byte, 28, 2), 16).toString();
-	                	String Key0 =new BigInteger(String.valueOf(hex_byte, 30, 2), 16).toString();
-	                	String Key15 =new BigInteger(String.valueOf(hex_byte, 32, 2), 16).toString();
-	                	String Key14 =new BigInteger(String.valueOf(hex_byte, 34, 2), 16).toString();
-	                	String Key13 =new BigInteger(String.valueOf(hex_byte, 36, 2), 16).toString();
-	                	String Key12 =new BigInteger(String.valueOf(hex_byte, 38, 2), 16).toString();
-	                	String Key11 =new BigInteger(String.valueOf(hex_byte, 40, 2), 16).toString();
-	                	String Key10 =new BigInteger(String.valueOf(hex_byte, 42, 2), 16).toString();
-	                	String Key9 =new BigInteger(String.valueOf(hex_byte, 44, 2), 16).toString();
-	                	String Key8 =new BigInteger(String.valueOf(hex_byte, 46, 2), 16).toString();*/
 	                	
 	                	byte Key7 =(byte) Integer.parseInt(String.valueOf(hex_byte, 16, 2));
 	                	byte Key6 =(byte) Integer.parseInt(String.valueOf(hex_byte, 18, 2));
@@ -382,66 +344,70 @@ public class MultiServerThread extends Thread {
 	                			data_in[19],data_in[18],data_in[17],data_in[16]};
 	                	Key= key;  //密钥
 	                	
-	                	//String str_ACCT = decode(ACCT1+ACCT2+ACCT3+ACCT4);
-	                	//String ICode = decode(ICode1+ICode2+ICode3+ICode4+ICode5+ICode6+ICode7+ICode8);
-	                	//String str_ascii = decode(this.ascii1);
-	                	
 	                	String str_ACCT =null;
 	                	String ICode = null;
 	                	String str_ascii = null;
 	                	//String str_ascii = "4gw765431";
 	                	
-	                	Helper.socketMap.put(this.ascii1, this.socket);//保存socket对象
+	                	Helper.socketMap.put(this.ascii1, this.socket);//保存socket对象，产品序列号
 	                	System.out.println("this.ascii1："+this.ascii1);
-	                	if("0x01".equals(Corp_ID)){
-	                		Corp_ID="中创公司";
-	                	}else{
-	                		Corp_ID="xx公司";
+	                	
+	                	switch(Corp_ID) {
+	                	
+		                	case "09":
+		                		System.out.println("TN-G100网络模块");
+		                		break;
+		                	case "10":
+		                		System.out.println("TN-G200网络模块");
+		                		break;
+		                	case "11":
+		                		System.out.println("TN-G300网络模块");
+		                		break;
+		                	case "12":
+		                		System.out.println("TN-S100网络模块");
+		                		break;
+		                	case "13":
+		                		System.out.println("TN-G201网络模块");
+		                		break;
+		                	case "14":
+		                		System.out.println("TN-G211网络模块");
+		                		break;
+		                	case "15":
+		                		System.out.println("TN-G202网络模块");
+		                		break;
+		                	case "16":
+		                		System.out.println("TN-G212网络模块");
+		                		break;
+		                	case "17":
+		                		System.out.println("TN-G221网络模块");
+		                		break;
+		                	case "18":
+		                		System.out.println("TN-G311网络模块");
+		                		break;
+		                	case "19":
+		                		System.out.println("TN-G321网络模块");
+		                		break;
+		                	case "20":
+		                		System.out.println("TN-G231网络模块");
+		                		break;
+		                	case "30":
+		                		System.out.println("终端测试模拟程序");
+		                		break;
 	                	}
-	                	ChargingPilePO  chargingPilePO=chargingPileDao.selectByKey(this.ascii);
-	                	//ChargingPilePO  chargingPilePO=chargingPileDao.selectByKey("1");
 	                	
 	                	//DevicePO devicePO = deviceDao.selectByKey(this.ascii1);
 	                	//DevicePO devicePO = null;
 	                	//DevicePO devicePO = deviceDao.selectByKey(Corp_ID);
-	                	DevicePO devicePO = deviceDao.selectByKey("4gw765431");
+	                	//DevicePO devicePO = deviceDao.selectByKey("4gw765431");  //之前写了用序列号进行模糊查询
 	                	//DevicePO devicePO = deviceDao.selectByKey(ICode);
 	                	
-	                	if(null==chargingPilePO){//新增对象
-	                		ChargingPilePO  chargingPilePO_=new ChargingPilePO();
-	                		chargingPilePO_.setCp_id(this.ascii);
-	                		chargingPilePO_.setCp_no(this.ascii);
-	                		chargingPilePO_.setCp_type(TYPE_ID);
-	                		chargingPilePO_.setSupplier(Corp_ID);
-	                		chargingPilePO_.setCreate_date(AOSUtils.getDateTime());
-	                		chargingPilePO_.setOper_id("socket");
-	                		if("0".equals(chongdianzhuantai)){
-	                			chargingPilePO_.setCp_status("1");
-	                		}else if("0".equals(chongdianzhuantai)){
-	                			chargingPilePO_.setCp_status("0");
-	                		}else{
-	                			chargingPilePO_.setCp_status(chongdianzhuantai);
-	                		}
-	                		
-	                		chargingPilePO_.setElectricity(new BigDecimal(AOSCxt.getParam("electricity")));
-	                		chargingPileDao.insert(chargingPilePO_);
-	                	}else{//已存在，则修改状态
-	                		ChargingPilePO  chargingPilePO_=new ChargingPilePO();
-	                		chargingPilePO_.setCp_id(this.ascii);
-	                		chargingPilePO_.setCp_type(TYPE_ID);
-	                		chargingPilePO_.setSupplier(Corp_ID);
-	                		chargingPilePO_.setUpdate_date(AOSUtils.getDateTime());
-	                		if("0".equals(chongdianzhuantai)){
-	                			chargingPilePO_.setCp_status("1");
-	                		}else if("0".equals(chongdianzhuantai)){
-	                			chargingPilePO_.setCp_status("0");
-	                		}else{
-	                			chargingPilePO_.setCp_status(chongdianzhuantai);
-	                		}
-	                		chargingPilePO_.setElectricity(new BigDecimal(AOSCxt.getParam("electricity")));
-	                		
-	                		chargingPileDao.updateByKey(chargingPilePO_);
-	                	}
+	                	Dto pDto=Dtos.newDto("device_id",this.ascii1);  //把序列号this.ascii1给device_id
+	            		List<DevicePO> deviceDtos = deviceDao.like(pDto);  //模糊查询是否有该设备
+	            		//String device_id = deviceDtos.get(0).getDevice_id();
+	            		device_id = "26666666";  //模拟终端测试时用这一句，否则用上面那句
+	            		
+	            		Dto pDto1 = Dtos.newDto("device_id", device_id);
+	    				devicePO = deviceDao.selectOne(pDto1);
 	                	
 	                	if(null==devicePO)
 	                	{
@@ -451,27 +417,21 @@ public class MultiServerThread extends Thread {
 	                		//devicePO_.setId_(this.ascii1);
 	                		//devicePO_.setDevice_id(Corp_ID);
 	                		
-	                		devicePO_.setDevice_id(str_ascii);
-	                		devicePO_.setUser_id(str_ACCT);
+	                		//devicePO_.setDevice_id(str_ascii);   //设置设备序列号，对厂家有意义
+	                		devicePO_.setUser_id(str_ACCT);    //设置设备账号（每个保安公司不会重复），对保安公司有意义
 	                		deviceDao.insert(devicePO_);
 	                		System.out.println("yes two");
 	                		
 	                	}else {//已存在，则修改状态
-	                		Dto pDto;
-		            		
-		            		//pDto = Dtos.newDto("device_id",str_ascii);
-		        			//DevicePO devicePO3=deviceDao.selectOne(pDto);
-		        			//devicePO3.setUser_id(str_ACCT);
-							//deviceDao.updateByKey(devicePO3);
 							
 	                		System.out.println("update");
 	                	}
 	                	
-	                	String content="CS①注册转换后参数：：：ascii:"+this.ascii+" 充电状态:"+chongdianzhuantai+" 桩的型号:"+TYPE_ID+" 桩生产公司:"+Corp_ID;
-	                	System.out.println(content);
-	                	this.saveLogs(content,this.ascii,"CS①");
-	                }else {//心跳
-	                	byte[] databuffer = new byte[16];
+	                	//String content="CS①注册转换后参数：：：ascii:"+this.ascii+" 充电状态:"+chongdianzhuantai+" 桩的型号:"+TYPE_ID+" 桩生产公司:"+Corp_ID;
+	                	//System.out.println(content);
+	                	//this.saveLogs(content,this.ascii,"CS①");
+	                }else {   //心跳和报警，需解密
+	                	byte[] databuffer = new byte[16];   //先取心跳或报警包的前16字节
 	                	for(int k=0;k<16;k++)
 	                		databuffer[k] = data_in[k];
 	                	
@@ -485,37 +445,38 @@ public class MultiServerThread extends Thread {
 	            		String CCC = null;
 	                	
 	                	Object[] object = new Object[]{ databuffer , Key,data1};
-	            		String b= sumFunc.invokeString(object, false);
-	            		System.out.println("b:"+b);
-	            		String c = strTo16(b.substring(1));
-	            		System.out.println("c:"+c);
-	            		System.out.println("c.length():"+c.length());            		
+	            		String decodeResult_1= sumFunc.invokeString(object, false);
+	            		System.out.println("decodeResult:"+decodeResult_1);
+	            		String resultLatter_1 = strTo16(decodeResult_1.substring(1));  //因为前面1位是乱码，所以取第1位后面的，是从包的LEN开始的。
+	            		System.out.println("resultLatter:"+resultLatter_1);
+	            		System.out.println("resultLatter.length():"+resultLatter_1.length());            		
 	            		
-	            		if(c.length()>1) {
-		            		if(c.substring(2, 4).equals("4f")&&c.substring(4, 6).equals("4b")&&!c.substring(6,8).equals("30"))
+	            		if(resultLatter_1.length()>1) {
+		            		if(resultLatter_1.substring(2, 4).equals("4f")&&resultLatter_1.substring(4, 6).equals("4b")&&!resultLatter_1.substring(6,8).equals("30"))
+		            			//上一句为什么是30？
 		            			System.out.println("xintiao");
 	            		}
 	            		
-	            		Dto pDto=Dtos.newDto("device_id",this.ascii1);
-	            		List<DevicePO> deviceDtos = deviceDao.like(pDto);
+	            		/*Dto pDto=Dtos.newDto("device_id",this.ascii1);  //把序列号this.ascii1给device_id
+	            		List<DevicePO> deviceDtos = deviceDao.like(pDto);  //模糊查询是否有该设备
 	            		//String device_id = deviceDtos.get(0).getDevice_id();
-	            		String device_id = "26666666";
+	            		String device_id = "26666666";  //模拟终端测试时用这一句，否则用上面那句
 	            		
 	            		Dto pDto1 = Dtos.newDto("device_id", device_id);
-	    				DevicePO devicePO1 = deviceDao.selectOne(pDto1);
+	    				DevicePO devicePO1 = deviceDao.selectOne(pDto1);*/
 	    				
 	    				//Dto newDto = Dtos.newDto();
 	    				//newDto.put("device_id", devicePO1.getArrange_withdraw());
 	    				//System.out.println(newDto);
 	    				
 	    				
-	    				if(devicePO1.getArrange_withdraw().equals("0"))   //撤防
-	    					fang=false;
-	    				else if(devicePO1.getArrange_withdraw().equals("1"))  //布防
-	    					fang=true;
+	    				if(devicePO.getArrange_withdraw().equals("0"))   //撤防
+	    					fang=false;   //fang是标志位，false说明目前模块的状态是撤防状态
+	    				else if(devicePO.getArrange_withdraw().equals("1"))  //布防
+	    					fang=true;   //fang是标志位，true说明目前模块的状态是撤防状态
 	    					
-	    				if(c.length()>5) {
-		            		if(c.substring(6,8).equals("30")&&c.substring(1,2).equals("5")&&fang==false)
+	    				if(resultLatter_1.length()>5) {
+		            		if(resultLatter_1.substring(6,8).equals("30")&&resultLatter_1.substring(1,2).equals("5")&&resultLatter_1.substring(2, 4).equals("4f")&&resultLatter_1.substring(4, 6).equals("4b")&&fang==false)
 		            		{
 		            			System.out.println("bufang");
 			            		System.out.println("yes");
@@ -523,26 +484,26 @@ public class MultiServerThread extends Thread {
 		                		
 			            		//Dto pDto=Dtos.newDto("device_id",this.ascii1);
 			            		//List<DevicePO> deviceDtos = deviceDao.like(pDto);
-			            		pDto = Dtos.newDto("device_id",device_id);
-			        			DevicePO devicePO=deviceDao.selectOne(pDto);
-								devicePO.setArrange_withdraw("1");  //布防
+			            		Dto pDto1 = Dtos.newDto("device_id",device_id);
+			        			DevicePO devicePO1=deviceDao.selectOne(pDto1);
+								devicePO1.setArrange_withdraw("1");  //布防
 								//devicePO.setIs_alarming(Q);
-								devicePO.setArrange_date(AOSUtils.getDateTime());
-								deviceDao.updateByKey(devicePO);
+								devicePO1.setArrange_date(AOSUtils.getDateTime());
+								deviceDao.updateByKey(devicePO1);
 								
 								fang = true;
-		            		}else if(c.substring(6,8).equals("30")&&c.substring(1,2).equals("5")&&fang==true)
+		            		}else if(resultLatter_1.substring(6,8).equals("30")&&resultLatter_1.substring(1,2).equals("5")&&resultLatter_1.substring(2, 4).equals("4f")&&resultLatter_1.substring(4, 6).equals("4b")&&fang==true)
 		            		{
 		            			System.out.println("chefang");	
 				            	System.out.println("yes");
 				            	Q = "0";  //恢复
 				            	   
-			            		pDto = Dtos.newDto("device_id",device_id);
-			        			DevicePO devicePO=deviceDao.selectOne(pDto);
-								devicePO.setArrange_withdraw("0"); //撤防
+				            	Dto pDto2 = Dtos.newDto("device_id",device_id);
+			        			DevicePO devicePO2=deviceDao.selectOne(pDto2);
+								devicePO2.setArrange_withdraw("0"); //撤防
 								//devicePO.setIs_alarming(Q);
-								devicePO.setWithdraw_date(AOSUtils.getDateTime());
-								deviceDao.updateByKey(devicePO);
+								devicePO2.setWithdraw_date(AOSUtils.getDateTime());
+								deviceDao.updateByKey(devicePO2);
 								
 								fang = false;
 			                		
@@ -555,40 +516,36 @@ public class MultiServerThread extends Thread {
 			                	*/
 		            		}
 	    				}
-	            		if(c.length()>20)
+	            		if(resultLatter_1.length()>20)  //说明是报警包
 	            		{
-	            			byte[] databuffer2 = new byte[16];
-	            			//for(int u=0;u<6;u++)
-	            				//databuffer2[u] = 1;
+	            			byte[] databuffer2 = new byte[16];   //报警包的后16位
 		                	for(int n=16;n<32;n++)
-		                		databuffer2[n-16] = data_in[n];
+		                		databuffer2[n-16] = data_in[n];   			
 		            		
-		            		Object[] object2 = new Object[]{ databuffer2 , Key,data2};
-		            		String b2= sumFunc.invokeString(object2, false);
-		            		System.out.println("b2:"+b2);
-		            		String c2 = strTo16(b2);
-		            		System.out.println("c2:"+c2);
-		            		System.out.println("c2.length():"+c2.length());	
-	            			
-		            		
-	            			System.out.println("c.length()>20");	
-	            			System.out.println(c.substring(13, 15));	
-	            			System.out.println(c.substring(15, 17));
-		            		if(c.substring(13, 15).equals("31")&&c.substring(15, 17).equals("38")) {
+	            			System.out.println("resultLatter_1.length()>20");	
+	            			System.out.println(resultLatter_1.substring(13, 15));	
+	            			System.out.println(resultLatter_1.substring(15, 17));
+		            		if(resultLatter_1.substring(13, 15).equals("31")&&resultLatter_1.substring(15, 17).equals("38")) {
 		            			System.out.println("baojing");	
 				            	
-		            			if(c.substring(17, 19).equals("31"))	
-			            			Q = "1";  //触发
-		            			else if(c.substring(17, 19).equals("33"))
-		            				Q = "0";  //恢复
+		            			Object[] object2 = new Object[]{ databuffer2 , Key,data2};
+			            		String decodeResult_2= sumFunc.invokeString(object2, false);
+			            		System.out.println("decodeResult_2:"+decodeResult_2);
+			            		String resultLatter_2 = strTo16(decodeResult_2);
+			            		System.out.println("resultLatter_2:"+resultLatter_2);
+			            		System.out.println("resultLatter_2.length():"+resultLatter_2.length());	
 		            			
-		            			EEE = c.substring(19, 25);
+		            			if(resultLatter_1.substring(17, 19).equals("31"))	
+			            			Q = "1";  //触发，表示新事件
+		            			else if(resultLatter_1.substring(17, 19).equals("33"))
+		            				Q = "0";  //恢复，表示恢复事件
+		            			
+		            			EEE = resultLatter_1.substring(19, 25);
 		            			System.out.println("EEE:"+EEE);
 		            			String str_EEE = decode(EEE);
 		            			
-		            			
-		            			GG = c.substring(25, 29);
-		            			
+		            			GG = resultLatter_1.substring(25, 29);
+		            			System.out.println("GG:"+GG);
 		            			//CCC = c.substring(25, 29);
 		            			
 		            			/*
@@ -603,17 +560,18 @@ public class MultiServerThread extends Thread {
 		            			Dto pDto3 = Dtos.newDto("eee", str_EEE);
 		            			Alarm_descPO alarm_descPO = alarm_descDao.selectOne(pDto3);
 		            			
-		            			Dto pDto4 = Dtos.newDto("device_id", "10000000");
-		            			DevicePO devicePO5 = deviceDao.selectOne(pDto4);
+		            			//Dto pDto4 = Dtos.newDto("device_id", "10000000");
+		            			//DevicePO devicePO5 = deviceDao.selectOne(pDto4);
 		            			
-		            			Dto pDto2 = Dtos.newDto("device_id", device_id);
-		            			DevicePO devicePO = deviceDao.selectOne(pDto2);
+		            			Dto pDto4 = Dtos.newDto("device_id", device_id);
+		            			DevicePO devicePO3 = deviceDao.selectOne(pDto4);
 		            			//Dto newDto = Dtos.newDto();
 		            			
-		            			Alarm_logPO alarm_logPO = new Alarm_logPO();
+		            			/*下面是修改alarm_log表里面的值*/
+		            			Alarm_logPO alarm_logPO = new Alarm_logPO();   
 		            			alarm_logPO.setAlarm_id(AOSId.appId(SystemCons.ID.SYSTEM));
 		            			alarm_logPO.setDevice_id(device_id);
-		            			alarm_logPO.setUser_phone(devicePO.getPhone());
+		            			alarm_logPO.setUser_phone(devicePO3.getPhone());
 		            			alarm_logPO.setAlarm_time(new Date());
 		            			alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
 		            			alarm_logPO.setBeiyong1_(str_EEE);
@@ -621,12 +579,13 @@ public class MultiServerThread extends Thread {
 		            			alarm_logPO.setType_("0");
 		            			alarm_logDao.insert(alarm_logPO);
 		            			
-		            			Push.pushToSingle(devicePO.getPhone());
+		            			Push.pushToSingle(devicePO3.getPhone());
 		            			
 		            			//sendSms(devicePO.getPhone(),"1",str_EEE);
 		            			
-		            			pDto = Dtos.newDto("device_id",device_id);
-			        			DevicePO devicePO4=deviceDao.selectOne(pDto);
+		            			/*下面是修改device表里的值*/
+		            			Dto pDto5 = Dtos.newDto("device_id",device_id);
+			        			DevicePO devicePO4=deviceDao.selectOne(pDto5);
 								devicePO4.setIs_alarming(Q);
 								deviceDao.updateByKey(devicePO4);
 								

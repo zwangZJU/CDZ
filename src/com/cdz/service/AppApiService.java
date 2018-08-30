@@ -22,11 +22,15 @@ import java.util.TimerTask;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.druid.util.StringUtils;
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import aos.framework.core.cache.CacheMasterDataService;
 import aos.framework.core.id.AOSId;
@@ -73,6 +77,7 @@ import po.DevicePO;
 import po.Repair_logPO;
 import utils.Helper;
 import utils.HttpRequester;
+import utils.Request;
 
 
 /**
@@ -154,6 +159,23 @@ public class AppApiService extends CDZBaseController {
 	private static CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
 	static String Alias = "18392888103";
 	
+	public void deleteCamera(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		String camera_serial = qDto.getString("device_id");
+
+		Dto pDto = Dtos.newDto("camera_serial", camera_serial);
+		CameraPO cameraPO = cameraDao.selectOne(pDto);
+		String camera_id = cameraPO.getCamera_id();
+		cameraDao.deleteByKey(camera_id);
+
+		odto.put("status", "1");
+		odto.put("msg", "删除成功");
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
+	
 	public void bindingCamera(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
@@ -189,6 +211,50 @@ public class AppApiService extends CDZBaseController {
 
 
 		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
+	
+	public void supplementCameraInfo( HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		 Dto odto=Dtos.newDto();
+		String camera_serial=qDto.getString("camera_serial");
+		String camera_no=qDto.getString("camera_no");
+		String camera_label=qDto.getString("camera_label");
+		
+		 CameraPO cameraPO  = new CameraPO();
+//		cameraPO.setCamera_serial(camera_serial);
+//		cameraPO.setCamera_no(camera_no);
+//		cameraPO.setCamera_label(camera_label);
+		//String Camera_serial=cameraPO.getCamera_serial();
+		Dto pDto=Dtos.newDto("key_", "access_token");
+		AosParamsPO aosParamsPO=aosParamsDao.selectOne(pDto);
+		 String access_token1 = aosParamsPO.getValue_();
+		 //String Camera_serial=cameraPO.getCamera_serial();
+		
+			
+		String url="https://open.ys7.com/api/lapp/live/address/get";
+		String s=Request.sendPost(url, "accessToken="+access_token1+"&source="+camera_serial+":"+camera_no);
+		//cameraDao.updateByKey_(cameraPO);
+		JsonObject jsonObject = (JsonObject) new JsonParser().parse(s);
+		
+		JsonElement je=jsonObject.get("data");
+		String str = je.toString();
+		System.out.println(str);
+		 JSONArray jsonArray=new JSONArray(str);
+		 
+		final String hlsHd = jsonArray.getJSONObject(0).get("hlsHd").toString();
+		System.out.println(hlsHd);
+		final String rtmpHd = jsonArray.getJSONObject(0).get("rtmpHd").toString();
+		
+		cameraPO.setBeiyong1_(hlsHd);
+		cameraPO.setBeiyong2_(rtmpHd);	
+		cameraPO.setCamera_serial(camera_serial);
+		cameraPO.setCamera_no(camera_no);
+		cameraPO.setCamera_label(camera_label);
+		cameraDao.updateBySerial(cameraPO);
+		odto.put("status", "1");
+	    odto.put("msg", "成功");
+	    httpModel.setOutMsg(AOSJson.toJson(odto));
+		
 	}
 
 
