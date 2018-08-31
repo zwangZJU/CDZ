@@ -7,7 +7,7 @@
 
 <mapper namespace="dao.CameraDao">
 	
-		<!-- 根据设备序列号修改数据持久化对象 -->
+	<!-- 根据主键修改数据持久化对象 -->
 	<update id="updateBySerial" parameterType="po.CameraPO">
 		UPDATE camera
 		<set>
@@ -41,11 +41,11 @@
 			<if test="cloud_service != null">
 		          cloud_service = #{cloud_service, jdbcType=VARCHAR},  <!-- 云服务 -->
 			</if>
-			<if test="beiyong1_ != null">
-		          beiyong1_ = #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
+			<if test="rtmp_ != null">
+		          rtmp_ = #{rtmp_, jdbcType=VARCHAR},  <!-- 备用1 -->
 			</if>
-			<if test="beiyong2_ != null">
-		          beiyong2_ = #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+			<if test="hls_ != null">
+		          hls_ = #{hls_, jdbcType=VARCHAR},  <!-- 备用2 -->
 			</if>
 			<if test="baiyong3_ != null">
 		          baiyong3_ = #{baiyong3_, jdbcType=VARCHAR},  <!-- 备用3 -->
@@ -84,11 +84,11 @@
 		<if test="cloud_service != null and cloud_service != ''">
 	         cloud_service, <!-- 云服务 -->
 		</if>
-		<if test="beiyong1_ != null and beiyong1_ != ''">
-	         beiyong1_, <!-- 备用1 -->
+		<if test="rtmp_ != null and rtmp_ != ''">
+	         rtmp_, <!-- 备用1 -->
 		</if>
-		<if test="beiyong2_ != null and beiyong2_ != ''">
-	         beiyong2_, <!-- 备用2 -->
+		<if test="hls_ != null and hls_ != ''">
+	         hls_, <!-- 备用2 -->
 		</if>
 		<if test="baiyong3_ != null and baiyong3_ != ''">
 	         baiyong3_, <!-- 备用3 -->
@@ -124,11 +124,11 @@
 		<if test="cloud_service != null and cloud_service != ''">
 	          #{cloud_service, jdbcType=VARCHAR}, <!-- 云服务 -->
 	    </if>
-		<if test="beiyong1_ != null and beiyong1_ != ''">
-	          #{beiyong1_, jdbcType=VARCHAR}, <!-- 备用1 -->
+		<if test="rtmp_ != null and rtmp_ != ''">
+	          #{rtmp_, jdbcType=VARCHAR}, <!-- 备用1 -->
 	    </if>
-		<if test="beiyong2_ != null and beiyong2_ != ''">
-	          #{beiyong2_, jdbcType=VARCHAR}, <!-- 备用2 -->
+		<if test="hls_ != null and hls_ != ''">
+	          #{hls_, jdbcType=VARCHAR}, <!-- 备用2 -->
 	    </if>
 		<if test="baiyong3_ != null and baiyong3_ != ''">
 	          #{baiyong3_, jdbcType=VARCHAR}, <!-- 备用3 -->
@@ -155,8 +155,8 @@
 		    #{camera_type, jdbcType=VARCHAR},  <!-- 摄像头型号 -->
 		    #{camera_label, jdbcType=VARCHAR},  <!-- 标签 -->
 		    #{cloud_service, jdbcType=VARCHAR},  <!-- 云服务 -->
-		    #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
-		    #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+		    #{rtmp_, jdbcType=VARCHAR},  <!-- 备用1 -->
+		    #{hls_, jdbcType=VARCHAR},  <!-- 备用2 -->
 		    #{baiyong3_, jdbcType=VARCHAR}  <!-- 备用3 -->
 		)
 	</insert>
@@ -195,11 +195,11 @@
 			<if test="cloud_service != null">
 		          cloud_service = #{cloud_service, jdbcType=VARCHAR},  <!-- 云服务 -->
 			</if>
-			<if test="beiyong1_ != null">
-		          beiyong1_ = #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
+			<if test="rtmp_ != null">
+		          rtmp_ = #{rtmp_, jdbcType=VARCHAR},  <!-- 备用1 -->
 			</if>
-			<if test="beiyong2_ != null">
-		          beiyong2_ = #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+			<if test="hls_ != null">
+		          hls_ = #{hls_, jdbcType=VARCHAR},  <!-- 备用2 -->
 			</if>
 			<if test="baiyong3_ != null">
 		          baiyong3_ = #{baiyong3_, jdbcType=VARCHAR},  <!-- 备用3 -->
@@ -302,8 +302,8 @@
 		  camera_type,  <!-- 摄像头型号 -->
 		  camera_label,  <!-- 标签 -->
 		  cloud_service,  <!-- 云服务 -->
-		  beiyong1_,  <!-- 备用1 -->
-		  beiyong2_,  <!-- 备用2 -->
+		  rtmp_,  <!-- 备用1 -->
+		  hls_,  <!-- 备用2 -->
 		  baiyong3_  <!-- 备用3 -->
 	</sql>
 	
@@ -319,8 +319,8 @@
 		  camera.camera_type,  <!-- 摄像头型号 -->
 		  camera.camera_label,  <!-- 标签 -->
 		  camera.cloud_service,  <!-- 云服务 -->
-		  camera.beiyong1_,  <!-- 备用1 -->
-		  camera.beiyong2_,  <!-- 备用2 -->
+		  camera.rtmp_,  <!-- 备用1 -->
+		  camera.hls_,  <!-- 备用2 -->
 		  camera.baiyong3_  <!-- 备用3 -->
 	</sql>
 
@@ -356,11 +356,11 @@
 	    <if test="cloud_service != null and cloud_service != ''">
 		      AND cloud_service = #{cloud_service}  <!-- 云服务 -->
 		</if>
-	    <if test="beiyong1_ != null and beiyong1_ != ''">
-		      AND beiyong1_ = #{beiyong1_}  <!-- 备用1 -->
+	    <if test="rtmp_ != null and rtmp_ != ''">
+		      AND rtmp_ = #{rtmp_}  <!-- 备用1 -->
 		</if>
-	    <if test="beiyong2_ != null and beiyong2_ != ''">
-		      AND beiyong2_ = #{beiyong2_}  <!-- 备用2 -->
+	    <if test="hls_ != null and hls_ != ''">
+		      AND hls_ = #{hls_}  <!-- 备用2 -->
 		</if>
 	    <if test="baiyong3_ != null and baiyong3_ != ''">
 		      AND baiyong3_ = #{baiyong3_}  <!-- 备用3 -->
@@ -399,11 +399,11 @@
 	    <if test="cloud_service != null and cloud_service != ''">
 		      AND cloud_service like '%${cloud_service}%'  <!-- 云服务 -->
 		</if>
-	    <if test="beiyong1_ != null and beiyong1_ != ''">
-		      AND beiyong1_ like '%${beiyong1_}%'  <!-- 备用1 -->
+	    <if test="rtmp_ != null and rtmp_ != ''">
+		      AND rtmp_ like '%${rtmp_}%'  <!-- 备用1 -->
 		</if>
-	    <if test="beiyong2_ != null and beiyong2_ != ''">
-		      AND beiyong2_ like '%${beiyong2_}%'  <!-- 备用2 -->
+	    <if test="hls_ != null and hls_ != ''">
+		      AND hls_ like '%${hls_}%'  <!-- 备用2 -->
 		</if>
 	    <if test="baiyong3_ != null and baiyong3_ != ''">
 		      AND baiyong3_ like '%${baiyong3_}%'  <!-- 备用3 -->

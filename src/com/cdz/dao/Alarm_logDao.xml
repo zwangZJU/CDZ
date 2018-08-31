@@ -61,14 +61,14 @@
 		<if test="is_cancel != null and is_cancel != ''">
 	         is_cancel, <!-- 取消报警 -->
 		</if>
-		<if test="beiyong1_ != null and beiyong1_ != ''">
-	         beiyong1_, <!-- 备用1 -->
+		<if test="alert_code != null and alert_code != ''">
+	         alert_code, <!-- 备用1 -->
 		</if>
-		<if test="beiyong2_ != null and beiyong2_ != ''">
-	         beiyong2_, <!-- 备用2 -->
+		<if test="process != null and process != ''">
+	         process, <!-- 备用2 -->
 		</if>
-		<if test="beiyong3_ != null and beiyong3_ != ''">
-	         beiyong3_, <!-- 备用3 -->
+		<if test="defence_area != null and defence_area != ''">
+	         defence_area, <!-- 备用3 -->
 		</if>
 		<if test="alarm_id != null and alarm_id != ''">
 	          alarm_id  <!-- 报警序号 -->
@@ -104,14 +104,14 @@
 		<if test="is_cancel != null and is_cancel != ''">
 	          #{is_cancel, jdbcType=VARCHAR}, <!-- 取消报警 -->
 	    </if>
-		<if test="beiyong1_ != null and beiyong1_ != ''">
-	          #{beiyong1_, jdbcType=VARCHAR}, <!-- 备用1 -->
+		<if test="alert_code != null and alert_code != ''">
+	          #{alert_code, jdbcType=VARCHAR}, <!-- 备用1 -->
 	    </if>
-		<if test="beiyong2_ != null and beiyong2_ != ''">
-	          #{beiyong2_, jdbcType=VARCHAR}, <!-- 备用2 -->
+		<if test="process != null and process != ''">
+	          #{process, jdbcType=VARCHAR}, <!-- 备用2 -->
 	    </if>
-		<if test="beiyong3_ != null and beiyong3_ != ''">
-	          #{beiyong3_, jdbcType=VARCHAR}, <!-- 备用3 -->
+		<if test="defence_area != null and defence_area != ''">
+	          #{defence_area, jdbcType=VARCHAR}, <!-- 备用3 -->
 	    </if>
 		<if test="alarm_id != null and alarm_id != ''">
 		     #{alarm_id, jdbcType=VARCHAR}  <!-- 报警序号 -->
@@ -136,9 +136,9 @@
 		    #{reason_, jdbcType=VARCHAR},  <!-- 报警原因 -->
 		    #{alarm_release, jdbcType=VARCHAR},  <!-- 报警解除 -->
 		    #{is_cancel, jdbcType=VARCHAR},  <!-- 取消报警 -->
-		    #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
-		    #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
-		    #{beiyong3_, jdbcType=VARCHAR}  <!-- 备用3 -->
+		    #{alert_code, jdbcType=VARCHAR},  <!-- 备用1 -->
+		    #{process, jdbcType=VARCHAR},  <!-- 备用2 -->
+		    #{defence_area, jdbcType=VARCHAR}  <!-- 备用3 -->
 		)
 	</insert>
 
@@ -179,14 +179,14 @@
 			<if test="is_cancel != null">
 		          is_cancel = #{is_cancel, jdbcType=VARCHAR},  <!-- 取消报警 -->
 			</if>
-			<if test="beiyong1_ != null">
-		          beiyong1_ = #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
+			<if test="alert_code != null">
+		          alert_code = #{alert_code, jdbcType=VARCHAR},  <!-- 备用1 -->
 			</if>
-			<if test="beiyong2_ != null">
-		          beiyong2_ = #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+			<if test="process != null">
+		          process = #{process, jdbcType=VARCHAR},  <!-- 备用2 -->
 			</if>
-			<if test="beiyong3_ != null">
-		          beiyong3_ = #{beiyong3_, jdbcType=VARCHAR},  <!-- 备用3 -->
+			<if test="defence_area != null">
+		          defence_area = #{defence_area, jdbcType=VARCHAR},  <!-- 备用3 -->
 			</if>
 		</set>
 		WHERE  alarm_id = #{alarm_id}
@@ -287,9 +287,9 @@
 		  reason_,  <!-- 报警原因 -->
 		  alarm_release,  <!-- 报警解除 -->
 		  is_cancel,  <!-- 取消报警 -->
-		  beiyong1_,  <!-- 备用1 -->
-		  beiyong2_,  <!-- 备用2 -->
-		  beiyong3_  <!-- 备用3 -->
+		  alert_code,  <!-- 备用1 -->
+		  process,  <!-- 备用2 -->
+		  defence_area  <!-- 备用3 -->
 	</sql>
 	
 	<!-- 表字段(用于外表的关联时引用) -->
@@ -305,9 +305,9 @@
 		  alarm_log.reason_,  <!-- 报警原因 -->
 		  alarm_log.alarm_release,  <!-- 报警解除 -->
 		  alarm_log.is_cancel,  <!-- 取消报警 -->
-		  alarm_log.beiyong1_,  <!-- 备用1 -->
-		  alarm_log.beiyong2_,  <!-- 备用2 -->
-		  alarm_log.beiyong3_  <!-- 备用3 -->
+		  alarm_log.alert_code,  <!-- 备用1 -->
+		  alarm_log.process,  <!-- 备用2 -->
+		  alarm_log.defence_area  <!-- 备用3 -->
 	</sql>
 
 	<!-- Where精确匹配字段 -->
@@ -345,14 +345,14 @@
 	    <if test="is_cancel != null and is_cancel != ''">
 		      AND is_cancel = #{is_cancel}  <!-- 取消报警 -->
 		</if>
-	    <if test="beiyong1_ != null and beiyong1_ != ''">
-		      AND beiyong1_ = #{beiyong1_}  <!-- 备用1 -->
+	    <if test="alert_code != null and alert_code != ''">
+		      AND alert_code = #{alert_code}  <!-- 备用1 -->
 		</if>
-	    <if test="beiyong2_ != null and beiyong2_ != ''">
-		      AND beiyong2_ = #{beiyong2_}  <!-- 备用2 -->
+	    <if test="process != null and process != ''">
+		      AND process = #{process}  <!-- 备用2 -->
 		</if>
-	    <if test="beiyong3_ != null and beiyong3_ != ''">
-		      AND beiyong3_ = #{beiyong3_}  <!-- 备用3 -->
+	    <if test="defence_area != null and defence_area != ''">
+		      AND defence_area = #{defence_area}  <!-- 备用3 -->
 		</if>
 	</sql>
 	
@@ -391,14 +391,14 @@
 	    <if test="is_cancel != null and is_cancel != ''">
 		      AND is_cancel like '%${is_cancel}%'  <!-- 取消报警 -->
 		</if>
-	    <if test="beiyong1_ != null and beiyong1_ != ''">
-		      AND beiyong1_ like '%${beiyong1_}%'  <!-- 备用1 -->
+	    <if test="alert_code != null and alert_code != ''">
+		      AND alert_code like '%${alert_code}%'  <!-- 备用1 -->
 		</if>
-	    <if test="beiyong2_ != null and beiyong2_ != ''">
-		      AND beiyong2_ like '%${beiyong2_}%'  <!-- 备用2 -->
+	    <if test="process != null and process != ''">
+		      AND process like '%${process}%'  <!-- 备用2 -->
 		</if>
-	    <if test="beiyong3_ != null and beiyong3_ != ''">
-		      AND beiyong3_ like '%${beiyong3_}%'  <!-- 备用3 -->
+	    <if test="defence_area != null and defence_area != ''">
+		      AND defence_area like '%${defence_area}%'  <!-- 备用3 -->
 		</if>
 	</sql>
 	

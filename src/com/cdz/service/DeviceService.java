@@ -217,7 +217,7 @@ public class DeviceService extends CDZBaseController {
 				s[5] = dto.getString("user_name");
 				s[6] = dto.getString("user_address");
 				s[7] = dto.getString("sub_center");
-				s[8] = dto.getString("cross_road");
+				s[8] = dto.getString("signal_quality");
 				s[9] = dto.getString("user_type");
 				s[10] = dto.getString("is_alarming");
 				s[11] = dto.getString("host_type");
@@ -237,7 +237,7 @@ public class DeviceService extends CDZBaseController {
 				s[25] = dto.getString("police_phone");
 				s[26] = dto.getString("host_address");
 				s[27] = dto.getString("install_date");
-				s[28] = dto.getString("code42");
+				s[28] = dto.getString("shutdown_number");
 				s[29] = dto.getString("withdraw_date");
 				s[30] = dto.getString("arrange_date");
 				s[31] = dto.getString("last_date");
@@ -263,7 +263,7 @@ public class DeviceService extends CDZBaseController {
 				s[51] = dto.getString("arrangeandwithdraw_time");
 				s[52] = dto.getString("network_setting_substation");
 				s[53] = dto.getString("network_setting_name");
-				s[54] = dto.getString("network_setting_type");
+				s[54] = dto.getString("online_state");
 				s[55] = dto.getString("network_setting_template");
 				s[56] = dto.getString("network_setting_remarks");
 				s[57] = dto.getString("network_setting_number");
@@ -272,10 +272,10 @@ public class DeviceService extends CDZBaseController {
 				s[60] = dto.getString("communication_format");
 				s[61] = dto.getString("alarm_sound");
 				s[62] = dto.getString("host_alarm_sms");
-				s[63] = dto.getString("substation_number");
+				s[63] = dto.getString("gg_");
 				s[64] = dto.getString("shutdown_time");
-				s[65] = dto.getString("pause");
-				s[66] = dto.getString("breakdown");
+				s[65] = dto.getString("ccc_");
+				s[66] = dto.getString("user_acct");
 				s[67] = dto.getString("review_confirm");
 				s[68] = dto.getString("management_remarks");
 			

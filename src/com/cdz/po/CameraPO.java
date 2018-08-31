@@ -68,14 +68,14 @@ public class CameraPO extends PO {
 	private String cloud_service;
 	
 	/**
-	 * 备用1
+	 * rtmp协议url
 	 */
-	private String beiyong1_;
+	private String rtmp_;
 	
 	/**
-	 * 备用2
+	 * hls协议
 	 */
-	private String beiyong2_;
+	private String hls_;
 	
 	/**
 	 * 备用3
@@ -176,19 +176,19 @@ public class CameraPO extends PO {
 	/**
 	 * 备用1
 	 * 
-	 * @return beiyong1_
+	 * @return rtmp_
 	 */
-	public String getBeiyong1_() {
-		return beiyong1_;
+	public String getRtmp_() {
+		return rtmp_;
 	}
 	
 	/**
 	 * 备用2
 	 * 
-	 * @return beiyong2_
+	 * @return hls_
 	 */
-	public String getBeiyong2_() {
-		return beiyong2_;
+	public String getHls_() {
+		return hls_;
 	}
 	
 	/**
@@ -294,19 +294,19 @@ public class CameraPO extends PO {
 	/**
 	 * 备用1
 	 * 
-	 * @param beiyong1_
+	 * @param rtmp_
 	 */
-	public void setBeiyong1_(String beiyong1_) {
-		this.beiyong1_ = beiyong1_;
+	public void setRtmp_(String rtmp_) {
+		this.rtmp_ = rtmp_;
 	}
 	
 	/**
 	 * 备用2
 	 * 
-	 * @param beiyong2_
+	 * @param hls_
 	 */
-	public void setBeiyong2_(String beiyong2_) {
-		this.beiyong2_ = beiyong2_;
+	public void setHls_(String hls_) {
+		this.hls_ = hls_;
 	}
 	
 	/**

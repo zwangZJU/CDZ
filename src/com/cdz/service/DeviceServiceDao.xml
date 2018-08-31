@@ -49,4 +49,12 @@
 				
  		</where>
  		</select>
+ 		
+ 	<select id="queryDevice" parameterType="Dto" resultType="Dto">
+		SELECT
+		 <!-- CONCAT(name,account) AS display. -->
+		
+		FROM basic_user
+		
+ 		</select>
 </mapper>

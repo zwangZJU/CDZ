@@ -26,8 +26,8 @@
 			    						      			       <aos:column header="摄像头型号" dataIndex="camera_type"   width="255" />
 			    						      			       <aos:column header="标签" dataIndex="camera_label"   width="255" />
 			    						      			       <aos:column header="云服务" dataIndex="cloud_service"   width="255" />
-			    						      			       <aos:column header="备用1" dataIndex="beiyong1_"   width="255" />
-			    						      			       <aos:column header="备用2" dataIndex="beiyong2_"   width="255" />
+			    						      			       <aos:column header="rmtp协议url" dataIndex="rtmp_"   width="255" />
+			    						      			       <aos:column header="hls协议url" dataIndex="hls_"   width="255" />
 			    						      			       <aos:column header="备用3" dataIndex="baiyong3_"   width="255" />
 			    			 		</aos:gridpanel>
 	</aos:viewport>
@@ -44,8 +44,8 @@
 	      	   	 	         	   	       	        <aos:textfield name="camera_type" fieldLabel="摄像头型号"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="camera_label" fieldLabel="标签"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="cloud_service" fieldLabel="云服务"  maxLength="255"    	         />
-	      	   	 	         	   	       	        <aos:textfield name="beiyong1_" fieldLabel="备用1"  maxLength="255"    	         />
-	      	   	 	         	   	       	        <aos:textfield name="beiyong2_" fieldLabel="备用2"  maxLength="255"    	         />
+	      	   	 	         	   	       	        <aos:textfield name="rtmp_" fieldLabel="rmtp协议url"  maxLength="255"    	         />
+	      	   	 	         	   	       	        <aos:textfield name="hls_" fieldLabel="hls协议url"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="baiyong3_" fieldLabel="备用3"  maxLength="255"    	         />
 	      	   	 			</aos:formpanel>
 		<aos:docked dock="bottom" ui="footer">
@@ -67,8 +67,8 @@
 	      	    	        	   	       	        <aos:textfield name="camera_type" fieldLabel="摄像头型号"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="camera_label" fieldLabel="标签"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="cloud_service" fieldLabel="云服务"  maxLength="255"    	         />
-	      	    	        	   	       	        <aos:textfield name="beiyong1_" fieldLabel="备用1"  maxLength="255"    	         />
-	      	    	        	   	       	        <aos:textfield name="beiyong2_" fieldLabel="备用2"  maxLength="255"    	         />
+	      	    	        	   	       	        <aos:textfield name="rtmp_" fieldLabel="rmtp协议url"  maxLength="255"    	         />
+	      	    	        	   	       	        <aos:textfield name="hls_" fieldLabel="hls协议url"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="baiyong3_" fieldLabel="备用3"  maxLength="255"    	         />
 	      	    	 		</aos:formpanel>
 		<aos:docked dock="bottom" ui="footer">

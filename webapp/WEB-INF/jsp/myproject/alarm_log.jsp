@@ -48,13 +48,15 @@
 												<aos:dockeditem text="删除" tooltip="删除" onclick="_delete" icon="del.png" />
 												<aos:dockeditem text="导出" tooltip="导出" onclick="fnnoti1()" icon="icon70.png" /> 
 												<aos:dockeditem text="多个接警" tooltip="多个接警" onclick="receive_alarm_many()" icon="icon70.png" />
+												<aos:dockeditem text="全屏显示" tooltip="全屏显示" onclick="winopen" icon="max.png" />
 												<%-- <aos:dockeditem text="导出" tooltip="导出" onclick="_exportexcel" icon="icon70.png" /> --%>
 												<%-- <aos:dockeditem text="操作" tooltip="操作" onclick="_f_role_u_save" icon="icon70.png" /> --%>
 								<aos:dockeditem xtype="tbseparator" />
 				               			</aos:docked>
 			<aos:column type="rowno" />
 			<aos:selmodel type="checkbox" mode="multi" />
-		 										<aos:column header="操作"  align="center" dataIndex="beiyong2_" rendererFn="fn_balance_render7" width="80" />
+			   <aos:column header="实时视频"  align="center"  rendererFn="fn_video" width="80" />
+		 										<aos:column header="操作"  align="center" dataIndex="process" rendererFn="fn_balance_render7" width="80" />
 						      			       <aos:column header="报警序号" dataIndex="alarm_id"   width="100" />
 			    						      			       <aos:column header="设备id" dataIndex="device_id"   width="100" />
 			    						      			       <aos:column header="用户手机号" dataIndex="user_phone"   width="100" />
@@ -66,9 +68,9 @@
 			    						      			       <aos:column header="报警原因" dataIndex="reason_"   width="100" />
 			    						      			       <aos:column header="报警解除" dataIndex="alarm_release"   width="100" />
 			    						      			       <aos:column header="取消报警" dataIndex="is_cancel"   width="100" />
-			    						      			       <aos:column header="备用1" dataIndex="beiyong1_"   width="100" />
-			    						      			       <%-- <aos:column header="备用2" dataIndex="beiyong2_"   width="255" />  --%>
-			    						      			       <%-- <aos:column header="备用3" dataIndex="beiyong3_"   width="100" /> --%>
+			    						      			       <aos:column header="警情代码" dataIndex="alert_code"   width="100" />
+			    						      			       <%-- <aos:column header="是否接警和处理" dataIndex="process"   width="255" />  --%>
+			    						      			       <%-- <aos:column header="防区号" dataIndex="defence"   width="100" /> --%>
 			    			 		</aos:gridpanel>
 	</aos:viewport>
 	
@@ -97,9 +99,9 @@
 	      	   	 	         	   	       	        <aos:textfield name="reason_" fieldLabel="报警原因"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="alarm_release" fieldLabel="报警解除"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="is_cancel" fieldLabel="取消报警"  maxLength="255"    	         />
-	      	   	 	         	   	       	        <aos:textfield name="beiyong1_" fieldLabel="备用1"  maxLength="255"    	         />
-	      	   	 	         	   	       	        <aos:textfield name="beiyong2_" fieldLabel="备用2"  maxLength="255"    	         />
-	      	   	 	         	   	       	        <aos:textfield name="beiyong3_" fieldLabel="备用3"  maxLength="255"    	         />
+	      	   	 	         	   	       	        <aos:textfield name="alert_code" fieldLabel="警情代码"  maxLength="255"    	         />
+	      	   	 	         	   	       	        <aos:textfield name="process" fieldLabel="是否接警和处理"  maxLength="255"    	         />
+	      	   	 	         	   	       	        <aos:textfield name="defence" fieldLabel="防区号"  maxLength="255"    	         />
 	      	   	 			</aos:formpanel>
 		<aos:docked dock="bottom" ui="footer">
 			<aos:dockeditem xtype="tbfill" />
@@ -121,9 +123,9 @@
 	      	    	        	   	       	        <aos:textfield name="reason_" fieldLabel="报警原因"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="alarm_release" fieldLabel="报警解除"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="is_cancel" fieldLabel="取消报警"  maxLength="255"    	         />
-	      	    	        	   	       	        <aos:textfield name="beiyong1_" fieldLabel="备用1"  maxLength="255"    	         />
-	      	    	        	   	       	        <aos:textfield name="beiyong2_" fieldLabel="备用2"  maxLength="255"    	         />
-	      	    	        	   	       	        <aos:textfield name="beiyong3_" fieldLabel="备用3"  maxLength="255"    	         />
+	      	    	        	   	       	        <aos:textfield name="alert_code" fieldLabel="警情代码"  maxLength="255"    	         />
+	      	    	        	   	       	        <aos:textfield name="process" fieldLabel="是否接警和处理"  maxLength="255"    	         />
+	      	    	        	   	       	        <aos:textfield name="defence" fieldLabel="防区号"  maxLength="255"    	         />
 	      	    	 		</aos:formpanel>
 		<aos:docked dock="bottom" ui="footer">
 			<aos:dockeditem xtype="tbfill" />
@@ -133,6 +135,20 @@
 	</aos:window>
 	
 	<script type="text/javascript">
+	
+	function winopen(){
+		
+		 
+		
+		  var info = Ext.util.Cookies.get('juid'); 
+		var targeturl="http://localhost:9090/cdz/http/do.jhtml?router=alarm_logService.initAlarm&juid="+info;
+		
+		 window.open(targeturl,"","fullscreen=1,menubar=0,toolbar=0,directories=0,location=0,status=0,scrollbars=0");  
+		//window.close();
+		/* fkey(); */
+	
+		
+	} 
 	 var info = Ext.util.Cookies.get('juid'); 
 	 
 	 sendRequest();
@@ -285,7 +301,7 @@
 		
 		function _w_update_show_all()
 		{
-			var value  = AOS.selection(_datagridpanel, 'beiyong2_');
+			var value  = AOS.selection(_datagridpanel, 'process');
 			if(value == "0,")
 			{
 			var alarm_id = AOS.selection(_datagridpanel, 'alarm_id');
@@ -566,7 +582,7 @@
         
 	</script>
 </aos:onready>
-
+<script src="https://open.ys7.com/sdk/js/1.3/ezuikit.js"></script>
 <script type="text/javascript">
 	function _w_role_u_show(){
 		 var record = AOS.selectone(AOS.get('_datagridpanel'));
@@ -716,5 +732,156 @@
 	  
 	}
 	
+	
+	function fn_video(value, metaData, record, rowIndex, colIndex,
+			store) {
+		
+		
+	    	 return '<input type="button" value="查看视频"  onclick="videoPlay();"  />'; 
+	 	 
+		
+	}
+	
+function videoPlay() {
+		
+		var record = AOS.selectone(AOS.get('_datagridpanel'));
+        var id= record.data.device_id;
+	
+	    if(id == null){
+	    	 AOS.tip("一键报警，无摄像头");
+        	
+  }else{
+    	 
+       Ext.Ajax.request({
+			    url: '/cdz/http/do.jhtml?router=cameraService.listUrl',
+			    params: {
+			        id: record.data.device_id
+	    		},
+			    success: function(response){
+			    	
+			    	var obj = Ext.decode(response.responseText); 
+			    	var url = obj.data; 
+			    	var num=url[0].num;
+			    	if(num==0){
+			    		AOS.tip("该用户没有摄像头");
+			    	}
+			    	var rtmp = new Array(10);
+			    	var hls = new Array(10);
+			    	for(var i = 0; i<num; i++){
+			         rtmp[i] =url[i].rtmp;
+			         hls[i] =url[i].hls;
+			       
+			    	}
+			    	/*  rtmp[7] ="rtmp://rtmp.open.ys7.com/openlive/e69dd707d3614f1cb60a7d07efe32394.hd"; */
+			    var video1=	new Ext.Panel({  
+	                     xtype : 'panel',  
+	                   id : 'playerPanel1',  
+	                   html : '<video id="myPlayer1" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+	                           + '<source src='+rtmp[0]+' type="" />' +  
+	                        '</video>'  
+	                     });
+			    var video2=	new Ext.Panel({  
+                    xtype : 'panel',  
+                  id : 'playerPanel2',  
+                  html : '<video id="myPlayer2" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+                          + '<source src='+rtmp[1]+' type="" />' +  
+                       '</video>'  
+                    });	     
+	       
+			    var video3=	new Ext.Panel({  
+                    xtype : 'panel',  
+                  id : 'playerPanel3',  
+                  html : '<video id="myPlayer3" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+                          + '<source src='+rtmp[2]+' type="" />' +  
+                       '</video>'  
+                    });	     
+			    var video4=	new Ext.Panel({  
+                    xtype : 'panel',  
+                  id : 'playerPanel4',  
+                  html : '<video id="myPlayer4" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+                          + '<source src='+rtmp[3]+' type="" />' +  
+                       '</video>'  
+                    });	     
+			    var video5=	new Ext.Panel({  
+                    xtype : 'panel',  
+                  id : 'playerPanel5',  
+                  html : '<video id="myPlayer5" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+                          + '<source src='+rtmp[4]+' type="" />' +  
+                       '</video>'  
+                    });
+		    var video6=	new Ext.Panel({  
+               xtype : 'panel',  
+             id : 'playerPanel6',  
+             html : '<video id="myPlayer6" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+                     + '<source src='+rtmp[5]+' type="" />' +  
+                  '</video>'  
+               });	     
+      
+		    var video7=	new Ext.Panel({  
+               xtype : 'panel',  
+             id : 'playerPanel7',  
+             html : '<video id="myPlayer7" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+                     + '<source src='+rtmp[6]+' type="" />' +  
+                  '</video>'  
+               });	     
+		    var video8=	new Ext.Panel({  
+               xtype : 'panel',  
+             id : 'playerPanel8',  
+             html : '<video id="myPlayer8" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+                     + '<source src='+rtmp[7]+' type="" />' +  
+                  '</video>'  
+               });	 
+		    var video9=	new Ext.Panel({  
+	               xtype : 'panel',  
+	             id : 'playerPanel9',  
+	             html : '<video id="myPlayer9" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+	                     + '<source src='+rtmp[8]+' type="" />' +  
+	                  '</video>'  
+	               });	  
+      
+    	       
+    	           var dplayer = new Ext.Window({  
+                   layout : 'fit',  
+                   title:"实时视频",
+                    width:500,
+                    height:400,
+                    modal : true,  
+                    layout:"column",
+                   frame: true,  
+                   autoHeight:true,  
+                    items : [video1,video2,video3,video4,video5,video6,video7,video8,video9]  
+                    });  
+    	   
+                   dplayer.show();  
+                   var player1 = new EZUIPlayer('myPlayer1');
+                   var player2 = new EZUIPlayer('myPlayer2');
+                   var player3 = new EZUIPlayer('myPlayer3');
+                   var player4 = new EZUIPlayer('myPlayer4');
+                   var player5 = new EZUIPlayer('myPlayer5');
+                   var player6 = new EZUIPlayer('myPlayer6');
+                   var player7 = new EZUIPlayer('myPlayer7');
+                   var player8 = new EZUIPlayer('myPlayer8');
+                   var player9 = new EZUIPlayer('myPlayer9');
+                   player.on('error', function(){
+                   console.log('error');
+                     });
+                  player.on('play', function(){
+                  console.log('play');
+                });
+                  
+                   player.on('pause', function(){
+                   console.log('pause');
+                 });
+           
+           
+           
+			 },
+			    failure: function(response, opts) {
+			        AOS.tip('失败');
+			        root.hide();
+			    }
+		});      
+	}
+		}
 </script>
 </aos:html>

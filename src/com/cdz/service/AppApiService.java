@@ -163,7 +163,7 @@ public class AppApiService extends CDZBaseController {
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
 
-		String camera_serial = qDto.getString("device_id");
+		String camera_serial = qDto.getString("camera_serial");
 
 		Dto pDto = Dtos.newDto("camera_serial", camera_serial);
 		CameraPO cameraPO = cameraDao.selectOne(pDto);
@@ -245,8 +245,8 @@ public class AppApiService extends CDZBaseController {
 		System.out.println(hlsHd);
 		final String rtmpHd = jsonArray.getJSONObject(0).get("rtmpHd").toString();
 		
-		cameraPO.setBeiyong1_(hlsHd);
-		cameraPO.setBeiyong2_(rtmpHd);	
+		cameraPO.setHls_(hlsHd);
+		cameraPO.setRtmp_(rtmpHd);	
 		cameraPO.setCamera_serial(camera_serial);
 		cameraPO.setCamera_no(camera_no);
 		cameraPO.setCamera_label(camera_label);
@@ -426,7 +426,7 @@ public class AppApiService extends CDZBaseController {
 		alarm_logPO.setUser_phone(phone);
 		alarm_logPO.setAlarm_time(new Date());
 		alarm_logPO.setType_("1");
-		alarm_logPO.setBeiyong2_("0");
+		alarm_logPO.setProcess("0");
 		alarm_logDao.insert(alarm_logPO);
 
 
@@ -884,7 +884,7 @@ public class AppApiService extends CDZBaseController {
 			newDto.put("is_alarming", getData(devicePO.getIs_alarming()));
 			newDto.put("production_date", getData(devicePO.getProduction_date()));
 			newDto.put("install_date", devicePO.getInstall_date());
-			newDto.put("arrange_withdraw", devicePO.getArrange_withdraw());
+			newDto.put("arrange_withdraw", getData(devicePO.getArrange_withdraw()));
 
 		
 		
@@ -981,6 +981,7 @@ public class AppApiService extends CDZBaseController {
 			devicePO.setProduct_type(info[1]);
 			devicePO.setProduction_date(info[2]);
 			devicePO.setLoc_label(loc_label);
+			devicePO.setArrange_withdraw("0");
 			devicePO.setInstall_date(new Date());
 			
 			Calendar c = Calendar.getInstance();// 可以对每个时间域单独修改

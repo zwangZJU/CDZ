@@ -1,5 +1,8 @@
 package service;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -58,6 +61,12 @@ public class Alarm_logService extends CDZBaseController {
 	 * @return
 	 */
 	public void init(HttpModel httpModel) {
+		httpModel.setViewPath("myproject/alarm_log.jsp");
+	}
+	
+	public void initAlarm(HttpModel httpModel) throws AWTException {
+		Robot rb = new Robot();
+		rb.keyPress(KeyEvent.VK_F11);
 		httpModel.setViewPath("myproject/alarm_log.jsp");
 	}
 
@@ -248,7 +257,7 @@ public class Alarm_logService extends CDZBaseController {
 		else
 			alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id); 
 		
-		alarm_logPO1.setBeiyong2_("1");
+		alarm_logPO1.setProcess("1");
 		alarm_logDao.updateByKey(alarm_logPO1);
 		
 		DevicePO devicePO =deviceDao.selectByDeviceId(alarm_logPO1.getDevice_id());
@@ -277,7 +286,7 @@ public class Alarm_logService extends CDZBaseController {
 				else
 					alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id); 
 				
-				alarm_logPO1.setBeiyong2_("1");
+				alarm_logPO1.setProcess("1");
 				alarm_logDao.updateByKey(alarm_logPO1);
 				
 				DevicePO devicePO =deviceDao.selectByDeviceId(alarm_logPO1.getDevice_id());
@@ -300,7 +309,7 @@ public class Alarm_logService extends CDZBaseController {
 			else
 				alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id); 
 			
-			alarm_logPO1.setBeiyong2_("1");
+			alarm_logPO1.setProcess("1");
 			alarm_logDao.updateByKey(alarm_logPO1);
 			
 			DevicePO devicePO =deviceDao.selectByDeviceId(alarm_logPO1.getDevice_id());
@@ -388,9 +397,9 @@ public class Alarm_logService extends CDZBaseController {
 				s[8] = dto.getString("reason_");
 				s[9] = dto.getString("alarm_release");
 				s[10] = dto.getString("is_cancel");
-				s[11] = dto.getString("beiyong1_");
-				s[12] = dto.getString("beiyong2_");
-				s[13] = dto.getString("beiyong3_");
+				s[11] = dto.getString("alert_code");
+				s[12] = dto.getString("process");
+				s[13] = dto.getString("defence_area");
 
 				datas.add(s);
 			}

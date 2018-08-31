@@ -1,5 +1,6 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import aos.framework.core.id.AOSId;
 import aos.framework.core.service.CDZBaseController;
 import aos.framework.core.typewrap.Dto;
+import aos.framework.core.typewrap.Dtos;
 import aos.framework.core.utils.AOSJson;
 import aos.framework.web.router.HttpModel;
 import aos.system.common.utils.SystemCons;
@@ -113,5 +115,56 @@ public class CameraService extends CDZBaseController {
 		}
 		httpModel.setOutMsg("删除成功。");
 	}
+
+	
+	public void listUrl(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+
+		Dto odto = Dtos.newDto();
+		String device_id = qDto.getString("id");
+		/* odto.put("hhhh", "44"); */
+
+		Dto pDto = Dtos.newDto("device_id", device_id);
+		
+		Dto pDto1 = Dtos.newDto();
+		int rows = cameraDao.rows(pDto1);
+		pDto.put("limit", rows);// 默认查询出100个
+
+		pDto.put("start", 0);
+		String num;
+		List<Dto> newListDtos = new ArrayList<Dto>();
+		List<Dto> cameraDtos = sqlDao.list("Camera.listcameras", pDto);
+		if (null != cameraDtos && !cameraDtos.isEmpty()) {
+			num = String.valueOf(cameraDtos.size());
+		for (Dto dto : cameraDtos) {
+			Dto newDto = Dtos.newDto();
+				
+				newDto.put("rtmp", dto.getString("rtmp_"));
+				newDto.put("hls", dto.getString("hls_"));
+				/* newDto.put("is_completed", ""); */
+				newDto.put("num", num);
+			newListDtos.add(newDto);
+
+		}
+			odto.put("data", newListDtos);
+
+		} else {
+			num = "0";
+			Dto newDto = Dtos.newDto();
+			newDto.put("rtmp", "666");
+			newDto.put("hls", "666");
+			newDto.put("num", num);
+			/* newDto.put("is_completed", ""); */
+
+			newListDtos.add(newDto);
+			odto.put("data", newListDtos);
+		}
+
+
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+
+	}
+
 
 }

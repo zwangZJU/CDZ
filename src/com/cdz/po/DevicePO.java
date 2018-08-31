@@ -60,7 +60,7 @@ public class DevicePO extends PO {
 	/**
 	 * 交叉路
 	 */
-	private String cross_road;
+	private String signal_quality;
 	
 	/**
 	 * 用户类型
@@ -160,7 +160,7 @@ public class DevicePO extends PO {
 	/**
 	 * 42代码
 	 */
-	private String code42;
+	private String shutdown_number;
 	
 	/**
 	 * 撤防时间
@@ -290,7 +290,7 @@ public class DevicePO extends PO {
 	/**
 	 * 类型
 	 */
-	private String network_setting_type;
+	private String online_state;
 	
 	/**
 	 * 模板文件
@@ -335,7 +335,7 @@ public class DevicePO extends PO {
 	/**
 	 * 分局号
 	 */
-	private String substation_number;
+	private String gg_;
 	
 	/**
 	 * 停机时间
@@ -345,12 +345,12 @@ public class DevicePO extends PO {
 	/**
 	 * 暂停
 	 */
-	private String pause;
+	private String ccc_;
 	
 	/**
 	 * 故障
 	 */
-	private String breakdown;
+	private String user_acct;
 	
 	/**
 	 * 审查确认
@@ -438,10 +438,10 @@ public class DevicePO extends PO {
 	/**
 	 * 交叉路
 	 * 
-	 * @return cross_road
+	 * @return signal_quality
 	 */
-	public String getCross_road() {
-		return cross_road;
+	public String getSignal_quality() {
+		return signal_quality;
 	}
 	
 	/**
@@ -619,10 +619,10 @@ public class DevicePO extends PO {
 	/**
 	 * 42代码
 	 * 
-	 * @return code42
+	 * @return shutdown_number
 	 */
-	public String getCode42() {
-		return code42;
+	public String getShutdown_number() {
+		return shutdown_number;
 	}
 	
 	/**
@@ -853,10 +853,10 @@ public class DevicePO extends PO {
 	/**
 	 * 类型
 	 * 
-	 * @return network_setting_type
+	 * @return online_state
 	 */
-	public String getNetwork_setting_type() {
-		return network_setting_type;
+	public String getOnline_state() {
+		return online_state;
 	}
 	
 	/**
@@ -934,10 +934,10 @@ public class DevicePO extends PO {
 	/**
 	 * 分局号
 	 * 
-	 * @return substation_number
+	 * @return gg_
 	 */
-	public String getSubstation_number() {
-		return substation_number;
+	public String getGg_() {
+		return gg_;
 	}
 	
 	/**
@@ -952,19 +952,19 @@ public class DevicePO extends PO {
 	/**
 	 * 暂停
 	 * 
-	 * @return pause
+	 * @return ccc_
 	 */
-	public String getPause() {
-		return pause;
+	public String getCcc_() {
+		return ccc_;
 	}
 	
 	/**
 	 * 故障
 	 * 
-	 * @return breakdown
+	 * @return user_acct
 	 */
-	public String getBreakdown() {
-		return breakdown;
+	public String getUser_acct() {
+		return user_acct;
 	}
 	
 	/**
@@ -1061,10 +1061,10 @@ public class DevicePO extends PO {
 	/**
 	 * 交叉路
 	 * 
-	 * @param cross_road
+	 * @param signal_quality
 	 */
-	public void setCross_road(String cross_road) {
-		this.cross_road = cross_road;
+	public void setSignal_quality(String signal_quality) {
+		this.signal_quality = signal_quality;
 	}
 	
 	/**
@@ -1241,10 +1241,10 @@ public class DevicePO extends PO {
 	/**
 	 * 42代码
 	 * 
-	 * @param code42
+	 * @param shutdown_number
 	 */
-	public void setCode42(String code42) {
-		this.code42 = code42;
+	public void setShutdown_number(String shutdown_number) {
+		this.shutdown_number = shutdown_number;
 	}
 	
 	/**
@@ -1475,10 +1475,10 @@ public class DevicePO extends PO {
 	/**
 	 * 类型
 	 * 
-	 * @param network_setting_type
+	 * @param online_state
 	 */
-	public void setNetwork_setting_type(String network_setting_type) {
-		this.network_setting_type = network_setting_type;
+	public void setOnline_state(String online_state) {
+		this.online_state = online_state;
 	}
 	
 	/**
@@ -1556,10 +1556,10 @@ public class DevicePO extends PO {
 	/**
 	 * 分局号
 	 * 
-	 * @param substation_number
+	 * @param gg_
 	 */
-	public void setSubstation_number(String substation_number) {
-		this.substation_number = substation_number;
+	public void setGg_(String gg_) {
+		this.gg_ = gg_;
 	}
 	
 	/**
@@ -1574,19 +1574,19 @@ public class DevicePO extends PO {
 	/**
 	 * 暂停
 	 * 
-	 * @param pause
+	 * @param ccc_
 	 */
-	public void setPause(String pause) {
-		this.pause = pause;
+	public void setCcc_(String ccc_) {
+		this.ccc_ = ccc_;
 	}
 	
 	/**
 	 * 故障
 	 * 
-	 * @param breakdown
+	 * @param user_acct
 	 */
-	public void setBreakdown(String breakdown) {
-		this.breakdown = breakdown;
+	public void setUser_acct(String user_acct) {
+		this.user_acct = user_acct;
 	}
 	
 	/**

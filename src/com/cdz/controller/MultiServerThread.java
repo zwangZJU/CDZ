@@ -403,7 +403,7 @@ public class MultiServerThread extends Thread {
 	                	
 	                	Dto pDto=Dtos.newDto("device_id",this.ascii1);  //把序列号this.ascii1给device_id
 	            		List<DevicePO> deviceDtos = deviceDao.like(pDto);  //模糊查询是否有该设备
-	            		//String device_id = deviceDtos.get(0).getDevice_id();
+	            		//device_id = deviceDtos.get(0).getDevice_id();
 	            		device_id = "26666666";  //模拟终端测试时用这一句，否则用上面那句
 	            		
 	            		Dto pDto1 = Dtos.newDto("device_id", device_id);
@@ -418,7 +418,7 @@ public class MultiServerThread extends Thread {
 	                		//devicePO_.setDevice_id(Corp_ID);
 	                		
 	                		//devicePO_.setDevice_id(str_ascii);   //设置设备序列号，对厂家有意义
-	                		devicePO_.setUser_id(str_ACCT);    //设置设备账号（每个保安公司不会重复），对保安公司有意义
+	                		devicePO_.setUser_acct(str_ACCT);    //设置设备账号（每个保安公司不会重复），对保安公司有意义
 	                		deviceDao.insert(devicePO_);
 	                		System.out.println("yes two");
 	                		
@@ -453,8 +453,59 @@ public class MultiServerThread extends Thread {
 	            		
 	            		if(resultLatter_1.length()>1) {
 		            		if(resultLatter_1.substring(2, 4).equals("4f")&&resultLatter_1.substring(4, 6).equals("4b")&&!resultLatter_1.substring(6,8).equals("30"))
-		            			//上一句为什么是30？
 		            			System.out.println("xintiao");
+		            		
+		            		String signal_quality = null;
+		            		
+		            		switch(resultLatter_1.substring(6,8)) {
+		                	
+		                	case "31":
+		                		System.out.println("10%");
+		                		signal_quality="10%";
+		                		break;
+		                	case "32":
+		                		System.out.println("20%");
+		                		signal_quality="20%";
+		                		break;
+		                	case "33":
+		                		System.out.println("30%");
+		                		signal_quality="30%";
+		                		break;
+		                	case "34":
+		                		System.out.println("40%");
+		                		signal_quality="40%";
+		                		break;
+		                	case "35":
+		                		System.out.println("50%");
+		                		signal_quality="50%";
+		                		break;
+		                	case "36":
+		                		System.out.println("60%");
+		                		signal_quality="60%";
+		                		break;
+		                	case "37":
+		                		System.out.println("70%");
+		                		signal_quality="70%";
+		                		break;
+		                	case "38":
+		                		System.out.println("80%");
+		                		signal_quality="80%";
+		                		break;
+		                	case "39":
+		                		System.out.println("90%");
+		                		signal_quality="90%";
+		                		break;
+		                	case "3A":
+		                		System.out.println("100%");
+		                		signal_quality="100%";
+		                		break;
+	                	}
+		            			
+		            		Dto pDto6 = Dtos.newDto("device_id",device_id);
+		        			DevicePO devicePO6=deviceDao.selectOne(pDto6);
+							devicePO6.setLast_date(AOSUtils.getDateTime());  //最后来心跳信号时间
+							devicePO6.setSignal_quality(signal_quality);
+							deviceDao.updateByKey(devicePO6);
 	            		}
 	            		
 	            		/*Dto pDto=Dtos.newDto("device_id",this.ascii1);  //把序列号this.ascii1给device_id
@@ -534,7 +585,11 @@ public class MultiServerThread extends Thread {
 			            		String resultLatter_2 = strTo16(decodeResult_2);
 			            		System.out.println("resultLatter_2:"+resultLatter_2);
 			            		System.out.println("resultLatter_2.length():"+resultLatter_2.length());	
-		            			
+			            		CCC = resultLatter_2.substring(resultLatter_2.length()-2, resultLatter_2.length());
+		            			System.out.println("CCC:"+CCC);
+		            			String str_CCC = decode(CCC);
+		            			System.out.println("str_CCC:"+str_CCC);
+			            		
 		            			if(resultLatter_1.substring(17, 19).equals("31"))	
 			            			Q = "1";  //触发，表示新事件
 		            			else if(resultLatter_1.substring(17, 19).equals("33"))
@@ -546,7 +601,7 @@ public class MultiServerThread extends Thread {
 		            			
 		            			GG = resultLatter_1.substring(25, 29);
 		            			System.out.println("GG:"+GG);
-		            			//CCC = c.substring(25, 29);
+		            			String str_GG = decode(GG);
 		            			
 		            			/*
 			            		Dto pDto2;
@@ -574,9 +629,11 @@ public class MultiServerThread extends Thread {
 		            			alarm_logPO.setUser_phone(devicePO3.getPhone());
 		            			alarm_logPO.setAlarm_time(new Date());
 		            			alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
-		            			alarm_logPO.setBeiyong1_(str_EEE);
-		            			alarm_logPO.setBeiyong2_("0");
+		            			alarm_logPO.setAlert_code(str_EEE);  //警情代码
+		            			alarm_logPO.setProcess("0");  //是否接警
+		            			alarm_logPO.setDefence_area(str_CCC);  //防区号
 		            			alarm_logPO.setType_("0");
+		            			//加CCC和GG
 		            			alarm_logDao.insert(alarm_logPO);
 		            			
 		            			Push.pushToSingle(devicePO3.getPhone());
@@ -587,6 +644,9 @@ public class MultiServerThread extends Thread {
 		            			Dto pDto5 = Dtos.newDto("device_id",device_id);
 			        			DevicePO devicePO4=deviceDao.selectOne(pDto5);
 								devicePO4.setIs_alarming(Q);
+								devicePO4.setGg_(str_GG);
+								//devicePO4.setCcc_(str_CCC);
+								//这里还要设置ACCT,GG,CCC
 								deviceDao.updateByKey(devicePO4);
 								
 		            		}

@@ -33,6 +33,6 @@
 				   AND alarm_log.alarm_time <![CDATA[ < ]]> date_add(#{date_end}, INTERVAL 1 day) <!-- 新增时间 -->
 				</if>	
  		</where>
- 		order by beiyong2_ ASC, alarm_id DESC
+ 		order by process ASC, alarm_id DESC
 	</select>
 </mapper>

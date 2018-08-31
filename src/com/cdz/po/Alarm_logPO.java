@@ -75,17 +75,17 @@ public class Alarm_logPO extends PO {
 	/**
 	 * 备用1
 	 */
-	private String beiyong1_;
+	private String alert_code;
 	
 	/**
 	 * 备用2
 	 */
-	private String beiyong2_;
+	private String process;
 	
 	/**
 	 * 备用3
 	 */
-	private String beiyong3_;
+	private String defence_area;
 	
 
 	/**
@@ -190,28 +190,28 @@ public class Alarm_logPO extends PO {
 	/**
 	 * 备用1
 	 * 
-	 * @return beiyong1_
+	 * @return alert_code
 	 */
-	public String getBeiyong1_() {
-		return beiyong1_;
+	public String getAlert_code() {
+		return alert_code;
 	}
 	
 	/**
 	 * 备用2
 	 * 
-	 * @return beiyong2_
+	 * @return process
 	 */
-	public String getBeiyong2_() {
-		return beiyong2_;
+	public String getProcess() {
+		return process;
 	}
 	
 	/**
 	 * 备用3
 	 * 
-	 * @return beiyong3_
+	 * @return defence_area
 	 */
-	public String getBeiyong3_() {
-		return beiyong3_;
+	public String getDefence_area() {
+		return defence_area;
 	}
 	
 
@@ -317,28 +317,28 @@ public class Alarm_logPO extends PO {
 	/**
 	 * 备用1
 	 * 
-	 * @param beiyong1_
+	 * @param alert_code
 	 */
-	public void setBeiyong1_(String beiyong1_) {
-		this.beiyong1_ = beiyong1_;
+	public void setAlert_code(String alert_code) {
+		this.alert_code = alert_code;
 	}
 	
 	/**
 	 * 备用2
 	 * 
-	 * @param beiyong2_
+	 * @param process
 	 */
-	public void setBeiyong2_(String beiyong2_) {
-		this.beiyong2_ = beiyong2_;
+	public void setProcess(String process) {
+		this.process = process;
 	}
 	
 	/**
 	 * 备用3
 	 * 
-	 * @param beiyong3_
+	 * @param defence_area
 	 */
-	public void setBeiyong3_(String beiyong3_) {
-		this.beiyong3_ = beiyong3_;
+	public void setDefence_area(String defence_area) {
+		this.defence_area = defence_area;
 	}
 	
 

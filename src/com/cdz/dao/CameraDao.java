@@ -20,8 +20,6 @@ import po.CameraPO;
  */
 @Dao
 public interface CameraDao {
-	
-	int updateBySerial(CameraPO cameraPO);
 
 	/**
 	 * 插入一个数据持久化对象(插入字段为传入PO实体的非空属性)
@@ -50,7 +48,7 @@ public interface CameraDao {
 	 * @return int 返回影响行数
 	 */
 	int updateByKey(CameraPO cameraPO);
-
+	int updateBySerial(CameraPO cameraPO);
 	/**
 	 * 根据主键查询并返回数据持久化对象
 	 * 
