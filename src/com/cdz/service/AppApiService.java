@@ -158,7 +158,78 @@ public class AppApiService extends CDZBaseController {
 
 	private static CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
 	static String Alias = "18392888103";
+	/*
+	 * ##########################################################################
+	 * 取消报警
+	 */
+	/*
+	 * Desktop.getDesktop().open(new File("C:/Users/Administrator/Desktop/0.jpg"));
+	 */
+
+	public void uploadRealTimeLocation(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		String phone = qDto.getString("phone");
+		String lat = qDto.getString("latitude");
+		String lon = qDto.getString("longitude");
+		
+
+		String address = lat + "#" + lon;
+
+		Dto pDto = Dtos.newDto("account", phone);
+		Basic_userPO basic_userPO = basic_userDao.selectOne(pDto);
+		basic_userPO.setAddress(address);
+
+		basic_userDao.updateByKey(basic_userPO);
+
+
+
+		odto.put("status", "1");
+		odto.put("msg", "上传结果成功");
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
+
+	public void releaseAlarm(HttpModel httpModel)  {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		String phone = qDto.getString("phone");
+		String reason = qDto.getString("reason");
+		
+		Dto pDto1 = Dtos.newDto();
+
+		Dto pDto = Dtos.newDto();
+		pDto.put("user_phone", phone);
+		
+		int rows = alarm_logDao.rows(pDto1);
+
+		pDto.put("limit", rows);// 默认查询出100个
+
+		pDto.put("start", 0);
+		
+
+		List<Dto> sosDtos = sqlDao.list("Alarm_log.listSos", pDto);
+		int num = sosDtos.size();
+		Dto dto = sosDtos.get(num - 1);
+		String id = dto.getString("alarm_id");
+		
+		Dto pDto2 = Dtos.newDto("alarm_id", id);
+		Alarm_logPO alarm_logPO = alarm_logDao.selectOne(pDto2);
+		alarm_logPO.setIs_cancel("1");
+		alarm_logPO.setReason_(reason);
+		
+		alarm_logDao.updateByKey(alarm_logPO);
 	
+
+
+		odto.put("status", "1");
+		odto.put("msg", "取消报警成功");
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
+
 	public void deleteCamera(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();

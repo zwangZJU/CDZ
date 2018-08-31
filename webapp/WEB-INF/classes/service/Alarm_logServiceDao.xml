@@ -35,4 +35,18 @@
  		</where>
  		order by process ASC, alarm_id DESC
 	</select>
+	<select id="listSos" parameterType="Dto" resultType="Dto">
+		SELECT
+		
+		<include refid="dao.Alarm_logDao.column" />
+		FROM alarm_log
+		<where>
+		<if test="user_phone != null and user_phone != ''">
+				      AND user_phone = #{user_phone}
+				     
+				</if>
+				AND type_ = 1
+ 		</where>
+	</select>
+	
 </mapper>
