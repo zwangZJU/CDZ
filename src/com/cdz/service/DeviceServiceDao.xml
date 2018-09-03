@@ -51,7 +51,7 @@
  		</select>
  		
  	<select id="queryDevice" parameterType="Dto" resultType="Dto">
-		SELECT
+		SELECT GETDATE()-shutdown_time as interval_time
 		 <!-- CONCAT(name,account) AS display. -->
 		
 		FROM basic_user

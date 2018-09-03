@@ -188,28 +188,51 @@ public class Alarm_logService extends CDZBaseController {
 	}
 	
 	//单个接警
-	public void receive_alarmAlarm_log(HttpModel httpModel) {
-		/*Dto inDto = httpModel.getInDto();
-		Alarm_logPO alarm_logPO = new Alarm_logPO();
-		alarm_logPO.copyProperties(inDto);
-		System.out.println(alarm_logPO.getHandler_());*/
-		//alarm_logDao.updateByKey(alarm_logPO);
+public void receive_alarmAlarm_log(HttpModel httpModel) {
 		
 		Alarm_logPO alarm_logPO = new Alarm_logPO();
 		Dto qDto = httpModel.getInDto();
 		Dto pDto = Dtos.newDto();
 		String alarm_id = qDto.getString("id");
-		//pDto.put("alarm_id", "1808091745501987");
-		//pDto.put("device_id", device_id);
+		String picurl = "http://118.126.95.215:9090/cdz/myupload/0/0/0.jpg";
+		String lat;
+		String user_address = "";
+		String lon;
+		Dto newDto = Dtos.newDto();
+
+		Dto pDto1 = Dtos.newDto("alarm_id", alarm_id);
+		Alarm_logPO alarm_logPO2 = alarm_logDao.selectOne(pDto1);
+		String device_id = alarm_logPO2.getDevice_id();
+		if (null != device_id && !device_id.isEmpty()) {
+			Dto pDto2 = Dtos.newDto("device_id", device_id);
+			DevicePO devicePO = deviceDao.selectOne(pDto2);
+			user_address = devicePO.getUser_address();
+			String[] info = user_address.split(" ");
+			lat = info[1];
+			lat = lat.replace(",", "");
+			lon = info[3];
+
+		} else {
+			String phone = alarm_logPO2.getUser_phone();
+			Dto pDto2 = Dtos.newDto("account", phone);
+			Basic_userPO basic_userPO = basic_userDao.selectOne(pDto2);
+			String address = basic_userPO.getAddress();
+
+			String[] info = address.split("#");
+			lat = info[0];
+
+			lon = info[1];
+
+		}
+
 		Alarm_logPO alarm_logPO1;
-		//Dto pDto = Dtos.newDto("alarm_id",alarm_logPO.getAlarm_id());
-		//Alarm_logPO alarm_logPO1 =alarm_logDao.selectOne(pDto); 
+
 		if(alarm_id.substring(alarm_id.length()-1,alarm_id.length()).equals(","))
 			alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id.substring(0,alarm_id.length()-1)); 
 		else
 			alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id); 
 		
-		Dto newDto = Dtos.newDto();
+
 		//newDto.put("handler_phone", alarm_logPO1.getHandler_phone());
 		newDto.put("alarm_time", alarm_logPO1.getAlarm_time());
 		newDto.put("user_phone", alarm_logPO1.getUser_phone());
@@ -217,31 +240,18 @@ public class Alarm_logService extends CDZBaseController {
 		newDto.put("handler_", alarm_logPO1.getHandler_());
 		newDto.put("handler_phone", alarm_logPO1.getHandler_phone());
 		
-		//Dto pDto1 = Dtos.newDto("device_id",alarm_logPO.getDevice_id());
-		//DevicePO devicePO =deviceDao.selectByDeviceId(device_id.substring(0,device_id.length()-1));
-		
-		/*DevicePO devicePO =deviceDao.selectByDeviceId(alarm_logPO1.getDevice_id());
-		newDto.put("user_address", devicePO.getUser_address());
-		newDto.put("user_name", devicePO.getUser_name());
-		newDto.put("user_id", devicePO.getUser_id());*/
-	 
+		newDto.put("lat", lat);
+		newDto.put("lon", lon);
+		newDto.put("picurl", picurl);
 		Dto Dto_user = Dtos.newDto("account", alarm_logPO1.getUser_phone());
 		//Dto_user.put("account", alarm_logPO1.getUser_phone());
 		Basic_userPO basic_userPO = basic_userDao.selectOne(Dto_user);
-		newDto.put("user_address", basic_userPO.getAddress());
+		newDto.put("user_address", user_address);
 		newDto.put("user_name", basic_userPO.getName());
-		//newDto.put("user_id", basic_userPO.getUser_id());
 		
-		//几个问题：用户编号，basic_user和device里面的用户编号不一样。一键报警时不能根据设备查询用户。
-		//双机后不能动
-		//一进alarm_log就报警弹窗
 		
 		httpModel.setOutMsg(AOSJson.toJson(newDto));
-		//httpModel.setOutMsg(alarm_logPO1.getHandler_phone()+"#"+devicePO.getUser_address());
 		
-		/*Dto qDto = httpModel.getInDto();
-		List<Dto> list = sqlDao.list("Basic_user.listHandler1", httpModel.getInDto());
-		httpModel.setOutMsg(AOSJson.toGridJson(list));*/
 	}
 	
 	//确认单个接警，对is_alarming进行修改

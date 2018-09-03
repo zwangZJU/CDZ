@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- app_version[app_version]SQLMapper自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2018-09-03 12:54:23 -->
+
+<mapper namespace="dao.App_versionDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.App_versionPO">
+		INSERT INTO app_version (
+		<if test="version_no != null and version_no != ''">
+	         version_no, <!-- 版本号 -->
+		</if>
+		<if test="release_time != null and release_time != ''">
+	         release_time, <!-- 发布时间 -->
+		</if>
+		<if test="update_content != null and update_content != ''">
+	         update_content, <!-- 更新内容 -->
+		</if>
+		<if test="download_url != null and download_url != ''">
+	         download_url, <!-- 下载链接 -->
+		</if>
+		<if test="package_size != null and package_size != ''">
+	         package_size, <!-- 安装包大小 -->
+		</if>
+		<if test="download_times != null and download_times != ''">
+	         download_times, <!-- 下载次数 -->
+		</if>
+		<if test="beiyong1_ != null and beiyong1_ != ''">
+	         beiyong1_, <!-- 备用1 -->
+		</if>
+		<if test="beiyong2_ != null and beiyong2_ != ''">
+	         beiyong2_, <!-- 备用2 -->
+		</if>
+		<if test="beiyong3_ != null and beiyong3_ != ''">
+	         beiyong3_, <!-- 备用3 -->
+		</if>
+		<if test="app_vesino_id != null and app_vesino_id != ''">
+	          app_vesino_id  <!-- 版本序列号 -->
+	   </if>
+		)VALUES(
+		<if test="version_no != null and version_no != ''">
+	          #{version_no, jdbcType=VARCHAR}, <!-- 版本号 -->
+	    </if>
+		<if test="release_time != null and release_time != ''">
+	          #{release_time, jdbcType=VARCHAR}, <!-- 发布时间 -->
+	    </if>
+		<if test="update_content != null and update_content != ''">
+	          #{update_content, jdbcType=VARCHAR}, <!-- 更新内容 -->
+	    </if>
+		<if test="download_url != null and download_url != ''">
+	          #{download_url, jdbcType=VARCHAR}, <!-- 下载链接 -->
+	    </if>
+		<if test="package_size != null and package_size != ''">
+	          #{package_size, jdbcType=VARCHAR}, <!-- 安装包大小 -->
+	    </if>
+		<if test="download_times != null and download_times != ''">
+	          #{download_times, jdbcType=VARCHAR}, <!-- 下载次数 -->
+	    </if>
+		<if test="beiyong1_ != null and beiyong1_ != ''">
+	          #{beiyong1_, jdbcType=VARCHAR}, <!-- 备用1 -->
+	    </if>
+		<if test="beiyong2_ != null and beiyong2_ != ''">
+	          #{beiyong2_, jdbcType=VARCHAR}, <!-- 备用2 -->
+	    </if>
+		<if test="beiyong3_ != null and beiyong3_ != ''">
+	          #{beiyong3_, jdbcType=VARCHAR}, <!-- 备用3 -->
+	    </if>
+		<if test="app_vesino_id != null and app_vesino_id != ''">
+		     #{app_vesino_id, jdbcType=VARCHAR}  <!-- 版本序列号 -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.App_versionPO">
+		INSERT INTO app_version (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{app_vesino_id, jdbcType=VARCHAR},  <!-- 版本序列号 -->
+		    #{version_no, jdbcType=VARCHAR},  <!-- 版本号 -->
+		    #{release_time, jdbcType=VARCHAR},  <!-- 发布时间 -->
+		    #{update_content, jdbcType=VARCHAR},  <!-- 更新内容 -->
+		    #{download_url, jdbcType=VARCHAR},  <!-- 下载链接 -->
+		    #{package_size, jdbcType=VARCHAR},  <!-- 安装包大小 -->
+		    #{download_times, jdbcType=VARCHAR},  <!-- 下载次数 -->
+		    #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
+		    #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+		    #{beiyong3_, jdbcType=VARCHAR}  <!-- 备用3 -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.App_versionPO">
+		UPDATE app_version
+		<set>
+			<if test="app_vesino_id != null">
+		          app_vesino_id = #{app_vesino_id, jdbcType=VARCHAR},  <!-- 版本序列号 -->
+			</if>
+			<if test="version_no != null">
+		          version_no = #{version_no, jdbcType=VARCHAR},  <!-- 版本号 -->
+			</if>
+			<if test="release_time != null">
+		          release_time = #{release_time, jdbcType=VARCHAR},  <!-- 发布时间 -->
+			</if>
+			<if test="update_content != null">
+		          update_content = #{update_content, jdbcType=VARCHAR},  <!-- 更新内容 -->
+			</if>
+			<if test="download_url != null">
+		          download_url = #{download_url, jdbcType=VARCHAR},  <!-- 下载链接 -->
+			</if>
+			<if test="package_size != null">
+		          package_size = #{package_size, jdbcType=VARCHAR},  <!-- 安装包大小 -->
+			</if>
+			<if test="download_times != null">
+		          download_times = #{download_times, jdbcType=VARCHAR},  <!-- 下载次数 -->
+			</if>
+			<if test="beiyong1_ != null">
+		          beiyong1_ = #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
+			</if>
+			<if test="beiyong2_ != null">
+		          beiyong2_ = #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+			</if>
+			<if test="beiyong3_ != null">
+		          beiyong3_ = #{beiyong3_, jdbcType=VARCHAR},  <!-- 备用3 -->
+			</if>
+		</set>
+		WHERE  app_vesino_id = #{app_vesino_id}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM app_version WHERE  app_vesino_id = #{app_vesino_id}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.App_versionPO">
+		SELECT
+		<include refid="column" />
+		FROM app_version WHERE  app_vesino_id = #{app_vesino_id}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.App_versionPO">
+		SELECT
+		    <include refid="column" />
+		FROM app_version
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.App_versionPO">
+		SELECT
+			<include refid="column" />	
+		FROM app_version
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.App_versionPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM app_version
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.App_versionPO">
+		SELECT
+			<include refid="column" />	
+		FROM app_version
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.App_versionPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM app_version
+		<where>
+		    <include refid="like" />
+		</where>	
+		
+		
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM app_version
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM app_version
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  app_vesino_id,  <!-- 版本序列号 -->
+		  version_no,  <!-- 版本号 -->
+		  release_time,  <!-- 发布时间 -->
+		  update_content,  <!-- 更新内容 -->
+		  download_url,  <!-- 下载链接 -->
+		  package_size,  <!-- 安装包大小 -->
+		  download_times,  <!-- 下载次数 -->
+		  beiyong1_,  <!-- 备用1 -->
+		  beiyong2_,  <!-- 备用2 -->
+		  beiyong3_  <!-- 备用3 -->
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  app_version.app_vesino_id,  <!-- 版本序列号 -->
+		  app_version.version_no,  <!-- 版本号 -->
+		  app_version.release_time,  <!-- 发布时间 -->
+		  app_version.update_content,  <!-- 更新内容 -->
+		  app_version.download_url,  <!-- 下载链接 -->
+		  app_version.package_size,  <!-- 安装包大小 -->
+		  app_version.download_times,  <!-- 下载次数 -->
+		  app_version.beiyong1_,  <!-- 备用1 -->
+		  app_version.beiyong2_,  <!-- 备用2 -->
+		  app_version.beiyong3_  <!-- 备用3 -->
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="app_vesino_id != null and app_vesino_id != ''">
+		      AND app_vesino_id = #{app_vesino_id}  <!-- 版本序列号 -->
+		</if>
+	    <if test="version_no != null and version_no != ''">
+		      AND version_no = #{version_no}  <!-- 版本号 -->
+		</if>
+	    <if test="release_time != null and release_time != ''">
+		      AND release_time = #{release_time}  <!-- 发布时间 -->
+		</if>
+	    <if test="update_content != null and update_content != ''">
+		      AND update_content = #{update_content}  <!-- 更新内容 -->
+		</if>
+	    <if test="download_url != null and download_url != ''">
+		      AND download_url = #{download_url}  <!-- 下载链接 -->
+		</if>
+	    <if test="package_size != null and package_size != ''">
+		      AND package_size = #{package_size}  <!-- 安装包大小 -->
+		</if>
+	    <if test="download_times != null and download_times != ''">
+		      AND download_times = #{download_times}  <!-- 下载次数 -->
+		</if>
+	    <if test="beiyong1_ != null and beiyong1_ != ''">
+		      AND beiyong1_ = #{beiyong1_}  <!-- 备用1 -->
+		</if>
+	    <if test="beiyong2_ != null and beiyong2_ != ''">
+		      AND beiyong2_ = #{beiyong2_}  <!-- 备用2 -->
+		</if>
+	    <if test="beiyong3_ != null and beiyong3_ != ''">
+		      AND beiyong3_ = #{beiyong3_}  <!-- 备用3 -->
+		</if>
+	</sql>
+	
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="app_vesino_id != null and app_vesino_id != ''">
+		      AND app_vesino_id like '%${app_vesino_id}%'  <!-- 版本序列号 -->
+		</if>
+	    <if test="version_no != null and version_no != ''">
+		      AND version_no like '%${version_no}%'  <!-- 版本号 -->
+		</if>
+	    <if test="release_time != null and release_time != ''">
+		      AND release_time like '%${release_time}%'  <!-- 发布时间 -->
+		</if>
+	    <if test="update_content != null and update_content != ''">
+		      AND update_content like '%${update_content}%'  <!-- 更新内容 -->
+		</if>
+	    <if test="download_url != null and download_url != ''">
+		      AND download_url like '%${download_url}%'  <!-- 下载链接 -->
+		</if>
+	    <if test="package_size != null and package_size != ''">
+		      AND package_size like '%${package_size}%'  <!-- 安装包大小 -->
+		</if>
+	    <if test="download_times != null and download_times != ''">
+		      AND download_times like '%${download_times}%'  <!-- 下载次数 -->
+		</if>
+	    <if test="beiyong1_ != null and beiyong1_ != ''">
+		      AND beiyong1_ like '%${beiyong1_}%'  <!-- 备用1 -->
+		</if>
+	    <if test="beiyong2_ != null and beiyong2_ != ''">
+		      AND beiyong2_ like '%${beiyong2_}%'  <!-- 备用2 -->
+		</if>
+	    <if test="beiyong3_ != null and beiyong3_ != ''">
+		      AND beiyong3_ like '%${beiyong3_}%'  <!-- 备用3 -->
+		</if>
+	</sql>
+	
+</mapper>

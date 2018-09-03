@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--app版本[app_version]SQL语句 -->
+<mapper namespace="App_version">
+	
+	<select id="listApp_versionsPage" parameterType="Dto" resultType="Dto">
+		SELECT
+	
+		<include refid="dao.App_versionDao.column" />
+		FROM app_version
+		<where>
+ 		</where>
+	</select>
+</mapper>

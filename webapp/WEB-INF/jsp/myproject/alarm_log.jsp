@@ -1,21 +1,19 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ include file="/WEB-INF/jsp/common/tags.jsp"%>
 <aos:html title="alarm_log" base="http" lib="ext">
-
-<script type="text/javascript">
-/* var audio = document.getElementById("bgMusic"); */
-
-//播放(继续播放)
- 
-
-
-    
-</script>   
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ThTvAqi8T9m1Y9sKYtoAUi65eTQmRa7j"></script>
+</head>  
 <body onload = sendRequest()>
  <audio id="bgMusic">
     <source  src="http://118.126.95.215:9090/cdz/static/music/alarm.wav" >
     <source  src="hangge.ogg" type="audio/ogg">
 </audio> 
+<div id="container" >
+    </div>
 
 </body>
 <aos:onready>
@@ -224,8 +222,10 @@
 		
 	    var audio = document.getElementById("bgMusic");
 	    audio.play();
-	    var msg1 = 'AOS应用基础平台基于JavaEE技术体系，以“标准功能可复用、通用模块可配置、行业需求快速开发、异构系统无缝集成”为目标，为软件开发团队提供高效可控、随需应变、快速实现业务需求的全栈式技术解决方案。帮助企业落实IT策略、屏蔽技术壁垒，快速实现业务愿景。使其获得更低成本、更高质量、更快交付业务和运维支持的核心技术竞争力。';
-	    	Ext.create(
+	    //var msg1 = 'AOS应用基础平台基于JavaEE技术体系，以“标准功能可复用、通用模块可配置、行业需求快速开发、异构系统无缝集成”为目标，为软件开发团队提供高效可控、随需应变、快速实现业务需求的全栈式技术解决方案。帮助企业落实IT策略、屏蔽技术壁垒，快速实现业务愿景。使其获得更低成本、更高质量、更快交付业务和运维支持的核心技术竞争力。';
+	    var msg1 = '<p style="font-size:30px">手动报警                       !!!</p>';
+	    
+	    Ext.create(
 					'widget.uxNotification',
 					{
 						position : 'br',
@@ -595,7 +595,15 @@
 	function _w_update_show_all_button()
 	{
 		var record = AOS.selectone(AOS.get('_datagridpanel'));
-
+		  var id1=record.data.device_id;
+	        if(id1==null){
+	        	setInterval(openw,3000);
+	        }
+	        else{
+	        	openw();
+	        };
+		
+		function   openw(){
 		//var info = Ext.util.Cookies.get('juid');
 		Ext.Ajax.request({
 		    url: '/cdz/http/do.jhtml?router=alarm_logService.receive_alarmAlarm_log',
@@ -606,7 +614,32 @@
 		        var text = Ext.decode(response.responseText);
 		        // process server response here
 		        //var value1=text["user_address"];
-		   
+		   var text = Ext.decode(response.responseText);
+		    	
+		    	 var lon=text.lon; 
+		    	 var lat=text.lat; 
+		    	 
+		       
+		        	
+		        
+		        	var map = new BMap.Map("container");
+		        	
+		        	     // 初始化地图,设置中心点坐标和地图级别
+		              
+		        	map.enableScrollWheelZoom(); 	
+		        	               //启用滚轮放大缩小
+		        	 var point5=new BMap.Point(lon,lat); 
+		        
+		        	map.centerAndZoom(point5,20);
+		        
+		        	var marker = new BMap.Marker(point5);
+		        	map.addOverlay(marker);
+		        	var top_right_navigation = new BMap.NavigationControl({
+		        		anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL
+		        				});
+		        	map.addControl(top_right_navigation); 
+		        	
+		        	
 		        if(text.device_id == null)
 		        	Ext.getCmp("e").setValue("无设备");
 		        else
@@ -628,7 +661,8 @@
 		    var productForm = Ext.create("Ext.form.Panel", {
 		        title: "信息表",
 		        width: 300,
-		        height: 400,
+		        height: 290,
+		        closeAction : 'close', 
 		        frame: true,
 		         fieldDefaults: {
 		            labelSeparator: ":",
@@ -645,31 +679,86 @@
 		        	 { fieldLabel: "设备编号", id:"e",xtype: "textfield", name: "device_id", value: "/" },
 		        	 { fieldLabel: "报警时间", id:"f",xtype: "textfield", name: "alarm_time", value: "/" },
 		        	 { fieldLabel: "处理人", id:"g",xtype: "textfield", name: "handler_", value: "/" },
-		        	 { fieldLabel: "处理人手机号", id:"h",xtype: "textfield", name: "handler_phone", value: "/" }
-		        	 //{ fieldLabel: "接警人", value: "/" }
-		            //{ fieldLabel: "产品名称", id:"a",xtype: "textfield", name: "productName", value: "U盘" },
-		            //{ fieldLabel: "金额", xtype: "numberfield", name: "price", value: 100 },
-		            //{ fieldLabel: "生产日期", xtype: "datefield", format: "Y-m-d", name: "date", value: new Date() },
-		            //{ xtype: "hidden", name: "productId", value: "001" },
-		            //{ fieldLabel: "产品简介", name: "introduction", xtype: "textarea" }
-		        ] 
-		       /*  buttons: [
-		            { text: "加载简介", handler: loadIntroduction }
-		        ] */
+		        	 { fieldLabel: "处理人手机号", id:"h",xtype: "textfield", name: "handler_phone", value: "/" },
+		        	
+		        	 {
+		            	 id : 'image_button1', 
+		            	 xtype : 'button',
+		            	 text : '防区图1',
+		            	 width: 150,
+		 		        height: 40,
+		            	 handler : function() {
+		            		 Ext.Ajax.request({
+				    			    url: '/cdz/http/do.jhtml?router=alarm_logService.receive_alarmAlarm_log',
+				    			    params: {
+				    			        id: record.data.alarm_id
+				    	    		},
+				    			    success: function(response){
+				    			    	 var text = Ext.decode(response.responseText);
+				    			    	
+				    			    	 var picurl=text.picurl; 
+				    			    	
+		            		
+		            		 var picture1 = new Ext.Window({  
+		            		       
+		            		        title:"防区图",
+		            		        
+		            		         width:1100,
+		            		         height:480,
+		            		         modal : true,  
+		            		        
+		            		        frame: true,  
+		            		        autoscroll:true,
+		            		       
+		            		        items : [new Ext.Panel({  
+		            		            xtype : 'panel', 
+		            		            title:"防区图",
+		            		            id : 'photo1',
+		            		            autoscroll:true,
+		            		            html:'<img src='+picurl+' onclick=window.open("+picurl+","","fullscreen=1") width="1100" height="450"   />'
+		            		            
+		            		              })]
+		            		 }); 
+		            		 
+		            		        	 picture1.show();
+		            		 
+				    			    }
+		            		 });
+		            		        	 
+		            	 }
+		             
+		            	 }
+		        	 
+		        	 
+		        	 ]
+		        
+		       
 		    });
 		    
 		
 			var root = new Ext.Window({
 				title:"报警处理",
-				width:600,
-				height:400,
+				width:900,
+				height:450,
 				frame:false,
-				items:[productForm],	
+				closeAction : 'hide', 
+				layout : "column", // 从左往右的布局
+				items:[productForm,{
+					
+					title:'地图	',
+					xtype:'panel',
+					el:'container',
+					width:580,
+					height:500,
+					
+					
+					
+					resizable:true
+				}],	
 
 				resizable:false,
 				closable:true,
-				draggable:false,
-				modal:true,
+			
 				
 				buttons: [
 					{ xtype: "button", text: "确定", 
@@ -709,7 +798,9 @@
 				
 			});
 			root.show();
+		}
 	}
+		
 
 	function fn_balance_render7(value, metaData, record, rowIndex, colIndex,
 			store) {
@@ -776,14 +867,14 @@ function videoPlay() {
 			    var video1=	new Ext.Panel({  
 	                     xtype : 'panel',  
 	                   id : 'playerPanel1',  
-	                   html : '<video id="myPlayer1" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+	                   html : '<video id="myPlayer1" poster="" controls playsInline webkit-playsinline autoplay width="320" height="240">'  
 	                           + '<source src='+rtmp[0]+' type="" />' +  
 	                        '</video>'  
 	                     });
 			    var video2=	new Ext.Panel({  
                     xtype : 'panel',  
                   id : 'playerPanel2',  
-                  html : '<video id="myPlayer2" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+                  html : '<video id="myPlayer2" poster="" controls playsInline webkit-playsinline autoplay width="320" height="240">'  
                           + '<source src='+rtmp[1]+' type="" />' +  
                        '</video>'  
                     });	     
@@ -791,28 +882,28 @@ function videoPlay() {
 			    var video3=	new Ext.Panel({  
                     xtype : 'panel',  
                   id : 'playerPanel3',  
-                  html : '<video id="myPlayer3" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+                  html : '<video id="myPlayer3" poster="" controls playsInline webkit-playsinline autoplay width="320" height="240">'  
                           + '<source src='+rtmp[2]+' type="" />' +  
                        '</video>'  
                     });	     
 			    var video4=	new Ext.Panel({  
                     xtype : 'panel',  
                   id : 'playerPanel4',  
-                  html : '<video id="myPlayer4" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+                  html : '<video id="myPlayer4" poster="" controls playsInline webkit-playsinline autoplay width="320" height="240">'  
                           + '<source src='+rtmp[3]+' type="" />' +  
                        '</video>'  
                     });	     
 			    var video5=	new Ext.Panel({  
                     xtype : 'panel',  
                   id : 'playerPanel5',  
-                  html : '<video id="myPlayer5" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+                  html : '<video id="myPlayer5" poster="" controls playsInline webkit-playsinline autoplay width="320" height="240">'  
                           + '<source src='+rtmp[4]+' type="" />' +  
                        '</video>'  
                     });
 		    var video6=	new Ext.Panel({  
                xtype : 'panel',  
              id : 'playerPanel6',  
-             html : '<video id="myPlayer6" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+             html : '<video id="myPlayer6" poster="" controls playsInline webkit-playsinline autoplay width="320" height="240">'  
                      + '<source src='+rtmp[5]+' type="" />' +  
                   '</video>'  
                });	     
@@ -820,14 +911,14 @@ function videoPlay() {
 		    var video7=	new Ext.Panel({  
                xtype : 'panel',  
              id : 'playerPanel7',  
-             html : '<video id="myPlayer7" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+             html : '<video id="myPlayer7" poster="" controls playsInline webkit-playsinline autoplay width="320" height="240">'  
                      + '<source src='+rtmp[6]+' type="" />' +  
                   '</video>'  
                });	     
 		    var video8=	new Ext.Panel({  
                xtype : 'panel',  
              id : 'playerPanel8',  
-             html : '<video id="myPlayer8" poster="" controls playsInline webkit-playsinline autoplay width="160" height="105">'  
+             html : '<video id="myPlayer8" poster="" controls playsInline webkit-playsinline autoplay width="230" height="210">'  
                      + '<source src='+rtmp[7]+' type="" />' +  
                   '</video>'  
                });	 
@@ -843,13 +934,13 @@ function videoPlay() {
     	           var dplayer = new Ext.Window({  
                    layout : 'fit',  
                    title:"实时视频",
-                    width:500,
-                    height:400,
+                    width:985,
+                    height:500,
                     modal : true,  
                     layout:"column",
                    frame: true,  
                    autoHeight:true,  
-                    items : [video1,video2,video3,video4,video5,video6,video7,video8,video9]  
+                    items : [video1,video2,video3,video4,video5,video6]  
                     });  
     	   
                    dplayer.show();  

@@ -1606,6 +1606,7 @@ public class DevicePO extends PO {
 	public void setManagement_remarks(String management_remarks) {
 		this.management_remarks = management_remarks;
 	}
+
 	
 
 }

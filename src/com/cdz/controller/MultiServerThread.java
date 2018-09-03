@@ -57,6 +57,7 @@ import utils.Helper;
 import dao.DeviceDao;
 import po.DevicePO;
 import service.AppApiService;
+import service.DeviceService;
 import service.Push;
 import cn.com.tcc.State;
 import cn.com.tcc.TCC;
@@ -404,7 +405,8 @@ public class MultiServerThread extends Thread {
 	                	Dto pDto=Dtos.newDto("device_id",this.ascii1);  //把序列号this.ascii1给device_id
 	            		List<DevicePO> deviceDtos = deviceDao.like(pDto);  //模糊查询是否有该设备
 	            		//device_id = deviceDtos.get(0).getDevice_id();
-	            		device_id = "26666666";  //模拟终端测试时用这一句，否则用上面那句
+	            		//device_id = "26666666";  //模拟终端测试时用这一句，否则用上面那句
+	            		device_id = "18888888";
 	            		
 	            		Dto pDto1 = Dtos.newDto("device_id", device_id);
 	    				devicePO = deviceDao.selectOne(pDto1);
@@ -447,7 +449,9 @@ public class MultiServerThread extends Thread {
 	                	Object[] object = new Object[]{ databuffer , Key,data1};
 	            		String decodeResult_1= sumFunc.invokeString(object, false);
 	            		System.out.println("decodeResult:"+decodeResult_1);
-	            		String resultLatter_1 = strTo16(decodeResult_1.substring(1));  //因为前面1位是乱码，所以取第1位后面的，是从包的LEN开始的。
+	            		String resultLatter_1 = null;
+	            		if(decodeResult_1 != null)
+	            			resultLatter_1 = strTo16(decodeResult_1.substring(1));  //因为前面1位是乱码，所以取第1位后面的，是从包的LEN开始的。
 	            		System.out.println("resultLatter:"+resultLatter_1);
 	            		System.out.println("resultLatter.length():"+resultLatter_1.length());            		
 	            		
@@ -455,9 +459,15 @@ public class MultiServerThread extends Thread {
 		            		if(resultLatter_1.substring(2, 4).equals("4f")&&resultLatter_1.substring(4, 6).equals("4b")&&!resultLatter_1.substring(6,8).equals("30"))
 		            			System.out.println("xintiao");
 		            		
-		            		String signal_quality = null;
+		            		//DeviceService deviceservice = null;
+		            		//deviceservice.queryDevice(null);
 		            		
-		            		switch(resultLatter_1.substring(6,8)) {
+		            		String signal_quality = null;
+		            		String resultLatter_1_signal_quality = null;
+		            		if(resultLatter_1.substring(6,8) != null)
+		            			resultLatter_1_signal_quality = resultLatter_1.substring(6,8);
+		            		
+		            		switch(resultLatter_1_signal_quality) {
 		                	
 		                	case "31":
 		                		System.out.println("10%");
@@ -495,7 +505,7 @@ public class MultiServerThread extends Thread {
 		                		System.out.println("90%");
 		                		signal_quality="90%";
 		                		break;
-		                	case "3A":
+		                	case "3a":
 		                		System.out.println("100%");
 		                		signal_quality="100%";
 		                		break;
@@ -505,6 +515,7 @@ public class MultiServerThread extends Thread {
 		        			DevicePO devicePO6=deviceDao.selectOne(pDto6);
 							devicePO6.setLast_date(AOSUtils.getDateTime());  //最后来心跳信号时间
 							devicePO6.setSignal_quality(signal_quality);
+							devicePO6.setShutdown_time(AOSUtils.getDateTime());  //离线时间
 							deviceDao.updateByKey(devicePO6);
 	            		}
 	            		
@@ -520,12 +531,16 @@ public class MultiServerThread extends Thread {
 	    				//newDto.put("device_id", devicePO1.getArrange_withdraw());
 	    				//System.out.println(newDto);
 	    				
-	    				
+	            		Dto pDto10 = Dtos.newDto("device_id", device_id);
+	    				devicePO = deviceDao.selectOne(pDto10);
+	            		System.out.println(devicePO.getArrange_withdraw());
+	            		
 	    				if(devicePO.getArrange_withdraw().equals("0"))   //撤防
 	    					fang=false;   //fang是标志位，false说明目前模块的状态是撤防状态
 	    				else if(devicePO.getArrange_withdraw().equals("1"))  //布防
 	    					fang=true;   //fang是标志位，true说明目前模块的状态是撤防状态
-	    					
+	    				
+	    				System.out.println(fang);
 	    				if(resultLatter_1.length()>5) {
 		            		if(resultLatter_1.substring(6,8).equals("30")&&resultLatter_1.substring(1,2).equals("5")&&resultLatter_1.substring(2, 4).equals("4f")&&resultLatter_1.substring(4, 6).equals("4b")&&fang==false)
 		            		{

@@ -42,6 +42,12 @@ public class DeviceService extends CDZBaseController {
 	public void init(HttpModel httpModel) {
 		httpModel.setViewPath("myproject/device.jsp");
 	}
+	
+	public void queryDevice(HttpModel httpModel) {
+		//Dto qDto = httpModel.getInDto();
+		List<Dto> list = sqlDao.list("Device.queryDevice", httpModel.getInDto());
+		httpModel.setOutMsg(AOSJson.toGridJson(list));
+	}
 
 	/**
 	 * 查询charging_pile列

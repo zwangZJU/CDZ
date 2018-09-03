@@ -330,6 +330,71 @@ public class AppApiService extends CDZBaseController {
 
 
 	/* ############################################weixiu######################### */
+	public void getRepairOrders(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		String handler_phone = qDto.getString("phone");
+
+		
+		Dto pDto = Dtos.newDto();
+		pDto.put("handler_phone", handler_phone);
+		int rows = repair_logDao.rows(pDto);
+		pDto.put("limit", rows);// 默认查询出100个
+
+		pDto.put("start", 0);
+		List<Dto> newListDtos = new ArrayList<Dto>();
+		List<Dto> repairDtos = sqlDao.list("Repair_log.listRepairOrders", pDto);
+		if (null != repairDtos && !repairDtos.isEmpty()) {
+
+		for (Dto dto : repairDtos) {
+			Dto newDto = Dtos.newDto();
+				newDto.put("repair_id", dto.getString("repair_id"));
+				newDto.put("device_id", dto.getString("device_id"));
+
+				String id = dto.getString("device_id");
+				Dto pDto1 = Dtos.newDto("device_id", id);
+				DevicePO devicePO1 = deviceDao.selectOne(pDto1);
+				String address = devicePO1.getUser_address();
+
+				newDto.put("repair_time", dto.getString("repair_time"));
+				newDto.put("repair_content", dto.getString("repair_content"));
+				newDto.put("user_phone", dto.getString("is_alarming"));
+				newDto.put("user_address", address);
+				/* newDto.put("is_completed", ""); */
+
+			newListDtos.add(newDto);
+
+		}
+
+		odto.put("data", newListDtos);
+		odto.put("status", "1");
+		odto.put("msg", "获取维修订单成功");
+		} else {
+			Dto newDto = Dtos.newDto();
+			newDto.put("repair_id", "");
+			newDto.put("device_id", "");
+			newDto.put("repair_time", "");
+
+			newDto.put("repair_content", "");
+			newDto.put("user_phone", "");
+			newDto.put("user_address", "");
+			/* newDto.put("is_completed", ""); */
+
+			newListDtos.add(newDto);
+			odto.put("data", newListDtos);
+			odto.put("status", "-1");
+			odto.put("msg", "获取失败");
+
+		}
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
+
+	
+	
+	
+	
 	public void uploadRepairResult(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
@@ -771,7 +836,7 @@ public class AppApiService extends CDZBaseController {
 						if(cmd.equals("4"))
 						{	
 							odto.put("status", "1");
-							odto.put("msg", "成功");
+							odto.put("msg", "发送成功");
 							odto.put("deploy_status","0" );
 							
 						}
@@ -780,26 +845,45 @@ public class AppApiService extends CDZBaseController {
 						if(cmd.equals("5"))
 						{
 							odto.put("status", "1");
-							odto.put("msg", "成功");
+							odto.put("msg", "发送成功");
 							odto.put("deploy_status","1" );
 							
 						}
 					}
 					
 					if(flag != "1"){
-						if(devicePO.getArrange_withdraw().equals("1"))
+						if(flag == "设备不在线，请检查")
 						{
-							odto.put("status", "0");
-							//odto.put("msg", "失败");
-							odto.put("msg", getData(flag));
-						    odto.put("deploy_status","1" );
+							if(devicePO.getArrange_withdraw().equals("1"))
+							{
+								odto.put("status", "-1");
+								odto.put("msg", "设备不在线，请检查");
+								//odto.put("msg", getData(flag));
+							    odto.put("deploy_status","1" );
+							}
+							if(devicePO.getArrange_withdraw().equals("0"))
+							{
+								odto.put("status", "-1");
+								odto.put("msg", "设备不在线，请检查");
+								//odto.put("msg", getData(flag));
+							    odto.put("deploy_status","0" );
+							}
 						}
-						if(devicePO.getArrange_withdraw().equals("0"))
-						{
-							odto.put("status", "0");
-							//odto.put("msg", "失败");
-							odto.put("msg", getData(flag));
-						    odto.put("deploy_status","0" );
+						else {
+							if(devicePO.getArrange_withdraw().equals("1"))
+							{
+								odto.put("status", "-1");
+								odto.put("msg", "发送失败");
+								//odto.put("msg", getData(flag));
+							    odto.put("deploy_status","1" );
+							}
+							if(devicePO.getArrange_withdraw().equals("0"))
+							{
+								odto.put("status", "-1");
+								odto.put("msg", "发送失败");
+								//odto.put("msg", getData(flag));
+							    odto.put("deploy_status","0" );
+							}
 						}
 						
 					}
@@ -829,11 +913,19 @@ public class AppApiService extends CDZBaseController {
 			sg_id= sg_id.substring(1);
 			System.out.println("sg_id:"+sg_id);
 			Socket socket=Helper.socketMap.get(sg_id);
+			//boolean state = socket.isClosed();
+			try{
+				socket.sendUrgentData(0xFF);
+			} catch(Exception e) {
+				System.out.println("socket已经断开连接");
+				socket = null;
+			}
 			if(null!=socket){
 				socket.getOutputStream().write(data_out);
 				System.out.println("APP发送布防撤防请求数据:"+cmd);
 				saveLogs3("APP发送布防撤防请求数据:"+cmd,sg_id,"SC④");
 				flag="1";
+				socket = null;
 			}else{
 				//this.failMsg(odto, "充电桩未连接");
 				System.out.println("APP发送布防撤防请求数据:模块未连接"+msg_welcome);
