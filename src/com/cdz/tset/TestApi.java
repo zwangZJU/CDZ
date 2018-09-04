@@ -63,6 +63,13 @@ public class TestApi {
 
 	}
 	@Test
+	public void getRepairOrders() {
+		HttpRequestVO httpRequestVO = new HttpRequestVO("http://localhost:9090/cdz/api/do.jhtml?router=appApiService.getRepairOrders");
+
+		AOSHttpClient.execute(httpRequestVO);
+
+	}
+	@Test
 	public  void  getArticle(){
 		HttpRequestVO httpRequestVO = new HttpRequestVO("http://116.62.215.62:80/cdz/api/do.jhtml?router=appApiService.getArticle");
 		 Map<String,String> paramMap =new HashMap<String,String>();

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
@@ -23,8 +24,12 @@ import aos.framework.core.utils.AOSJson;
 import aos.framework.core.utils.AOSUtils;
 import aos.framework.web.router.HttpModel;
 import aos.system.common.utils.SystemCons;
+import dao.Basic_userDao;
 import dao.DeviceDao;
+import po.Alarm_logPO;
+import po.Basic_userPO;
 import po.DevicePO;
+import po.Repair_logPO;
 import utils.ExcelUtils;
 
 @Service
@@ -32,6 +37,9 @@ public class DeviceService extends CDZBaseController {
 
 	@Autowired
 	private DeviceDao deviceDao;
+	
+	@Autowired
+	Basic_userDao basic_userDao;
 
 	/**
 	 * charging_pile管理页面初始化
@@ -148,6 +156,36 @@ public class DeviceService extends CDZBaseController {
 		DevicePO devicePO = new DevicePO();
 		devicePO.copyProperties(inDto);
 		deviceDao.updateByKey(devicePO);
+		httpModel.setOutMsg("修改成功。");
+	}
+	
+	public void updateDevice2(HttpModel httpModel) {
+		String name = "";
+
+		Dto inDto = httpModel.getInDto();
+		
+		String combox_value = inDto.getString("combox_value");
+		String[] deviceIds = httpModel.getInDto().getRows();
+
+		if (null != deviceIds && deviceIds.length > 0) {
+			for (String device_id : deviceIds) {
+				DevicePO devicePO1;
+				if(device_id.substring(device_id.length()-1,device_id.length()).equals(","))
+					devicePO1 =deviceDao.selectByDeviceId(device_id.substring(0,device_id.length()-1)); 
+				else
+					devicePO1 =deviceDao.selectByDeviceId(device_id); 
+				
+				Dto pDto1 = Dtos.newDto("account", combox_value);
+				Basic_userPO basic_userPO = basic_userDao.selectOne(pDto1);
+				
+				devicePO1.setHead_phone(combox_value);
+				devicePO1.setHead(basic_userPO.getName());
+				deviceDao.updateByKey(devicePO1);
+			}
+		}
+
+		//DevicePO.setHandler_(name);
+		//deviceDao.updateByKey(devicePO);
 		httpModel.setOutMsg("修改成功。");
 	}
 

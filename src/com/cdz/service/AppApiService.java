@@ -53,6 +53,7 @@ import dao.ActivityRuleDao;
 import dao.AdvertDao;
 import dao.AdvertTrafficDao;
 import dao.Alarm_logDao;
+import dao.App_versionDao;
 import dao.ArticleDao;
 import dao.Basic_userDao;
 import dao.CameraDao;
@@ -150,6 +151,8 @@ public class AppApiService extends CDZBaseController {
 	Alarm_logDao alarm_logDao;
 	@Autowired
 	CameraDao cameraDao;
+	@Autowired
+	App_versionDao app_versionDao;
 	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 	public void init(HttpModel httpModel) {
@@ -158,6 +161,58 @@ public class AppApiService extends CDZBaseController {
 
 	private static CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
 	static String Alias = "18392888103";
+	
+	
+	public void checkAndUpdate(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		String current_version = qDto.getString("current_version");
+		String role = qDto.getString("role");
+
+		String version = current_version.substring(1);
+		version = version.replace(".", "");
+
+		Dto pDto1 = Dtos.newDto();
+		Dto pDto = Dtos.newDto();
+
+
+		int rows = app_versionDao.rows(pDto1);
+
+		pDto.put("limit", rows);// 默认查询出100个
+
+		pDto.put("start", 0);
+
+		List<Dto> appDtos = sqlDao.list("App_version.listApp", pDto);
+		int num = appDtos.size();
+		Dto dto = appDtos.get(num - 1);
+		String version1 = dto.getString("version_no");
+		version1 = version1.substring(1);
+		version1 = version1.replace(".", "");
+		int num1 = Integer.parseInt(version);
+		int num2 = Integer.parseInt(version1);
+		if (num2 > num1) {
+			odto.put("status", "1");
+			odto.put("msg", "有新版本");
+			odto.put("new_version_url", dto.getString("download_url"));
+			odto.put("update_content", getData(dto.getString("update_content")));
+			odto.put("version_no", version1);
+			odto.put("package_size", getData(dto.getString("package_size")));
+
+		} else {
+			odto.put("status", "-1");
+			odto.put("msg", "已经是最新版本");
+			odto.put("new_version_url", " ");
+			odto.put("update_content", " ");
+			odto.put("version_no", " ");
+			odto.put("package_size", " ");
+
+		}
+
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
+
 	/*
 	 * ##########################################################################
 	 * 取消报警
@@ -183,15 +238,36 @@ public class AppApiService extends CDZBaseController {
 
 		basic_userDao.updateByKey(basic_userPO);
 
+		Dto pDto3 = Dtos.newDto();
+		Dto pDto2 = Dtos.newDto();
+		pDto2.put("user_phone", phone);
+
+		int rows = alarm_logDao.rows(pDto3);
+
+		pDto2.put("limit", rows);// 默认查询出100个
+
+		pDto2.put("start", 0);
+
+		List<Dto> sosDtos = sqlDao.list("Alarm_log.listSos", pDto2);
+		int num = sosDtos.size();
+		Dto dto = sosDtos.get(num - 1);
+		String process = dto.getString("process");
+
+		if (process.equals("0")) {
+			odto.put("status", "1");
+			odto.put("msg", "上传结果成功");
+
+		} else {
+			odto.put("status", "2");
+			odto.put("msg", "已经接警");
+		}
 
 
-		odto.put("status", "1");
-		odto.put("msg", "上传结果成功");
+
 
 		httpModel.setOutMsg(AOSJson.toJson(odto));
 	}
-
-	public void releaseAlarm(HttpModel httpModel)  {
+	public void cancelAlarm(HttpModel httpModel)  {
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
 
@@ -335,7 +411,7 @@ public class AppApiService extends CDZBaseController {
 		Dto odto = Dtos.newDto();
 
 		String handler_phone = qDto.getString("phone");
-
+		handler_phone="18392888103";
 		
 		Dto pDto = Dtos.newDto();
 		pDto.put("handler_phone", handler_phone);

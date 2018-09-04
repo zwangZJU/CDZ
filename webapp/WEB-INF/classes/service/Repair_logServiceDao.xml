@@ -77,4 +77,17 @@
  		</where>
 	
  		</select>
+ 		<select id="listRepairOrders" parameterType="Dto" resultType="Dto">
+		SELECT
+		
+		<include refid="dao.Repair_logDao.column" />
+		FROM repair_log
+		<where>
+		<if test="handler_phone != null and handler_phone != ''">
+				      AND handler_phone = #{handler_phone} <!-- 地址 -->
+				  
+				</if>
+				
+ 		</where>
+	</select>
 </mapper>

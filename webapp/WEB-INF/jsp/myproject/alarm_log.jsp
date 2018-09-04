@@ -139,7 +139,7 @@
 		 
 		
 		  var info = Ext.util.Cookies.get('juid'); 
-		var targeturl="http://localhost:9090/cdz/http/do.jhtml?router=alarm_logService.initAlarm&juid="+info;
+		var targeturl="http://118.126.95.215:9090/cdz/http/do.jhtml?router=alarm_logService.initAlarm&juid="+info;
 		
 		 window.open(targeturl,"","fullscreen=1,menubar=0,toolbar=0,directories=0,location=0,status=0,scrollbars=0");  
 		//window.close();
@@ -594,10 +594,11 @@
 	
 	function _w_update_show_all_button()
 	{
+		var map = new BMap.Map("container");
 		var record = AOS.selectone(AOS.get('_datagridpanel'));
 		  var id1=record.data.device_id;
 	        if(id1==null){
-	        	setInterval(openw,3000);
+	        	var interval =setInterval(openw,5000);
 	        }
 	        else{
 	        	openw();
@@ -622,7 +623,7 @@
 		       
 		        	
 		        
-		        	var map = new BMap.Map("container");
+		        	
 		        	
 		        	     // 初始化地图,设置中心点坐标和地图级别
 		              
@@ -709,13 +710,14 @@
 		            		        
 		            		        frame: true,  
 		            		        autoscroll:true,
-		            		       
+		            		        buttons: [
+				     					{ xtype: "button",text: "最大化",handler: function () {window.open(picurl,"","fullscreen=1"); }}],
 		            		        items : [new Ext.Panel({  
 		            		            xtype : 'panel', 
 		            		            title:"防区图",
 		            		            id : 'photo1',
 		            		            autoscroll:true,
-		            		            html:'<img src='+picurl+' onclick=window.open("+picurl+","","fullscreen=1") width="1100" height="450"   />'
+		            		            html:'<img src='+picurl+' width="1100" height="450"   />',
 		            		            
 		            		              })]
 		            		 }); 
@@ -793,7 +795,7 @@
 			    			});
 			        		this.up("window").close();
 			        	} },	
-			        { xtype: "button", text: "取消", handler: function () { this.up("window").close(); } }
+			        { xtype: "button", text: "取消", handler: function () {clearInterval(interval); this.up("window").close(); } }
 			    ]
 				
 			});

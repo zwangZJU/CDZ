@@ -30,6 +30,7 @@
 			    			 	<aos:dockeditem text="新增" tooltip="新增"  onclick="_w_add_show" icon="add.png"/>
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>
 												<aos:dockeditem text="删除" tooltip="删除" onclick="_delete" icon="del.png" />
+												<aos:dockeditem text="选择处理人" tooltip="选择处理人" onclick="_w_jiedan_u_show" icon="del.png" />
 												<%-- 缺少相关函数，无法实现<aos:dockeditem text="导出" tooltip="导出" onclick="fn_exportexcel()" icon="icon70.png" /> --%>
 								<aos:dockeditem xtype="tbseparator" />
 				                                                                      			</aos:docked>
@@ -342,6 +343,21 @@
 		</aos:docked>
 	</aos:window>
 	
+	<aos:window id="_w_jiedan_u" title="选择处理人">
+		<aos:formpanel id="_f_jiedan_u" width="500" layout="anchor" labelWidth="65">
+			<aos:hiddenfield name="device_id" />
+	      	   
+	      	   <aos:combobox id="processer" fieldLabel="处理者" name="head_phone"  columnWidth="0.5"
+						url="basic_userService.listHandler1" />
+		
+		</aos:formpanel>
+		<aos:docked dock="bottom" ui="footer">
+			<aos:dockeditem xtype="tbfill" />
+			<aos:dockeditem onclick="_f_jiedan_u_save" text="保存" icon="ok.png" />
+			<aos:dockeditem onclick="#_w_jiedan_u.hide();" text="关闭" icon="close.png" />
+		</aos:docked>
+	</aos:window>
+	
 	<script type="text/javascript">
 	 var info = Ext.util.Cookies.get('juid'); 
 	 setInterval(_datagridpanel_query,30000); 
@@ -450,6 +466,75 @@ function fn_export_excel(){
 			
 			 
 		}
+		
+		function _f_jiedan_u_save() {
+			 var selection = AOS.selection(_datagridpanel, 'device_id');
+			 //var selection1 = AOS.selection(_f_jiedan_u, 'head_phone'); 
+			
+			 var selection1 =  Ext.getCmp('processer').getValue();
+			 AOS.tip(selection);
+				if(AOS.empty(selection)){
+					AOS.tip('请先选中数据。');
+					return;
+				}
+				var rows = AOS.rows(_datagridpanel);
+				var msg =  AOS.merge('确认选中的{0}项目吗？', rows);
+				
+				
+					
+				AOS.confirm(msg, function(btn){
+					if(btn === 'cancel'){
+						AOS.tip('多个接警操作被取消。');
+						return;
+					}
+					AOS.ajax({
+						url : 'deviceService.updateDevice2',
+						params:{
+							aos_rows_: selection,
+							combox_value:selection1
+						},
+						ok : function(data) {
+							if(data.appcode === -1){
+								AOS.err(data.appmsg);
+								return ;
+							}
+							window.location.reload();
+							AOS.tip("多个接警成功");
+							
+						}
+					});
+				});
+		}
+		
+		function _w_jiedan_u_show(){
+			  
+			
+			  //var selection = AOS.selectone(AOS.get('_datagridpanel'));
+			  //AOS.tip(selection);
+			  
+			  var selection = AOS.selection(_datagridpanel, 'device_id');
+			  AOS.tip(selection);
+				if(AOS.empty(selection)){
+					AOS.tip('请先选中数据。');
+					return;
+				}
+				var rows = AOS.rows(_datagridpanel);
+				var msg =  AOS.merge('确认选中的{0}项目吗？', rows);
+				
+			  if (selection) { 
+				 
+				  AOS.get('_w_jiedan_u').show(); 
+				  AOS.get('_f_jiedan_u').loadRecord(selection); 
+			/* 	 id_list_store.load();    */
+			
+			 } 
+		} 
 	</script>
 </aos:onready>
+
+<script type="text/javascript">
+
+
+</script>
 </aos:html>
+
