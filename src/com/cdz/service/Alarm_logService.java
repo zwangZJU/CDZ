@@ -207,22 +207,33 @@ public void receive_alarmAlarm_log(HttpModel httpModel) {
 			Dto pDto2 = Dtos.newDto("device_id", device_id);
 			DevicePO devicePO = deviceDao.selectOne(pDto2);
 			user_address = devicePO.getUser_address();
-			String[] info = user_address.split(" ");
-			lat = info[1];
-			lat = lat.replace(",", "");
-			lon = info[3];
+			String[] info = user_address.split("#");
+
+			int num = info.length;
+			String info1 = info[num - 1];
+
+			String[] info2 = info1.split(" ");
+
+			String lat1 = info2[1];
+			 lat = lat1.replace(",", "");
+
+			 lon = info2[3];
+
+			 user_address = info[0];
 
 		} else {
 			String phone = alarm_logPO2.getUser_phone();
 			Dto pDto2 = Dtos.newDto("account", phone);
 			Basic_userPO basic_userPO = basic_userDao.selectOne(pDto2);
 			String address = basic_userPO.getAddress();
+			
+			String[] info = address.split(" ");
+			lat = info[1];
+			lat = lat.replace(",", "");
 
-			String[] info = address.split("#");
-			lat = info[0];
-
-			lon = info[1];
-
+			lon = info[3];
+			user_address = info[0];
+			user_address = user_address.replace("#latitude:", "");
 		}
 
 		Alarm_logPO alarm_logPO1;

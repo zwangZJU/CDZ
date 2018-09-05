@@ -49,4 +49,18 @@
  		</where>
 	</select>
 	
+	<select id="listAlarmOrders" parameterType="Dto" resultType="Dto">
+		SELECT
+		
+		<include refid="dao.Alarm_logDao.column" />
+		FROM alarm_log
+		<where>
+		<if test="handler_phone != null and handler_phone != ''">
+				      AND handler_phone = #{handler_phone} <!-- 地址 -->
+				  
+				</if>
+				
+ 		</where>
+	</select>
+	
 </mapper>

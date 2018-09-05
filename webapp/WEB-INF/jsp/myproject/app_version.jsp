@@ -7,7 +7,7 @@
 	<aos:viewport layout="fit">
 		<aos:gridpanel id="_datagridpanel" url="app_versionService.listApp_version" onrender="_datagridpanel_query" onitemdblclick="_w_update_show"  forceFit="false">
 			<aos:docked>
-			    			 	<aos:dockeditem text="新增" tooltip="新增"  onclick="_w_add_show" icon="add.png"/>
+			    			 	<aos:dockeditem text="上传新版本" tooltip="上传新版本"  onclick="upload_new" icon="add.png"/>
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>
 												<aos:dockeditem text="删除" tooltip="删除" onclick="_delete" icon="del.png" />
 												<%-- <aos:dockeditem text="导出" tooltip="导出" onclick="_exportexcel" icon="icon70.png" /> --%>
@@ -70,6 +70,77 @@
 	</aos:window>
 	
 	<script type="text/javascript">
+	
+	function upload_new() {
+		var info = Ext.util.Cookies.get('juid');
+	    var uploadForm = Ext.create('Ext.form.Panel', {
+	                width:400,
+	                height: 100,
+	                items: [
+	                {
+	                    xtype: 'filefield',
+	                    fieldLabel: '文件上传',
+	                    labelWidth: 80,
+	                    msgTarget: 'side',
+	                    allowBlank: false,
+	                    margin: '10,10,10,10',
+	                    anchor: '100%',
+	                    buttonText:'选择文件'
+	                }],
+	                buttons:[
+	                {
+	                    text: '上传',
+	                    handler: function() {
+	                        uploadForm.getForm().submit({
+	                        	method:'POST',
+	                            url: '/cdz/http/do.jhtml?router=app_versionService.uploadVersionFile&juid='+info,
+	                            params: {
+	                                action: 'UploadFile'
+	                            },
+	                            waitMsg:'文件上传中...',
+	                            success: function(form, action) {
+	                            	
+	                                var jsonResult = Ext.JSON.decode(action.response.responseText);
+	                                 
+	                                if (jsonResult.success == "true") {
+										AOS.tip(jsonResult.msg);
+										root.hide();
+										window.location.href="/cdz/http/do.jhtml?router=app_versionService.init&juid="+info;
+	                                }else if(jsonResult.success == "false"){
+	                                	root.hide();
+	                                	AOS.tip(jsonResult.msg);
+	                                }else{
+	                                	AOS.tip("上传失败");
+	                                }                               
+	                            }
+	                        });
+	                    }
+	                }, {
+	                    text: '取消',
+	                    handler: function() {
+	                        root.hide();
+	                    }
+	                }],
+	                buttonAlign:'center'
+
+	            });
+
+
+			var root = new Ext.Window({
+				title:"上传版本文件",
+				width:400,
+				height:150,
+				frame:false,
+				items:[uploadForm],
+				resizable:false,
+				closable:true,
+				draggable:false
+				
+			});
+			root.show();
+			
+	}
+	
 		function _datagridpanel_query() {
 			var params = {
 			                			  

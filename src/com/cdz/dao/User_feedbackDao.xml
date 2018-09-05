@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- user_feedback[user_feedback]SQLMapper自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2018-09-05 10:45:12 -->
+<mapper namespace="dao.User_feedbackDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.User_feedbackPO">
+		INSERT INTO user_feedback (
+		<if test="account_ != null and account_ != ''">
+	         account_, <!-- 账号（手机号） -->
+		</if>
+		<if test="advice_ != null and advice_ != ''">
+	         advice_, <!-- 反馈建议 -->
+		</if>
+		<if test="time_ != null and time_ != ''">
+	         time_, <!-- 时间 -->
+		</if>
+		<if test="beiyong1_ != null and beiyong1_ != ''">
+	         beiyong1_, <!-- 备用1 -->
+		</if>
+		<if test="beiyong2_ != null and beiyong2_ != ''">
+	         beiyong2_, <!-- 备用2 -->
+		</if>
+		<if test="beiyong3_ != null and beiyong3_ != ''">
+	         beiyong3_, <!-- 备用3 -->
+		</if>
+		<if test="id_ != null and id_ != ''">
+	          id_  <!-- id -->
+	   </if>
+		)VALUES(
+		<if test="account_ != null and account_ != ''">
+	          #{account_, jdbcType=VARCHAR}, <!-- 账号（手机号） -->
+	    </if>
+		<if test="advice_ != null and advice_ != ''">
+	          #{advice_, jdbcType=VARCHAR}, <!-- 反馈建议 -->
+	    </if>
+		<if test="time_ != null and time_ != ''">
+	          #{time_, jdbcType=VARCHAR}, <!-- 时间 -->
+	    </if>
+		<if test="beiyong1_ != null and beiyong1_ != ''">
+	          #{beiyong1_, jdbcType=VARCHAR}, <!-- 备用1 -->
+	    </if>
+		<if test="beiyong2_ != null and beiyong2_ != ''">
+	          #{beiyong2_, jdbcType=VARCHAR}, <!-- 备用2 -->
+	    </if>
+		<if test="beiyong3_ != null and beiyong3_ != ''">
+	          #{beiyong3_, jdbcType=VARCHAR}, <!-- 备用3 -->
+	    </if>
+		<if test="id_ != null and id_ != ''">
+		     #{id_, jdbcType=VARCHAR}  <!-- id -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.User_feedbackPO">
+		INSERT INTO user_feedback (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{id_, jdbcType=VARCHAR},  <!-- id -->
+		    #{account_, jdbcType=VARCHAR},  <!-- 账号（手机号） -->
+		    #{advice_, jdbcType=VARCHAR},  <!-- 反馈建议 -->
+		    #{time_, jdbcType=VARCHAR},  <!-- 时间 -->
+		    #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
+		    #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+		    #{beiyong3_, jdbcType=VARCHAR}  <!-- 备用3 -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.User_feedbackPO">
+		UPDATE user_feedback
+		<set>
+			<if test="id_ != null">
+		          id_ = #{id_, jdbcType=VARCHAR},  <!-- id -->
+			</if>
+			<if test="account_ != null">
+		          account_ = #{account_, jdbcType=VARCHAR},  <!-- 账号（手机号） -->
+			</if>
+			<if test="advice_ != null">
+		          advice_ = #{advice_, jdbcType=VARCHAR},  <!-- 反馈建议 -->
+			</if>
+			<if test="time_ != null">
+		          time_ = #{time_, jdbcType=VARCHAR},  <!-- 时间 -->
+			</if>
+			<if test="beiyong1_ != null">
+		          beiyong1_ = #{beiyong1_, jdbcType=VARCHAR},  <!-- 备用1 -->
+			</if>
+			<if test="beiyong2_ != null">
+		          beiyong2_ = #{beiyong2_, jdbcType=VARCHAR},  <!-- 备用2 -->
+			</if>
+			<if test="beiyong3_ != null">
+		          beiyong3_ = #{beiyong3_, jdbcType=VARCHAR},  <!-- 备用3 -->
+			</if>
+		</set>
+		WHERE  id_ = #{id_}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM user_feedback WHERE  id_ = #{id_}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.User_feedbackPO">
+		SELECT
+		<include refid="column" />
+		FROM user_feedback WHERE  id_ = #{id_}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.User_feedbackPO">
+		SELECT
+		    <include refid="column" />
+		FROM user_feedback
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.User_feedbackPO">
+		SELECT
+			<include refid="column" />	
+		FROM user_feedback
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.User_feedbackPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM user_feedback
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.User_feedbackPO">
+		SELECT
+			<include refid="column" />	
+		FROM user_feedback
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.User_feedbackPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM user_feedback
+		<where>
+		    <include refid="like" />
+		</where>	
+		
+		
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM user_feedback
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM user_feedback
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  id_,  <!-- id -->
+		  account_,  <!-- 账号（手机号） -->
+		  advice_,  <!-- 反馈建议 -->
+		  time_,  <!-- 时间 -->
+		  beiyong1_,  <!-- 备用1 -->
+		  beiyong2_,  <!-- 备用2 -->
+		  beiyong3_  <!-- 备用3 -->
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  user_feedback.id_,  <!-- id -->
+		  user_feedback.account_,  <!-- 账号（手机号） -->
+		  user_feedback.advice_,  <!-- 反馈建议 -->
+		  user_feedback.time_,  <!-- 时间 -->
+		  user_feedback.beiyong1_,  <!-- 备用1 -->
+		  user_feedback.beiyong2_,  <!-- 备用2 -->
+		  user_feedback.beiyong3_  <!-- 备用3 -->
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="id_ != null and id_ != ''">
+		      AND id_ = #{id_}  <!-- id -->
+		</if>
+	    <if test="account_ != null and account_ != ''">
+		      AND account_ = #{account_}  <!-- 账号（手机号） -->
+		</if>
+	    <if test="advice_ != null and advice_ != ''">
+		      AND advice_ = #{advice_}  <!-- 反馈建议 -->
+		</if>
+	    <if test="time_ != null and time_ != ''">
+		      AND time_ = #{time_}  <!-- 时间 -->
+		</if>
+	    <if test="beiyong1_ != null and beiyong1_ != ''">
+		      AND beiyong1_ = #{beiyong1_}  <!-- 备用1 -->
+		</if>
+	    <if test="beiyong2_ != null and beiyong2_ != ''">
+		      AND beiyong2_ = #{beiyong2_}  <!-- 备用2 -->
+		</if>
+	    <if test="beiyong3_ != null and beiyong3_ != ''">
+		      AND beiyong3_ = #{beiyong3_}  <!-- 备用3 -->
+		</if>
+	</sql>
+	
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="id_ != null and id_ != ''">
+		      AND id_ like '%${id_}%'  <!-- id -->
+		</if>
+	    <if test="account_ != null and account_ != ''">
+		      AND account_ like '%${account_}%'  <!-- 账号（手机号） -->
+		</if>
+	    <if test="advice_ != null and advice_ != ''">
+		      AND advice_ like '%${advice_}%'  <!-- 反馈建议 -->
+		</if>
+	    <if test="time_ != null and time_ != ''">
+		      AND time_ like '%${time_}%'  <!-- 时间 -->
+		</if>
+	    <if test="beiyong1_ != null and beiyong1_ != ''">
+		      AND beiyong1_ like '%${beiyong1_}%'  <!-- 备用1 -->
+		</if>
+	    <if test="beiyong2_ != null and beiyong2_ != ''">
+		      AND beiyong2_ like '%${beiyong2_}%'  <!-- 备用2 -->
+		</if>
+	    <if test="beiyong3_ != null and beiyong3_ != ''">
+		      AND beiyong3_ like '%${beiyong3_}%'  <!-- 备用3 -->
+		</if>
+	</sql>
+	
+</mapper>

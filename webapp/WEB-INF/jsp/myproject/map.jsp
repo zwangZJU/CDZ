@@ -30,10 +30,11 @@
 
 var info = Ext.util.Cookies.get('juid'); 
 map();
- setInterval(map,20000);  
 
+setInterval(map,20000);  
+var map = new BMap.Map("l-map");
 function map(){
-
+	
 Ext.Ajax.request({
 					    url: '/cdz/http/do.jhtml?router=deviceService.listCoordinate&juid='+info,
 					    mathod:"POST",
@@ -48,7 +49,7 @@ Ext.Ajax.request({
 					        var lon1=ss2.lon;
 					       /*  AOS.tip("777"); */
 					        var num=ss2.number;
-					        var map = new BMap.Map("l-map");
+					         map.clearOverlays();  
 					    	map.centerAndZoom(new BMap.Point(lon1,lat1), 13);
 					    	map.enableScrollWheelZoom(true);
 					    	var index = 0;

@@ -647,7 +647,10 @@ public class MultiServerThread extends Thread {
 		            			alarm_logPO.setAlert_code(str_EEE);  //警情代码
 		            			alarm_logPO.setProcess("0");  //是否接警
 		            			alarm_logPO.setDefence_area(str_CCC);  //防区号
-		            			alarm_logPO.setType_("0");
+		            			alarm_logPO.setType_("0");  //报警类型
+		            			alarm_logPO.setHandler_(devicePO3.getHead());  //负责人名字
+		            			alarm_logPO.setHandler_phone(devicePO3.getHead_phone());  //负责人手机号
+		            			
 		            			//加CCC和GG
 		            			alarm_logDao.insert(alarm_logPO);
 		            			

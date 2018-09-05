@@ -598,6 +598,7 @@
 		var record = AOS.selectone(AOS.get('_datagridpanel'));
 		  var id1=record.data.device_id;
 	        if(id1==null){
+	        	openw();
 	        	var interval =setInterval(openw,5000);
 	        }
 	        else{
@@ -605,6 +606,7 @@
 	        };
 		
 		function   openw(){
+			map.clearOverlays();
 		//var info = Ext.util.Cookies.get('juid');
 		Ext.Ajax.request({
 		    url: '/cdz/http/do.jhtml?router=alarm_logService.receive_alarmAlarm_log',
@@ -658,6 +660,7 @@
 	
 		    	}
 		});
+		}
 		
 		    var productForm = Ext.create("Ext.form.Panel", {
 		        title: "信息表",
@@ -800,7 +803,7 @@
 				
 			});
 			root.show();
-		}
+		
 	}
 		
 

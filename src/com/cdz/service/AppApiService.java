@@ -68,6 +68,7 @@ import dao.OrdersPayDao;
 import dao.RegionDao;
 import dao.Repair_logDao;
 import dao.SubscribeDao;
+import dao.User_feedbackDao;
 import dao.VoucherDao;
 import po.Alarm_logPO;
 import po.Basic_userPO;
@@ -76,6 +77,7 @@ import po.ChargingPilePO;
 import po.CommonLogsPO;
 import po.DevicePO;
 import po.Repair_logPO;
+import po.User_feedbackPO;
 import utils.Helper;
 import utils.HttpRequester;
 import utils.Request;
@@ -152,6 +154,8 @@ public class AppApiService extends CDZBaseController {
 	@Autowired
 	CameraDao cameraDao;
 	@Autowired
+	User_feedbackDao user_feedbackDao;
+	@Autowired
 	App_versionDao app_versionDao;
 	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -162,6 +166,200 @@ public class AppApiService extends CDZBaseController {
 	private static CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
 	static String Alias = "18392888103";
 	
+	public void resultReturn(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		String id = qDto.getString("id");
+		String type = qDto.getString("type");
+		String result = qDto.getString("result");
+		if (id.equals("0")) {
+			Dto pDto = Dtos.newDto("alarm_id", id);
+			Alarm_logPO alarm_logPO = alarm_logDao.selectOne(pDto);
+
+			 alarm_logPO.setReason_(result);
+			 alarm_logPO.setAlarm_release("1");
+			 alarm_logPO.setProcess("1");
+			 alarm_logPO.setResponse_time(new Date());
+			 alarm_logDao.updateByKey(alarm_logPO);
+			
+		}
+         if (id.equals("1")) {
+        	 Dto pDto = Dtos.newDto("repair_id", id);
+     		Repair_logPO repair_logPO = repair_logDao.selectOne(pDto);
+     		String info = repair_logPO.getState_info();
+
+    		Calendar cal = Calendar.getInstance();
+    		int year = cal.get(Calendar.YEAR);// 获取年份
+    		int month = (cal.get(Calendar.MONTH) + 1);// 获取月份
+    		int day = cal.get(Calendar.DAY_OF_MONTH);// 获取日
+    		int hour = cal.get(Calendar.HOUR_OF_DAY);// 小时
+    		int minute = cal.get(Calendar.MINUTE);// 分
+    		info = info + "#维修完成%" + year + "年" + month + "月" + day + "日" + hour + ":" + minute;
+			repair_logPO.setProcessing_state("3");
+			repair_logPO.setState_info(info);
+			repair_logPO.setRenovate_time(new Date());
+			repair_logPO.setIs_completed("1");
+			 repair_logPO.setError_reason(result); 
+			 repair_logDao.updateByKey(repair_logPO);
+			
+		}
+		
+		
+
+		
+		odto.put("status", "1");
+		odto.put("msg", "回传成功");
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
+	
+	public void submitSuggestion(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+		
+		String phone = qDto.getString("phone");
+		String suggestion = qDto.getString("suggestion");
+		
+		User_feedbackPO user_feedbackPO = new User_feedbackPO();
+		user_feedbackPO.setId_(AOSId.appId(SystemCons.ID.SYSTEM));
+		user_feedbackPO.setAccount_(phone);
+		user_feedbackPO.setAdvice_(suggestion);
+		user_feedbackPO.setTime_(new Date());
+		user_feedbackDao.insert(user_feedbackPO);
+
+		odto.put("status", "1");
+		odto.put("msg", "反馈成功");
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+		
+	}
+	
+	
+	public void getPoliceMission(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+		
+		String phone = qDto.getString("phone");
+		
+		Dto pDto = Dtos.newDto();
+		pDto.put("handler_phone", phone);
+		int rows = alarm_logDao.rows(pDto);
+		pDto.put("limit", rows);
+
+		pDto.put("start", 0);
+		List<Dto> newListDtos = new ArrayList<Dto>();
+		List<Dto> alarmDtos = sqlDao.list("Alarm_log.listAlarmOrders", pDto);
+		
+		if (null != alarmDtos && !alarmDtos.isEmpty()) {
+
+			for (Dto dto : alarmDtos) {
+				Dto newDto = Dtos.newDto();
+					//newDto.put("alarm_id", getData(dto.getString("alarm_id")));
+					//newDto.put("device_id", getData(dto.getString("device_id")));
+
+					//String id = dto.getString("device_id");
+					//Dto pDto1 = Dtos.newDto("device_id", id);
+					//DevicePO devicePO1 = deviceDao.selectOne(pDto1);
+					//String address = devicePO1.getUser_address();
+
+					newDto.put("alarm_time", dto.getString("alarm_time"));
+					newDto.put("user_phone", getData(dto.getString("user_phone")));
+					newDto.put("alarm_id", getData(dto.getString("alarm_id")));
+					/* newDto.put("is_completed", ""); */
+					String zzz = dto.getString("type_");
+					
+					if(dto.getString("type_").equals("1"))
+					{
+						newDto.put("reason","手动报警");
+						newDto.put("type","1");
+						
+						//手动报警地址
+						Dto pDto2 = Dtos.newDto("account", dto.getString("user_phone"));
+						Basic_userPO basic_userPO = basic_userDao.selectOne(pDto2);
+						newDto.put("user_address",basic_userPO.getAddress());
+					}
+					else if(dto.getString("type_").equals("2"))
+					{
+						newDto.put("reason","一键报警");
+						newDto.put("type","2");
+						
+						//一键报警地址
+						Dto pDto3 = Dtos.newDto("device_id", dto.getString("device_id"));
+						DevicePO devicePO3 = deviceDao.selectOne(pDto3);
+						newDto.put("user_address",devicePO3.getUser_address());
+					}
+					else if(dto.getString("type_").equals("0"))
+					{
+						newDto.put("reason",dto.getString("reason_") == "0");
+						newDto.put("type","0");
+						
+						//设备地址
+						Dto pDto4 = Dtos.newDto("device_id", dto.getString("device_id"));
+						DevicePO devicePO4 = deviceDao.selectOne(pDto4);
+						newDto.put("user_address",devicePO4.getUser_address());
+					}
+
+				newListDtos.add(newDto);
+
+			}
+
+			odto.put("data", newListDtos);
+			odto.put("status", "1");
+			odto.put("msg", "成功");
+			} else {
+				Dto newDto = Dtos.newDto();
+				newDto.put("alarm_id", " ");
+				newDto.put("type", " ");
+				newDto.put("alarm_time", " ");
+
+				newDto.put("user_phone", " ");
+				newDto.put("reason", " ");
+				newDto.put("user_address", " ");
+				/* newDto.put("is_completed", " "); */
+				newListDtos.add(newDto);
+				odto.put("data", newListDtos);
+				odto.put("status", "-1");
+				odto.put("msg", "失败");
+
+			}
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+		
+	}
+	
+	public void updateRepairProcessingState(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		String repair_id = qDto.getString("repair_id");
+		String processing_state = qDto.getString("processing_state");
+		
+		Dto pDto = Dtos.newDto("repair_id", repair_id);
+		Repair_logPO repair_logPO = repair_logDao.selectOne(pDto);
+
+		String info = repair_logPO.getState_info();
+
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);// 获取年份
+		int month = (cal.get(Calendar.MONTH) + 1);// 获取月份
+		int day = cal.get(Calendar.DAY_OF_MONTH);// 获取日
+		int hour = cal.get(Calendar.HOUR_OF_DAY);// 小时
+		int minute = cal.get(Calendar.MINUTE);// 分
+		if (processing_state.equals("2")) {
+
+			info = info + "#开始维修%" + year + "年" + month + "月" + day + "日" + hour + ":" + minute;
+			repair_logPO.setProcessing_state(processing_state);
+			repair_logPO.setState_info(info);
+			repair_logDao.updateByKey(repair_logPO);
+			odto.put("status", "1");
+			odto.put("msg", "上传成功");
+		}
+		
+
+		
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
 	
 	public void checkAndUpdate(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
@@ -228,9 +426,9 @@ public class AppApiService extends CDZBaseController {
 		String phone = qDto.getString("phone");
 		String lat = qDto.getString("latitude");
 		String lon = qDto.getString("longitude");
-		
+		String addr = qDto.getString("address");
 
-		String address = lat + "#" + lon;
+		String address = addr + "#latitude: " + lat+ ", longtitude: " +lon;
 
 		Dto pDto = Dtos.newDto("account", phone);
 		Basic_userPO basic_userPO = basic_userDao.selectOne(pDto);
@@ -416,7 +614,7 @@ public class AppApiService extends CDZBaseController {
 		Dto pDto = Dtos.newDto();
 		pDto.put("handler_phone", handler_phone);
 		int rows = repair_logDao.rows(pDto);
-		pDto.put("limit", rows);// 默认查询出100个
+		pDto.put("limit", rows);
 
 		pDto.put("start", 0);
 		List<Dto> newListDtos = new ArrayList<Dto>();
@@ -425,8 +623,8 @@ public class AppApiService extends CDZBaseController {
 
 		for (Dto dto : repairDtos) {
 			Dto newDto = Dtos.newDto();
-				newDto.put("repair_id", dto.getString("repair_id"));
-				newDto.put("device_id", dto.getString("device_id"));
+				newDto.put("repair_id", getData(dto.getString("repair_id")));
+				newDto.put("device_id", getData(dto.getString("device_id")));
 
 				String id = dto.getString("device_id");
 				Dto pDto1 = Dtos.newDto("device_id", id);
@@ -434,9 +632,10 @@ public class AppApiService extends CDZBaseController {
 				String address = devicePO1.getUser_address();
 
 				newDto.put("repair_time", dto.getString("repair_time"));
-				newDto.put("repair_content", dto.getString("repair_content"));
-				newDto.put("user_phone", dto.getString("is_alarming"));
-				newDto.put("user_address", address);
+				newDto.put("repair_content", getData(dto.getString("repair_content")));
+				newDto.put("user_phone", getData(dto.getString("user_phone")));
+				newDto.put("user_address", getData(address));
+				newDto.put("processing_state", getData(dto.getString("processing_state")));
 				/* newDto.put("is_completed", ""); */
 
 			newListDtos.add(newDto);
@@ -448,15 +647,15 @@ public class AppApiService extends CDZBaseController {
 		odto.put("msg", "获取维修订单成功");
 		} else {
 			Dto newDto = Dtos.newDto();
-			newDto.put("repair_id", "");
-			newDto.put("device_id", "");
-			newDto.put("repair_time", "");
+			newDto.put("repair_id", " ");
+			newDto.put("device_id", " ");
+			newDto.put("repair_time", " ");
 
-			newDto.put("repair_content", "");
-			newDto.put("user_phone", "");
-			newDto.put("user_address", "");
-			/* newDto.put("is_completed", ""); */
-
+			newDto.put("repair_content", " ");
+			newDto.put("user_phone", " ");
+			newDto.put("user_address", " ");
+			/* newDto.put("is_completed", " "); */
+			newDto.put("processing_state", " ");
 			newListDtos.add(newDto);
 			odto.put("data", newListDtos);
 			odto.put("status", "-1");
@@ -471,7 +670,7 @@ public class AppApiService extends CDZBaseController {
 	
 	
 	
-	public void uploadRepairResult(HttpModel httpModel) {
+	/*public void uploadRepairResult(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
 
@@ -485,7 +684,7 @@ public class AppApiService extends CDZBaseController {
 
 
 		httpModel.setOutMsg(AOSJson.toJson(odto));
-	}
+	}*/
 	
 	
 	/* ############################################保存头像######################### */
