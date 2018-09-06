@@ -188,7 +188,7 @@ public class AppApiService extends CDZBaseController {
         	 Dto pDto = Dtos.newDto("repair_id", id);
      		Repair_logPO repair_logPO = repair_logDao.selectOne(pDto);
      		String info = repair_logPO.getState_info();
-
+     		String device_id = repair_logPO.getDevice_id();
     		Calendar cal = Calendar.getInstance();
     		int year = cal.get(Calendar.YEAR);// 获取年份
     		int month = (cal.get(Calendar.MONTH) + 1);// 获取月份
@@ -202,6 +202,12 @@ public class AppApiService extends CDZBaseController {
 			repair_logPO.setIs_completed("1");
 			 repair_logPO.setError_reason(result); 
 			 repair_logDao.updateByKey(repair_logPO);
+			 
+			 Dto pDto2 = Dtos.newDto("device_id", device_id);
+				DevicePO devicePO = deviceDao.selectOne(pDto2);
+				
+				devicePO.setRepair_progress("1");//已完成
+				deviceDao.updateByKey(devicePO);
 			
 		}
 		
@@ -891,7 +897,15 @@ public class AppApiService extends CDZBaseController {
 			int day = cal.get(Calendar.DAY_OF_MONTH);// 获取日
 			int hour = cal.get(Calendar.HOUR_OF_DAY);// 小时
 			int minute = cal.get(Calendar.MINUTE);// 分
-
+			
+			Dto pDto2 = Dtos.newDto("device_id", device_id);
+			DevicePO devicePO = deviceDao.selectOne(pDto2);
+			String record = devicePO.getRepair_record();
+			record=record+"#"+year+month+day;
+			
+			devicePO.setRepair_record(record);
+			devicePO.setRepair_progress("0");
+			deviceDao.updateByKey(devicePO);
 			repair_logPO.setState_info("已报修" + "%" + year + "年" + month + "月" + day + "日" + hour + ":" + minute);
 			
 			repair_logPO.setProcessing_state("0");
@@ -1129,14 +1143,14 @@ public class AppApiService extends CDZBaseController {
 					if(flag != "1"){
 						if(flag == "设备不在线，请检查")
 						{
-							if(devicePO.getArrange_withdraw().equals("1"))
+							if(devicePO.getArrange_withdraw().equals("布防"))
 							{
 								odto.put("status", "-1");
 								odto.put("msg", "设备不在线，请检查");
 								//odto.put("msg", getData(flag));
 							    odto.put("deploy_status","1" );
 							}
-							if(devicePO.getArrange_withdraw().equals("0"))
+							if(devicePO.getArrange_withdraw().equals("撤防"))
 							{
 								odto.put("status", "-1");
 								odto.put("msg", "设备不在线，请检查");
@@ -1145,14 +1159,14 @@ public class AppApiService extends CDZBaseController {
 							}
 						}
 						else {
-							if(devicePO.getArrange_withdraw().equals("1"))
+							if(devicePO.getArrange_withdraw().equals("布防"))
 							{
 								odto.put("status", "-1");
 								odto.put("msg", "发送失败");
 								//odto.put("msg", getData(flag));
 							    odto.put("deploy_status","1" );
 							}
-							if(devicePO.getArrange_withdraw().equals("0"))
+							if(devicePO.getArrange_withdraw().equals("撤防"))
 							{
 								odto.put("status", "-1");
 								odto.put("msg", "发送失败");
@@ -1281,7 +1295,7 @@ public class AppApiService extends CDZBaseController {
 			newDto.put("user_name", getData(dto.getString("user_name")));
 			newDto.put("user_address", getData(dto.getString("user_address")));
 			//newDto.put("status",dto.getString("status"));
-			newDto.put("arrange_withdraw",getData(dto.getString("arrange_withdraw")));
+			newDto.put("arrange_withdraw",getData(dto.getString("arrange_withdraw").equals("布防")?"1":"0"));
 				newDto.put("is_alarming", getData(dto.getString("is_alarming")));
 			newDto.put("head", getData(dto.getString("head")));
 			newDto.put("loc_label", getData(dto.getString("loc_label")));
@@ -1322,7 +1336,7 @@ public class AppApiService extends CDZBaseController {
 			newDto.put("is_alarming", getData(devicePO.getIs_alarming()));
 			newDto.put("production_date", getData(devicePO.getProduction_date()));
 			newDto.put("install_date", devicePO.getInstall_date());
-			newDto.put("arrange_withdraw", getData(devicePO.getArrange_withdraw()));
+			newDto.put("arrange_withdraw", getData(devicePO.getArrange_withdraw().equals("布防")?"1":"0"));
 
 		
 		
@@ -1419,8 +1433,10 @@ public class AppApiService extends CDZBaseController {
 			devicePO.setProduct_type(info[1]);
 			devicePO.setProduction_date(info[2]);
 			devicePO.setLoc_label(loc_label);
-			devicePO.setArrange_withdraw("0");
+			devicePO.setArrange_withdraw("撤防");
+			devicePO.setShutdown_number("0");
 			devicePO.setInstall_date(new Date());
+			devicePO.setRepair_record("");
 			
 			Calendar c = Calendar.getInstance();// 可以对每个时间域单独修改
 			c.setTime(new Date());

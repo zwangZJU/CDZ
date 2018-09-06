@@ -14,12 +14,15 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -95,6 +98,11 @@ public class MultiServerThread extends Thread {
 	    
 	    private int i=0;
 	    private int j=0;
+		private boolean start = true;
+	    
+	    private static int t=0;
+	    
+	    private String device_id = null;
 	    
 	    private static CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
 	    
@@ -214,6 +222,21 @@ public class MultiServerThread extends Thread {
 		    return str;
 		}
 	    
+	    public static void timer1() {
+			Timer timer = new Timer();
+			timer.schedule(new TimerTask() {
+				public void run() {
+					System.out.println("-------设定要指定任务--------");
+					try {
+						t = t+1;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}, 1000);// 设定指定的时间time,此处为1000毫秒
+		}
+	    
 	    public void run() {
 
 	        try (
@@ -261,7 +284,7 @@ public class MultiServerThread extends Thread {
 				
 				DevicePO devicePO = null;
 				
-				String device_id = null;
+				//String device_id = null;
 		        
 	            while ((length = in.read(data_in)) > 0) {
 	            	
@@ -299,14 +322,17 @@ public class MultiServerThread extends Thread {
 	                	String ascii_1=Helper.AsciiStringToString(String.valueOf(hex_byte, 48, 14));  //ICode 
 	                	this.ascii1=ascii_1;  //ICode,产品序列号
 	                	
-	                	String ACCT1 =new BigInteger(String.valueOf(hex_byte, 8, 2), 16).toString();
+	                	String ACCT1 =decode(String.valueOf(hex_byte, 8, 2));
 	                	System.out.println("ACCT1:"+ACCT1);   	
-	                	String ACCT2 =new BigInteger(String.valueOf(hex_byte, 10, 2), 16).toString();
+	                	String ACCT2 =decode(String.valueOf(hex_byte, 10, 2));
 	                	System.out.println("ACCT2:"+ACCT2); 
-	                	String ACCT3 =new BigInteger(String.valueOf(hex_byte, 12, 2), 16).toString();
+	                	String ACCT3 =decode(String.valueOf(hex_byte, 12, 2));
 	                	System.out.println("ACCT3:"+ACCT3); 
-	                	String ACCT4 =new BigInteger(String.valueOf(hex_byte, 14, 2), 16).toString();
+	                	String ACCT4 =decode(String.valueOf(hex_byte, 14, 2));
 	                	System.out.println("ACCT4:"+ACCT4); 
+	                	
+	                	System.out.println("ACCT  decode :"+decode(String.valueOf(hex_byte, 8, 2))+","+decode(String.valueOf(hex_byte, 10, 2))
+	                	+","+decode(String.valueOf(hex_byte, 12, 2))+","+decode(String.valueOf(hex_byte, 14, 2)));
 	                	
 	                	byte Key7 =(byte) Integer.parseInt(String.valueOf(hex_byte, 16, 2));
 	                	byte Key6 =(byte) Integer.parseInt(String.valueOf(hex_byte, 18, 2));
@@ -345,7 +371,7 @@ public class MultiServerThread extends Thread {
 	                			data_in[19],data_in[18],data_in[17],data_in[16]};
 	                	Key= key;  //密钥
 	                	
-	                	String str_ACCT =null;
+	                	String str_ACCT =ACCT1+ACCT2+ACCT3+ACCT4;
 	                	String ICode = null;
 	                	String str_ascii = null;
 	                	//String str_ascii = "4gw765431";
@@ -404,9 +430,9 @@ public class MultiServerThread extends Thread {
 	                	
 	                	Dto pDto=Dtos.newDto("device_id",this.ascii1);  //把序列号this.ascii1给device_id
 	            		List<DevicePO> deviceDtos = deviceDao.like(pDto);  //模糊查询是否有该设备
-	            		//device_id = deviceDtos.get(0).getDevice_id();
+	            		device_id = deviceDtos.get(0).getDevice_id();
 	            		//device_id = "26666666";  //模拟终端测试时用这一句，否则用上面那句
-	            		device_id = "18888888";
+	            		//device_id = "18888888";
 	            		
 	            		Dto pDto1 = Dtos.newDto("device_id", device_id);
 	    				devicePO = deviceDao.selectOne(pDto1);
@@ -415,17 +441,23 @@ public class MultiServerThread extends Thread {
 	                	{
 	                		System.out.println("yes");
 	                		
-	                		DevicePO  devicePO_=new DevicePO();
+	                		/*DevicePO  devicePO_=new DevicePO();
 	                		//devicePO_.setId_(this.ascii1);
 	                		//devicePO_.setDevice_id(Corp_ID);
 	                		
 	                		//devicePO_.setDevice_id(str_ascii);   //设置设备序列号，对厂家有意义
 	                		devicePO_.setUser_acct(str_ACCT);    //设置设备账号（每个保安公司不会重复），对保安公司有意义
-	                		deviceDao.insert(devicePO_);
+	                		deviceDao.insert(devicePO_);*/
 	                		System.out.println("yes two");
 	                		
 	                	}else {//已存在，则修改状态
-							
+	                		Dto pDto1_ = Dtos.newDto("device_id", device_id);
+	                		DevicePO  devicePO_=deviceDao.selectOne(pDto1_);;
+	                		//devicePO_.setId_(this.ascii1);
+	                		//devicePO_.setDevice_id(Corp_ID);
+	                		//devicePO_.setDevice_id(str_ascii);   //设置设备序列号，对厂家有意义
+	                		devicePO_.setUser_acct(str_ACCT);    //设置设备账号（每个保安公司不会重复），对保安公司有意义
+	                		deviceDao.updateByKey(devicePO_);
 	                		System.out.println("update");
 	                	}
 	                	
@@ -515,8 +547,63 @@ public class MultiServerThread extends Thread {
 		        			DevicePO devicePO6=deviceDao.selectOne(pDto6);
 							devicePO6.setLast_date(AOSUtils.getDateTime());  //最后来心跳信号时间
 							devicePO6.setSignal_quality(signal_quality);
-							devicePO6.setShutdown_time(AOSUtils.getDateTime());  //离线时间
+							//devicePO6.setShutdown_time(AOSUtils.getDateTime());  //离线时间
 							deviceDao.updateByKey(devicePO6);
+							
+							if(start) {
+		            			start = false;
+		            			System.out.println("Thread()");
+			            		new Thread() {
+			            			public void run() {
+			            				boolean start1=true;
+			            				
+										while(start1) {
+			            				try {
+			            					
+											Thread.sleep(120000);
+											SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+									        Date now = new Date();
+											System.out.println("now:"+now);// new Date()为获取当前系统时间
+									     
+									         Dto pDto11 = Dtos.newDto("device_id", device_id);
+											DevicePO devicePO = deviceDao.selectOne(pDto11);
+											Date last_date = devicePO.getLast_date();
+											System.out.println("last_date:"+last_date);
+											
+											long time1 = now.getTime()-last_date.getTime();
+											System.out.println("时间间隔:"+time1);
+											
+											if(time1 <120000)
+											{
+												//start = true;
+												//System.out.println("time1 <180000");
+												System.out.println("在线");
+												devicePO.setOnline_state("在线");
+												deviceDao.updateByKey(devicePO);
+												
+											}else {
+												start1 = false;
+												start = true;
+												System.out.println("离线");
+												
+												devicePO.setShutdown_time(last_date);
+												devicePO.setOnline_state("离线");
+												String shutdown_num = Integer.toString(Integer.parseInt(devicePO.getShutdown_number())+1);
+												devicePO.setShutdown_number(shutdown_num);
+												devicePO.setArrange_withdraw("撤防");
+												 //alarm_logPO.setResponse_time(new Date());
+												deviceDao.updateByKey(devicePO);
+											}
+											
+										} catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+			            				}
+			            			}
+			            		}.start();
+			            		
+		            		}
 	            		}
 	            		
 	            		/*Dto pDto=Dtos.newDto("device_id",this.ascii1);  //把序列号this.ascii1给device_id
@@ -535,9 +622,9 @@ public class MultiServerThread extends Thread {
 	    				devicePO = deviceDao.selectOne(pDto10);
 	            		System.out.println(devicePO.getArrange_withdraw());
 	            		
-	    				if(devicePO.getArrange_withdraw().equals("0"))   //撤防
+	    				if(devicePO.getArrange_withdraw().equals("撤防"))   //撤防
 	    					fang=false;   //fang是标志位，false说明目前模块的状态是撤防状态
-	    				else if(devicePO.getArrange_withdraw().equals("1"))  //布防
+	    				else if(devicePO.getArrange_withdraw().equals("布防"))  //布防
 	    					fang=true;   //fang是标志位，true说明目前模块的状态是撤防状态
 	    				
 	    				System.out.println(fang);
@@ -552,7 +639,8 @@ public class MultiServerThread extends Thread {
 			            		//List<DevicePO> deviceDtos = deviceDao.like(pDto);
 			            		Dto pDto1 = Dtos.newDto("device_id",device_id);
 			        			DevicePO devicePO1=deviceDao.selectOne(pDto1);
-								devicePO1.setArrange_withdraw("1");  //布防
+								//devicePO1.setArrange_withdraw("1");  //布防
+			        			devicePO1.setArrange_withdraw("布防");
 								//devicePO.setIs_alarming(Q);
 								devicePO1.setArrange_date(AOSUtils.getDateTime());
 								deviceDao.updateByKey(devicePO1);
@@ -566,7 +654,8 @@ public class MultiServerThread extends Thread {
 				            	   
 				            	Dto pDto2 = Dtos.newDto("device_id",device_id);
 			        			DevicePO devicePO2=deviceDao.selectOne(pDto2);
-								devicePO2.setArrange_withdraw("0"); //撤防
+								//devicePO2.setArrange_withdraw("0"); //撤防
+								devicePO2.setArrange_withdraw("撤防");
 								//devicePO.setIs_alarming(Q);
 								devicePO2.setWithdraw_date(AOSUtils.getDateTime());
 								deviceDao.updateByKey(devicePO2);

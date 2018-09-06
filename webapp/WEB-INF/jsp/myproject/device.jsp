@@ -38,22 +38,29 @@
 			<aos:selmodel type="checkbox" mode="multi" />
 		 
 						      			      
-						      			         <aos:column header="设备编号" dataIndex="device_id"   width="255" />
-			    						      			       <aos:column header="状态" dataIndex="status"   width="255" />
-			    						      			       <aos:column header="布撤防" dataIndex="arrange_withdraw"   width="255" />
-			    						      			      <aos:column header="序号"   dataIndex="id_"   width="255"  />
-			    						      			       <aos:column header="来自用户表的编号" dataIndex="user_id"   width="255" />
-			    						      			       <aos:column header="用户名称" dataIndex="user_name"   width="255" />
+						      			         <aos:column header="设备编号" dataIndex="device_id"   width="100" />
+			    						      			       <%-- <aos:column header="状态" dataIndex="status"   width="255" /> --%>
+			    						      			       <aos:column header="布撤防" dataIndex="arrange_withdraw"   width="100" />
+			    						      			     <%--  <aos:column header="序号"   dataIndex="id_"   width="255"  /> --%>
+			    						      			       <%-- <aos:column header="来自用户表的编号" dataIndex="user_id"   width="255" /> --%>
+			    						      			        <aos:column header="用户编号" dataIndex="user_acct"   width="100" />
+			    						      			       <aos:column header="用户名称" dataIndex="user_name"   width="100" />
 			    						      			       <aos:column header="用户地址" dataIndex="user_address"   width="400" />
+			    						      			       <aos:column header="信号质量" dataIndex="signal_quality"   width="100" />
+			    						      			       <aos:column header="用户类型" dataIndex="user_type"   width="100" />
+			    						      			       <aos:column header="报警状态" dataIndex="is_alarming"   width="100" />
+			    						      			       <aos:column header="负责人" dataIndex="head"   width="100" />
+			    						      			       <aos:column header="负责人电话" dataIndex="head_phone"   width="100" />
+			    						      			       <aos:column header="离线次数" dataIndex="shutdown_number"   width="100" />
+			    						      			       <aos:column header="撤防时间" dataIndex="withdraw_date"   width="160" />
+			    						      			       <aos:column header="布防时间" dataIndex="arrange_date"   width="160" />
+			    						      			       <aos:column header="最近心跳时间" dataIndex="last_date"   width="160" />
+			    						      			        <aos:column header="离线时间" dataIndex="shutdown_time"   width="160" />
+			    						      			        <aos:column header="在线状态" dataIndex="online_state"   width="100" />
+			    						      			        
 			    						      			       <aos:column header="分中心" dataIndex="sub_center"   width="255" />
-			    						      			       <aos:column header="信号质量" dataIndex="signal_quality"   width="255" />
-			    						      			       <aos:column header="用户类型" dataIndex="user_type"   width="255" />
-			    						      			       <aos:column header="报警状态" dataIndex="is_alarming"   width="255" />
-			    						      			    
 			    						      			       <aos:column header="主机类型" dataIndex="host_type"   width="255" />
 			    						      			       <aos:column header="视频联动" dataIndex="video_linkage"   width="255" />
-			    						      			       <aos:column header="负责人" dataIndex="head"   width="255" />
-			    						      			       <aos:column header="负责人电话" dataIndex="head_phone"   width="255" />
 			    						      			       <aos:column header="测试间隔" dataIndex="test_period"   width="255" />
 			    						      			       <aos:column header="缴费截止日期" dataIndex="pay_date"   width="160" />
 			    						      			       <aos:column header="保修截止日期" dataIndex="guarantee_time"   width="160" />
@@ -67,10 +74,6 @@
 			    						      			       <aos:column header="派出所电话" dataIndex="police_phone"   width="255" />
 			    						      			       <aos:column header="主机位置" dataIndex="host_address"   width="255" />
 			    						      			       <aos:column header="安装日期" dataIndex="install_date"   width="160" />
-			    						      			       <aos:column header="离线次数" dataIndex="shutdown_number"   width="255" />
-			    						      			       <aos:column header="撤防时间" dataIndex="withdraw_date"   width="160" />
-			    						      			       <aos:column header="布防时间" dataIndex="arrange_date"   width="160" />
-			    						      			       <aos:column header="最后来信号时间" dataIndex="last_date"   width="160" />
 			    						      			       <aos:column header="施工人员" dataIndex="builders"   width="255" />
 			    						      			       <aos:column header="出警单位" dataIndex="police_unit"   width="255" />
 			    						      			       <aos:column header="电话" dataIndex="phone"   width="255" />
@@ -79,7 +82,7 @@
 			    						      			       <aos:column header="组" dataIndex="group_"   width="255" />
 			    						      			       <aos:column header="录入员" dataIndex="entry_clerk"   width="255" />
 			    						      			       <aos:column header="巡检人员" dataIndex="inspection_staff"   width="255" />
-			    						      			       <aos:column header="离线时间" dataIndex="downtime"   width="160" />
+			    						      			       <aos:column header="停机时间" dataIndex="downtime"   width="160" />
 			    						      			       <aos:column header="电话1" dataIndex="phone1"   width="255" />
 			    						      			       <aos:column header="产品型号" dataIndex="product_type"   width="255" />
 			    						      			       <aos:column header="出厂日期" dataIndex="production_date"   width="255" />
@@ -93,7 +96,6 @@
 			    						      			       <aos:column header="预定布撤防时间" dataIndex="arrangeandwithdraw_time"   width="700" />
 			    						      			       <aos:column header="分站" dataIndex="network_setting_substation"   width="255" />
 			    						      			       <aos:column header="名称" dataIndex="network_setting_name"   width="255" />
-			    						      			       <aos:column header="在线状态" dataIndex="online_state"   width="255" />
 			    						      			       <aos:column header="模板文件" dataIndex="network_setting_template"   width="255" />
 			    						      			       <aos:column header="备注" dataIndex="network_setting_remarks"   width="255" />
 			    				      			       <aos:column header="接收号码" dataIndex="network_setting_number"   width="255" />
@@ -103,9 +105,7 @@
 			    						      			       <aos:column header="报警声音方案" dataIndex="alarm_sound"   width="255" />
 			    						      			       <aos:column header="主机报警短信号码" dataIndex="host_alarm_sms"   width="255" />
 			    						      			       <aos:column header="分区号" dataIndex="gg_"   width="255" />
-			    						      			       <aos:column header="离线时间" dataIndex="shutdown_time"   width="160" />
 			    						      			       <aos:column header="防区号" dataIndex="ccc_"   width="255" />
-			    						      			       <aos:column header="用户编号" dataIndex="user_acct"   width="255" />
 			    						      			       <aos:column header="审查确认" dataIndex="review_confirm"   width="255" />
 			    						      			       <aos:column header="备注" dataIndex="management_remarks"   width="500" />
 			    			 		</aos:gridpanel>
@@ -209,8 +209,8 @@
 
 
 				
-					<aos:datetimefield name="repair_progress" fieldLabel="报修进度"  editable="true" />
-					<aos:datetimefield name="repair_record" fieldLabel="报修记录"  editable="true" />
+					<aos:textfield name="repair_progress" fieldLabel="报修进度"  editable="true" />
+					<aos:textfield name="repair_record" fieldLabel="报修记录"  editable="true" />
 				</aos:fieldset>
 			</aos:fieldset>
 
