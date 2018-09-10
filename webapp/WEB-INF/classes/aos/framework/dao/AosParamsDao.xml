@@ -124,6 +124,12 @@
 		*
 		FROM base_params WHERE key_="access_token"
 	</select>
+	
+	<select id="selectByNBIoTAccess" resultType="AosParamsPO" >
+	SELECT
+		*
+		FROM base_params WHERE key_="nb_iot_access_token"
+	</select>
 	<!-- 根据主键查询并返回数据持久化对象 -->
 	<select id="selectByKey" resultType="AosParamsPO">
 		SELECT

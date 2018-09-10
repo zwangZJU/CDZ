@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -31,6 +32,7 @@ import com.cloopen.rest.sdk.CCPRestSmsSDK;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 
 import aos.framework.core.cache.CacheMasterDataService;
 import aos.framework.core.id.AOSId;
@@ -78,9 +80,14 @@ import po.CommonLogsPO;
 import po.DevicePO;
 import po.Repair_logPO;
 import po.User_feedbackPO;
+import start.ConnectPlatform;
+import utils.Constant;
 import utils.Helper;
 import utils.HttpRequester;
+import utils.HttpsUtil;
+import utils.JsonUtil;
 import utils.Request;
+import utils.StreamClosedHttpResponse;
 
 
 /**
@@ -165,6 +172,31 @@ public class AppApiService extends CDZBaseController {
 
 	private static CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
 	static String Alias = "18392888103";
+	
+	public void deviceInfoChangedCallback(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	
+	public void deviceIncident(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	
+	public void infoReceiver(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	
+	public void a(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		String b = qDto.toString();
+		
+		String id = qDto.getString("deviceId");
+		
+		//System.out.println(b);
+		httpModel.setOutMsg("ok");
+	}
 	
 	public void resultReturn(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
@@ -1401,7 +1433,82 @@ public class AppApiService extends CDZBaseController {
 	public void deviceBinding(HttpModel httpModel) throws ParseException {
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
+		
+		String deviceType = qDto.getString("deviceType");
 		// TODO
+		if(deviceType.equals("1"))
+		{
+			bindModule(httpModel);
+		}else if(deviceType.equals("2")) {
+			bindOneButtonAlarm(httpModel);
+		}else if(deviceType.equals("3")) {
+			bindingCamera(httpModel);
+		}
+	
+	}
+	
+	/**
+	 * @param httpModel
+	 */
+	private void bindOneButtonAlarm(HttpModel httpModel) {
+		// TODO Auto-generated method stub
+		
+		Dto qDto = httpModel.getInDto();
+		String deviceInfo = qDto.getString("deviceInfo");
+		
+		HttpsUtil httpsUtil = new HttpsUtil();
+        try {
+			httpsUtil.initSSLConfigForTwoWay();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        Dto pDto = Dtos.newDto("key_", "nb_iot_access_token");
+		AosParamsPO aosParamsPO = aosParamsDao.selectOne(pDto);
+		String access_token = aosParamsPO.getValue_();
+        // Authentication锛実et token
+        String accessToken = access_token;
+
+        //Please make sure that the following parameter values have been modified in the Constant file.
+		String appId = Constant.APPID;
+		String urlReg = Constant.REGISTER_DEVICE;
+
+        //please replace the verifyCode and nodeId and timeout, when you use the demo.
+        String verifyCode = deviceInfo.split("#")[3];
+		String nodeId = verifyCode;
+        Integer timeout = 0;
+
+        Map<String, Object> paramReg = new HashMap<>();
+        paramReg.put("verifyCode", verifyCode.toUpperCase());
+        paramReg.put("nodeId", nodeId.toUpperCase());
+        paramReg.put("timeout", timeout);
+
+        String jsonRequest = JsonUtil.jsonObj2Sting(paramReg);
+
+        Map<String, String> header = new HashMap<>();
+        header.put(Constant.HEADER_APP_KEY, appId);
+        header.put(Constant.HEADER_APP_AUTH, "Bearer" + " " + accessToken);
+
+        StreamClosedHttpResponse responseReg = httpsUtil.doPostJsonGetStatusLine(urlReg, header, jsonRequest);
+
+        System.out.println("RegisterDirectlyConnectedDevice, response content:");
+        System.out.print(responseReg.getStatusLine());
+        System.out.println(responseReg.getContent());
+        System.out.println();
+        
+        String result = responseReg.getContent();
+        JsonObject jsonObject = (JsonObject) new JsonParser().parse(result);
+		// 获取accesstoken中的字符串
+		String deviceId = jsonObject.get("deviceId").getAsString();
+		
+        ConnectPlatform.modifyDeviceInfo(deviceId, accessToken);
+	}
+	
+	public void bindModule(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+		
 		String phone = qDto.getString("phone");// phone,即为登陆时的用户手机号,15356002207
 		String address = qDto.getString("address");
 		String loc_label = qDto.getString("loc_label");
@@ -1445,7 +1552,12 @@ public class AppApiService extends CDZBaseController {
 			String guarantee_time = format.format(y);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
-			devicePO.setGuarantee_time(sdf.parse(guarantee_time));
+			try {
+				devicePO.setGuarantee_time(sdf.parse(guarantee_time));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			deviceDao.insert(devicePO);
 			basic_userDao.updateByKey(basic_userPO);
@@ -1458,7 +1570,7 @@ public class AppApiService extends CDZBaseController {
 		}
 		httpModel.setOutMsg(AOSJson.toJson(odto));
 	}
-	
+
 	public void userLogout(HttpModel httpModel) {
 		
 		Dto odto = Dtos.newDto();
@@ -1799,6 +1911,29 @@ public class AppApiService extends CDZBaseController {
 	public void getAccessToken(HttpModel httpModel) {
 		HttpRequester hrq=new HttpRequester(aosParamsDao);
 		hrq.runtask();
+	}
+	
+	public void getNBIoTAccessToken(HttpModel httpModel) {
+		
+		Dto qDto = httpModel.getInDto();
+		String token=qDto.getString("accessToken");
+		
+			AosParamsPO aosparamsPO=new AosParamsPO();
+			aosparamsPO.setId_(AOSId.appId(SystemCons.ID.SYSTEM));
+			aosparamsPO.setKey_("nb_iot_access_token");
+			aosparamsPO.setName_("NBIoT平台访问令牌");
+			aosparamsPO.setValue_(token);
+			//aosParamsDao.insert(aosparamsPO);
+			//若导入内容为空则插入,若不为空则更新
+			AosParamsPO a = aosParamsDao.selectByNBIoTAccess();
+			if(a!=null) {
+				aosParamsDao.updateByKey_(aosparamsPO);
+			}
+			else {
+			aosParamsDao.insert(aosparamsPO);
+			}
+  
+		
 	}
 
 }

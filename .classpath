@@ -106,6 +106,11 @@
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/gexin-rp-sdk-base-4.0.0.22.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/gexin-rp-sdk-http-4.0.1.17.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/gexin-rp-sdk-template-4.0.0.16.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/api-client-1.0.0.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/netty-all-4.0.27.Final.jar" sourcepath="C:/Users/Administrator/.m2/repository/io/netty/netty-all/4.0.27.Final/netty-all-4.0.27.Final-sources.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jackson-databind-2.5.4.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jackson-core-2.5.4.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jackson-annotations-2.5.4.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v9.0 (2)"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="webapp/WEB-INF/classes"/>

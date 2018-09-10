@@ -27,6 +27,7 @@ public interface AosParamsDao {
 	 * @return
 	 */
 	AosParamsPO selectByAccess();
+	AosParamsPO selectByNBIoTAccess();
 	int updateByKey_(AosParamsPO aos_paramsPO);
 	/**
 	 * 插入一个数据持久化对象(插入字段为传入PO实体的非空属性)
