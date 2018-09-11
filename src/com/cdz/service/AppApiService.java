@@ -80,7 +80,7 @@ import po.CommonLogsPO;
 import po.DevicePO;
 import po.Repair_logPO;
 import po.User_feedbackPO;
-import start.ConnectPlatform;
+ 
 import utils.Constant;
 import utils.Helper;
 import utils.HttpRequester;
@@ -173,30 +173,50 @@ public class AppApiService extends CDZBaseController {
 	private static CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
 	static String Alias = "18392888103";
 	
-	public void deviceInfoChangedCallback(HttpModel httpModel) {
-		System.out.println(httpModel.toString());
-		httpModel.setOutMsg("ok");
-	}
 	
-	public void deviceIncident(HttpModel httpModel) {
-		System.out.println(httpModel.toString());
-		httpModel.setOutMsg("ok");
-	}
 	
-	public void infoReceiver(HttpModel httpModel) {
-		System.out.println(httpModel.toString());
-		httpModel.setOutMsg("ok");
-	}
-	
-	public void a(HttpModel httpModel) {
+	public void getCameraList(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
-		String b = qDto.toString();
+		Dto odto = Dtos.newDto();
+	
+		String phone = qDto.getString("phone");
+		/* System.out.println(phone); */
+
+		Dto pDto = Dtos.newDto();
+		pDto.put("device_id", phone);
+		int rows = cameraDao.rows(pDto);
+		pDto.put("limit", rows);// 默认查询出100个
+
+			pDto.put("start", 0);
+
+			Dto pDto1=Dtos.newDto("key_", "access_token");
+			AosParamsPO aosParamsPO=aosParamsDao.selectOne(pDto1);
+			String access_token1 = aosParamsPO.getValue_();
+
+		List<Dto> cameraDtos = sqlDao.list("Camera.listCamerasPage", pDto);
+		List<Dto> newListDtos = new ArrayList<Dto>();
+	
 		
-		String id = qDto.getString("deviceId");
+		for (Dto dto : cameraDtos) {
+			Dto newDto = Dtos.newDto();	
+			newDto.put("camera_serial", getData(dto.getString("camera_serial")));
+			newDto.put("access_token", getData(access_token1));
+			newDto.put("camera_type", getData(dto.getString("camera_type")));
+			newDto.put("verification_code", getData(dto.getString("verification_code")));
 		
-		//System.out.println(b);
-		httpModel.setOutMsg("ok");
+			newListDtos.add(newDto);
+
+			}
+
+			odto.put("camera", newListDtos);
+			odto.put("status", "1");
+		odto.put("msg", "共查到" + rows + "条数据");
+
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
 	}
+	
+	
 	
 	public void resultReturn(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
@@ -1475,7 +1495,7 @@ public class AppApiService extends CDZBaseController {
 		String urlReg = Constant.REGISTER_DEVICE;
 
         //please replace the verifyCode and nodeId and timeout, when you use the demo.
-        String verifyCode = deviceInfo.split("#")[3];
+        String verifyCode = deviceInfo.split("#")[4];
 		String nodeId = verifyCode;
         Integer timeout = 0;
 
@@ -1502,7 +1522,78 @@ public class AppApiService extends CDZBaseController {
 		// 获取accesstoken中的字符串
 		String deviceId = jsonObject.get("deviceId").getAsString();
 		
-        ConnectPlatform.modifyDeviceInfo(deviceId, accessToken);
+        NbIotService.modifyDeviceInfo(deviceId, accessToken);
+        
+        
+        
+        
+        
+     // 数据库操作
+        Dto qDto1 = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+		
+		String phone = qDto1.getString("phone");// phone,即为登陆时的用户手机号,15356002207
+		String address = qDto1.getString("address");
+		String IMEI = qDto1.getString("IMEI");
+		String loc_label = qDto1.getString("loc_label");
+		String deviceInfo1 = qDto1.getString("deviceInfo");
+		String[] info = deviceInfo1.split("#");
+		Dto pDto1=Dtos.newDto("account", phone);
+		Basic_userPO basic_userPO=basic_userDao.selectOne(pDto1);   //用于检查账户是否存在
+		Dto p1Dto = Dtos.newDto("device_id", info[0]);
+		DevicePO devicePO1 = deviceDao.selectOne(p1Dto);
+		if(null==basic_userPO){
+			this.fail(odto, "手机号输入错误。");
+		}else {
+
+			if (null != devicePO1) {
+				this.fail(odto, "绑定失败，该设备已被绑定");
+
+			} else {
+			String info1 = basic_userPO.getDevice_number();
+			info1=info1+ "#" + info[0];
+			basic_userPO.setDevice_number(info1);//device_number,代表设备编号
+			// TODO
+				DevicePO devicePO = new DevicePO();
+			devicePO.setId_(info[4]);
+			devicePO.setUser_id("");
+				devicePO.setPhone(phone);
+			devicePO.setUser_address(address);
+			devicePO.setUser_type(basic_userPO.getUser_type());
+				devicePO.setDevice_id(info[0]);
+			devicePO.setProduct_type(info[1]);
+			devicePO.setProduction_date(info[2]);
+			devicePO.setLoc_label(loc_label);
+		
+			
+			devicePO.setInstall_date(new Date());
+			devicePO.setRepair_record("");
+			
+			Calendar c = Calendar.getInstance();// 可以对每个时间域单独修改
+			c.setTime(new Date());
+			c.add(Calendar.YEAR, 1);//一年保修
+			Date y = c.getTime();
+			String guarantee_time = format.format(y);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			try {
+				devicePO.setGuarantee_time(sdf.parse(guarantee_time));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			deviceDao.insert(devicePO);
+			basic_userDao.updateByKey(basic_userPO);
+			// TODO
+		
+			odto.put("status", "1");
+			odto.put("msg", "绑定成功");
+			}
+
+		}
+		httpModel.setOutMsg(AOSJson.toJson(odto));  
+        
 	}
 	
 	public void bindModule(HttpModel httpModel) {
@@ -1913,27 +2004,6 @@ public class AppApiService extends CDZBaseController {
 		hrq.runtask();
 	}
 	
-	public void getNBIoTAccessToken(HttpModel httpModel) {
-		
-		Dto qDto = httpModel.getInDto();
-		String token=qDto.getString("accessToken");
-		
-			AosParamsPO aosparamsPO=new AosParamsPO();
-			aosparamsPO.setId_(AOSId.appId(SystemCons.ID.SYSTEM));
-			aosparamsPO.setKey_("nb_iot_access_token");
-			aosparamsPO.setName_("NBIoT平台访问令牌");
-			aosparamsPO.setValue_(token);
-			//aosParamsDao.insert(aosparamsPO);
-			//若导入内容为空则插入,若不为空则更新
-			AosParamsPO a = aosParamsDao.selectByNBIoTAccess();
-			if(a!=null) {
-				aosParamsDao.updateByKey_(aosparamsPO);
-			}
-			else {
-			aosParamsDao.insert(aosparamsPO);
-			}
-  
-		
-	}
+
 
 }

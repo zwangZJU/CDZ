@@ -591,6 +591,7 @@ public class MultiServerThread extends Thread {
 												String shutdown_num = Integer.toString(Integer.parseInt(devicePO.getShutdown_number())+1);
 												devicePO.setShutdown_number(shutdown_num);
 												devicePO.setArrange_withdraw("撤防");
+												
 												 //alarm_logPO.setResponse_time(new Date());
 												deviceDao.updateByKey(devicePO);
 											}
@@ -726,7 +727,7 @@ public class MultiServerThread extends Thread {
 		            			DevicePO devicePO3 = deviceDao.selectOne(pDto4);
 		            			//Dto newDto = Dtos.newDto();
 		            			
-		            			/*下面是修改alarm_log表里面的值*/
+		            			/*下面是修改alarm_log表里面的值.......*/
 		            			Alarm_logPO alarm_logPO = new Alarm_logPO();   
 		            			alarm_logPO.setAlarm_id(AOSId.appId(SystemCons.ID.SYSTEM));
 		            			alarm_logPO.setDevice_id(device_id);

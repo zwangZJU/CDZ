@@ -11,6 +11,10 @@
 		<include refid="dao.CameraDao.column" />
 		FROM camera
 		<where>
+		<if test="device_id != null and device_id != ''">
+				       AND device_id = #{device_id} 
+				   
+				</if>
  		</where>
 	</select>
 	<select id="listcameras" parameterType="Dto" resultType="Dto">

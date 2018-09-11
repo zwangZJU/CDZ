@@ -1,19 +1,34 @@
 /**
  * 
  */
-package start;
+package service;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+ 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import com.iotplatform.client.NorthApiClient;
 import com.iotplatform.client.NorthApiException;
-import com.iotplatform.client.dto.ClientInfo;
-import com.iotplatform.utils.PropertyUtil;
 
+import aos.framework.core.id.AOSId;
+import aos.framework.core.typewrap.Dto;
+import aos.framework.core.typewrap.Dtos;
+import aos.framework.dao.AosParamsDao;
+import aos.framework.dao.AosParamsPO;
+import aos.framework.web.router.HttpModel;
+import aos.system.common.utils.SystemCons;
+import po.Alarm_logPO;
+import po.DevicePO;
 import utils.Constant;
 import utils.HttpsUtil;
 import utils.JsonUtil;
@@ -21,10 +36,15 @@ import utils.Request;
 import utils.StreamClosedHttpResponse;
 
 /**
- * @author Administrator
+ * @author wzlab
  *
  */
-public class ConnectPlatform {
+@Service
+public class NbIotService {
+
+	@Autowired
+	AosParamsDao aosParamsDao;
+	
 	
 	public static String serverIP = "180.101.147.89:8743";
 	
@@ -111,6 +131,7 @@ public class ConnectPlatform {
 	        String model = "NBOBA";
 	        String protocolType = "CoAP";
 	        String location = "LA";
+	        
 
 	        Map<String, Object> paramModifyDeviceInfo = new HashMap<>();
 	        paramModifyDeviceInfo.put("manufacturerId", manufacturerId);
@@ -135,4 +156,100 @@ public class ConnectPlatform {
 	        System.out.println();
 	}
 	
+	public void getNBIoTAccessToken(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		String token=qDto.getString("accessToken");
+		
+			AosParamsPO aosparamsPO=new AosParamsPO();
+			aosparamsPO.setId_(AOSId.appId(SystemCons.ID.SYSTEM));
+			aosparamsPO.setKey_("nb_iot_access_token");
+			aosparamsPO.setName_("NBIoT平台访问令牌");
+			aosparamsPO.setValue_(token);
+			//aosParamsDao.insert(aosparamsPO);
+			//若导入内容为空则插入,若不为空则更新
+			AosParamsPO a = aosParamsDao.selectByNBIoTAccess();
+			if(a!=null) {
+				aosParamsDao.updateByKey_(aosparamsPO);
+			}
+			else {
+			aosParamsDao.insert(aosparamsPO);
+			}
+  
+		
+	}
+	
+	public void deviceInfoChangedCallback(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	
+	public void deviceIncident(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	
+	public void infoReceiver(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	
+	public void deviceDataChangedCallback(HttpModel httpModel) {
+		ServletInputStream ris;
+		try {
+			ris = httpModel.getRequest().getInputStream();
+			StringBuilder content = new StringBuilder();
+			byte[] b = new byte[1024];
+			int lens = -1;
+			while ((lens = ris.read(b)) > 0) {
+				content.append(new String(b, 0, lens));
+			}
+			String strcont = content.toString();
+
+			JsonObject jsonObject = (JsonObject) new JsonParser().parse(strcont);
+			 
+			JsonObject data = jsonObject.get("service").getAsJsonObject().get("data").getAsJsonObject();
+			String IMEI = data.get("IMEI").getAsString();
+			
+		 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+//		String s1 = httpModel.getRequest().getParameter("deviceId");
+//		Dto qDto = httpModel.getInDto();
+//		System.out.println(s1);
+//		String body= qDto.toString();
+//		System.out.println(body);
+//		 
+//		
+//		JsonObject jsonObject = (JsonObject) new JsonParser().parse(body);
+//		// 获取accesstoken中的字符串
+//		 
+//		String deviceId = jsonObject.get("deviceId").getAsString();
+//			
+		//System.out.println(deviceId);
+		httpModel.setOutMsg1("ok");
+	//操作数据库
+		
+		
+		/*Dto pDto4 = Dtos.newDto("device_id", device_id);
+		DevicePO devicePO3 = deviceDao.selectOne(pDto4);
+		Alarm_logPO alarm_logPO = new Alarm_logPO();   
+		alarm_logPO.setAlarm_id(AOSId.appId(SystemCons.ID.SYSTEM));
+		alarm_logPO.setDevice_id(device_id);
+		alarm_logPO.setUser_phone(devicePO3.getPhone());
+		alarm_logPO.setAlarm_time(new Date());
+		alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
+		alarm_logPO.setAlert_code(str_EEE);  //警情代码
+		alarm_logPO.setProcess("0");  //是否接警
+		alarm_logPO.setDefence_area(str_CCC);  //防区号
+		alarm_logPO.setType_("0");  //报警类型
+		alarm_logPO.setHandler_(devicePO3.getHead());  //负责人名字
+		alarm_logPO.setHandler_phone(devicePO3.getHead_phone());  //负责人手机号
+		
+		//加CCC和GG
+		alarm_logDao.insert(alarm_logPO);*/
+	}
 }
