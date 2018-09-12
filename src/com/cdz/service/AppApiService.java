@@ -178,40 +178,100 @@ public class AppApiService extends CDZBaseController {
 	public void getCameraList(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
-	
+
 		String phone = qDto.getString("phone");
-		/* System.out.println(phone); */
-
-		Dto pDto = Dtos.newDto();
-		pDto.put("device_id", phone);
-		int rows = cameraDao.rows(pDto);
-		pDto.put("limit", rows);// 默认查询出100个
-
-			pDto.put("start", 0);
-
-			Dto pDto1=Dtos.newDto("key_", "access_token");
-			AosParamsPO aosParamsPO=aosParamsDao.selectOne(pDto1);
-			String access_token1 = aosParamsPO.getValue_();
-
-		List<Dto> cameraDtos = sqlDao.list("Camera.listCamerasPage", pDto);
-		List<Dto> newListDtos = new ArrayList<Dto>();
-	
 		
-		for (Dto dto : cameraDtos) {
-			Dto newDto = Dtos.newDto();	
+
+		Dto pDto3 = Dtos.newDto("key_", "access_token");
+		AosParamsPO aosParamsPO = aosParamsDao.selectOne(pDto3);
+		String access_token1 = aosParamsPO.getValue_();
+
+
+		Dto pDto4 = Dtos.newDto();
+		pDto4.put("phone", phone);
+		int rows4 = deviceDao.rows(pDto4);
+		pDto4.put("limit", rows4);// 默认查询出100个
+		pDto4.put("start", 0);
+
+		List<Dto> deviceDtos = sqlDao.list("Device.listCamerasPage", pDto4);
+		if (null != deviceDtos && !deviceDtos.isEmpty()) {
+			// 有设备时
+		Dto pDto1 = Dtos.newDto();
+		pDto1.put("device_id", phone);
+		int rows = cameraDao.rows(pDto1);
+			int rows5 = 0;
+			int num = 0;
+		pDto1.put("limit", rows);// 默认查询出100个
+		pDto1.put("start", 0);
+
+		List<Dto> cameraDtos1 = sqlDao.list("Camera.listcameras", pDto1);
+		List<Dto> newListDtos1 = new ArrayList<Dto>();
+		for (Dto dto : cameraDtos1) {
+				// 先用手机号查camera
+			Dto newDto = Dtos.newDto();
 			newDto.put("camera_serial", getData(dto.getString("camera_serial")));
 			newDto.put("access_token", getData(access_token1));
 			newDto.put("camera_type", getData(dto.getString("camera_type")));
 			newDto.put("verification_code", getData(dto.getString("verification_code")));
-		
-			newListDtos.add(newDto);
+
+			newListDtos1.add(newDto);
+
+		}
+
+			for (Dto dto : deviceDtos) {
+				// 再根据device_id循环查询camera
+
+				String device_id = dto.getString("device_id");
+
+				Dto pDto2 = Dtos.newDto();
+				pDto2.put("device_id", device_id);
+				rows5 = cameraDao.rows(pDto2);
+				num = num + rows5;
+				pDto2.put("limit", rows5);// 默认查询出100个
+				pDto2.put("start", 0);
+				List<Dto> cameraDtos2 = sqlDao.list("Camera.listcameras", pDto2);
+				for (Dto dto2 : cameraDtos2) {
+					Dto newDto1 = Dtos.newDto();
+					newDto1.put("camera_serial", getData(dto2.getString("camera_serial")));
+					newDto1.put("access_token", getData(access_token1));
+					newDto1.put("camera_type", getData(dto2.getString("camera_type")));
+					newDto1.put("verification_code", getData(dto2.getString("verification_code")));
+
+					newListDtos1.add(newDto1);
+
+		}
+			}
+			num = num + rows;
+			odto.put("camera", newListDtos1);
+			odto.put("status", "1");
+			odto.put("msg", "共查到" + num + "条数据");
+
+		} else {
+
+			Dto pDto2 = Dtos.newDto();
+			pDto2.put("device_id", phone);
+			int rows2 = cameraDao.rows(pDto2);
+			pDto2.put("limit", rows2);// 默认查询出100个
+			pDto2.put("start", 0);
+
+			List<Dto> cameraDtos2 = sqlDao.list("Camera.listcameras", pDto2);
+			List<Dto> newListDtos1 = new ArrayList<Dto>();
+			for (Dto dto : cameraDtos2) {
+				Dto newDto = Dtos.newDto();
+				newDto.put("camera_serial", getData(dto.getString("camera_serial")));
+				newDto.put("access_token", getData(access_token1));
+				newDto.put("camera_type", getData(dto.getString("camera_type")));
+				newDto.put("verification_code", getData(dto.getString("verification_code")));
+
+				newListDtos1.add(newDto);
 
 			}
 
-			odto.put("camera", newListDtos);
-			odto.put("status", "1");
-		odto.put("msg", "共查到" + rows + "条数据");
+		odto.put("camera", newListDtos1);
+		odto.put("status", "1");
+			odto.put("msg", "共查到" + rows2 + "条数据");
 
+		}
 
 		httpModel.setOutMsg(AOSJson.toJson(odto));
 	}
@@ -225,7 +285,7 @@ public class AppApiService extends CDZBaseController {
 		String id = qDto.getString("id");
 		String type = qDto.getString("type");
 		String result = qDto.getString("result");
-		if (id.equals("0")) {
+		if (type.equals("0")) {
 			Dto pDto = Dtos.newDto("alarm_id", id);
 			Alarm_logPO alarm_logPO = alarm_logDao.selectOne(pDto);
 
@@ -236,7 +296,7 @@ public class AppApiService extends CDZBaseController {
 			 alarm_logDao.updateByKey(alarm_logPO);
 			
 		}
-         if (id.equals("1")) {
+         if (type.equals("1")) {
         	 Dto pDto = Dtos.newDto("repair_id", id);
      		Repair_logPO repair_logPO = repair_logDao.selectOne(pDto);
      		String info = repair_logPO.getState_info();
@@ -260,6 +320,7 @@ public class AppApiService extends CDZBaseController {
 				
 				devicePO.setRepair_progress("1");//已完成
 				deviceDao.updateByKey(devicePO);
+				
 			
 		}
 		

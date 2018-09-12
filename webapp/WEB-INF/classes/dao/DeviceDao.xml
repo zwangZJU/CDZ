@@ -178,8 +178,8 @@
 		<if test="online_state != null and online_state != ''">
 	         online_state, <!-- 在线状态 -->
 		</if>
-		<if test="network_setting_template != null and network_setting_template != ''">
-	         network_setting_template, <!-- 模板文件 -->
+		<if test="area_map != null and area_map != ''">
+	         area_map, <!-- 防区地图 -->
 		</if>
 		<if test="network_setting_remarks != null and network_setting_remarks != ''">
 	         network_setting_remarks, <!-- 备注 -->
@@ -208,8 +208,8 @@
 		<if test="shutdown_time != null and shutdown_time != ''">
 	         shutdown_time, <!-- 离线时间 -->
 		</if>
-		<if test="ccc_ != null and ccc_ != ''">
-	         ccc_, <!-- 防区号 -->
+		<if test="trigger_ != null and trigger_ != ''">
+	         trigger_, <!-- 触发/恢复 -->
 		</if>
 		<if test="user_acct != null and user_acct != ''">
 	         user_acct, <!-- 用户编号 -->
@@ -217,8 +217,8 @@
 		<if test="review_confirm != null and review_confirm != ''">
 	         review_confirm, <!-- 审查确认 -->
 		</if>
-		<if test="management_remarks != null and management_remarks != ''">
-	         management_remarks, <!-- 备注 -->
+		<if test="blacklist != null and blacklist != ''">
+	         blacklist, <!-- 备注 -->
 		</if>
 		<if test="device_id != null and device_id != ''">
 	          device_id  <!-- 设备编号 -->
@@ -386,8 +386,8 @@
 		<if test="online_state != null and online_state != ''">
 	          #{online_state, jdbcType=VARCHAR}, <!-- 在线状态 -->
 	    </if>
-		<if test="network_setting_template != null and network_setting_template != ''">
-	          #{network_setting_template, jdbcType=VARCHAR}, <!-- 模板文件 -->
+		<if test="area_map != null and area_map != ''">
+	          #{area_map, jdbcType=VARCHAR}, <!-- 防区地图 -->
 	    </if>
 		<if test="network_setting_remarks != null and network_setting_remarks != ''">
 	          #{network_setting_remarks, jdbcType=VARCHAR}, <!-- 备注 -->
@@ -416,8 +416,8 @@
 		<if test="shutdown_time != null and shutdown_time != ''">
 	          #{shutdown_time, jdbcType=VARCHAR}, <!-- 离线时间 -->
 	    </if>
-		<if test="ccc_ != null and ccc_ != ''">
-	          #{ccc_, jdbcType=VARCHAR}, <!-- 防区号 -->
+		<if test="trigger_ != null and trigger_ != ''">
+	          #{trigger_, jdbcType=VARCHAR}, <!-- 触发/恢复 -->
 	    </if>
 		<if test="user_acct != null and user_acct != ''">
 	          #{user_acct, jdbcType=VARCHAR}, <!-- 用户编号 -->
@@ -425,8 +425,8 @@
 		<if test="review_confirm != null and review_confirm != ''">
 	          #{review_confirm, jdbcType=VARCHAR}, <!-- 审查确认 -->
 	    </if>
-		<if test="management_remarks != null and management_remarks != ''">
-	          #{management_remarks, jdbcType=VARCHAR}, <!-- 备注 -->
+		<if test="blacklist != null and blacklist != ''">
+	          #{blacklist, jdbcType=VARCHAR}, <!-- 备注 -->
 	    </if>
 		<if test="device_id != null and device_id != ''">
 		     #{device_id, jdbcType=VARCHAR}  <!-- 设备编号 -->
@@ -495,7 +495,7 @@
 		    #{network_setting_substation, jdbcType=VARCHAR},  <!-- 分站 -->
 		    #{network_setting_name, jdbcType=VARCHAR},  <!-- 名称 -->
 		    #{online_state, jdbcType=VARCHAR},  <!-- 在线状态 -->
-		    #{network_setting_template, jdbcType=VARCHAR},  <!-- 模板文件 -->
+		    #{area_map, jdbcType=VARCHAR},  <!-- 防区地图 -->
 		    #{network_setting_remarks, jdbcType=VARCHAR},  <!-- 备注 -->
 		    #{network_setting_number, jdbcType=VARCHAR},  <!-- 接收号码 -->
 		    #{network_setting_users, jdbcType=VARCHAR},  <!-- 防区使用者 -->
@@ -505,10 +505,10 @@
 		    #{host_alarm_sms, jdbcType=VARCHAR},  <!-- 主机报警短信号码 -->
 		    #{gg_, jdbcType=VARCHAR},  <!-- 分区号 -->
 		    #{shutdown_time, jdbcType=VARCHAR},  <!-- 离线时间 -->
-		    #{ccc_, jdbcType=VARCHAR},  <!-- 防区号 -->
+		    #{trigger_, jdbcType=VARCHAR},  <!-- 触发/恢复 -->
 		    #{user_acct, jdbcType=VARCHAR},  <!-- 用户编号 -->
 		    #{review_confirm, jdbcType=VARCHAR},  <!-- 审查确认 -->
-		    #{management_remarks, jdbcType=VARCHAR}  <!-- 备注 -->
+		    #{blacklist, jdbcType=VARCHAR}  <!-- 备注 -->
 		)
 	</insert>
 
@@ -681,8 +681,8 @@
 			<if test="online_state != null">
 		          online_state = #{online_state, jdbcType=VARCHAR},  <!-- 类型 -->
 			</if>
-			<if test="network_setting_template != null">
-		          network_setting_template = #{network_setting_template, jdbcType=VARCHAR},  <!-- 模板文件 -->
+			<if test="area_map != null">
+		          area_map = #{area_map, jdbcType=VARCHAR},  <!-- 防区地图 -->
 			</if>
 			<if test="network_setting_remarks != null">
 		          network_setting_remarks = #{network_setting_remarks, jdbcType=VARCHAR},  <!-- 备注 -->
@@ -711,8 +711,8 @@
 			<if test="shutdown_time != null">
 		          shutdown_time = #{shutdown_time, jdbcType=VARCHAR},  <!-- 离线时间 -->
 			</if>
-			<if test="ccc_ != null">
-		          ccc_ = #{ccc_, jdbcType=VARCHAR},  <!-- 防区号 -->
+			<if test="trigger_ != null">
+		          trigger_ = #{trigger_, jdbcType=VARCHAR},  <!-- 触发/恢复 -->
 			</if>
 			<if test="user_acct != null">
 		          user_acct = #{user_acct, jdbcType=VARCHAR},  <!-- 用户编号 -->
@@ -720,8 +720,8 @@
 			<if test="review_confirm != null">
 		          review_confirm = #{review_confirm, jdbcType=VARCHAR},  <!-- 审查确认 -->
 			</if>
-			<if test="management_remarks != null">
-		          management_remarks = #{management_remarks, jdbcType=VARCHAR},  <!-- 备注 -->
+			<if test="blacklist != null">
+		          blacklist = #{blacklist, jdbcType=VARCHAR},  <!-- 备注 -->
 			</if>
 		</set>
 		WHERE  device_id = #{device_id}
@@ -869,7 +869,7 @@
 		  network_setting_substation,  <!-- 分站 -->
 		  network_setting_name,  <!-- 名称 -->
 		  online_state,  <!-- 在线状态 -->
-		  network_setting_template,  <!-- 模板文件 -->
+		  area_map,  <!-- 防区地图 -->
 		  network_setting_remarks,  <!-- 备注 -->
 		  network_setting_number,  <!-- 接收号码 -->
 		  network_setting_users,  <!-- 防区使用者 -->
@@ -879,10 +879,10 @@
 		  host_alarm_sms,  <!-- 主机报警短信号码 -->
 		  gg_,  <!-- 分区号 -->
 		  shutdown_time,  <!-- 离线时间 -->
-		  ccc_,  <!-- 防区号 -->
+		  trigger_,  <!-- 触发/恢复 -->
 		  user_acct,  <!-- 来自用户表的编号-->
 		  review_confirm,  <!-- 审查确认 -->
-		  management_remarks  <!-- 备注 -->
+		  blacklist  <!-- 备注 -->
 	</sql>
 	
 	<!-- 表字段(用于外表的关联时引用) -->
@@ -942,7 +942,7 @@
 		  device.network_setting_substation,  <!-- 分站 -->
 		  device.network_setting_name,  <!-- 名称 -->
 		  device.online_state,  <!-- 在线状态 -->
-		  device.network_setting_template,  <!-- 模板文件 -->
+		  device.area_map,  <!-- 防区地图 -->
 		  device.network_setting_remarks,  <!-- 备注 -->
 		  device.network_setting_number,  <!-- 接收号码 -->
 		  device.network_setting_users,  <!-- 防区使用者 -->
@@ -952,10 +952,10 @@
 		  device.host_alarm_sms,  <!-- 主机报警短信号码 -->
 		  device.gg_,  <!-- 分区号 -->
 		  device.shutdown_time,  <!-- 离线时间 -->
-		  device.ccc_,  <!-- 防区号 -->
+		  device.trigger_,  <!-- 触发/恢复 -->
 		  device.user_acct,  <!-- 用户编号 -->
 		  device.review_confirm,  <!-- 审查确认 -->
-		  device.management_remarks  <!-- 备注 -->
+		  device.blacklist  <!-- 备注 -->
 	</sql>
 
 	<!-- Where精确匹配字段 -->
@@ -1125,8 +1125,8 @@
 	    <if test="online_state != null and online_state != ''">
 		      AND online_state = #{online_state}  <!-- 在线状态 -->
 		</if>
-	    <if test="network_setting_template != null and network_setting_template != ''">
-		      AND network_setting_template = #{network_setting_template}  <!-- 模板文件 -->
+	    <if test="area_map != null and area_map != ''">
+		      AND area_map = #{area_map}  <!-- 防区地图 -->
 		</if>
 	    <if test="network_setting_remarks != null and network_setting_remarks != ''">
 		      AND network_setting_remarks = #{network_setting_remarks}  <!-- 备注 -->
@@ -1155,8 +1155,8 @@
 	    <if test="shutdown_time != null and shutdown_time != ''">
 		      AND shutdown_time = #{shutdown_time}  <!-- 离线时间 -->
 		</if>
-	    <if test="ccc_ != null and ccc_ != ''">
-		      AND ccc_ = #{ccc_}  <!-- 防区号 -->
+	    <if test="trigger_ != null and trigger_ != ''">
+		      AND trigger_ = #{trigger_}  <!-- 触发/恢复 -->
 		</if>
 	    <if test="user_acct != null and user_acct != ''">
 		      AND user_acct = #{user_acct}  <!-- 用户编号 -->
@@ -1164,8 +1164,8 @@
 	    <if test="review_confirm != null and review_confirm != ''">
 		      AND review_confirm = #{review_confirm}  <!-- 审查确认 -->
 		</if>
-	    <if test="management_remarks != null and management_remarks != ''">
-		      AND management_remarks = #{management_remarks}  <!-- 备注 -->
+	    <if test="blacklist != null and blacklist != ''">
+		      AND blacklist = #{blacklist}  <!-- 备注 -->
 		</if>
 	</sql>
 	
@@ -1336,8 +1336,8 @@
 	    <if test="online_state != null and online_state != ''">
 		      AND online_state like '%${online_state}%'  <!-- 在线状态 -->
 		</if>
-	    <if test="network_setting_template != null and network_setting_template != ''">
-		      AND network_setting_template like '%${network_setting_template}%'  <!-- 模板文件 -->
+	    <if test="area_map != null and area_map != ''">
+		      AND area_map like '%${area_map}%'  <!-- 防区地图 -->
 		</if>
 	    <if test="network_setting_remarks != null and network_setting_remarks != ''">
 		      AND network_setting_remarks like '%${network_setting_remarks}%'  <!-- 备注 -->
@@ -1366,8 +1366,8 @@
 	    <if test="shutdown_time != null and shutdown_time != ''">
 		      AND shutdown_time like '%${shutdown_time}%'  <!-- 离线时间 -->
 		</if>
-	    <if test="ccc_ != null and ccc_ != ''">
-		      AND ccc_ like '%${ccc_}%'  <!-- 防区号 -->
+	    <if test="trigger_ != null and trigger_ != ''">
+		      AND trigger_ like '%${trigger_}%'  <!-- 触发/恢复 -->
 		</if>
 	    <if test="user_acct != null and user_acct != ''">
 		      AND user_acct like '%${user_acct}%'  <!-- 用户编号 -->
@@ -1375,8 +1375,8 @@
 	    <if test="review_confirm != null and review_confirm != ''">
 		      AND review_confirm like '%${review_confirm}%'  <!-- 审查确认 -->
 		</if>
-	    <if test="management_remarks != null and management_remarks != ''">
-		      AND management_remarks like '%${management_remarks}%'  <!-- 备注 -->
+	    <if test="blacklist != null and blacklist != ''">
+		      AND blacklist like '%${blacklist}%'  <!-- 备注 -->
 		</if>
 	</sql>
 	

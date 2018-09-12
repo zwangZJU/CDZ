@@ -5,16 +5,23 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import aos.framework.core.id.AOSId;
 import aos.framework.core.service.CDZBaseController;
@@ -31,6 +38,7 @@ import po.Basic_userPO;
 import po.DevicePO;
 import po.Repair_logPO;
 import utils.ExcelUtils;
+import utils.Helper;
 
 @Service
 public class DeviceService extends CDZBaseController {
@@ -316,7 +324,7 @@ public class DeviceService extends CDZBaseController {
 				s[52] = dto.getString("network_setting_substation");
 				s[53] = dto.getString("network_setting_name");
 				s[54] = dto.getString("online_state");
-				s[55] = dto.getString("network_setting_template");
+				s[55] = dto.getString("area_map");
 				s[56] = dto.getString("network_setting_remarks");
 				s[57] = dto.getString("network_setting_number");
 				s[58] = dto.getString("network_setting_users");
@@ -326,10 +334,10 @@ public class DeviceService extends CDZBaseController {
 				s[62] = dto.getString("host_alarm_sms");
 				s[63] = dto.getString("gg_");
 				s[64] = dto.getString("shutdown_time");
-				s[65] = dto.getString("ccc_");
+				s[65] = dto.getString("trigger_");
 				s[66] = dto.getString("user_acct");
 				s[67] = dto.getString("review_confirm");
-				s[68] = dto.getString("management_remarks");
+				s[68] = dto.getString("blacklist");
 			
 
 				datas.add(s);
@@ -347,5 +355,353 @@ public class DeviceService extends CDZBaseController {
 			}
 		}
 	}
+	
+	//多个拉黑
+		public void toBlacklist(HttpModel httpModel) {
+			String[] selectionIds = httpModel.getInDto().getRows();
+			if (null != selectionIds && selectionIds.length > 0) {
+				for (String device_id : selectionIds) {
+					DevicePO devicePO1;
+					if(device_id.substring(device_id.length()-1,device_id.length()).equals(","))
+						devicePO1 =deviceDao.selectByDeviceId(device_id.substring(0,device_id.length()-1)); 
+					else
+						devicePO1 =deviceDao.selectByDeviceId(device_id); 
+					
+					devicePO1.setBlacklist("1");
+					deviceDao.updateByKey(devicePO1);
+					
+				}
+			} 
+			/*else {
+				String alarm_id = httpModel.getInDto().getString("alarm_id");
+				Alarm_logPO alarm_logPO1;
+				if(alarm_id.substring(alarm_id.length()-1,alarm_id.length()).equals(","))
+					alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id.substring(0,alarm_id.length()-1)); 
+				else
+					alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id); 
+				
+				alarm_logPO1.setProcess("1");
+				alarm_logDao.updateByKey(alarm_logPO1);
+				
+				DevicePO devicePO =deviceDao.selectByDeviceId(alarm_logPO1.getDevice_id());
+				if(null != devicePO)
+				{
+					devicePO.setIs_alarming("0");  
+					deviceDao.updateByKey(devicePO);
+				}
+
+			}*/
+			httpModel.setOutMsg("多个拉黑成功。");
+		}
+
+		//多个解除拉黑
+		public void outBlacklist(HttpModel httpModel) {
+			String[] selectionIds = httpModel.getInDto().getRows();
+			if (null != selectionIds && selectionIds.length > 0) {
+				for (String device_id : selectionIds) {
+					DevicePO devicePO1;
+					if(device_id.substring(device_id.length()-1,device_id.length()).equals(","))
+						devicePO1 =deviceDao.selectByDeviceId(device_id.substring(0,device_id.length()-1)); 
+					else
+						devicePO1 =deviceDao.selectByDeviceId(device_id); 
+					
+					devicePO1.setBlacklist("0");
+					deviceDao.updateByKey(devicePO1);
+					
+				}
+			} 
+			/*else {
+				String alarm_id = httpModel.getInDto().getString("alarm_id");
+				Alarm_logPO alarm_logPO1;
+				if(alarm_id.substring(alarm_id.length()-1,alarm_id.length()).equals(","))
+					alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id.substring(0,alarm_id.length()-1)); 
+				else
+					alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id); 
+				
+				alarm_logPO1.setProcess("1");
+				alarm_logDao.updateByKey(alarm_logPO1);
+				
+				DevicePO devicePO =deviceDao.selectByDeviceId(alarm_logPO1.getDevice_id());
+				if(null != devicePO)
+				{
+					devicePO.setIs_alarming("0");  
+					deviceDao.updateByKey(devicePO);
+				}
+
+			}*/
+			httpModel.setOutMsg("多个解除拉黑成功。");
+		}
+		
+		//设置多个布防
+		public void setArrangeMany(HttpModel httpModel) {
+			int num = 0;
+			int failure_number = 0;
+			String[] selectionIds = httpModel.getInDto().getRows();
+			if (null != selectionIds && selectionIds.length > 0) {
+				for (String device_id : selectionIds) {
+					
+					if(device_id.substring(device_id.length()-1,device_id.length()).equals(","))
+						device_id = device_id.substring(0,device_id.length()-1);
+					
+					num = deployDefense(device_id,"05");
+					failure_number = failure_number+num;
+					if(num ==0)
+					{
+						DevicePO devicePO1;
+						devicePO1 =deviceDao.selectByDeviceId(device_id); 
+						devicePO1.setArrange_withdraw("布防");
+						//devicePO.setIs_alarming(Q);
+						devicePO1.setWithdraw_date(AOSUtils.getDateTime());
+						deviceDao.updateByKey(devicePO1);
+					}
+					
+				}
+			} 
+			if(failure_number>0)
+				httpModel.setOutMsg(String.valueOf(failure_number)+"个布防失败。");
+			else 
+				httpModel.setOutMsg("布防成功。");
+		}
+		
+		//设置多个撤防
+		public void setWithdrawMany(HttpModel httpModel) {
+			int num = 0;
+			int failure_number = 0;
+			String[] selectionIds = httpModel.getInDto().getRows();
+			if (null != selectionIds && selectionIds.length > 0) {
+				for (String device_id : selectionIds) {
+					
+					if(device_id.substring(device_id.length()-1,device_id.length()).equals(","))
+						device_id = device_id.substring(0,device_id.length()-1);
+					
+					num = deployDefense(device_id,"04");
+					failure_number = failure_number+num;
+					if(num ==0)
+					{
+						DevicePO devicePO1;
+						devicePO1 =deviceDao.selectByDeviceId(device_id); 
+						devicePO1.setArrange_withdraw("撤防");
+						//devicePO.setIs_alarming(Q);
+						devicePO1.setWithdraw_date(AOSUtils.getDateTime());
+						deviceDao.updateByKey(devicePO1);
+					}
+					
+				}
+			} 
+			if(failure_number>0)
+				httpModel.setOutMsg(String.valueOf(failure_number)+"个撤防失败。");
+			else 
+				httpModel.setOutMsg("撤防成功。");
+		}
+		
+		public String getData(String value) {
+			if (value == null || value.length() == 0) {
+				
+				return " ";
+			} else {
+				return value;
+			}
+
+		}
+		
+		public int deployDefense(String deviceid,String command) {
+			final String device_id=deviceid;
+			final String cmd=command; 
+			int failure_num = 0;
+			//String co_type=qDto.getString("co_type");
+			//String co_num=qDto.getString("co_num");
+			
+			final Dto pDto = Dtos.newDto("device_id", device_id);
+			final DevicePO devicePO = deviceDao.selectOne(pDto);
+			final Dto newDto = Dtos.newDto();
+			newDto.put("device_id", getData(devicePO.getArrange_withdraw()));
+			System.out.println(newDto);
+			
+			 String flag = sendCharging(device_id,cmd);
+			
+			
+			
+			if(flag == "1"){
+				
+				System.out.println("发送成功");
+				
+				//run();
+				//Thread(1000);
+			
+				
+				//while((cmd.equals("4")&&devicePO.getArrange_withdraw().equals("撤防"))||(cmd.equals("5")&&devicePO.getArrange_withdraw().equals("布防")));
+			
+							
+							//if(cmd.equals("4")&&devicePO.getArrange_withdraw().equals("1"))  //布防
+							/*if(cmd.equals("4"))
+							{	
+								odto.put("status", "1");
+								odto.put("msg", "发送成功");
+								odto.put("deploy_status","0" );
+								
+							}
+							//if(cmd.equals("5")&&devicePO.getArrange_withdraw().equals("0"))  //撤防
+							
+							if(cmd.equals("5"))
+							{
+								odto.put("status", "1");
+								odto.put("msg", "发送成功");
+								odto.put("deploy_status","1" );
+								
+							}*/
+						}
+						
+						if(flag != "1"){
+							failure_num = 1;
+							/*
+							if(flag == "设备不在线，请检查")
+							{
+								
+								if(devicePO.getArrange_withdraw().equals("布防"))
+								{
+									odto.put("status", "-1");
+									odto.put("msg", "设备不在线，请检查");
+									//odto.put("msg", getData(flag));
+								    odto.put("deploy_status","1" );
+								}
+								if(devicePO.getArrange_withdraw().equals("撤防"))
+								{
+									odto.put("status", "-1");
+									odto.put("msg", "设备不在线，请检查");
+									//odto.put("msg", getData(flag));
+								    odto.put("deploy_status","0" );
+								}
+							}
+							else {
+								if(devicePO.getArrange_withdraw().equals("布防"))
+								{
+									odto.put("status", "-1");
+									odto.put("msg", "发送失败");
+									//odto.put("msg", getData(flag));
+								    odto.put("deploy_status","1" );
+								}
+								if(devicePO.getArrange_withdraw().equals("撤防"))
+								{
+									odto.put("status", "-1");
+									odto.put("msg", "发送失败");
+									//odto.put("msg", getData(flag));
+								    odto.put("deploy_status","0" );
+								}
+							}*/
+							
+						}
+			return failure_num;
+			
+		}
+		
+		private String sendCharging(String sg_id,String cmd_app){
+			String flag="0";
+			//Integer.toHexString(); 0：金额，1：时间，2：度数，3：充满
+			 byte[] data_out;
+	         String msg_welcome = Helper.fillString('0', 32*2);
+	          
+	         
+			String cmd="E1";
+			
+			BigDecimal co_num_=new BigDecimal(cmd_app);
+			System.out.println("co_num_:"+co_num_);
+			cmd_app=Integer.toHexString(co_num_.intValue());//转为十六进制
+			//cmd_app=String.format("%2s",cmd_app);
+			String finalResult = cmd_app;
+			//cmd=cmd+"00000000"+finalResult;
+			cmd = "e1"+"0"+finalResult+"0410"+"000000000000000000000000";
+			System.out.println("cmd:"+cmd);
+			data_out= Helper.hexStringToByteArray(cmd);
+			try {
+				sg_id= sg_id.substring(1);
+				System.out.println("sg_id:"+sg_id);
+				Socket socket=Helper.socketMap.get(sg_id);
+				//boolean state = socket.isClosed();
+				try{
+					socket.sendUrgentData(0xFF);
+				} catch(Exception e) {
+					System.out.println("socket已经断开连接");
+					socket = null;
+				}
+				if(null!=socket){
+					socket.getOutputStream().write(data_out);
+					System.out.println("APP发送布防撤防请求数据:"+cmd);
+					//saveLogs3("APP发送布防撤防请求数据:"+cmd,sg_id,"SC④");
+					flag="1";
+					socket = null;
+				}else{
+					//this.failMsg(odto, "充电桩未连接");
+					System.out.println("APP发送布防撤防请求数据:模块未连接"+msg_welcome);
+					//saveLogs3("APP发送布防撤防请求数据:模块未连接",sg_id,"SC④");
+					flag = "设备不在线，请检查";
+				}
+				
+				
+			} catch (IOException e) {
+				if("Socket is closed".equals(e.getMessage())){
+					//saveLogs3("APP发送布防撤防请求数据:模块未连接"+msg_welcome,sg_id,"SC④");
+					//this.failMsg(odto, "APP发送充电请求数据异常:充电桩未连接")
+					
+				}else{
+					//saveLogs3("APP发送布防撤防请求数据异常:"+msg_welcome,sg_id,"SC④");
+					//this.failMsg(odto, "APP发送充电请求数据异常");
+				}
+				e.printStackTrace();
+			}
+			return flag;
+		}
+	
+		@Transactional
+		public void uploadPicture(HttpModel httpModel) {
+			Dto qDto = httpModel.getInDto();
+			String id = qDto.getString("id");
+
+			HttpServletRequest request = httpModel.getRequest();
+			CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+			if (multipartResolver.isMultipart(request)) {
+				MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+
+				Iterator<String> iter = multiRequest.getFileNames();
+				while (iter.hasNext()) {
+					MultipartFile file = multiRequest.getFile((String) iter.next());
+					if (file != null) {
+						String fileName = file.getOriginalFilename();
+						String url = "http://118.126.95.215:9090/cdz/myupload/zonemap/" + fileName;
+						Dto pDto = Dtos.newDto("area_map", url);
+						DevicePO devicePO = deviceDao.selectOne(pDto);
+						if (null != devicePO) {
+							httpModel.setOutMsg("{\"success\":\"false\",\"msg\":\"文件已存在！\"}");
+							break;
+						}
+
+						
+						 String path = "C:/zhihuianfang/code/CDZ7.09/webapp/myupload/zonemap/" + fileName;
+
+						File localFile = new File(path);
+
+						try {
+							file.transferTo(localFile);
+						} catch (IllegalStateException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						Dto pDto1 = Dtos.newDto("device_id", id);
+						DevicePO devicePO1 = deviceDao.selectOne(pDto1);
+						devicePO1.setArea_map(url);
+						deviceDao.updateByKey(devicePO1);
+						httpModel.setOutMsg("{\"success\":\"true\",\"msg\":\"上传成功！\"}");
+					}
+
+				}
+
+			}
+
+		}
+
+	
+		
 
 }

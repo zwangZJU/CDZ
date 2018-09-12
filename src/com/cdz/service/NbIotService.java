@@ -4,8 +4,10 @@
 package service;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletInputStream;
@@ -27,6 +29,10 @@ import aos.framework.dao.AosParamsDao;
 import aos.framework.dao.AosParamsPO;
 import aos.framework.web.router.HttpModel;
 import aos.system.common.utils.SystemCons;
+import dao.Alarm_descDao;
+import dao.Alarm_logDao;
+import dao.DeviceDao;
+import po.Alarm_descPO;
 import po.Alarm_logPO;
 import po.DevicePO;
 import utils.Constant;
@@ -45,6 +51,14 @@ public class NbIotService {
 	@Autowired
 	AosParamsDao aosParamsDao;
 	
+	@Autowired
+	DeviceDao deviceDao;
+	
+	@Autowired
+	Alarm_logDao alarm_logDao;
+	
+	@Autowired
+	Alarm_descDao alarm_descDao;
 	
 	public static String serverIP = "180.101.147.89:8743";
 	
@@ -126,9 +140,9 @@ public class NbIotService {
 	        //And those parameter values must be consistent with the content of profile that have been preset to IoT platform.
 	        //The following parameter values of this demo are use the watermeter profile that already initialized to IoT platform.
 	        String manufacturerId= "zctc";
-	        String manufacturerName = "ZCTC";
+	        String manufacturerName = "ZhejiangZhongchuangTianchengTechnologyCoLtd";
 	        String deviceType = "OneButtonAlarm";
-	        String model = "NBOBA";
+	        String model = "ZC-SAOBA";
 	        String protocolType = "CoAP";
 	        String location = "LA";
 	        
@@ -195,6 +209,7 @@ public class NbIotService {
 	
 	public void deviceDataChangedCallback(HttpModel httpModel) {
 		ServletInputStream ris;
+		
 		try {
 			ris = httpModel.getRequest().getInputStream();
 			StringBuilder content = new StringBuilder();
@@ -208,7 +223,43 @@ public class NbIotService {
 			JsonObject jsonObject = (JsonObject) new JsonParser().parse(strcont);
 			 
 			JsonObject data = jsonObject.get("service").getAsJsonObject().get("data").getAsJsonObject();
-			String IMEI = data.get("IMEI").getAsString();
+			String IMEI = data.get("IMEI").getAsString();  //机器码，对应device表里的id_
+			String Alarm_ER = data.get("Alarm_ER").getAsString();   //触发\恢复状态
+			String Alarm_Code = data.get("Alarm_Code").getAsString();   //警情代号
+			String Alarm_Zone = data.get("Alarm_Zone").getAsString();   //防区号
+			String Voltage = data.get("Voltage").getAsString();    //电池电压
+			String Signal = data.get("Signal").getAsString();     //信号质量
+			String State = data.get("State").getAsString();      //模块的撤布防状态
+			
+    		String str_EEE = Alarm_Code;  //警情代码
+    		String str_CCC = Alarm_Zone;   //防区号
+    		//NumberFormat nf = NumberFormat.getPercentInstance();
+			
+    		Dto pDto = Dtos.newDto("id_", IMEI);
+    		DevicePO devicePO = deviceDao.selectOne(pDto);
+			devicePO.setTrigger_("触发");
+			devicePO.setIs_alarming("1");
+			devicePO.setSignal_quality(String.valueOf((Integer.parseInt(Signal)+1.0)/32.0));
+			deviceDao.updateByKey(devicePO);
+			
+			Dto pDto3 = Dtos.newDto("eee", str_EEE);
+			Alarm_descPO alarm_descPO = alarm_descDao.selectOne(pDto3);
+			
+			Alarm_logPO alarm_logPO = new Alarm_logPO();   
+			alarm_logPO.setAlarm_id(AOSId.appId(SystemCons.ID.SYSTEM));
+			alarm_logPO.setDevice_id(devicePO.getDevice_id());
+			alarm_logPO.setUser_phone(devicePO.getPhone());
+			alarm_logPO.setAlarm_time(new Date());
+			alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
+			alarm_logPO.setAlert_code(str_EEE);  //警情代码
+			alarm_logPO.setProcess("0");  //是否接警
+			alarm_logPO.setDefence_area(str_CCC);  //防区号
+			alarm_logPO.setType_("0");  //报警类型
+			alarm_logPO.setHandler_(devicePO.getHead());  //负责人名字
+			alarm_logPO.setHandler_phone(devicePO.getHead_phone());  //负责人手机号
+			
+			//加CCC和GG
+			alarm_logDao.insert(alarm_logPO);
 			
 		 
 		} catch (IOException e) {

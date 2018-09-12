@@ -194,7 +194,7 @@ public void receive_alarmAlarm_log(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
 		Dto pDto = Dtos.newDto();
 		String alarm_id = qDto.getString("id");
-		String picurl = "http://118.126.95.215:9090/cdz/myupload/0/0/0.jpg";
+		String picurl = null;
 		String lat;
 		String user_address = "";
 		String lon;
@@ -211,7 +211,7 @@ public void receive_alarmAlarm_log(HttpModel httpModel) {
 
 			int num = info.length;
 			String info1 = info[num - 1];
-
+			picurl = devicePO.getArea_map();
 			String[] info2 = info1.split(" ");
 
 			String lat1 = info2[1];
@@ -230,7 +230,7 @@ public void receive_alarmAlarm_log(HttpModel httpModel) {
 			String[] info = address.split(" ");
 			lat = info[1];
 			lat = lat.replace(",", "");
-
+			picurl = "";
 			lon = info[3];
 			user_address = info[0];
 			user_address = user_address.replace("#latitude:", "");

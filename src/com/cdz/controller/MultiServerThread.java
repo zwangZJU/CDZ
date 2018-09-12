@@ -733,7 +733,10 @@ public class MultiServerThread extends Thread {
 		            			alarm_logPO.setDevice_id(device_id);
 		            			alarm_logPO.setUser_phone(devicePO3.getPhone());
 		            			alarm_logPO.setAlarm_time(new Date());
-		            			alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
+		            			if(alarm_descPO != null)
+		            				alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
+		            			else
+		            				alarm_logPO.setReason_("未定义的警情");
 		            			alarm_logPO.setAlert_code(str_EEE);  //警情代码
 		            			alarm_logPO.setProcess("0");  //是否接警
 		            			alarm_logPO.setDefence_area(str_CCC);  //防区号
@@ -752,7 +755,7 @@ public class MultiServerThread extends Thread {
 		            			Dto pDto5 = Dtos.newDto("device_id",device_id);
 			        			DevicePO devicePO4=deviceDao.selectOne(pDto5);
 								devicePO4.setIs_alarming(Q);
-								devicePO4.setGg_(str_GG);
+								//devicePO4.setGg_(str_GG);
 								//devicePO4.setCcc_(str_CCC);
 								//这里还要设置ACCT,GG,CCC
 								deviceDao.updateByKey(devicePO4);

@@ -57,4 +57,20 @@
 		FROM basic_user
 		
  		</select>
+ 	<select id="listCamerasPage" parameterType="Dto" resultType="Dto">
+		SELECT
+		<include refid="dao.DeviceDao.column" />
+		FROM device
+		<where>
+		
+		
+		<if test="phone != null and phone != ''">
+				       AND phone = #{phone} <!-- 地址 -->
+				</if>
+	
+				
+ 		</where>
+ 	
+
+	</select>
 </mapper>

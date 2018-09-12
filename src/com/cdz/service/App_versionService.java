@@ -150,7 +150,7 @@ public class App_versionService extends CDZBaseController {
 						break;
 					}
 					/*String path = "D:/github/CDZ7.09/webapp/app/" + fileName;*/
-					 String path = "C:/zhihuianfang/code/CDZ7.09/webapp/app" + fileName; 
+					 String path = "C:/zhihuianfang/code/CDZ7.09/webapp/app/" + fileName; 
 
 					File localFile = new File(path);
 
@@ -163,7 +163,7 @@ public class App_versionService extends CDZBaseController {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					String url = "http://118.126.95.215:9090/cdz/app" + fileName;
+					String url = "http://118.126.95.215:9090/cdz/app/" + fileName;
 
 					App_versionPO app_versionPO = new App_versionPO();
 					app_versionPO.setApp_vesino_id(AOSId.appId(SystemCons.ID.SYSTEM));

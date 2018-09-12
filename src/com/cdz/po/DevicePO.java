@@ -295,7 +295,7 @@ public class DevicePO extends PO {
 	/**
 	 * 模板文件
 	 */
-	private String network_setting_template;
+	private String area_map;
 	
 	/**
 	 * 备注
@@ -345,7 +345,7 @@ public class DevicePO extends PO {
 	/**
 	 * 暂停
 	 */
-	private String ccc_;
+	private String trigger_;
 	
 	/**
 	 * 故障
@@ -360,7 +360,7 @@ public class DevicePO extends PO {
 	/**
 	 * 备注
 	 */
-	private String management_remarks;
+	private String blacklist;
 	
 
 	/**
@@ -862,10 +862,10 @@ public class DevicePO extends PO {
 	/**
 	 * 模板文件
 	 * 
-	 * @return network_setting_template
+	 * @return area_map
 	 */
-	public String getNetwork_setting_template() {
-		return network_setting_template;
+	public String getArea_map() {
+		return area_map;
 	}
 	
 	/**
@@ -952,10 +952,10 @@ public class DevicePO extends PO {
 	/**
 	 * 暂停
 	 * 
-	 * @return ccc_
+	 * @return trigger_
 	 */
-	public String getCcc_() {
-		return ccc_;
+	public String getTrigger_() {
+		return trigger_;
 	}
 	
 	/**
@@ -979,10 +979,10 @@ public class DevicePO extends PO {
 	/**
 	 * 备注
 	 * 
-	 * @return management_remarks
+	 * @return blacklist
 	 */
-	public String getManagement_remarks() {
-		return management_remarks;
+	public String getBlacklist() {
+		return blacklist;
 	}
 	
 
@@ -1484,10 +1484,10 @@ public class DevicePO extends PO {
 	/**
 	 * 模板文件
 	 * 
-	 * @param network_setting_template
+	 * @param area_map
 	 */
-	public void setNetwork_setting_template(String network_setting_template) {
-		this.network_setting_template = network_setting_template;
+	public void setArea_map(String area_map) {
+		this.area_map = area_map;
 	}
 	
 	/**
@@ -1574,10 +1574,10 @@ public class DevicePO extends PO {
 	/**
 	 * 暂停
 	 * 
-	 * @param ccc_
+	 * @param trigger_
 	 */
-	public void setCcc_(String ccc_) {
-		this.ccc_ = ccc_;
+	public void setTrigger_(String trigger_) {
+		this.trigger_ = trigger_;
 	}
 	
 	/**
@@ -1601,10 +1601,10 @@ public class DevicePO extends PO {
 	/**
 	 * 备注
 	 * 
-	 * @param management_remarks
+	 * @param blacklist
 	 */
-	public void setManagement_remarks(String management_remarks) {
-		this.management_remarks = management_remarks;
+	public void setBlacklist(String blacklist) {
+		this.blacklist = blacklist;
 	}
 
 	
