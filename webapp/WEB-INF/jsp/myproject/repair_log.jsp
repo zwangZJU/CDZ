@@ -135,7 +135,7 @@
 		 
 			
 		  var info = Ext.util.Cookies.get('juid'); 
-		var targeturl="http://localhost:9090/cdz/http/do.jhtml?router=repair_logService.initRepair&juid="+info;
+		var targeturl="http://118.126.95.215:9090/cdz/http/do.jhtml?router=repair_logService.initRepair&juid="+info;
 		
 		 window.open(targeturl,"","fullscreen=1,menubar=0,toolbar=0,directories=0,location=0,status=0,scrollbars=0");  
 		//window.close();

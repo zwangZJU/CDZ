@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- nbiot_callback[nbiot_callback]SQLMapper自动映射 -->
+<!--  注意:此文件由AOS平台自动生成-禁止手工修改 2018-09-13 12:34:23 -->
+
+<mapper namespace="dao.Nbiot_callbackDao">
+	
+	<!-- 插入一个数据持久化对象(插入字段为传入PO实体的非空属性) -->
+	<insert id="insert"  parameterType="po.Nbiot_callbackPO">
+		INSERT INTO nbiot_callback (
+		<if test="function_ != null and function_ != ''">
+	         function_, <!-- 功能 -->
+		</if>
+		<if test="url_ != null and url_ != ''">
+	         url_, <!-- 网址 -->
+		</if>
+		<if test="id_ != null and id_ != ''">
+	          id_  <!-- 序号 -->
+	   </if>
+		)VALUES(
+		<if test="function_ != null and function_ != ''">
+	          #{function_, jdbcType=VARCHAR}, <!-- 功能 -->
+	    </if>
+		<if test="url_ != null and url_ != ''">
+	          #{url_, jdbcType=VARCHAR}, <!-- 网址 -->
+	    </if>
+		<if test="id_ != null and id_ != ''">
+		     #{id_, jdbcType=VARCHAR}  <!-- 序号 -->
+	    </if>
+		)
+	</insert>
+	
+	<!-- 插入一个数据持久化对象(含所有字段) -->
+	<insert id="insertAll"  parameterType="po.Nbiot_callbackPO">
+		INSERT INTO nbiot_callback (
+		    <include refid="column" />
+		)
+		VALUES (
+		    #{id_, jdbcType=VARCHAR},  <!-- 序号 -->
+		    #{function_, jdbcType=VARCHAR},  <!-- 功能 -->
+		    #{url_, jdbcType=VARCHAR}  <!-- 网址 -->
+		)
+	</insert>
+
+	<!-- 根据主键修改数据持久化对象 -->
+	<update id="updateByKey" parameterType="po.Nbiot_callbackPO">
+		UPDATE nbiot_callback
+		<set>
+			<if test="id_ != null">
+		          id_ = #{id_, jdbcType=VARCHAR},  <!-- 序号 -->
+			</if>
+			<if test="function_ != null">
+		          function_ = #{function_, jdbcType=VARCHAR},  <!-- 功能 -->
+			</if>
+			<if test="url_ != null">
+		          url_ = #{url_, jdbcType=VARCHAR},  <!-- 网址 -->
+			</if>
+		</set>
+		WHERE  id_ = #{id_}
+	</update>
+	
+	<!-- 根据主键删除数据持久化对象 -->
+	<delete id="deleteByKey">
+		DELETE FROM nbiot_callback WHERE  id_ = #{id_}
+	</delete>
+
+	<!-- 根据主键查询并返回数据持久化对象 -->
+	<select id="selectByKey" resultType="po.Nbiot_callbackPO">
+		SELECT
+		<include refid="column" />
+		FROM nbiot_callback WHERE  id_ = #{id_}
+	</select>
+
+	<!-- 根据唯一组合条件查询并返回数据持久化对象 -->
+	<select id="selectOne" parameterType="Dto" resultType="po.Nbiot_callbackPO">
+		SELECT
+		    <include refid="column" />
+		FROM nbiot_callback
+		<where>
+		    <include refid="equal" />
+		</where>		
+	</select>
+
+	<!-- 根据Dto查询并返回数据持久化对象集合 -->
+	<select id="list" parameterType="Dto" resultType="po.Nbiot_callbackPO">
+		SELECT
+			<include refid="column" />	
+		FROM nbiot_callback
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+
+	<!-- 根据Dto查询并返回分页数据持久化对象集合 -->
+	<select id="listPage" parameterType="Dto" resultType="po.Nbiot_callbackPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM nbiot_callback
+		<where>
+		    <include refid="equal" />
+		</where>	
+	</select>
+	
+	<!-- 根据Dto模糊查询并返回数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="like" parameterType="Dto" resultType="po.Nbiot_callbackPO">
+		SELECT
+			<include refid="column" />	
+		FROM nbiot_callback
+		<where>
+		    <include refid="like" />
+		</where>	
+	</select>
+
+	<!-- 根据Dto模糊查询并返回分页数据持久化对象集合(字符型字段模糊匹配，其余字段精确匹配) -->
+	<select id="likePage" parameterType="Dto" resultType="po.Nbiot_callbackPO" useCache="false">
+	    SELECT
+			<include refid="column" />	
+		FROM nbiot_callback
+		<where>
+		    <include refid="like" />
+		</where>	
+		
+		
+	</select>
+	
+	<!-- 根据Dto统计行数 -->
+	<select id="rows" resultType="Integer" parameterType="Dto">
+		SELECT COUNT(1) AS aos_rows_ FROM nbiot_callback
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 根据数学表达式进行数学运算 -->
+	<select id="calc" parameterType="Dto" resultType="String">
+		SELECT
+			${_expr}
+		FROM nbiot_callback
+		<where>
+		    <include refid="equal" />
+		</where>
+	</select>
+	
+	<!-- 表字段 -->
+	<sql id="column">
+		  id_,  <!-- 序号 -->
+		  function_,  <!-- 功能 -->
+		  url_  <!-- 网址 -->
+	</sql>
+	
+	<!-- 表字段(用于外表的关联时引用) -->
+	<sql id="column2">
+		  nbiot_callback.id_,  <!-- 序号 -->
+		  nbiot_callback.function_,  <!-- 功能 -->
+		  nbiot_callback.url_  <!-- 网址 -->
+	</sql>
+
+	<!-- Where精确匹配字段 -->
+	<sql id="equal">
+	    <if test="id_ != null and id_ != ''">
+		      AND id_ = #{id_}  <!-- 序号 -->
+		</if>
+	    <if test="function_ != null and function_ != ''">
+		      AND function_ = #{function_}  <!-- 功能 -->
+		</if>
+	    <if test="url_ != null and url_ != ''">
+		      AND url_ = #{url_}  <!-- 网址 -->
+		</if>
+	</sql>
+	
+	<!-- Where模糊匹配字段 -->
+	<sql id="like">
+	    <if test="id_ != null and id_ != ''">
+		      AND id_ like '%${id_}%'  <!-- 序号 -->
+		</if>
+	    <if test="function_ != null and function_ != ''">
+		      AND function_ like '%${function_}%'  <!-- 功能 -->
+		</if>
+	    <if test="url_ != null and url_ != ''">
+		      AND url_ like '%${url_}%'  <!-- 网址 -->
+		</if>
+	</sql>
+	
+</mapper>

@@ -14,6 +14,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import com.google.gson.JsonParser;
 import com.iotplatform.client.NorthApiException;
 
 import aos.framework.core.id.AOSId;
+import aos.framework.core.service.CDZBaseController;
 import aos.framework.core.typewrap.Dto;
 import aos.framework.core.typewrap.Dtos;
 import aos.framework.dao.AosParamsDao;
@@ -46,7 +48,7 @@ import utils.StreamClosedHttpResponse;
  *
  */
 @Service
-public class NbIotService {
+public class NbIotService  {
 
 	@Autowired
 	AosParamsDao aosParamsDao;
@@ -66,7 +68,147 @@ public class NbIotService {
 	
 	public static String secret = "K1aghh5VRTvbcCzlPqj5unz6cd0a";
 	
-	public static String getAccessTocken() {
+	public static String nbAccessToken = "";
+	public static String accessToken= "";
+	
+	@SuppressWarnings("resource")
+    public static void scribe(HttpModel httpModel) {
+		
+	    //SimpleHttpServer.startServer(8888); // start server to receive message
+
+        // Two-Way Authentication
+        HttpsUtil httpsUtil = new HttpsUtil();
+        try {
+			httpsUtil.initSSLConfigForTwoWay();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+		
+		try {
+			accessToken = login(httpsUtil);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String appId = Constant.APPID; // please replace the appId, when you use the demo.
+        String urlSubscribe = Constant.SUBSCRIBE_NOTIFYCATION; // please replace the IP and Port of BASE_URL, when you use the demo.
+
+        String callbackurl = NotifyType.TEST_CALLBACK_BASE_URL; // please replace the IP and Port of BASE_URL, when you use the demo.
+        
+        /*
+         * na to subscribe notification from the IoT platform
+         * notifyTypes: 
+         * bindDevice/serviceInfoChanged/deviceInfoChanged/deviceDataChanged/deviceAdded/deviceDeleted
+         * messageConfirm/commandRsp/deviceEvent/appDeleted/ruleEvent/deviceDatasChanged
+         */
+        List<String> notifyTypes = NotifyType.getNotifyTypes();
+        for (String notifyType : notifyTypes) {
+            
+            Map<String, Object> paramSubscribe = new HashMap<>();
+            paramSubscribe.put("notifyType", notifyType);
+            paramSubscribe.put("callbackurl", callbackurl);
+            
+            String jsonRequest = JsonUtil.jsonObj2Sting(paramSubscribe);
+            
+            Map<String, String> header = new HashMap<>();
+            header.put(Constant.HEADER_APP_KEY, appId);
+            header.put(Constant.HEADER_APP_AUTH, "Bearer" + " " + accessToken);
+            
+            HttpResponse httpResponse = httpsUtil.doPostJson(urlSubscribe, header, jsonRequest);
+            
+            String bodySubscribe;
+			try {
+				bodySubscribe = httpsUtil.getHttpResponseBody(httpResponse);
+			} catch (UnsupportedOperationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
+            System.out.println("SubscribeNotification, notifyType:" + notifyType + ", callbackurl:" + callbackurl +", response content:");
+            System.out.print(httpResponse.getStatusLine());
+           
+            
+        }
+    }
+
+    /**
+     * Authentication锛実et token
+     * */
+    @SuppressWarnings("unchecked")
+    public static String login(HttpsUtil httpsUtil) throws Exception {
+
+        String appId = Constant.APPID;
+        String secret = Constant.SECRET;
+        String urlLogin = Constant.APP_AUTH;
+
+        Map<String, String> paramLogin = new HashMap<>();
+        paramLogin.put("appId", appId);
+        paramLogin.put("secret", secret);
+
+        StreamClosedHttpResponse responseLogin = httpsUtil.doPostFormUrlEncodedGetStatusLine(urlLogin, paramLogin);
+
+        System.out.println("app auth success,return accessToken:");
+        System.out.print(responseLogin.getStatusLine());
+        System.out.println(responseLogin.getContent());
+        System.out.println();
+
+        Map<String, String> data = new HashMap<>();
+        data = JsonUtil.jsonString2SimpleObj(responseLogin.getContent(), data.getClass());
+        return data.get("accessToken");
+    }
+
+	
+	
+	
+	
+
+	public static void subscribeDataChandged(HttpModel httpModel) {
+		
+		 HttpsUtil httpsUtil = new HttpsUtil();
+	        try {
+				httpsUtil.initSSLConfigForTwoWay();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		
+	        Map<String, Object> paramSubscribe = new HashMap<>();
+            paramSubscribe.put("notifyType", "deviceDataChanged");
+            paramSubscribe.put("callbackurl","http://118.126.95.215:9090/cdz/api/do.jhtml?router=nbIotService.deviceDataChangedCallback");
+            
+            String jsonRequest = JsonUtil.jsonObj2Sting(paramSubscribe);
+            
+            Map<String, String> header = new HashMap<>();
+            header.put(Constant.HEADER_APP_KEY, appId);
+            header.put(Constant.HEADER_APP_AUTH, "Bearer" + " " + nbAccessToken);
+            
+            HttpResponse httpResponse = httpsUtil.doPostJson(Constant.SUBSCRIBE_NOTIFYCATION, header, jsonRequest);
+            
+            String bodySubscribe;
+			try {
+				bodySubscribe = httpsUtil.getHttpResponseBody(httpResponse);
+			} catch (UnsupportedOperationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
+           // System.out.println("SubscribeNotification, notifyType:" + notifyType + ", callbackurl:" + callbackurl +", response content:");
+            System.out.print(httpResponse.getStatusLine());
+           // System.out.println(bodySubscribe);
+            System.out.println();
+		
+	}	
+	
+	
+	public static String getAccessTocken(HttpModel httpModel) {
 		String result = Request.sendPost("https://"+serverIP+"/iocm/app/sec/v1.1.0/login"
 				, "appId="+appId+"&secret="+secret);
 		
@@ -113,7 +255,7 @@ public class NbIotService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			nbAccessToken = accessToken;
 	     return accessToken;  
 
 
@@ -303,4 +445,7 @@ public class NbIotService {
 		//加CCC和GG
 		alarm_logDao.insert(alarm_logPO);*/
 	}
+	
+	
+	
 }

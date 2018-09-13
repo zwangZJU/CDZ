@@ -622,10 +622,8 @@ public class MultiServerThread extends Thread {
 	            		Dto pDto1 = Dtos.newDto("device_id", device_id);
 	    				DevicePO devicePO1 = deviceDao.selectOne(pDto1);*/
 	    				
-	    				//Dto newDto = Dtos.newDto();
-	    				//newDto.put("device_id", devicePO1.getArrange_withdraw());
-	    				//System.out.println(newDto);
-	    				
+	            		
+	    				/*
 	            		Dto pDto10 = Dtos.newDto("device_id", device_id);
 	    				devicePO = deviceDao.selectOne(pDto10);
 	            		System.out.println(devicePO.getArrange_withdraw());
@@ -636,6 +634,9 @@ public class MultiServerThread extends Thread {
 	    					fang=true;   //fang是标志位，true说明目前模块的状态是撤防状态
 	    				
 	    				System.out.println(fang);
+	    				*/
+	            		
+	            		/*
 	    				if(resultLatter_1.length()>5) {
 		            		if(resultLatter_1.substring(6,8).equals("30")&&resultLatter_1.substring(1,2).equals("5")&&resultLatter_1.substring(2, 4).equals("4f")&&resultLatter_1.substring(4, 6).equals("4b")&&fang==false)
 		            		{
@@ -670,15 +671,9 @@ public class MultiServerThread extends Thread {
 								
 								fang = false;
 			                		
-				            	/*
-			                	DevicePO  devicePO_=new DevicePO();
-			                	devicePO_.setId_(this.ascii1);
-			                	devicePO_.setDevice_id(Corp_ID);
-		                		
-			                	deviceDao.insert(devicePO_);
-			                	*/
+				     
 		            		}
-	    				}
+	    				}*/
 	            		if(resultLatter_1.length()>20)  //说明是报警包
 	            		{
 	            			byte[] databuffer2 = new byte[16];   //报警包的后16位
@@ -757,6 +752,16 @@ public class MultiServerThread extends Thread {
 		            			Push.pushToSingle(devicePO3.getPhone());
 		            			
 		            			//sendSms(devicePO.getPhone(),"1",str_EEE);
+		            			Dto pDto10 = Dtos.newDto("device_id", device_id);
+			    				devicePO = deviceDao.selectOne(pDto10);
+			            		System.out.println(devicePO.getArrange_withdraw());
+			            		
+			    				if(devicePO.getArrange_withdraw().equals("撤防"))   //撤防
+			    					fang=false;   //fang是标志位，false说明目前模块的状态是撤防状态
+			    				else if(devicePO.getArrange_withdraw().equals("布防"))  //布防
+			    					fang=true;   //fang是标志位，true说明目前模块的状态是撤防状态
+			    				
+			    				System.out.println(fang);
 		            			
 		            			/*下面是修改device表里的值*/
 		            			Dto pDto5 = Dtos.newDto("device_id",device_id);
@@ -764,7 +769,16 @@ public class MultiServerThread extends Thread {
 								devicePO4.setIs_alarming(Q);
 								//devicePO4.setGg_(str_GG);
 								//devicePO4.setCcc_(str_CCC);
-								//这里还要设置ACCT,GG,CCC
+								if(str_EEE.equals("401")||str_EEE.equals("401")&&fang==true)
+								{
+									devicePO.setArrange_withdraw("撤防");
+									devicePO.setWithdraw_date(AOSUtils.getDateTime());
+								}
+								else if(str_EEE.equals("401")||str_EEE.equals("401")&&fang==false)
+								{
+									devicePO.setArrange_withdraw("布防");
+									devicePO.setWithdraw_date(AOSUtils.getDateTime());
+								}
 								deviceDao.updateByKey(devicePO4);
 								
 		            		}

@@ -291,7 +291,7 @@ public class AppApiService extends CDZBaseController {
 
 			 alarm_logPO.setReason_(result);
 			 alarm_logPO.setAlarm_release("1");
-			 alarm_logPO.setProcess("1");
+			 alarm_logPO.setProcess("2");
 			 alarm_logPO.setResponse_time(new Date());
 			 alarm_logDao.updateByKey(alarm_logPO);
 			
@@ -744,8 +744,7 @@ public class AppApiService extends CDZBaseController {
 		Dto odto = Dtos.newDto();
 
 		String handler_phone = qDto.getString("phone");
-		handler_phone="18392888103";
-		
+		handler_phone = "18392888103";
 		Dto pDto = Dtos.newDto();
 		pDto.put("handler_phone", handler_phone);
 		int rows = repair_logDao.rows(pDto);
@@ -1713,6 +1712,7 @@ public class AppApiService extends CDZBaseController {
 			devicePO.setLoc_label(loc_label);
 			devicePO.setArrange_withdraw("撤防");
 			devicePO.setShutdown_number("0");
+			devicePO.setBlacklist("0");
 			devicePO.setInstall_date(new Date());
 			devicePO.setRepair_record("");
 			
@@ -1881,12 +1881,13 @@ public class AppApiService extends CDZBaseController {
 		}else{
 			Dto pDto=Dtos.newDto("account", account);
 			pDto.put("is_del_", "0");   //0表示未删除
+			pDto.put("user_type",role);
 			//pDto.put("type_", "2");     
 			//AosUserPO aosUserPO=aosUserDao.selectOne(pDto);
 			Basic_userPO basic_userPO1=basic_userDao.selectOne(pDto);
 			String smsCode = cacheMasterDataService.getSMSCode(smsSessionId);
 			if(null!=basic_userPO1){
-				this.fail(odto, "当前手机号已存在，请重新输入。");
+				this.fail(odto, "当前用户已存在，请重新输入。");
 			}else if (AOSUtils.isEmpty(smsCode)) {
 				this.fail(odto, "验证码已失效!");
 			} else if (!smsCode.equals(sms_code)) {
@@ -1894,7 +1895,6 @@ public class AppApiService extends CDZBaseController {
 			}else{
 				String password_ = AOSCodec.password(password);
 				Basic_userPO basic_userPO=new Basic_userPO();
-				basic_userPO.setUser_type("1");
 				basic_userPO.setId_(AOSId.appId(SystemCons.ID.SYSTEM));
 				basic_userPO.setAccount(account);
 				basic_userPO.setPassword(password_);

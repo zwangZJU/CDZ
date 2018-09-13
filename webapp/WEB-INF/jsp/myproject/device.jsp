@@ -682,7 +682,7 @@ function fn_balance_render10(value, metaData, record, rowIndex, colIndex,
  	 
 		/*  metaData.style = 'background-color:#990099'; 
 		return value; */
-	} else {
+	} else if(value == 1){
 /* 		metaData.style = 'background-color:#0099CC';  */
 	
 		 return '<input type="button" value="拉黑" class="cbtn" onclick=""  />'; 

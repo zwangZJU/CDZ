@@ -151,8 +151,8 @@ body {
 	color: #3598DC
 }
 .cbtn:focus {
-	background: #3598DC;
-	color: white
+	background: #00FF00;
+	color: green
 }
 .cbtn:hover {
 	cursor:pointer;
@@ -170,6 +170,18 @@ body {
 	border: 1px solid #F3565D;
 	background: transparent;
 	color: #F3565D
+}
+
+.cbtn_green{
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	border: 0px;
+	font-size: 12px;
+	font-family: "宋体";
+	border: 1px solid #00FF00;
+	background: transparent;
+	color: #00FF00
 }
 .cbtn_danger:focus {
 	background: #F3565D;

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--订阅[nbiot_callback]SQL语句 -->
+<mapper namespace="Nbiot_callback">
+
+	<select id="listNbiot_callbacksPage" parameterType="Dto" resultType="Dto">
+		SELECT
+		
+		<include refid="dao.Nbiot_callbackDao.column" />
+		FROM nbiot_callback
+		<where>
+ 		</where>
+	</select>
+</mapper>

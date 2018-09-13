@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ include file="/WEB-INF/jsp/common/tags.jsp"%>
-
 <aos:html title="alarm_log" base="http" lib="ext">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
@@ -46,7 +45,7 @@
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>
 												<aos:dockeditem text="删除" tooltip="删除" onclick="_delete" icon="del.png" />
 												<aos:dockeditem text="导出" tooltip="导出" onclick="fnnoti1()" icon="icon70.png" /> 
-												<aos:dockeditem text="接警" tooltip="接警" onclick="receive_alarm_many()" icon="receive_alarm.png" />
+												<aos:dockeditem text="多个接警" tooltip="多个接警" onclick="receive_alarm_many()" icon="icon70.png" />
 												<aos:dockeditem text="全屏显示" tooltip="全屏显示" onclick="winopen" icon="max.png" />
 												<%-- <aos:dockeditem text="导出" tooltip="导出" onclick="_exportexcel" icon="icon70.png" /> --%>
 												<%-- <aos:dockeditem text="操作" tooltip="操作" onclick="_f_role_u_save" icon="icon70.png" /> --%>
@@ -61,7 +60,7 @@
 			    						      			       <aos:column header="用户手机号" dataIndex="user_phone"   width="100" />
 			    						      			       <aos:column header="报警时间" dataIndex="alarm_time"   width="100" />
 			    						      			       <aos:column header="出警时间" dataIndex="response_time"  width="100" />
-			    						      			       <aos:column header="报警方式" dataIndex="type_" rendererFn="fn_type_three" width="70" />
+			    						      			       <aos:column header="报警方式" dataIndex="type_"   width="100" />
 			    						      			       <aos:column header="处理者" dataIndex="handler_"   width="100" />
 			    						      			       <aos:column header="处理者电话" dataIndex="handler_phone"   width="100" />
 			    						      			       <aos:column header="报警原因" dataIndex="reason_"   width="100" />
@@ -69,7 +68,7 @@
 			    						      			       <aos:column header="取消报警" dataIndex="is_cancel"   width="100" />
 			    						      			       <aos:column header="警情代码" dataIndex="alert_code"   width="100" />
 			    						      			       <%-- <aos:column header="是否接警和处理" dataIndex="process"   width="255" />  --%>
-			    						      			       <aos:column header="防区号" dataIndex="defence_area"   width="100" />
+			    						      			       <%-- <aos:column header="防区号" dataIndex="defence"   width="100" /> --%>
 			    			 		</aos:gridpanel>
 	</aos:viewport>
 	
@@ -135,11 +134,9 @@
 	
 	<script type="text/javascript">
 	
-	
-	
 	function winopen(){
 		
-	
+		 
 		
 		  var info = Ext.util.Cookies.get('juid'); 
 		var targeturl="http://118.126.95.215:9090/cdz/http/do.jhtml?router=alarm_logService.initAlarm&juid="+info;
@@ -226,8 +223,8 @@
 	    var audio = document.getElementById("bgMusic");
 	    audio.play();
 	    //var msg1 = 'AOS应用基础平台基于JavaEE技术体系，以“标准功能可复用、通用模块可配置、行业需求快速开发、异构系统无缝集成”为目标，为软件开发团队提供高效可控、随需应变、快速实现业务需求的全栈式技术解决方案。帮助企业落实IT策略、屏蔽技术壁垒，快速实现业务愿景。使其获得更低成本、更高质量、更快交付业务和运维支持的核心技术竞争力。';
-	    var msg1 = '<p style="font-size:40px;color:red;text-align: center">注意新的警情 !</p>';
-	   
+	    var msg1 = '<p style="font-size:30px">手动报警                       !!!</p>';
+	    
 	    Ext.create(
 					'widget.uxNotification',
 					{
@@ -237,8 +234,7 @@
 						autoCloseDelay : 2000,
 						slideInDuration : 200,
 						useXAxis : false,
-						width : 300,
-						height: 150,
+						width : 400,
 						html : msg1
 					}).show();
 	    }
@@ -340,7 +336,7 @@
 			
 			    var productForm = Ext.create("Ext.form.Panel", {
 			    	id:"receiveAlarmSave",
-			        title: "",
+			        title: "信息表",
 			        width: 300,
 			        height: 400,
 			        frame: true,
@@ -522,14 +518,14 @@
       {
     	  var selection = AOS.selection(_datagridpanel, 'alarm_id');
 			if(AOS.empty(selection)){
-				AOS.tip('接警请先选中数据。');
+				AOS.tip('多个接警请先选中数据。');
 				return;
 			}
 			var rows = AOS.rows(_datagridpanel);
 			var msg =  AOS.merge('确认要接警选中的{0}项目吗？', rows);
 			AOS.confirm(msg, function(btn){
 				if(btn === 'cancel'){
-					AOS.tip('接警操作被取消。');
+					AOS.tip('多个接警操作被取消。');
 					return;
 				}
 				AOS.ajax({
@@ -543,7 +539,7 @@
 							return ;
 						}
 						window.location.reload();
-						AOS.tip("接警成功");
+						AOS.tip("多个接警成功");
 						
 					}
 				});
@@ -588,28 +584,6 @@
 </aos:onready>
 <script src="https://open.ys7.com/sdk/js/1.3/ezuikit.js"></script>
 <script type="text/javascript">
-
-function fn_type_three(value, metaData, record, rowIndex, colIndex,
-		store) {
-
-    if ( value==0) {
-    	
-    	 return '<img src="http://118.126.95.215:9090/cdz/static/icon/terminals.png"  />'; 
- 	 
-		/*  metaData.style = 'background-color:#990099'; 
-		return value; */
-	} else if(value == 1){
-/* 		metaData.style = 'background-color:#0099CC';  */
-	
-		 return '<img  src="http://118.126.95.215:9090/cdz/static/icon/telephone.png" />'; 
-	}else if(value == 2){
-		
-		 return '<img  src="http://118.126.95.215:9090/cdz/static/icon/one_alarm.png" />'; 
-	}
-	
-  
-}
-
 	function _w_role_u_show(){
 		 var record = AOS.selectone(AOS.get('_datagridpanel'));
          if (record) {
@@ -689,7 +663,7 @@ function fn_type_three(value, metaData, record, rowIndex, colIndex,
 		}
 		
 		    var productForm = Ext.create("Ext.form.Panel", {
-		        title: "",
+		        title: "信息表",
 		        width: 300,
 		        height: 290,
 		        closeAction : 'close', 
@@ -845,13 +819,10 @@ function fn_type_three(value, metaData, record, rowIndex, colIndex,
 	 	 
 			/*  metaData.style = 'background-color:#990099'; 
 			return value; */
-		} else if(value == 1){
+		} else {
 	/* 		metaData.style = 'background-color:#0099CC';  */
 			
 			 return '<input type="button" value="已接警" class="cbtn" onclick=""  />'; 
-		} else if(value == 2){
-			
-			return '<input type="button" value="已处理" class="cbtn_green" onclick=""  />'; 
 		}
 		
 	  
