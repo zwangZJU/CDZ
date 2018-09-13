@@ -284,6 +284,8 @@ public class MultiServerThread extends Thread {
 				
 				DevicePO devicePO = null;
 				
+				String blacklist_info ;
+				
 				//String device_id = null;
 		        
 	            while ((length = in.read(data_in)) > 0) {
@@ -451,6 +453,11 @@ public class MultiServerThread extends Thread {
 	                		System.out.println("yes two");
 	                		
 	                	}else {//已存在，则修改状态
+	                		
+	                		blacklist_info  = devicePO.getBlacklist();
+		    				if(blacklist_info.equals("1"))
+		    					return ;
+	                		
 	                		Dto pDto1_ = Dtos.newDto("device_id", device_id);
 	                		DevicePO  devicePO_=deviceDao.selectOne(pDto1_);;
 	                		//devicePO_.setId_(this.ascii1);

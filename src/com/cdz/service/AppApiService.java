@@ -446,6 +446,22 @@ public class AppApiService extends CDZBaseController {
 		
 	}
 	
+	public void deleteDevice(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		String device_id = qDto.getString("device_id");
+		
+		
+		deviceDao.deleteByKey(device_id);
+
+		odto.put("status", "1");
+		odto.put("msg", "删除成功");
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	
+	}
+	
 	public void updateRepairProcessingState(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
@@ -1449,7 +1465,10 @@ public class AppApiService extends CDZBaseController {
 			newDto.put("is_alarming", getData(devicePO.getIs_alarming()));
 			newDto.put("production_date", getData(devicePO.getProduction_date()));
 			newDto.put("install_date", devicePO.getInstall_date());
-			newDto.put("arrange_withdraw", getData(devicePO.getArrange_withdraw().equals("布防")?"1":"0"));
+			if(devicePO.getArrange_withdraw() == null)
+				newDto.put("arrange_withdraw"," ");
+			else 
+				newDto.put("arrange_withdraw", getData(devicePO.getArrange_withdraw().equals("布防")?"1":"0"));
 
 		
 		

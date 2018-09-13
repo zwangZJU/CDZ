@@ -30,11 +30,11 @@
 			    			 	<aos:dockeditem text="新增" tooltip="新增"  onclick="_w_add_show" icon="add.png"/>
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>
 												<aos:dockeditem text="删除" tooltip="删除" onclick="_delete" icon="del.png" />
-												<aos:dockeditem text="选择处理人" tooltip="选择处理人" onclick="_w_jiedan_u_show" icon="del.png" />
-												<aos:dockeditem text="拉黑" tooltip="拉黑" onclick="to_blacklist()" icon="del.png" />
-												<aos:dockeditem text="解除拉黑" tooltip="解除拉黑" onclick="out_blacklist()" icon="del.png" />
-												<aos:dockeditem text="多个布防" tooltip="多个布防" onclick="set_arrange()" icon="del.png" />
-												<aos:dockeditem text="多个撤防" tooltip="多个撤防" onclick="set_withdraw()" icon="del.png" />
+												<aos:dockeditem text="选择处理人" tooltip="选择处理人" onclick="_w_jiedan_u_show" icon="choose.png" />
+												<aos:dockeditem text="拉黑" tooltip="拉黑" onclick="to_blacklist()" icon="black.png" />
+												<aos:dockeditem text="解除拉黑" tooltip="解除拉黑" onclick="out_blacklist()" icon="white.png" />
+												<aos:dockeditem text="布防" tooltip="多个布防" onclick="set_arrange()" icon="arrage.png" />
+												<aos:dockeditem text="撤防" tooltip="多个撤防" onclick="set_withdraw()" icon="withdraw.png" />
 												<%-- 缺少相关函数，无法实现<aos:dockeditem text="导出" tooltip="导出" onclick="fn_exportexcel()" icon="icon70.png" /> --%>
 								<aos:dockeditem xtype="tbseparator" />
 				                                                                      			</aos:docked>
@@ -42,6 +42,7 @@
 			<aos:selmodel type="checkbox" mode="multi" />
 		 
 						      			        <aos:column header="上传防区图"  align="center"  rendererFn="fn_zonemap" width="90" />
+						      			         <aos:column header="是否拉黑" dataIndex="blacklist"  rendererFn="fn_balance_render10"  width="100" />
 						      			         <aos:column header="设备编号" dataIndex="device_id"   width="100" />
 			    						      			       <%-- <aos:column header="状态" dataIndex="status"   width="255" /> --%>
 			    						      			       <aos:column header="布撤防" dataIndex="arrange_withdraw"   width="100" />
@@ -111,7 +112,6 @@
 			    						      			       <aos:column header="分区号" dataIndex="gg_"   width="255" />
 			    						      			       <aos:column header="触发/恢复" dataIndex="trigger_"   width="255" />
 			    						      			       <aos:column header="审查确认" dataIndex="review_confirm"   width="255" />
-			    						      			       <aos:column header="是否拉黑" dataIndex="blacklist"   width="500" />
 			    			 		</aos:gridpanel>
 	</aos:viewport>
 	
@@ -669,6 +669,27 @@ function fn_export_excel(){
 </aos:onready>
 
 <script type="text/javascript">
+
+function fn_balance_render10(value, metaData, record, rowIndex, colIndex,
+		store) {
+	
+	
+    
+    if ( value==0) {
+    	
+    	
+    	 return '<input type="button" value="正常" class="cbtn_danger" onclick=""  />'; 
+ 	 
+		/*  metaData.style = 'background-color:#990099'; 
+		return value; */
+	} else {
+/* 		metaData.style = 'background-color:#0099CC';  */
+	
+		 return '<input type="button" value="拉黑" class="cbtn" onclick=""  />'; 
+	}
+	
+  
+}
 
 function upload_new() {
 	var record = AOS.selectone(AOS.get('_datagridpanel'));

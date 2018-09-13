@@ -7,7 +7,7 @@
 	<aos:viewport layout="fit">
 		<aos:gridpanel id="_datagridpanel" url="app_versionService.listApp_version" onrender="_datagridpanel_query" onitemdblclick="_w_update_show"  forceFit="false">
 			<aos:docked>
-			    			 	<aos:dockeditem text="上传新版本" tooltip="上传新版本"  onclick="upload_new" icon="add.png"/>
+			    			 	<aos:dockeditem text="上传新版本" tooltip="上传新版本"  onclick="upload_new" icon="upload.png"/>
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>
 												<aos:dockeditem text="删除" tooltip="删除" onclick="_delete" icon="del.png" />
 												<%-- <aos:dockeditem text="导出" tooltip="导出" onclick="_exportexcel" icon="icon70.png" /> --%>

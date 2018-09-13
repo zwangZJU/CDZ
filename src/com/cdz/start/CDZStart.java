@@ -25,7 +25,7 @@ public class CDZStart {
 				try {
 					Thread.sleep(30000);
 					String url = "http://localhost:9090/cdz/api/do.jhtml?router=appApiService.getAccessToken";
-					//Request.sendPost(url,"");
+					Request.sendPost(url,"");
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
