@@ -158,17 +158,18 @@
 <script type="text/javascript">
 
  function _w_dingyue_u_show(){
-	 		  AOS.tip("666666");
-	 	  
+	 		 
 	 		 var record = AOS.selectone(AOS.get('_datagridpanel'));
 	 		  var function_=record.data.function_;
+	 		 var url=record.data.url_;
 	 		  var info = Ext.util.Cookies.get('juid'); 
 	 		  Ext.Ajax.request({
 	 		  	url: '/cdz/api/do.jhtml?router=nbIotService.scribe',
 	 		     
 	 		      mathod:"POST",
 	 		     
-	 		      params:{function_:function_
+	 		      params:{function_:function_,
+	 		    	  url:url
 	 		    },
 
 	 		      success: function(response, opts) {

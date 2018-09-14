@@ -73,7 +73,13 @@ public class NbIotService  {
 	
 	@SuppressWarnings("resource")
     public static void scribe(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
 		
+
+		
+		String notifyType = qDto.getString("function_");
+		String callbackurl = qDto.getString("url"); // please replace the IP and Port of BASE_URL, when you use the demo.
+	        
 	    //SimpleHttpServer.startServer(8888); // start server to receive message
 
         // Two-Way Authentication
@@ -95,8 +101,7 @@ public class NbIotService  {
 		String appId = Constant.APPID; // please replace the appId, when you use the demo.
         String urlSubscribe = Constant.SUBSCRIBE_NOTIFYCATION; // please replace the IP and Port of BASE_URL, when you use the demo.
 
-        String callbackurl = NotifyType.TEST_CALLBACK_BASE_URL; // please replace the IP and Port of BASE_URL, when you use the demo.
-        
+       
         /*
          * na to subscribe notification from the IoT platform
          * notifyTypes: 
@@ -104,7 +109,7 @@ public class NbIotService  {
          * messageConfirm/commandRsp/deviceEvent/appDeleted/ruleEvent/deviceDatasChanged
          */
         List<String> notifyTypes = NotifyType.getNotifyTypes();
-        for (String notifyType : notifyTypes) {
+      
             
             Map<String, Object> paramSubscribe = new HashMap<>();
             paramSubscribe.put("notifyType", notifyType);
@@ -133,7 +138,7 @@ public class NbIotService  {
             System.out.print(httpResponse.getStatusLine());
            
             
-        }
+        
     }
 
     /**
@@ -167,45 +172,6 @@ public class NbIotService  {
 	
 	
 
-	public static void subscribeDataChandged(HttpModel httpModel) {
-		
-		 HttpsUtil httpsUtil = new HttpsUtil();
-	        try {
-				httpsUtil.initSSLConfigForTwoWay();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		
-	        Map<String, Object> paramSubscribe = new HashMap<>();
-            paramSubscribe.put("notifyType", "deviceDataChanged");
-            paramSubscribe.put("callbackurl","http://118.126.95.215:9090/cdz/api/do.jhtml?router=nbIotService.deviceDataChangedCallback");
-            
-            String jsonRequest = JsonUtil.jsonObj2Sting(paramSubscribe);
-            
-            Map<String, String> header = new HashMap<>();
-            header.put(Constant.HEADER_APP_KEY, appId);
-            header.put(Constant.HEADER_APP_AUTH, "Bearer" + " " + nbAccessToken);
-            
-            HttpResponse httpResponse = httpsUtil.doPostJson(Constant.SUBSCRIBE_NOTIFYCATION, header, jsonRequest);
-            
-            String bodySubscribe;
-			try {
-				bodySubscribe = httpsUtil.getHttpResponseBody(httpResponse);
-			} catch (UnsupportedOperationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            
-           // System.out.println("SubscribeNotification, notifyType:" + notifyType + ", callbackurl:" + callbackurl +", response content:");
-            System.out.print(httpResponse.getStatusLine());
-           // System.out.println(bodySubscribe);
-            System.out.println();
-		
-	}	
 	
 	
 	public static String getAccessTocken(HttpModel httpModel) {
@@ -334,20 +300,61 @@ public class NbIotService  {
 		
 	}
 	
-	public void deviceInfoChangedCallback(HttpModel httpModel) {
+	public void deviceAdded(HttpModel httpModel) {
 		System.out.println(httpModel.toString());
 		httpModel.setOutMsg("ok");
 	}
 	
-	public void deviceIncident(HttpModel httpModel) {
+	public void deviceInfoChanged(HttpModel httpModel) {
 		System.out.println(httpModel.toString());
 		httpModel.setOutMsg("ok");
 	}
 	
-	public void infoReceiver(HttpModel httpModel) {
+	public void deviceDatasChanged(HttpModel httpModel) {
 		System.out.println(httpModel.toString());
 		httpModel.setOutMsg("ok");
 	}
+	public void deviceDeleted(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	
+	public void messageConfirm(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	
+	public void commandRsp(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	
+	public void deviceEvent(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	
+	public void serviceInfoChanged(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	
+	public void ruleEvent(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	public void deviceModelAdded(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	
+	public void deviceModelDeleted(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	
+	
+	
 	
 	public void deviceDataChangedCallback(HttpModel httpModel) {
 		ServletInputStream ris;

@@ -112,6 +112,7 @@ public class Constant {
      * 4. QUERY_DEVICE_CAPABILITIES
      * 5. SUBSCRIBE_NOTIFYCATION
      */
+    //订阅是V1.2.0，登录是v1.1.0
     public static final String QUERY_DEVICES = BASE_URL + "/iocm/app/dm/v1.3.0/devices";
     public static final String QUERY_DEVICE_DATA = BASE_URL + "/iocm/app/dm/v1.3.0/devices";
     public static final String QUERY_DEVICE_HISTORY_DATA = BASE_URL + "/iocm/app/data/v1.2.0/deviceDataHistory";
