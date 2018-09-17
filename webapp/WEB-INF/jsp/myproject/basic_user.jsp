@@ -26,7 +26,7 @@
 			    						      			       <aos:column header="图片地址" dataIndex="img_url"   width="255" />
 			    						      			       <aos:column header="电子邮件" dataIndex="email"   width="255" />
 			    						      			       <aos:column header="手机号" dataIndex="mobile"   width="255" />
-			    						      			       <aos:column header="用户界面皮肤" dataIndex="skin"   width="255" />
+			    						      			       <aos:column header="年龄" dataIndex="age"   width="255" />
 			    						      			       <aos:column header="业务对照码" dataIndex="biz_code"   width="255" />
 			    						      			       <aos:column header="联系地址" dataIndex="address"   width="255" />
 			    						      			       <aos:column header="介绍/备注" dataIndex="note"   width="255" />
@@ -67,21 +67,21 @@
 	      	   	 	         	   	       	        <aos:textfield name="img_url" fieldLabel="图片地址"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="email" fieldLabel="电子邮件"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="mobile" fieldLabel="手机号"  maxLength="255"    	         />
-	      	   	 	         	   	       	        <aos:textfield name="skin" fieldLabel="用户界面皮肤"  maxLength="255"    	         />
+	      	   	 	         	   	       	        <aos:textfield name="age" fieldLabel="年龄"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="biz_code" fieldLabel="业务对照码"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="address" fieldLabel="联系地址"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="note" fieldLabel="介绍/备注"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="is_del" fieldLabel="是否已删除"   allowBlank="false"   maxLength="255"    	         />
-	      	   	 	         	      	    <aos:datefield name="create_at" fieldLabel="创建时间"   	              format="Y-m-d 00:00:00"     editable="true"/>
+	      	   	 	         	      	    <aos:datefield name="create_at" fieldLabel="创建时间"   	                    editable="true"/>
 	  	 	         	   	       	        <aos:textfield name="create_by" fieldLabel="创建人ID"  maxLength="255"    	         />
-	      	   	 	         	      	    <aos:datefield name="login_time" fieldLabel="最后登录时间"   	              format="Y-m-d 00:00:00"     editable="true"/>
+	      	   	 	         	      	    <aos:datefield name="login_time" fieldLabel="最后登录时间"   	                    editable="true"/>
 	  	 	         	      	    <aos:numberfield name="sort" fieldLabel="排序"   	       allowDecimals = "false"    />
 	   	 	         	   	       	        <aos:textfield name="phone_id" fieldLabel="手机ID"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="phone_type" fieldLabel="手机类型"  maxLength="255"    	         />
 	      	   	 	         	      	    <aos:numberfield name="gold_coins" fieldLabel="金币"   	      decimalPrecision="2"    />
 	   	 	         	   	       	        <aos:textfield name="pay_password" fieldLabel="支付密码"  maxLength="255"    	         />
 	      	   	 	         	      	    <aos:numberfield name="deposit_amt" fieldLabel="押金"   	      decimalPrecision="2"    />
-	   	 	         	      	    <aos:datefield name="deposit_date" fieldLabel="押金支付时间"   	              format="Y-m-d 00:00:00"     editable="true"/>
+	   	 	         	      	    <aos:datefield name="deposit_date" fieldLabel="押金支付时间"   	                    editable="true"/>
 	  	 	         	   	       	        <aos:textfield name="deposit_status" fieldLabel="押金状态"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="grade" fieldLabel="级别"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="name" fieldLabel="姓名"  maxLength="255"    	         />
@@ -113,21 +113,21 @@
 	      	    	        	   	       	        <aos:textfield name="img_url" fieldLabel="图片地址"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="email" fieldLabel="电子邮件"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="mobile" fieldLabel="手机号"  maxLength="255"    	         />
-	      	    	        	   	       	        <aos:textfield name="skin" fieldLabel="用户界面皮肤"  maxLength="255"    	         />
+	      	    	        	   	       	        <aos:textfield name="age" fieldLabel="年龄"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="biz_code" fieldLabel="业务对照码"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="address" fieldLabel="联系地址"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="note" fieldLabel="介绍/备注"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="is_del" fieldLabel="是否已删除"   allowBlank="false"   maxLength="255"    	         />
-	      	    	        	      	       <aos:datefield name="create_at" fieldLabel="创建时间"   	                 format="Y-m-d 00:00:00"     editable="true"/>
+	      	    	        	      	       <aos:datefield name="create_at" fieldLabel="创建时间"   	                       editable="true"/>
 	    	        	   	       	        <aos:textfield name="create_by" fieldLabel="创建人ID"  maxLength="255"    	         />
-	      	    	        	      	       <aos:datefield name="login_time" fieldLabel="最后登录时间"   	                 format="Y-m-d 00:00:00"     editable="true"/>
+	      	    	        	      	       <aos:datefield name="login_time" fieldLabel="最后登录时间"   	                       editable="true"/>
 	    	        	      	       <aos:numberfield name="sort" fieldLabel="排序"   	           />
 	    	        	   	       	        <aos:textfield name="phone_id" fieldLabel="手机ID"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="phone_type" fieldLabel="手机类型"  maxLength="255"    	         />
 	      	    	        	      	       <aos:numberfield name="gold_coins" fieldLabel="金币"   	         decimalPrecision="2"    />
 	    	        	   	       	        <aos:textfield name="pay_password" fieldLabel="支付密码"  maxLength="255"    	         />
 	      	    	        	      	       <aos:numberfield name="deposit_amt" fieldLabel="押金"   	         decimalPrecision="2"    />
-	    	        	      	       <aos:datefield name="deposit_date" fieldLabel="押金支付时间"   	                 format="Y-m-d 00:00:00"     editable="true"/>
+	    	        	      	       <aos:datefield name="deposit_date" fieldLabel="押金支付时间"   	                       editable="true"/>
 	    	        	   	       	        <aos:textfield name="deposit_status" fieldLabel="押金状态"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="grade" fieldLabel="级别"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="name" fieldLabel="姓名"  maxLength="255"    	         />
@@ -148,6 +148,7 @@
 	</aos:window>
 	
 	<script type="text/javascript">
+	 setInterval(_datagridpanel_query,60*60*1000); 
 		function _datagridpanel_query() {
 			var params = {
 			                                          			  

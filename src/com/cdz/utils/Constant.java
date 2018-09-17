@@ -118,8 +118,10 @@ public class Constant {
     public static final String QUERY_DEVICE_HISTORY_DATA = BASE_URL + "/iocm/app/data/v1.2.0/deviceDataHistory";
     public static final String QUERY_DEVICE_CAPABILITIES = BASE_URL + "/iocm/app/data/v1.2.0/deviceCapabilities";
     public static final String SUBSCRIBE_NOTIFYCATION = BASE_URL + "/iocm/app/sub/v1.2.0/subscribe";
-    
-    
+    public static final String urlQuery = BASE_URL+"/iocm/app/sub/v1.2.0/subscriptions?";
+    /*   
+ *  https://server:port/iocm/app/sub/v1.2.0/subscriptions?appId={appId}&not
+*/    
     /*
      * Signaling Delivery锛�
      * 1. POST_ASYN_CMD

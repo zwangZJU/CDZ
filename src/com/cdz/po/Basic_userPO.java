@@ -70,7 +70,7 @@ public class Basic_userPO extends PO {
 	/**
 	 * 用户界面皮肤
 	 */
-	private String skin;
+	private String age;
 	
 	/**
 	 * 业务对照码
@@ -293,10 +293,10 @@ public class Basic_userPO extends PO {
 	/**
 	 * 用户界面皮肤
 	 * 
-	 * @return skin
+	 * @return age
 	 */
-	public String getSkin() {
-		return skin;
+	public String getAge() {
+		return age;
 	}
 	
 	/**
@@ -620,10 +620,10 @@ public class Basic_userPO extends PO {
 	/**
 	 * 用户界面皮肤
 	 * 
-	 * @param skin
+	 * @param age
 	 */
-	public void setSkin(String skin) {
-		this.skin = skin;
+	public void setAge(String age) {
+		this.age = age;
 	}
 	
 	/**

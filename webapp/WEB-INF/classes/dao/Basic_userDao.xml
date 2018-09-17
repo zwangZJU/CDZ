@@ -44,8 +44,8 @@
 		<if test="mobile != null and mobile != ''">
 	         mobile, <!-- 手机号 -->
 		</if>
-		<if test="skin != null and skin != ''">
-	         skin, <!-- 用户界面皮肤 -->
+		<if test="age != null and age != ''">
+	         age, <!-- 用户界面皮肤 -->
 		</if>
 		<if test="biz_code != null and biz_code != ''">
 	         biz_code, <!-- 业务对照码 -->
@@ -155,8 +155,8 @@
 		<if test="mobile != null and mobile != ''">
 	          #{mobile, jdbcType=VARCHAR}, <!-- 手机号 -->
 	    </if>
-		<if test="skin != null and skin != ''">
-	          #{skin, jdbcType=VARCHAR}, <!-- 用户界面皮肤 -->
+		<if test="age != null and age != ''">
+	          #{age, jdbcType=VARCHAR}, <!-- 用户界面皮肤 -->
 	    </if>
 		<if test="biz_code != null and biz_code != ''">
 	          #{biz_code, jdbcType=VARCHAR}, <!-- 业务对照码 -->
@@ -257,7 +257,7 @@
 		    #{img_url, jdbcType=VARCHAR},  <!-- 图片地址 -->
 		    #{email, jdbcType=VARCHAR},  <!-- 电子邮件 -->
 		    #{mobile, jdbcType=VARCHAR},  <!-- 手机号 -->
-		    #{skin, jdbcType=VARCHAR},  <!-- 用户界面皮肤 -->
+		    #{age, jdbcType=VARCHAR},  <!-- 用户界面皮肤 -->
 		    #{biz_code, jdbcType=VARCHAR},  <!-- 业务对照码 -->
 		    #{address, jdbcType=VARCHAR},  <!-- 联系地址 -->
 		    #{note, jdbcType=VARCHAR},  <!-- 介绍/备注 -->
@@ -322,8 +322,8 @@
 			<if test="mobile != null">
 		          mobile = #{mobile, jdbcType=VARCHAR},  <!-- 手机号 -->
 			</if>
-			<if test="skin != null">
-		          skin = #{skin, jdbcType=VARCHAR},  <!-- 用户界面皮肤 -->
+			<if test="age != null">
+		          age = #{age, jdbcType=VARCHAR},  <!-- 用户界面皮肤 -->
 			</if>
 			<if test="biz_code != null">
 		          biz_code = #{biz_code, jdbcType=VARCHAR},  <!-- 业务对照码 -->
@@ -500,7 +500,7 @@
 		  img_url,  <!-- 图片地址 -->
 		  email,  <!-- 电子邮件 -->
 		  mobile,  <!-- 手机号 -->
-		  skin,  <!-- 用户界面皮肤 -->
+		  age,  <!-- 用户界面皮肤 -->
 		  biz_code,  <!-- 业务对照码 -->
 		  address,  <!-- 联系地址 -->
 		  note,  <!-- 介绍/备注 -->
@@ -542,7 +542,7 @@
 		  basic_user.img_url,  <!-- 图片地址 -->
 		  basic_user.email,  <!-- 电子邮件 -->
 		  basic_user.mobile,  <!-- 手机号 -->
-		  basic_user.skin,  <!-- 用户界面皮肤 -->
+		  basic_user.age,  <!-- 用户界面皮肤 -->
 		  basic_user.biz_code,  <!-- 业务对照码 -->
 		  basic_user.address,  <!-- 联系地址 -->
 		  basic_user.note,  <!-- 介绍/备注 -->
@@ -604,8 +604,8 @@
 	    <if test="mobile != null and mobile != ''">
 		      AND mobile = #{mobile}  <!-- 手机号 -->
 		</if>
-	    <if test="skin != null and skin != ''">
-		      AND skin = #{skin}  <!-- 用户界面皮肤 -->
+	    <if test="age != null and age != ''">
+		      AND age = #{age}  <!-- 用户界面皮肤 -->
 		</if>
 	    <if test="biz_code != null and biz_code != ''">
 		      AND biz_code = #{biz_code}  <!-- 业务对照码 -->
@@ -718,8 +718,8 @@
 	    <if test="mobile != null and mobile != ''">
 		      AND mobile like '%${mobile}%'  <!-- 手机号 -->
 		</if>
-	    <if test="skin != null and skin != ''">
-		      AND skin like '%${skin}%'  <!-- 用户界面皮肤 -->
+	    <if test="age != null and age != ''">
+		      AND age like '%${age}%'  <!-- 用户界面皮肤 -->
 		</if>
 	    <if test="biz_code != null and biz_code != ''">
 		      AND biz_code like '%${biz_code}%'  <!-- 业务对照码 -->

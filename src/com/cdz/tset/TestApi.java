@@ -45,7 +45,14 @@ public class TestApi {
 	public static void main(String[] args) throws IOException {
 
 	}
-	
+	@Test
+	public void query() {
+		HttpRequestVO httpRequestVO = new HttpRequestVO("http://localhost:9090/cdz/api/do.jhtml?router=NbIotService.query");
+
+		HttpResponseVO httpResponseVO = AOSHttpClient.execute(httpRequestVO);
+
+
+	}
 	@Test
 	public void pushToSingle() {
 		HttpRequestVO httpRequestVO = new HttpRequestVO("http://localhost:9090/cdz/api/do.jhtml?router=appApiService.pushToSingle");

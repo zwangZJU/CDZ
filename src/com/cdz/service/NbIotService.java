@@ -70,6 +70,58 @@ public class NbIotService  {
 	
 	public static String nbAccessToken = "";
 	public static String accessToken= "";
+	public static String accessToken1= "";
+	public static StreamClosedHttpResponse bodyQuery;
+	@SuppressWarnings("resource")
+    public static void queryScribe(HttpModel httpModel) {
+		
+		 HttpsUtil httpsUtil = new HttpsUtil();
+	        try {
+				httpsUtil.initSSLConfigForTwoWay();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+	        // Authentication锛実et token
+	      
+			try {
+				accessToken1 = login(httpsUtil);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+	        //Please make sure that the following parameter values have been modified in the Constant file.
+			String appId = Constant.APPID;
+
+	        //please replace the deviceId, when you use the demo.
+	       // String deviceId = "9a445dda-f62e-4c78-be05-ef0f0c1b447a";
+	        String queryurl = Constant.urlQuery;
+	        		
+	        Map<String, String> header = new HashMap<>();
+	        header.put(Constant.HEADER_APP_KEY, appId);
+	        header.put(Constant.HEADER_APP_AUTH, "Bearer" + " " + accessToken1);
+
+	       
+			try {
+				bodyQuery = httpsUtil.doGetWithParasGetStatusLine(
+				        queryurl, null, header);
+				System.out.println("queryresult:"+bodyQuery.getContent());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+
+
+	        System.out.println("QueryDeviceActivationStatus, response content:");
+	       
+		
+		
+	}
+	
+	
 	
 	@SuppressWarnings("resource")
     public static void scribe(HttpModel httpModel) {
@@ -300,41 +352,41 @@ public class NbIotService  {
 		
 	}
 	
-	public void deviceAdded(HttpModel httpModel) {
+	public void deviceAddedCallback(HttpModel httpModel) {
 		System.out.println(httpModel.toString());
 		httpModel.setOutMsg("ok");
 	}
 	
-	public void deviceInfoChanged(HttpModel httpModel) {
+	public void deviceInfoChangedCallback(HttpModel httpModel) {
 		System.out.println(httpModel.toString());
 		httpModel.setOutMsg("ok");
 	}
 	
-	public void deviceDatasChanged(HttpModel httpModel) {
+	public void deviceDatasChangedCallback(HttpModel httpModel) {
 		System.out.println(httpModel.toString());
 		httpModel.setOutMsg("ok");
 	}
-	public void deviceDeleted(HttpModel httpModel) {
-		System.out.println(httpModel.toString());
-		httpModel.setOutMsg("ok");
-	}
-	
-	public void messageConfirm(HttpModel httpModel) {
+	public void deviceDeletedCallback(HttpModel httpModel) {
 		System.out.println(httpModel.toString());
 		httpModel.setOutMsg("ok");
 	}
 	
-	public void commandRsp(HttpModel httpModel) {
+	public void messageConfirmCallback(HttpModel httpModel) {
 		System.out.println(httpModel.toString());
 		httpModel.setOutMsg("ok");
 	}
 	
-	public void deviceEvent(HttpModel httpModel) {
+	public void commandRspCallback(HttpModel httpModel) {
 		System.out.println(httpModel.toString());
 		httpModel.setOutMsg("ok");
 	}
 	
-	public void serviceInfoChanged(HttpModel httpModel) {
+	public void deviceEventCallback(HttpModel httpModel) {
+		System.out.println(httpModel.toString());
+		httpModel.setOutMsg("ok");
+	}
+	
+	public void serviceInfoChangedCallback(HttpModel httpModel) {
 		System.out.println(httpModel.toString());
 		httpModel.setOutMsg("ok");
 	}
@@ -343,12 +395,12 @@ public class NbIotService  {
 		System.out.println(httpModel.toString());
 		httpModel.setOutMsg("ok");
 	}
-	public void deviceModelAdded(HttpModel httpModel) {
+	public void deviceModelAddedCallback(HttpModel httpModel) {
 		System.out.println(httpModel.toString());
 		httpModel.setOutMsg("ok");
 	}
 	
-	public void deviceModelDeleted(HttpModel httpModel) {
+	public void deviceModelDeletedCallback(HttpModel httpModel) {
 		System.out.println(httpModel.toString());
 		httpModel.setOutMsg("ok");
 	}
@@ -369,6 +421,7 @@ public class NbIotService  {
 			}
 			String strcont = content.toString();
 
+			System.out.println(strcont);
 			JsonObject jsonObject = (JsonObject) new JsonParser().parse(strcont);
 			 
 			JsonObject data = jsonObject.get("service").getAsJsonObject().get("data").getAsJsonObject();
@@ -385,30 +438,30 @@ public class NbIotService  {
     		//NumberFormat nf = NumberFormat.getPercentInstance();
 			
     		Dto pDto = Dtos.newDto("id_", IMEI);
-    		DevicePO devicePO = deviceDao.selectOne(pDto);
-			devicePO.setTrigger_("触发");
-			devicePO.setIs_alarming("1");
-			devicePO.setSignal_quality(String.valueOf((Integer.parseInt(Signal)+1.0)/32.0));
-			deviceDao.updateByKey(devicePO);
-			
-			Dto pDto3 = Dtos.newDto("eee", str_EEE);
-			Alarm_descPO alarm_descPO = alarm_descDao.selectOne(pDto3);
-			
-			Alarm_logPO alarm_logPO = new Alarm_logPO();   
-			alarm_logPO.setAlarm_id(AOSId.appId(SystemCons.ID.SYSTEM));
-			alarm_logPO.setDevice_id(devicePO.getDevice_id());
-			alarm_logPO.setUser_phone(devicePO.getPhone());
-			alarm_logPO.setAlarm_time(new Date());
-			alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
-			alarm_logPO.setAlert_code(str_EEE);  //警情代码
-			alarm_logPO.setProcess("0");  //是否接警
-			alarm_logPO.setDefence_area(str_CCC);  //防区号
-			alarm_logPO.setType_("0");  //报警类型
-			alarm_logPO.setHandler_(devicePO.getHead());  //负责人名字
-			alarm_logPO.setHandler_phone(devicePO.getHead_phone());  //负责人手机号
-			
-			//加CCC和GG
-			alarm_logDao.insert(alarm_logPO);
+ //   		DevicePO devicePO = deviceDao.selectOne(pDto);
+		//	devicePO.setTrigger_("触发");
+//			devicePO.setIs_alarming("1");
+//			devicePO.setSignal_quality(String.valueOf((Integer.parseInt(Signal)+1.0)/32.0));
+//			deviceDao.updateByKey(devicePO);
+//			
+//			Dto pDto3 = Dtos.newDto("eee", str_EEE);
+//			Alarm_descPO alarm_descPO = alarm_descDao.selectOne(pDto3);
+//			
+//			Alarm_logPO alarm_logPO = new Alarm_logPO();   
+//			alarm_logPO.setAlarm_id(AOSId.appId(SystemCons.ID.SYSTEM));
+//			alarm_logPO.setDevice_id(devicePO.getDevice_id());
+//			alarm_logPO.setUser_phone(devicePO.getPhone());
+//			alarm_logPO.setAlarm_time(new Date());
+//			alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
+//			alarm_logPO.setAlert_code(str_EEE);  //警情代码
+//			alarm_logPO.setProcess("0");  //是否接警
+//			alarm_logPO.setDefence_area(str_CCC);  //防区号
+//			alarm_logPO.setType_("0");  //报警类型
+//			alarm_logPO.setHandler_(devicePO.getHead());  //负责人名字
+//			alarm_logPO.setHandler_phone(devicePO.getHead_phone());  //负责人手机号
+//			
+//			//加CCC和GG
+//			alarm_logDao.insert(alarm_logPO);
 			
 		 
 		} catch (IOException e) {

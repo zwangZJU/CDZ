@@ -10,6 +10,7 @@
 			    			 	<aos:dockeditem text="新增" tooltip="新增"  onclick="_w_add_show" icon="add.png"/>
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>
 												<aos:dockeditem text="删除" tooltip="删除" onclick="_delete" icon="del.png" />
+												<aos:dockeditem text="查询订阅" tooltip="查询订阅" onclick="_query_result" icon="query.png" />
 												<%-- <aos:dockeditem text="导出" tooltip="导出" onclick="_exportexcel" icon="icon70.png" /> --%>
 								<aos:dockeditem xtype="tbseparator" />
 				    			</aos:docked>
@@ -187,6 +188,34 @@
 	 		
 	 		
 	 		  }
+ 
+ function _query_result(){
+		 
+		
+		  var info = Ext.util.Cookies.get('juid'); 
+		  Ext.Ajax.request({
+		  	url: '/cdz/api/do.jhtml?router=nbIotService.queryScribe',
+		     
+		      mathod:"POST",
+		     
+		      params:{
+		    },
+
+		      success: function(response, opts) {
+		      	  
+
+		      },
+		      failure: function(response, opts) {
+		          AOS.tip('失败');
+		          root.hide();
+		          
+		      }
+		     
+		  });
+
+		
+		
+		  }
  
 </script>
 </aos:html>

@@ -31,7 +31,7 @@
 var info = Ext.util.Cookies.get('juid'); 
 map();
 
-setInterval(map,20000);  
+setInterval(map,60*60*1000);  
 var map = new BMap.Map("l-map");
 function map(){
 	

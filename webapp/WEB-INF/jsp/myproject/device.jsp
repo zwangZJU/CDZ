@@ -361,7 +361,7 @@
 	
 	<script type="text/javascript">
 	 var info = Ext.util.Cookies.get('juid'); 
-	 setInterval(_datagridpanel_query,30000); 
+	 setInterval(_datagridpanel_query,60*60*1000); 
 		function _datagridpanel_query() {
 			var params = AOS.getValue('_f_query');
 			_datagridpanel_store.getProxy().extraParams = params;

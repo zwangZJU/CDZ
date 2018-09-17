@@ -33,12 +33,12 @@
 	</aos:viewport>
 	
 	<aos:window id="_w_add_data" title="新增摄像头" width="600"   height="400"  autoScroll="true">
-		<aos:formpanel id="_f_add"  width="600-20"     layout="anchor" labelWidth="70">
+		<aos:formpanel id="_f_add"  width="600-20"  autoScroll="true"   layout="anchor" labelWidth="70">
          	   	       	        <aos:textfield name="camera_id" fieldLabel="序号"   allowBlank="false"   maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="device_id" fieldLabel="设备id"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="camera_serial" fieldLabel="摄像头序列号"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="camera_no" fieldLabel="设备通道号"  maxLength="255"    	         />
-	      	   	 	         	      	    <aos:datefield name="osd_" fieldLabel="视频当前时间"   	              format="Y-m-d 00:00:00"     editable="true"/>
+	      	   	 	         	      	    <aos:datefield name="osd_" fieldLabel="视频当前时间"   	                    editable="true"/>
 	  	 	         	   	       	        <aos:textfield name="access_token" fieldLabel="访问令牌"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="verification_code" fieldLabel="验证码"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="camera_type" fieldLabel="摄像头型号"  maxLength="255"    	         />
@@ -56,12 +56,12 @@
 	</aos:window>
 	
 	<aos:window id="_w_update_data" title="修改摄像头" width="600"   height="400"  autoScroll="true">
-			<aos:formpanel id="_f_update"   width="600-20"     layout="anchor" labelWidth="70">
+			<aos:formpanel id="_f_update"   width="600-20"   autoScroll="true"  layout="anchor" labelWidth="70">
         	   	       	        <aos:textfield name="camera_id" fieldLabel="序号"   allowBlank="false"   maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="device_id" fieldLabel="设备id"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="camera_serial" fieldLabel="摄像头序列号"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="camera_no" fieldLabel="设备通道号"  maxLength="255"    	         />
-	      	    	        	      	       <aos:datefield name="osd_" fieldLabel="视频当前时间"   	                 format="Y-m-d 00:00:00"     editable="true"/>
+	      	    	        	      	       <aos:datefield name="osd_" fieldLabel="视频当前时间"   	                       editable="true"/>
 	    	        	   	       	        <aos:textfield name="access_token" fieldLabel="访问令牌"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="verification_code" fieldLabel="验证码"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="camera_type" fieldLabel="摄像头型号"  maxLength="255"    	         />
@@ -79,6 +79,7 @@
 	</aos:window>
 	
 	<script type="text/javascript">
+	 setInterval(_datagridpanel_query,60*60*1000); 
 		function _datagridpanel_query() {
 			var params = {
 			                   			  

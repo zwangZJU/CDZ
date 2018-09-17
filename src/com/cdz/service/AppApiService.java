@@ -661,12 +661,18 @@ public class AppApiService extends CDZBaseController {
 		Dto odto = Dtos.newDto();
 
 		String device_id = qDto.getString("device_id");
-		
-		
 		String cameraInfo = qDto.getString("cameraInfo");
-		
 		String[] info = cameraInfo.split("\r");
-
+		Dto pDto1=Dtos.newDto("camera_serial", info[1]);
+		CameraPO cameraPO1=cameraDao.selectOne(pDto1);
+		if (null != cameraPO1 ) {
+			
+			
+			odto.put("status", "-1");
+			odto.put("msg", "绑定失败,该摄像头已被绑定");
+			
+		}else {
+		
 		CameraPO cameraPO  = new CameraPO();
 		cameraPO.setCamera_id(AOSId.appId(SystemCons.ID.SYSTEM));
 		cameraPO.setDevice_id(device_id);
@@ -687,7 +693,7 @@ public class AppApiService extends CDZBaseController {
 
 			odto.put("status", "1");
 			odto.put("msg", "绑定成功");
-
+		}
 
 
 		httpModel.setOutMsg(AOSJson.toJson(odto));
@@ -756,13 +762,16 @@ public class AppApiService extends CDZBaseController {
 		if (null != repairDtos && !repairDtos.isEmpty()) {
 
 		for (Dto dto : repairDtos) {
-			Dto newDto = Dtos.newDto();
+			
+			String id = dto.getString("device_id");
+			Dto pDto1 = Dtos.newDto("device_id", id);
+			DevicePO devicePO1 = deviceDao.selectOne(pDto1);
+			if (null != devicePO1 ) {
+				Dto newDto = Dtos.newDto();
 				newDto.put("repair_id", getData(dto.getString("repair_id")));
 				newDto.put("device_id", getData(dto.getString("device_id")));
 
-				String id = dto.getString("device_id");
-				Dto pDto1 = Dtos.newDto("device_id", id);
-				DevicePO devicePO1 = deviceDao.selectOne(pDto1);
+				
 				String address = devicePO1.getUser_address();
 
 				newDto.put("repair_time", dto.getString("repair_time"));
@@ -773,7 +782,13 @@ public class AppApiService extends CDZBaseController {
 				/* newDto.put("is_completed", ""); */
 
 			newListDtos.add(newDto);
-
+				
+			}else {
+				
+				
+			}
+			
+		
 		}
 
 		odto.put("data", newListDtos);
@@ -884,14 +899,50 @@ public class AppApiService extends CDZBaseController {
 			avatar = "";
 
 		}
-
+		
 
 		odto.put("name", getData(basic_userPO.getName()));
 		odto.put("is_cert", getData(basic_userPO.getIs_cert()));
 		odto.put("avatar", getData(avatar));
 		odto.put("access_token", access_token1);
+		odto.put("age", getData(basic_userPO.getAge()));
+		odto.put("gender", getData(basic_userPO.getSex()));
+		odto.put("address", getData(basic_userPO.getAddress()));
+		
 
 		odto.put("msg", "查询成功");
+		odto.put("status", "1");
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+	}
+	
+	
+	
+	public void updateUserBasicInfo(HttpModel httpModel) {
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+		String phone = qDto.getString("phone");
+		String key = qDto.getString("key");
+		String value = qDto.getString("value");
+		
+		Dto pDto1=Dtos.newDto("account", phone);
+		Basic_userPO basic_userPO=basic_userDao.selectOne(pDto1);   //用于检查账户是否存在
+		if (key.equals("name")) {
+			basic_userPO.setName(value);
+			basic_userDao.updateByKey(basic_userPO);
+		}
+		if (key.equals("age")) {
+			basic_userPO.setAge(value);
+			basic_userDao.updateByKey(basic_userPO);
+		}
+		if (key.equals("gender")) {
+			basic_userPO.setSex(value);
+			basic_userDao.updateByKey(basic_userPO);
+		}
+		
+
+
+		odto.put("msg", "修改成功");
 		odto.put("status", "1");
 
 		httpModel.setOutMsg(AOSJson.toJson(odto));
@@ -929,9 +980,17 @@ public class AppApiService extends CDZBaseController {
 				useraddress = "";
 
 			} else {
+				
+				
 				Dto pDto1 = Dtos.newDto("device_id", deviceid);
 				DevicePO devicePO1 = deviceDao.selectOne(pDto1);
+				if (null != devicePO1 ) {
+				
 				useraddress = devicePO1.getUser_address();
+				}
+				else {
+					useraddress="设备已被删除，无地址";
+				}
 			}
 
 			newDto.put("user_address", getData(useraddress));
