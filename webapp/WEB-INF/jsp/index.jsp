@@ -165,7 +165,7 @@
 				<aos:textareafield name="remark_" fieldLabel="备注" maxLength="4000" height="60" columnWidth="0.99" />
 			</aos:fieldset>
 			<aos:fieldset title="配置信息" labelWidth="75" columnWidth="1">
-				<aos:combobox name="skin_" fieldLabel="界面皮肤" allowBlank="false" dicField="skin_" value="blue" columnWidth="0.5" />
+				<aos:combobox name="skin_" fieldLabel="界面皮肤" allowBlank="false" dicField="skin_" value="black" columnWidth="0.5" />
 				<aos:textfield name="biz_code_" fieldLabel="扩展码" maxLength="200" readOnly="true" columnWidth="0.49" />
 			</aos:fieldset>
 		</aos:formpanel>

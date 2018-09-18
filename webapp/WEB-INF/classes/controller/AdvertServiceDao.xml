@@ -17,5 +17,15 @@
 			</where>
 			order by  sort, create_date desc
 	</select>
+	<select id="listAdverts" resultType="Dto" parameterType="Dto">
+			SELECT
+				<include refid="dao.AdvertDao.column" />	
+			FROM advert
+			<where>
+				is_del='0'
+			    
+			</where>
+			
+	</select>
 
 </mapper>

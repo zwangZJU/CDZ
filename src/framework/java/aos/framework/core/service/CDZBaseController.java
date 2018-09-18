@@ -76,14 +76,18 @@ public class CDZBaseController {
         //消息提示
         String message = "";
         String filePath="";
+		String filePath1 = "";
+		String filePath2 = "";
         try {
            
        
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request; 
             MultipartFile imageFile = multipartRequest.getFile("img_url"); 
+			MultipartFile imageFile1 = multipartRequest.getFile("url");
             if(null!=imageFile&&!imageFile.isEmpty()){
             	//如果fileitem中封装的是上传文件，得到上传的文件名称，
                 String fileName = imageFile.getOriginalFilename();
+				String fileName1 = imageFile1.getOriginalFilename();
                 System.out.println(fileName+"--------------------------------------->>>>");
                 //注意：不同的浏览器提交的文件名是不一样的，有些浏览器提交上来的文件名是带有路径的，如：  c:\a\b\1.txt，而有些只是单纯的文件名，如：1.txt
                 //处理获取到的上传文件的文件名的路径部分，只保留文件名部分
@@ -95,9 +99,7 @@ public class CDZBaseController {
         			outDto.setAppMsg("上传文件的类型不符合！！！");
                     return outDto;
                 }
-                BufferedImage bi =ImageIO.read(imageFile.getInputStream());
-                outDto.put("width", bi.getWidth());
-                outDto.put("height", bi.getHeight());
+
                 //如果需要限制上传的文件类型，那么可以通过文件的扩展名来判断上传的文件类型是否合法
                 System.out.println("上传文件的扩展名为:"+fileExtName);
                 //获取item中的上传文件的输入流
@@ -125,10 +127,62 @@ public class CDZBaseController {
                 fos.close();
                 message = "文件上传成功";
                 outDto.setAppCode(SystemCons.SUCCESS);
-        		outDto.setAppMsg(filePath.replace(savePath, ""));
+				filePath = filePath.replace(savePath, "");
+
             }else{
             	 outDto.setAppCode(SystemCons.ERROR);
-     			 outDto.setAppMsg("文件上传失败！！！");
+				outDto.setAppMsg("图片上传失败！！！");
+			}
+
+			if (null != imageFile1 && !imageFile1.isEmpty()) {
+				// 如果fileitem中封装的是上传文件，得到上传的文件名称，
+
+				String fileName1 = imageFile1.getOriginalFilename();
+				System.out.println(fileName1 + "--------------------------------------->>>>");
+				// 注意：不同的浏览器提交的文件名是不一样的，有些浏览器提交上来的文件名是带有路径的，如： c:\a\b\1.txt，而有些只是单纯的文件名，如：1.txt
+				// 处理获取到的上传文件的文件名的路径部分，只保留文件名部分
+				fileName1 = fileName1.substring(fileName1.lastIndexOf(File.separator) + 1);
+				// 得到上传文件的扩展名
+				String fileExtName = fileName1.substring(fileName1.lastIndexOf(".") + 1);
+				if ("zip".equals(fileExtName) || "rar".equals(fileExtName) || "tar".equals(fileExtName) || "jar".equals(fileExtName)) {
+					outDto.setAppCode(SystemCons.ERROR);
+					outDto.setAppMsg("上传文件的类型不符合！！！");
+					return outDto;
+				}
+
+				// 如果需要限制上传的文件类型，那么可以通过文件的扩展名来判断上传的文件类型是否合法
+				System.out.println("上传文件的扩展名为:" + fileExtName);
+				// 获取item中的上传文件的输入流
+				InputStream is = imageFile.getInputStream();
+				// 得到文件保存的名称
+				fileName1 = mkFileName(fileName1);
+				// 得到文件保存的路径
+				String savePathStr = mkFilePath(savePath, fileName1);
+				System.out.println("保存路径为:" + savePathStr);
+				filePath1 = savePathStr + File.separator + fileName1;
+				// 创建一个文件输出流
+				FileOutputStream fos = new FileOutputStream(filePath1);
+				// 创建一个缓冲区
+				byte buffer[] = new byte[1024];
+				// 判断输入流中的数据是否已经读完的标识
+				int length = 0;
+				// 循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
+				while ((length = is.read(buffer)) > 0) {
+					// 使用FileOutputStream输出流将缓冲区的数据写入到指定的目录(savePath + "\\" + filename)当中
+					fos.write(buffer, 0, length);
+				}
+				// 关闭输入流
+				is.close();
+				// 关闭输出流
+				fos.close();
+				message = "文件上传成功";
+				outDto.setAppCode(SystemCons.SUCCESS);
+				filePath1 = filePath1.replace(savePath, "");
+				filePath2 = filePath + "#" + filePath1;
+				outDto.setAppMsg(filePath2);
+			} else {
+				outDto.setAppCode(SystemCons.ERROR);
+				outDto.setAppMsg("html上传失败！！！");
             }
            
                 
@@ -136,7 +190,7 @@ public class CDZBaseController {
         }catch (Exception e) {
         	e.printStackTrace();
             outDto.setAppCode(SystemCons.ERROR);
-			outDto.setAppMsg("文件上传失败！！！");
+			outDto.setAppMsg("上传失败！！！");
             return outDto;
         }
         

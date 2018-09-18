@@ -437,32 +437,33 @@ public class NbIotService  {
     		String str_CCC = Alarm_Zone;   //防区号
     		//NumberFormat nf = NumberFormat.getPercentInstance();
 			
-    		Dto pDto = Dtos.newDto("id_", IMEI);
- //   		DevicePO devicePO = deviceDao.selectOne(pDto);
-		//	devicePO.setTrigger_("触发");
-//			devicePO.setIs_alarming("1");
-//			devicePO.setSignal_quality(String.valueOf((Integer.parseInt(Signal)+1.0)/32.0));
-//			deviceDao.updateByKey(devicePO);
-//			
-//			Dto pDto3 = Dtos.newDto("eee", str_EEE);
-//			Alarm_descPO alarm_descPO = alarm_descDao.selectOne(pDto3);
-//			
-//			Alarm_logPO alarm_logPO = new Alarm_logPO();   
-//			alarm_logPO.setAlarm_id(AOSId.appId(SystemCons.ID.SYSTEM));
-//			alarm_logPO.setDevice_id(devicePO.getDevice_id());
-//			alarm_logPO.setUser_phone(devicePO.getPhone());
-//			alarm_logPO.setAlarm_time(new Date());
-//			alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
-//			alarm_logPO.setAlert_code(str_EEE);  //警情代码
-//			alarm_logPO.setProcess("0");  //是否接警
-//			alarm_logPO.setDefence_area(str_CCC);  //防区号
-//			alarm_logPO.setType_("0");  //报警类型
-//			alarm_logPO.setHandler_(devicePO.getHead());  //负责人名字
-//			alarm_logPO.setHandler_phone(devicePO.getHead_phone());  //负责人手机号
-//			
-//			//加CCC和GG
-//			alarm_logDao.insert(alarm_logPO);
+    		Dto pDto = Dtos.newDto("device_id", IMEI);
+    		DevicePO devicePO = deviceDao.selectOne(pDto);
+    		if(devicePO != null) {
+			devicePO.setTrigger_("触发");
+			devicePO.setIs_alarming("1");
+			devicePO.setSignal_quality(String.valueOf((Integer.parseInt(Signal)+1.0)/32.0));
+			deviceDao.updateByKey(devicePO);
 			
+			Dto pDto3 = Dtos.newDto("eee", str_EEE);
+			Alarm_descPO alarm_descPO = alarm_descDao.selectOne(pDto3);
+			
+			Alarm_logPO alarm_logPO = new Alarm_logPO();   
+			alarm_logPO.setAlarm_id(AOSId.appId(SystemCons.ID.SYSTEM));
+			alarm_logPO.setDevice_id(devicePO.getDevice_id());
+			alarm_logPO.setUser_phone(devicePO.getPhone());
+			alarm_logPO.setAlarm_time(new Date());
+			alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
+			alarm_logPO.setAlert_code(str_EEE);  //警情代码
+			alarm_logPO.setProcess("0");  //是否接警
+			alarm_logPO.setDefence_area(str_CCC);  //防区号
+			alarm_logPO.setType_("2");  //报警类型
+			alarm_logPO.setHandler_(devicePO.getHead());  //负责人名字
+			alarm_logPO.setHandler_phone(devicePO.getHead_phone());  //负责人手机号
+			
+			//加CCC和GG
+			alarm_logDao.insert(alarm_logPO);
+			}
 		 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -470,42 +471,10 @@ public class NbIotService  {
 		}
 		
 		
-//		String s1 = httpModel.getRequest().getParameter("deviceId");
-//		Dto qDto = httpModel.getInDto();
-//		System.out.println(s1);
-//		String body= qDto.toString();
-//		System.out.println(body);
-//		 
-//		
-//		JsonObject jsonObject = (JsonObject) new JsonParser().parse(body);
-//		// 获取accesstoken中的字符串
-//		 
-//		String deviceId = jsonObject.get("deviceId").getAsString();
-//			
-		//System.out.println(deviceId);
 		httpModel.setOutMsg1("ok");
 	//操作数据库
-		
-		
-		/*Dto pDto4 = Dtos.newDto("device_id", device_id);
-		DevicePO devicePO3 = deviceDao.selectOne(pDto4);
-		Alarm_logPO alarm_logPO = new Alarm_logPO();   
-		alarm_logPO.setAlarm_id(AOSId.appId(SystemCons.ID.SYSTEM));
-		alarm_logPO.setDevice_id(device_id);
-		alarm_logPO.setUser_phone(devicePO3.getPhone());
-		alarm_logPO.setAlarm_time(new Date());
-		alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
-		alarm_logPO.setAlert_code(str_EEE);  //警情代码
-		alarm_logPO.setProcess("0");  //是否接警
-		alarm_logPO.setDefence_area(str_CCC);  //防区号
-		alarm_logPO.setType_("0");  //报警类型
-		alarm_logPO.setHandler_(devicePO3.getHead());  //负责人名字
-		alarm_logPO.setHandler_phone(devicePO3.getHead_phone());  //负责人手机号
-		
-		//加CCC和GG
-		alarm_logDao.insert(alarm_logPO);*/
-	}
 	
+	}
 	
 	
 }

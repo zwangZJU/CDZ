@@ -72,28 +72,31 @@ public class AdvertController extends CDZBaseController {
 	 * @return
 	 */
 	 @Transactional
-	public void saveAdvert(HttpModel httpModel) {
-		Dto inDto = httpModel.getInDto();
-		Dto outDto = Dtos.newOutDto();
-		AdvertPO advertPO = new AdvertPO();
-		advertPO.copyProperties(inDto);
-		try {
-			outDto=this.uploadFile(httpModel.getRequest(), httpModel.getResponse(), outDto);
-		} catch (Exception e) {
-			e.printStackTrace();
+	 public void saveAdvert(HttpModel httpModel) {
+			Dto inDto = httpModel.getInDto();
+			Dto outDto = Dtos.newOutDto();
+			AdvertPO advertPO = new AdvertPO();
+			advertPO.copyProperties(inDto);
+			try {
+				outDto=this.uploadFile(httpModel.getRequest(), httpModel.getResponse(), outDto);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if(SystemCons.SUCCESS.equals(outDto.getAppCode())){
+				UserModel userModel = httpModel.getUserModel();
+				advertPO.setAdvert_id(AOSId.appId(SystemCons.ID.SYSTEM));
+				advertPO.setCreate_date(AOSUtils.getDateTime());
+				advertPO.setOper_id(userModel.getId_());
+				String[] info = outDto.getAppMsg().split("#");
+
+				advertPO.setImg_url(info[0].replace("\\", "/"));
+				advertPO.setUrl(info[1].replace("\\", "/"));
+				advertDao.insert(advertPO);
+				outDto.setAppMsg("新增成功。");
+				outDto.put("success", true);
+			}
+			httpModel.setOutMsg(AOSJson.toJson(outDto));
 		}
-		if(SystemCons.SUCCESS.equals(outDto.getAppCode())){
-			UserModel userModel = httpModel.getUserModel();
-			advertPO.setAdvert_id(AOSId.appId(SystemCons.ID.SYSTEM));
-			advertPO.setCreate_date(AOSUtils.getDateTime());
-			advertPO.setOper_id(userModel.getId_());
-			advertPO.setImg_url(outDto.getAppMsg().replace("\\", "/"));
-			advertDao.insert(advertPO);
-			outDto.setAppMsg("新增成功。");
-			outDto.put("success", true);
-		}
-		httpModel.setOutMsg(AOSJson.toJson(outDto));
-	}
 
 	/**
 	 * 修改广告表

@@ -410,7 +410,7 @@ public void receive_alarmAlarm_log(HttpModel httpModel) {
 				s[0] = dto.getString("alarm_id");
 				s[1] = dto.getString("device_id");
 				s[2] = dto.getString("user_phone");
-				s[3] = dto.getString("aime");
+				s[3] = dto.getString("alarm_time");
 				s[4] = dto.getString("response_time");
 				s[5] = dto.getString("type_");
 				s[6] = dto.getString("handler_");

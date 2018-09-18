@@ -311,7 +311,7 @@ public class MultiServerThread extends Thread {
 	                System.out.println("jjjjjjjj:"+j); 
 	                
 	                if("01".equals(msgType)&&"E2".equals(String.valueOf(hex_byte, 0, 2))){  //注册
-	                	 this.saveLogs("注册原始数据:"+hex,this.ascii,"CS①");
+	                	 //this.saveLogs("注册原始数据:"+hex,this.ascii,"CS①");
 	                	//注册信息
 	                	//String chongdianzhuantai=new BigInteger(String.valueOf(hex_byte, 6, 2), 16).toString();
 	                	//String ascii_=Helper.AsciiStringToString(String.valueOf(hex_byte, 8, 18));  //
@@ -332,7 +332,7 @@ public class MultiServerThread extends Thread {
 	                	System.out.println("ACCT3:"+ACCT3); 
 	                	String ACCT4 =decode(String.valueOf(hex_byte, 14, 2));
 	                	System.out.println("ACCT4:"+ACCT4); 
-	                	
+	                	//decode把十六进制转字符串
 	                	System.out.println("ACCT  decode :"+decode(String.valueOf(hex_byte, 8, 2))+","+decode(String.valueOf(hex_byte, 10, 2))
 	                	+","+decode(String.valueOf(hex_byte, 12, 2))+","+decode(String.valueOf(hex_byte, 14, 2)));
 	                	
@@ -441,16 +441,7 @@ public class MultiServerThread extends Thread {
 	                	
 	                	if(null==devicePO)
 	                	{
-	                		System.out.println("yes");
-	                		
-	                		/*DevicePO  devicePO_=new DevicePO();
-	                		//devicePO_.setId_(this.ascii1);
-	                		//devicePO_.setDevice_id(Corp_ID);
-	                		
-	                		//devicePO_.setDevice_id(str_ascii);   //设置设备序列号，对厂家有意义
-	                		devicePO_.setUser_acct(str_ACCT);    //设置设备账号（每个保安公司不会重复），对保安公司有意义
-	                		deviceDao.insert(devicePO_);*/
-	                		System.out.println("yes two");
+	                		System.out.println("设备未扫码注册");
 	                		
 	                	}else {//已存在，则修改状态
 	                		
@@ -460,9 +451,6 @@ public class MultiServerThread extends Thread {
 	                		
 	                		Dto pDto1_ = Dtos.newDto("device_id", device_id);
 	                		DevicePO  devicePO_=deviceDao.selectOne(pDto1_);;
-	                		//devicePO_.setId_(this.ascii1);
-	                		//devicePO_.setDevice_id(Corp_ID);
-	                		//devicePO_.setDevice_id(str_ascii);   //设置设备序列号，对厂家有意义
 	                		devicePO_.setUser_acct(str_ACCT);    //设置设备账号（每个保安公司不会重复），对保安公司有意义
 	                		deviceDao.updateByKey(devicePO_);
 	                		System.out.println("update");
@@ -567,8 +555,7 @@ public class MultiServerThread extends Thread {
 										while(start1) {
 			            				try {
 			            					
-											Thread.sleep(120000);
-											SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+											Thread.sleep(120000);   //2分钟
 									        Date now = new Date();
 											System.out.println("now:"+now);// new Date()为获取当前系统时间
 									     
@@ -596,7 +583,7 @@ public class MultiServerThread extends Thread {
 												devicePO.setShutdown_time(last_date);
 												devicePO.setOnline_state("离线");
 												String shutdown_num = Integer.toString(Integer.parseInt(devicePO.getShutdown_number())+1);
-												devicePO.setShutdown_number(shutdown_num);
+												devicePO.setShutdown_number(shutdown_num);  //离线次数
 												devicePO.setArrange_withdraw("撤防");
 												
 												 //alarm_logPO.setResponse_time(new Date());
@@ -636,10 +623,13 @@ public class MultiServerThread extends Thread {
 	    				System.out.println(fang);
 	    				*/
 	            		
-	            		/*
+	            		
 	    				if(resultLatter_1.length()>5) {
-		            		if(resultLatter_1.substring(6,8).equals("30")&&resultLatter_1.substring(1,2).equals("5")&&resultLatter_1.substring(2, 4).equals("4f")&&resultLatter_1.substring(4, 6).equals("4b")&&fang==false)
+		            		if(resultLatter_1.substring(6,8).equals("30")&&resultLatter_1.substring(1,2).equals("5")&&resultLatter_1.substring(2, 4).equals("4f")&&resultLatter_1.substring(4, 6).equals("4b"))
 		            		{
+		            			resultLatter_1 = "0";
+		            			System.out.println("收到OK");
+		            			/*
 		            			System.out.println("bufang");
 			            		System.out.println("yes");
 			            		Q = "1";  //触发
@@ -655,7 +645,9 @@ public class MultiServerThread extends Thread {
 								deviceDao.updateByKey(devicePO1);
 								
 								fang = true;
-		            		}else if(resultLatter_1.substring(6,8).equals("30")&&resultLatter_1.substring(1,2).equals("5")&&resultLatter_1.substring(2, 4).equals("4f")&&resultLatter_1.substring(4, 6).equals("4b")&&fang==true)
+								*/
+		            		}
+		            		/*else if(resultLatter_1.substring(6,8).equals("30")&&resultLatter_1.substring(1,2).equals("5")&&resultLatter_1.substring(2, 4).equals("4f")&&resultLatter_1.substring(4, 6).equals("4b")&&fang==true)
 		            		{
 		            			System.out.println("chefang");	
 				            	System.out.println("yes");
@@ -672,9 +664,9 @@ public class MultiServerThread extends Thread {
 								fang = false;
 			                		
 				     
-		            		}
-	    				}*/
-	            		if(resultLatter_1.length()>20)  //说明是报警包
+		            		}*/
+	    				}
+	    				if(resultLatter_1.length()>20)  //说明是报警包
 	            		{
 	            			byte[] databuffer2 = new byte[16];   //报警包的后16位
 		                	for(int n=16;n<32;n++)
@@ -736,7 +728,12 @@ public class MultiServerThread extends Thread {
 		            			alarm_logPO.setUser_phone(devicePO3.getPhone());
 		            			alarm_logPO.setAlarm_time(new Date());
 		            			if(alarm_descPO != null)
-		            				alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
+		            				if(str_EEE.equals("401")&&Q.equals("0"))
+		            					alarm_logPO.setReason_("布防");
+		            				else if(str_EEE.equals("401")&&Q.equals("1"))
+		            					alarm_logPO.setReason_("撤防");
+		            				else 
+		            					alarm_logPO.setReason_(alarm_descPO.getAlarm_type());
 		            			else
 		            				alarm_logPO.setReason_("未定义的警情");
 		            			alarm_logPO.setAlert_code(str_EEE);  //警情代码
@@ -755,29 +752,20 @@ public class MultiServerThread extends Thread {
 		            			Dto pDto10 = Dtos.newDto("device_id", device_id);
 			    				devicePO = deviceDao.selectOne(pDto10);
 			            		System.out.println(devicePO.getArrange_withdraw());
-			            		
-			    				if(devicePO.getArrange_withdraw().equals("撤防"))   //撤防
-			    					fang=false;   //fang是标志位，false说明目前模块的状态是撤防状态
-			    				else if(devicePO.getArrange_withdraw().equals("布防"))  //布防
-			    					fang=true;   //fang是标志位，true说明目前模块的状态是撤防状态
-			    				
-			    				System.out.println(fang);
 		            			
 		            			/*下面是修改device表里的值*/
 		            			Dto pDto5 = Dtos.newDto("device_id",device_id);
 			        			DevicePO devicePO4=deviceDao.selectOne(pDto5);
-								devicePO4.setIs_alarming(Q);
-								//devicePO4.setGg_(str_GG);
-								//devicePO4.setCcc_(str_CCC);
-								if(str_EEE.equals("401")||str_EEE.equals("401")&&fang==true)
+								devicePO4.setIs_alarming(Q);  //
+								if(str_EEE.equals("401")&&Q.equals("1"))
 								{
-									devicePO.setArrange_withdraw("撤防");
-									devicePO.setWithdraw_date(AOSUtils.getDateTime());
+									devicePO4.setArrange_withdraw("撤防");
+									devicePO4.setWithdraw_date(AOSUtils.getDateTime());
 								}
-								else if(str_EEE.equals("401")||str_EEE.equals("401")&&fang==false)
+								else if(str_EEE.equals("401")&&Q.equals("0"))
 								{
-									devicePO.setArrange_withdraw("布防");
-									devicePO.setWithdraw_date(AOSUtils.getDateTime());
+									devicePO4.setArrange_withdraw("布防");
+									devicePO4.setWithdraw_date(AOSUtils.getDateTime());
 								}
 								deviceDao.updateByKey(devicePO4);
 								

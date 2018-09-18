@@ -45,7 +45,7 @@
 			    			 	<aos:dockeditem text="新增" tooltip="新增"  onclick="_w_add_show" icon="add.png"/>
 							    			    <aos:dockeditem text="修改" tooltip="修改"  onclick="_w_update_show" icon="edit.png"/>
 												<aos:dockeditem text="删除" tooltip="删除" onclick="_delete" icon="del.png" />
-												<aos:dockeditem text="导出" tooltip="导出" onclick="fnnoti1()" icon="icon70.png" /> 
+												<%-- <aos:dockeditem text="导出" tooltip="导出" onclick="fnnoti1()" icon="icon70.png" /> --%> 
 												<aos:dockeditem text="接警" tooltip="接警" onclick="receive_alarm_many()" icon="receive_alarm.png" />
 												<aos:dockeditem text="全屏显示" tooltip="全屏显示" onclick="winopen" icon="max.png" />
 												<%-- <aos:dockeditem text="导出" tooltip="导出" onclick="_exportexcel" icon="icon70.png" /> --%>
@@ -59,10 +59,10 @@
 						      			       <aos:column header="报警序号" dataIndex="alarm_id"   width="100" />
 			    						      			       <aos:column header="设备id" dataIndex="device_id"   width="100" />
 			    						      			       <aos:column header="用户手机号" dataIndex="user_phone"   width="100" />
-			    						      			       <aos:column header="报警时间" dataIndex="alarm_time"   width="100" />
-			    						      			       <aos:column header="出警时间" dataIndex="response_time"  width="100" />
+			    						      			       <aos:column header="报警时间" dataIndex="alarm_time"   width="140" />
+			    						      			       <aos:column header="出警时间" dataIndex="response_time"  width="140" />
 			    						      			       <aos:column header="报警方式" dataIndex="type_" rendererFn="fn_type_three" width="70" />
-			    						      			       <aos:column header="处理者" dataIndex="handler_"   width="100" />
+			    						      			       <aos:column header="处理者" dataIndex="handler_"   width="60" />
 			    						      			       <aos:column header="处理者电话" dataIndex="handler_phone"   width="100" />
 			    						      			       <aos:column header="报警原因" dataIndex="reason_"   width="100" />
 			    						      			       <aos:column header="报警解除" dataIndex="alarm_release"   width="100" />
@@ -86,12 +86,12 @@
 	</aos:window>
 	
 	<aos:window id="_w_add_data" title="新增报警日志" width="600"   height="400"  autoScroll="true">
-		<aos:formpanel id="_f_add"  width="600-20"     layout="anchor" labelWidth="70">
+		<aos:formpanel id="_f_add"  width="600-20"   autoScroll="true"  layout="anchor" labelWidth="70">
          	   	       	        <aos:textfield name="alarm_id" fieldLabel="报警序号"   allowBlank="false"   maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="device_id" fieldLabel="设备id"   allowBlank="false"   maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="user_phone" fieldLabel="用户手机号"  maxLength="255"    	         />
-	      	   	 	         	      	    <aos:datefield name="alarm_time" fieldLabel="报警时间"   	              format="Y-m-d 00:00:00"     editable="true"/>
-	  	 	         	      	    <aos:datefield name="response_time" fieldLabel="出警时间"   	              format="Y-m-d 00:00:00"     editable="true"/>
+	      	   	 	         	      	    <aos:datefield name="alarm_time" fieldLabel="报警时间"   	                   editable="true"/>
+	  	 	         	      	    <aos:datefield name="response_time" fieldLabel="出警时间"   	                   editable="true"/>
 	  	 	         	   	       	        <aos:textfield name="type_" fieldLabel="报警方式"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="handler_" fieldLabel="处理者"  maxLength="255"    	         />
 	      	   	 	         	   	       	        <aos:textfield name="handler_phone" fieldLabel="处理者电话"  maxLength="255"    	         />
@@ -110,12 +110,12 @@
 	</aos:window>
 	
 	<aos:window id="_w_update_data" title="修改报警日志" width="600"   height="400"  autoScroll="true">
-			<aos:formpanel id="_f_update"   width="600-20"     layout="anchor" labelWidth="70">
+			<aos:formpanel id="_f_update"   width="600-20"   autoScroll="true"  layout="anchor" labelWidth="70">
         	   	       	        <aos:textfield name="alarm_id" fieldLabel="报警序号"   allowBlank="false"   maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="device_id" fieldLabel="设备id"   allowBlank="false"   maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="user_phone" fieldLabel="用户手机号"  maxLength="255"    	         />
-	      	    	        	      	       <aos:datefield name="alarm_time" fieldLabel="报警时间"   	                 format="Y-m-d 00:00:00"     editable="true"/>
-	    	        	      	       <aos:datefield name="response_time" fieldLabel="出警时间"   	                 format="Y-m-d 00:00:00"     editable="true"/>
+	      	    	        	      	       <aos:datefield name="alarm_time" fieldLabel="报警时间"   	                      editable="true"/>
+	    	        	      	       <aos:datefield name="response_time" fieldLabel="出警时间"   	                      editable="true"/>
 	    	        	   	       	        <aos:textfield name="type_" fieldLabel="报警方式"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="handler_" fieldLabel="处理者"  maxLength="255"    	         />
 	      	    	        	   	       	        <aos:textfield name="handler_phone" fieldLabel="处理者电话"  maxLength="255"    	         />
@@ -691,7 +691,7 @@ function fn_type_three(value, metaData, record, rowIndex, colIndex,
 		    var productForm = Ext.create("Ext.form.Panel", {
 		        title: "",
 		        width: 300,
-		        height: 290,
+		        height: 270,
 		        closeAction : 'close', 
 		        frame: true,
 		         fieldDefaults: {

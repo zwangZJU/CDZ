@@ -48,6 +48,7 @@
 			<aos:column type="rowno" />
 			<aos:column header="主键" dataIndex="advert_id" hidden="true" />	
 			<aos:column header="名称" dataIndex="name" width="100" celltip="true"/>	
+				<aos:column header="短名称" dataIndex="shortname" width="100" celltip="true"/>	
 			<aos:column header="状态" dataIndex="status" rendererField="advert_status" width="60" />
 			<aos:column header="图片" dataIndex="img_url" width="100" rendererFn="fn_image_render"/>
 			<aos:column header="排序" dataIndex="sort" width="100" />	
@@ -65,8 +66,10 @@
 		<aos:window id="_w_advert" title="新增广告">
 			<aos:formpanel id="_f_advert" width="450" layout="anchor" labelWidth="90" fileUpload="true">
 			<aos:textfield name="name" fieldLabel="名称" allowBlank="false" />
+			<aos:textfield name="shortname" fieldLabel="短名称" allowBlank="false" />
 			<aos:combobox name="status" fieldLabel="状态" dicField="advert_status" value="0" allowBlank="false" />
 			<aos:filefield name="img_url" fieldLabel="图片"  allowBlank="false"  />
+				<aos:filefield name="url" fieldLabel="网页"  allowBlank="false"  />
 			<aos:numberfield name="sort" minValue="1" maxValue="999" fieldLabel="排序" value="1" allowBlank="false" />
 			</aos:formpanel>
 			<aos:docked dock="bottom" ui="footer">
@@ -82,9 +85,11 @@
 				<%-- 更新时的隐藏变量(主键) --%>
 				
 			<aos:hiddenfield name="advert_id" fieldLabel="主键" />
-			<aos:textfield name="name" fieldLabel="名称" allowBlank="false" />
+				<aos:textfield name="name" fieldLabel="名称" allowBlank="false" />
+			<aos:textfield name="shortname" fieldLabel="短名称" allowBlank="false" />
 			<aos:combobox name="status" fieldLabel="状态" dicField="advert_status" value="0" allowBlank="false" />
 			<aos:filefield name="img_url" fieldLabel="图片"  allowBlank="true"  />
+			<aos:filefield name="url" fieldLabel="网页"  allowBlank="true"  />
 			<aos:fieldset title="图片" labelWidth="70" columnWidth="0.35" contentEl="_div_photo" height="210" />
 			<aos:numberfield name="sort" minValue="1" maxValue="999" fieldLabel="排序" allowBlank="false" />
 			</aos:formpanel>

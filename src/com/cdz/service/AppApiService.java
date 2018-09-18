@@ -32,7 +32,7 @@ import com.cloopen.rest.sdk.CCPRestSmsSDK;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
+import com.iotplatform.client.NorthApiException;
 
 import aos.framework.core.cache.CacheMasterDataService;
 import aos.framework.core.id.AOSId;
@@ -170,6 +170,44 @@ public class AppApiService extends CDZBaseController {
 		httpModel.setViewPath("myproject/map.jsp");
 	}
 
+	public void getAdvertList(HttpModel httpModel) {
+
+		Dto qDto = httpModel.getInDto();
+		Dto odto = Dtos.newDto();
+
+		String phone = qDto.getString("phone");
+
+		Dto pDto = Dtos.newDto();
+		Dto pDto1 = Dtos.newDto();
+		pDto1.put("is_del", "0");
+		
+		int rows = deviceDao.rows(pDto1);
+
+		List<Dto> deviceDtos = sqlDao.list("Advert.listAdverts", pDto);
+		List<Dto> newListDtos = new ArrayList<Dto>();
+
+		for (Dto dto : deviceDtos) {
+			Dto newDto = Dtos.newDto();
+			newDto.put("name", dto.getString("name"));
+			newDto.put("shortname", dto.getString("shortname"));
+			newDto.put("create_date", dto.getString("create_date"));
+			String url=dto.getString("url");
+		url = "http://118.126.95.215:9090/cdz/myupload" +url;
+			newDto.put("url",url );
+			newDto.put("img_url", dto.getString("img_url"));
+
+			newListDtos.add(newDto);
+
+		}
+
+		odto.put("data", newListDtos);
+		odto.put("status", "1");
+		odto.put("msg", "共查到" + rows + "条数据");
+
+		httpModel.setOutMsg(AOSJson.toJson(odto));
+
+	}
+	
 	private static CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
 	static String Alias = "18392888103";
 	
@@ -1488,6 +1526,7 @@ public class AppApiService extends CDZBaseController {
 			newDto.put("loc_label", getData(dto.getString("loc_label")));
 			newDto.put("head_phone", getData(dto.getString("head_phone")));
 			newDto.put("police_station", getData(dto.getString("police_station")));
+			newDto.put("product_type", getData(dto.getString("product_type")));
 			newListDtos.add(newDto);
 
 			}
@@ -1613,6 +1652,8 @@ public class AppApiService extends CDZBaseController {
 		
 		Dto qDto = httpModel.getInDto();
 		String deviceInfo = qDto.getString("deviceInfo");
+		if(deviceInfo.split("#").length == 5)
+		{
 		
 		HttpsUtil httpsUtil = new HttpsUtil();
         try {
@@ -1625,6 +1666,12 @@ public class AppApiService extends CDZBaseController {
         Dto pDto = Dtos.newDto("key_", "nb_iot_access_token");
 		AosParamsPO aosParamsPO = aosParamsDao.selectOne(pDto);
 		String access_token = aosParamsPO.getValue_();
+		try {
+			access_token = NbIotService.initPlatform();
+		} catch (NorthApiException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         // Authentication锛実et token
         String accessToken = access_token;
 
@@ -1661,7 +1708,7 @@ public class AppApiService extends CDZBaseController {
 		String deviceId = jsonObject.get("deviceId").getAsString();
 		
         NbIotService.modifyDeviceInfo(deviceId, accessToken);
-        
+		}
         
         
         
@@ -1672,7 +1719,6 @@ public class AppApiService extends CDZBaseController {
 		
 		String phone = qDto1.getString("phone");// phone,即为登陆时的用户手机号,15356002207
 		String address = qDto1.getString("address");
-		String IMEI = qDto1.getString("IMEI");
 		String loc_label = qDto1.getString("loc_label");
 		String deviceInfo1 = qDto1.getString("deviceInfo");
 		String[] info = deviceInfo1.split("#");
@@ -1693,7 +1739,10 @@ public class AppApiService extends CDZBaseController {
 			basic_userPO.setDevice_number(info1);//device_number,代表设备编号
 			// TODO
 				DevicePO devicePO = new DevicePO();
-			devicePO.setId_(info[4]);
+			if(deviceInfo.split("#").length == 5)
+				devicePO.setId_(info[4]);
+			else 
+				devicePO.setId_("");
 			devicePO.setUser_id("");
 				devicePO.setPhone(phone);
 			devicePO.setUser_address(address);
@@ -1731,6 +1780,7 @@ public class AppApiService extends CDZBaseController {
 
 		}
 		httpModel.setOutMsg(AOSJson.toJson(odto));  
+		
         
 	}
 	
