@@ -117,7 +117,11 @@ public class AdvertController extends CDZBaseController {
 		} 
 		
 		if(SystemCons.SUCCESS.equals(outDto.getAppCode())){
-			advertPO.setImg_url(outDto.getAppMsg().replace("\\", "/"));
+			String[] info = outDto.getAppMsg().split("#");
+
+			advertPO.setImg_url(info[0].replace("\\", "/"));
+			advertPO.setUrl(info[1].replace("\\", "/"));
+			
 		}
 		advertDao.updateByKey(advertPO);
 		outDto.setAppMsg("修改成功。");

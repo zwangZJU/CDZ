@@ -138,7 +138,7 @@
                 url: 'advertController.getAdvert',
                 ok: function (data) {
                 	_f_advert2.form.setValues(data);
-                	document.getElementById("_img_photo").src="${cxt}/myupload"+data.img_url;
+                	document.getElementById("_img_photo").src="${cxt}/myupload/advert/img"+data.img_url;
                 }
             });
 		}
@@ -219,7 +219,7 @@
 		
 	</script>
 	function fn_image_render(value, metaData, record) {
-			value="${cxt}/myupload"+value;
+			value="${cxt}/myupload/advert/img"+value;
 			return '<img  src="'+value+'" width="200" height="200">';
 		}
 </aos:onready>

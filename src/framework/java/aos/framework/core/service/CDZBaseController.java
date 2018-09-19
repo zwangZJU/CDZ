@@ -70,9 +70,23 @@ public class CDZBaseController {
         }
         return dir;
     }
+    public String setFilePath(String savePath,String fileName){
+        //得到文件名的hashCode的值，得到的就是filename这个字符串对象在内存中的地址
+        int hashcode = fileName.hashCode();
+       
+        //构造新的保存目录
+        String dir = savePath ;
+        //File既可以代表文件也可以代表目录
+        File file = new File(dir);
+        if(!file.exists()){
+            file.mkdirs();
+        }
+        return dir;
+    }
     protected Dto uploadFile(HttpServletRequest request, HttpServletResponse response,Dto outDto) throws ServletException, IOException {
         //得到上传文件的保存目录，将上传的文件存放于WEB-INF目录下，不允许外界直接访问，保证上传文件的安全
-        String savePath = request.getServletContext().getRealPath("/myupload");
+        String savePath1 = request.getServletContext().getRealPath("/myupload/advert/img");
+        String savePath2 = request.getServletContext().getRealPath("/myupload/advert/html");
         //消息提示
         String message = "";
         String filePath="";
@@ -107,7 +121,7 @@ public class CDZBaseController {
                 //得到文件保存的名称
                 fileName = mkFileName(fileName);
                 //得到文件保存的路径
-                String savePathStr = mkFilePath(savePath, fileName);
+                String savePathStr = setFilePath(savePath1, fileName);
                 System.out.println("保存路径为:"+savePathStr);
                 filePath=savePathStr+File.separator+fileName;
                 //创建一个文件输出流
@@ -118,7 +132,7 @@ public class CDZBaseController {
                 int length = 0;
                 //循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
                 while((length = is.read(buffer))>0){
-                    //使用FileOutputStream输出流将缓冲区的数据写入到指定的目录(savePath + "\\" + filename)当中
+                    //使用FileOutputStream输出流将缓冲区的数据写入到指定的目录(savePath1 + "\\" + filename)当中
                     fos.write(buffer, 0, length);
                 }
                 //关闭输入流
@@ -127,7 +141,7 @@ public class CDZBaseController {
                 fos.close();
                 message = "文件上传成功";
                 outDto.setAppCode(SystemCons.SUCCESS);
-				filePath = filePath.replace(savePath, "");
+				filePath = filePath.replace(savePath1, "");
 
             }else{
             	 outDto.setAppCode(SystemCons.ERROR);
@@ -153,11 +167,11 @@ public class CDZBaseController {
 				// 如果需要限制上传的文件类型，那么可以通过文件的扩展名来判断上传的文件类型是否合法
 				System.out.println("上传文件的扩展名为:" + fileExtName);
 				// 获取item中的上传文件的输入流
-				InputStream is = imageFile.getInputStream();
+				InputStream is = imageFile1.getInputStream();
 				// 得到文件保存的名称
 				fileName1 = mkFileName(fileName1);
 				// 得到文件保存的路径
-				String savePathStr = mkFilePath(savePath, fileName1);
+				String savePathStr = setFilePath(savePath2, fileName1);
 				System.out.println("保存路径为:" + savePathStr);
 				filePath1 = savePathStr + File.separator + fileName1;
 				// 创建一个文件输出流
@@ -168,7 +182,7 @@ public class CDZBaseController {
 				int length = 0;
 				// 循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
 				while ((length = is.read(buffer)) > 0) {
-					// 使用FileOutputStream输出流将缓冲区的数据写入到指定的目录(savePath + "\\" + filename)当中
+					// 使用FileOutputStream输出流将缓冲区的数据写入到指定的目录(savePath2 + "\\" + filename)当中
 					fos.write(buffer, 0, length);
 				}
 				// 关闭输入流
@@ -177,7 +191,7 @@ public class CDZBaseController {
 				fos.close();
 				message = "文件上传成功";
 				outDto.setAppCode(SystemCons.SUCCESS);
-				filePath1 = filePath1.replace(savePath, "");
+				filePath1 = filePath1.replace(savePath2, "");
 				filePath2 = filePath + "#" + filePath1;
 				outDto.setAppMsg(filePath2);
 			} else {

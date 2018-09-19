@@ -181,7 +181,7 @@ public class AppApiService extends CDZBaseController {
 		Dto pDto1 = Dtos.newDto();
 		pDto1.put("is_del", "0");
 		
-		int rows = deviceDao.rows(pDto1);
+		int rows = advertDao.rows(pDto1);
 
 		List<Dto> deviceDtos = sqlDao.list("Advert.listAdverts", pDto);
 		List<Dto> newListDtos = new ArrayList<Dto>();
@@ -192,7 +192,7 @@ public class AppApiService extends CDZBaseController {
 			newDto.put("shortname", dto.getString("shortname"));
 			newDto.put("create_date", dto.getString("create_date"));
 			String url=dto.getString("url");
-		url = "http://118.126.95.215:9090/cdz/myupload" +url;
+		
 			newDto.put("url",url );
 			newDto.put("img_url", dto.getString("img_url"));
 
@@ -201,7 +201,12 @@ public class AppApiService extends CDZBaseController {
 		}
 
 		odto.put("data", newListDtos);
-		odto.put("status", "1");
+		if(rows>0) {
+			odto.put("status", "1");
+		}else {
+			odto.put("status", "-1");
+		}
+		
 		odto.put("msg", "共查到" + rows + "条数据");
 
 		httpModel.setOutMsg(AOSJson.toJson(odto));
