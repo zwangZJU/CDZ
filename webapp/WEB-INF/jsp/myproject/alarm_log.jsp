@@ -1,6 +1,10 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ include file="/WEB-INF/jsp/common/tags.jsp"%>
+<%
 
+String path=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
+
+%>
 <aos:html title="alarm_log" base="http" lib="ext">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
@@ -10,7 +14,7 @@
 </head>  
 <body onload = sendRequest()>
  <audio id="bgMusic">
-    <source  src="http://118.126.95.215:9090/cdz/static/music/alarm.wav" >
+    <source  src="<%=path%>/zhaf/static/music/alarm.wav" >
     <source  src="hangge.ogg" type="audio/ogg">
 </audio> 
 <div id="container" >
@@ -142,7 +146,7 @@
 	
 		
 		  var info = Ext.util.Cookies.get('juid'); 
-		var targeturl="http://118.126.95.215:9090/cdz/http/do.jhtml?router=alarm_logService.initAlarm&juid="+info;
+		var targeturl="<%=path%>/zhaf/http/do.jhtml?router=alarm_logService.initAlarm&juid="+info;
 		
 		 window.open(targeturl,"","fullscreen=1,menubar=0,toolbar=0,directories=0,location=0,status=0,scrollbars=0");  
 		//window.close();
@@ -312,7 +316,7 @@
 
 			//var info = Ext.util.Cookies.get('juid');
 			Ext.Ajax.request({
-			    url: '/cdz/http/do.jhtml?router=alarm_logService.receive_alarmAlarm_log',
+			    url: '/zhaf/http/do.jhtml?router=alarm_logService.receive_alarmAlarm_log',
 			    params: {
 			        id: alarm_id
 	    		},
@@ -386,7 +390,7 @@
 						AOS.notice("提示!","确定要将系统升级到该版本吗?",function(){				
 						var vn = combox.getRawValue();
 						Ext.Ajax.request({
-						    url: '/cdz/http/do.jhtml?router=upgradeHardwareController.upgradeAll&juid='+info,
+						    url: '/zhaf/http/do.jhtml?router=upgradeHardwareController.upgradeAll&juid='+info,
 						    mathod:"POST",
 						    params:{version:vn,
 						    	aos_rows_: selection},
@@ -416,7 +420,7 @@
 				        	handler: function () { 
 				        		//receive_alarm_save();
 				        		Ext.Ajax.request({
-				    			    url: '/cdz/http/do.jhtml?router=alarm_logService.receiveAlarmSave',
+				    			    url: '/zhaf/http/do.jhtml?router=alarm_logService.receiveAlarmSave',
 				    			    params: {
 				    			        id: alarm_id
 				    	    		},
@@ -542,7 +546,7 @@
 							AOS.err(data.appmsg);
 							return ;
 						}
-						window.location.reload();
+						_datagridpanel_query();
 						AOS.tip("接警成功");
 						
 					}
@@ -581,7 +585,7 @@
 			for(var v in params){
 				params_url+="&"+v+"="+params[v];
 			}
-			AOS.file('/cdz/http/do.jhtml?router=alarm_logService.exportExcel&juid='+info+params_url);	 
+			AOS.file('/zhaf/http/do.jhtml?router=alarm_logService.exportExcel&juid='+info+params_url);	 
 		}
         
 	</script>
@@ -594,17 +598,17 @@ function fn_type_three(value, metaData, record, rowIndex, colIndex,
 
     if ( value==0) {
     	
-    	 return '<img src="http://118.126.95.215:9090/cdz/static/icon/terminals.png"  />'; 
+    	 return '<img src="<%=path%>/zhaf/static/icon/terminals.png"  />'; 
  	 
 		/*  metaData.style = 'background-color:#990099'; 
 		return value; */
 	} else if(value == 1){
 /* 		metaData.style = 'background-color:#0099CC';  */
 	
-		 return '<img  src="http://118.126.95.215:9090/cdz/static/icon/telephone.png" />'; 
+		 return '<img  src="<%=path%>/zhaf/static/icon/telephone.png" />'; 
 	}else if(value == 2){
 		
-		 return '<img  src="http://118.126.95.215:9090/cdz/static/icon/one_alarm.png" />'; 
+		 return '<img  src="<%=path%>/zhaf/static/icon/one_alarm.png" />'; 
 	}
 	
   
@@ -635,7 +639,7 @@ function fn_type_three(value, metaData, record, rowIndex, colIndex,
 			map.clearOverlays();
 		//var info = Ext.util.Cookies.get('juid');
 		Ext.Ajax.request({
-		    url: '/cdz/http/do.jhtml?router=alarm_logService.receive_alarmAlarm_log',
+		    url: '/zhaf/http/do.jhtml?router=alarm_logService.receive_alarmAlarm_log',
 		    params: {
 		        id: record.data.alarm_id
     		},
@@ -719,7 +723,7 @@ function fn_type_three(value, metaData, record, rowIndex, colIndex,
 		 		        height: 40,
 		            	 handler : function() {
 		            		 Ext.Ajax.request({
-				    			    url: '/cdz/http/do.jhtml?router=alarm_logService.receive_alarmAlarm_log',
+				    			    url: '/zhaf/http/do.jhtml?router=alarm_logService.receive_alarmAlarm_log',
 				    			    params: {
 				    			        id: record.data.alarm_id
 				    	    		},
@@ -743,7 +747,8 @@ function fn_type_three(value, metaData, record, rowIndex, colIndex,
 				     					{ xtype: "button",text: "最大化",handler: function () {window.open(picurl,"","fullscreen=1"); }}],
 		            		        items : [new Ext.Panel({  
 		            		            xtype : 'panel', 
-		            		            title:"防区图",
+		            		           
+
 		            		            id : 'photo1',
 		            		            autoscroll:true,
 		            		            html:'<img src='+picurl+' width="1100" height="450"   />',
@@ -797,24 +802,14 @@ function fn_type_three(value, metaData, record, rowIndex, colIndex,
 			        		//receive_alarm_save();
 			        		
 			        		Ext.Ajax.request({
-			    			    url: '/cdz/http/do.jhtml?router=alarm_logService.receiveAlarmSave',
+			    			    url: '/zhaf/http/do.jhtml?router=alarm_logService.receiveAlarmSave',
 			    			    params: {
 			    			        id: record.data.alarm_id
 			    	    		},
 			    			    success: function(response){
-			    			    	//alert("在接警");
-			    			        //var text = Ext.decode(response.responseText);
-			    			        //Ext.getCmp("x").setValue(text.is_alarming);
-			    			    	//if("x" == "0")
-			    			    	//	alert("接警成功");
-			    			    	//else
-			    			    	//	alert("接警失败");
 			    			    	
-			    			    	//if(response.appcode === -1){
-		 							//	AOS.err(response.appmsg);
-		 							//	return ;
-		 							//}
-			    			    	//_datagridpanel_store.reload();
+			    			    	
+			    			    	
 			    			    	window.location.reload();
 		 							AOS.tip("接警成功");
 		 							//_w_add_data.hide();
@@ -843,8 +838,7 @@ function fn_type_three(value, metaData, record, rowIndex, colIndex,
 	    	
 	    	 return '<input type="button" value="未接警" class="cbtn_danger" onclick="_w_update_show_all_button();"  />'; 
 	 	 
-			/*  metaData.style = 'background-color:#990099'; 
-			return value; */
+			
 		} else if(value == 1){
 	/* 		metaData.style = 'background-color:#0099CC';  */
 			
@@ -878,7 +872,7 @@ function videoPlay() {
   }else{
     	 
        Ext.Ajax.request({
-			    url: '/cdz/http/do.jhtml?router=cameraService.listUrl',
+			    url: '/zhaf/http/do.jhtml?router=cameraService.listUrl',
 			    params: {
 			        id: record.data.device_id
 	    		},

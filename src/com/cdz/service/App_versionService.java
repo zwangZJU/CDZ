@@ -25,6 +25,7 @@ import aos.framework.web.router.HttpModel;
 import aos.system.common.utils.SystemCons;
 import dao.App_versionDao;
 import po.App_versionPO;
+import utils.Constant;
 
 @Service
 public class App_versionService extends CDZBaseController {
@@ -163,7 +164,7 @@ public class App_versionService extends CDZBaseController {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					String url = "http://118.126.95.215:9090/cdz/app/" + fileName;
+					String url =Constant.SERVERIP+ "/zhaf/app/" + fileName;
 
 					App_versionPO app_versionPO = new App_versionPO();
 					app_versionPO.setApp_vesino_id(AOSId.appId(SystemCons.ID.SYSTEM));

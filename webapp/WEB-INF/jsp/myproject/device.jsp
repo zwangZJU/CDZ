@@ -462,7 +462,7 @@ function fn_export_excel(){
 				
 			}
 			
-			AOS.file('/cdz/http/do.jhtml?router=deviceService.exportExcel&juid='+info+params_url);
+			AOS.file('/zhaf/http/do.jhtml?router=deviceService.exportExcel&juid='+info+params_url);
 		
 			
 			 
@@ -473,7 +473,7 @@ function fn_export_excel(){
 			 //var selection1 = AOS.selection(_f_jiedan_u, 'head_phone'); 
 			
 			 var selection1 =  Ext.getCmp('processer').getValue();
-			 AOS.tip(selection);
+			
 				if(AOS.empty(selection)){
 					AOS.tip('请先选中数据。');
 					return;
@@ -514,7 +514,7 @@ function fn_export_excel(){
 			  //AOS.tip(selection);
 			  
 			  var selection = AOS.selection(_datagridpanel, 'device_id');
-			  AOS.tip(selection);
+		
 				if(AOS.empty(selection)){
 					AOS.tip('请先选中数据。');
 					return;
@@ -717,7 +717,7 @@ function upload_new() {
                     handler: function() {
                         uploadForm.getForm().submit({
                         	method:'POST',
-                            url: '/cdz/http/do.jhtml?router=deviceService.uploadPicture&juid='+info,
+                            url: '/zhaf/http/do.jhtml?router=deviceService.uploadPicture&juid='+info,
                             params: {
                                 action: 'UploadFile',
                                 id:id1
@@ -730,7 +730,7 @@ function upload_new() {
                                 if (jsonResult.success == "true") {
 									AOS.tip(jsonResult.msg);
 									root.hide();
-									window.location.href="/cdz/http/do.jhtml?router=deviceService.init&juid="+info;
+									window.location.href="/zhaf/http/do.jhtml?router=deviceService.init&juid="+info;
                                 }else if(jsonResult.success == "false"){
                                 	root.hide();
                                 	AOS.tip(jsonResult.msg);

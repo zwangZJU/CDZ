@@ -3,10 +3,12 @@ package service;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.Constant;
+
 public class NotifyType {
 
     //please replace the IP and Port to your localhost IP and port, when you use the testMessagePush.
-    public static final String TEST_CALLBACK_BASE_URL = "http://118.126.95.215:9090";
+    public static final String TEST_CALLBACK_BASE_URL =Constant.SERVERIP;
 
     public static List<String> notifyTypes = new ArrayList<>();
     public static List<String> getNotifyTypes () {

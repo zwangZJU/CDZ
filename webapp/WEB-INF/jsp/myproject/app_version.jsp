@@ -93,7 +93,7 @@
 	                    handler: function() {
 	                        uploadForm.getForm().submit({
 	                        	method:'POST',
-	                            url: '/cdz/http/do.jhtml?router=app_versionService.uploadVersionFile&juid='+info,
+	                            url: '/zhaf/http/do.jhtml?router=app_versionService.uploadVersionFile&juid='+info,
 	                            params: {
 	                                action: 'UploadFile'
 	                            },
@@ -105,7 +105,7 @@
 	                                if (jsonResult.success == "true") {
 										AOS.tip(jsonResult.msg);
 										root.hide();
-										window.location.href="/cdz/http/do.jhtml?router=app_versionService.init&juid="+info;
+										window.location.href="/zhaf/http/do.jhtml?router=app_versionService.init&juid="+info;
 	                                }else if(jsonResult.success == "false"){
 	                                	root.hide();
 	                                	AOS.tip(jsonResult.msg);

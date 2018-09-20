@@ -7,6 +7,7 @@ import com.iotplatform.client.NorthApiException;
 
 import aos.framework.core.server.AOSServer;
 import service.NbIotService;
+import utils.Constant;
 import utils.Request;
 
 /**
@@ -24,7 +25,7 @@ public class CDZStart {
 			public void run() {
 				try {
 					Thread.sleep(30000);
-					String url = "http://118.126.95.215:9090/cdz/api/do.jhtml?router=appApiService.getAccessToken";
+					String url = Constant.SERVERIP+"/zhaf/api/do.jhtml?router=appApiService.getAccessToken";
 					Request.sendPost(url,"");
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -40,7 +41,7 @@ public class CDZStart {
 					Thread.sleep(35000);
 					try {
 						String accessToken = NbIotService.initPlatform();
-						String url = "http://localhost:9090/cdz/api/do.jhtml?router=nbIotService.getNBIoTAccessToken";	
+						String url = Constant.SERVERIP+"/zhaf/api/do.jhtml?router=nbIotService.getNBIoTAccessToken";	
 						Request.sendPost(url,"accessToken="+accessToken);
 				
 					} catch (NorthApiException e) {
@@ -57,7 +58,7 @@ public class CDZStart {
 		
 		
 		AOSServer aosServer = new AOSServer();
-		aosServer.setWebContext("/cdz");
+		aosServer.setWebContext("/zhaf");
 		aosServer.setPort(9090);
 		aosServer.start();
 	}

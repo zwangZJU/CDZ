@@ -36,7 +36,7 @@ var map = new BMap.Map("l-map");
 function map(){
 	
 Ext.Ajax.request({
-					    url: '/cdz/http/do.jhtml?router=deviceService.listCoordinate&juid='+info,
+					    url: '/zhaf/http/do.jhtml?router=deviceService.listCoordinate&juid='+info,
 					    mathod:"POST",
 					    params:{version:5
 					  },

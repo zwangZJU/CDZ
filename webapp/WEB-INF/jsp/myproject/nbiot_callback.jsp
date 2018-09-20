@@ -165,7 +165,7 @@
 	 		 var url=record.data.url_;
 	 		  var info = Ext.util.Cookies.get('juid'); 
 	 		  Ext.Ajax.request({
-	 		  	url: '/cdz/api/do.jhtml?router=nbIotService.scribe',
+	 		  	url: '/zhaf/api/do.jhtml?router=nbIotService.scribe',
 	 		     
 	 		      mathod:"POST",
 	 		     
@@ -194,7 +194,7 @@
 		
 		  var info = Ext.util.Cookies.get('juid'); 
 		  Ext.Ajax.request({
-		  	url: '/cdz/api/do.jhtml?router=nbIotService.queryScribe',
+		  	url: '/zhaf/api/do.jhtml?router=nbIotService.queryScribe',
 		     
 		      mathod:"POST",
 		     

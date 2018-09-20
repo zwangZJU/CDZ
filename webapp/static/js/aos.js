@@ -408,7 +408,7 @@ AOS.combox = function (record){
 		proxy: {
 			type: "ajax",
 			actionMethods: { read: "POST" },
-			url: '/cdz/http/do.jhtml?router=Alarm_handleService.selectAllVersionNum&juid='+info,
+			url: '/zhaf/http/do.jhtml?router=Alarm_handleService.selectAllVersionNum&juid='+info,
 			reader: {
 				type: "json",
 				root: "root"
@@ -449,7 +449,7 @@ AOS.combox = function (record){
 				AOS.notice("提示!","确定要将系统升级到该版本吗?",function(){				
 				var vn = combox.getRawValue();
 				Ext.Ajax.request({
-				    url: '/cdz/http/do.jhtml?router=Alarm_handleService.upgradeOne&juid='+info,
+				    url: '/zhaf/http/do.jhtml?router=Alarm_handleService.upgradeOne&juid='+info,
 				    mathod:"POST",
 				    params:{version:vn,
 				    		cp_id: record.data.cp_id,

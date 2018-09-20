@@ -1,15 +1,14 @@
-<%@ page contentType="text/html; charset=utf-8"%>
+﻿<%@ page contentType="text/html; charset=utf-8"%>
 <%@ include file="/WEB-INF/jsp/common/tags.jsp"%>
+<%
 
+String path=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
+
+%>
 <aos:html title="首页" base="http" lib="ext">
 <body>
-	<div id="l-map"></div>
-	<div id="r-result">
-		<!-- <input type="button" value="批量反地址解析+商圈" onclick="bdGEO(0)" /> -->
-		
-		<div id="result"></div>
-	</div>
-</body>
 
+<img style="position:absolute; top:0px;left:0px; width:100% ;height:100%" src="<%=path%>/zhaf/static/image/zhihui.jpg">
+</body>
 </aos:html>
 

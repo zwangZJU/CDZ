@@ -1,5 +1,10 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ include file="/WEB-INF/jsp/common/tags.jsp"%>
+<%
+
+String path=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
+
+%>
 <aos:html title="repair_log" base="http" lib="ext">
 <aos:body>
 </aos:body>
@@ -135,7 +140,7 @@
 		 
 			
 		  var info = Ext.util.Cookies.get('juid'); 
-		var targeturl="http://118.126.95.215:9090/cdz/http/do.jhtml?router=repair_logService.initRepair&juid="+info;
+		var targeturl="<%=path%>/zhaf/http/do.jhtml?router=repair_logService.initRepair&juid="+info;
 		
 		 window.open(targeturl,"","fullscreen=1,menubar=0,toolbar=0,directories=0,location=0,status=0,scrollbars=0");  
 		//window.close();
@@ -282,7 +287,7 @@ function fn_export_excel(){
 				
 			}
 			
-			AOS.file('/cdz/http/do.jhtml?router=repair_logService.exportExcel&juid='+info+params_url);
+			AOS.file('/zhaf/http/do.jhtml?router=repair_logService.exportExcel&juid='+info+params_url);
 		
 			
 			 
@@ -332,7 +337,7 @@ function fn_balance_render7(value, metaData, record, rowIndex, colIndex,
 	  var result;	
 	  var info = Ext.util.Cookies.get('juid'); 
 	  Ext.Ajax.request({
-	  	url: '/cdz/http/do.jhtml?router=repair_logService.listrepair3&juid='+info,
+	  	url: '/zhaf/http/do.jhtml?router=repair_logService.listrepair3&juid='+info,
 	      async:false,		
 	      mathod:"POST",
 	     

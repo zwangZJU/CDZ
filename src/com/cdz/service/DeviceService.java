@@ -37,6 +37,7 @@ import po.Alarm_logPO;
 import po.Basic_userPO;
 import po.DevicePO;
 import po.Repair_logPO;
+import utils.Constant;
 import utils.ExcelUtils;
 import utils.Helper;
 import utils.Request;
@@ -667,7 +668,7 @@ public class DeviceService extends CDZBaseController {
 					MultipartFile file = multiRequest.getFile((String) iter.next());
 					if (file != null) {
 						String fileName = file.getOriginalFilename();
-						String url = "http://118.126.95.215:9090/cdz/myupload/zonemap/" + fileName;
+						String url = Constant.SERVERIP+ "/zhaf/myupload/zonemap/" + fileName;
 						Dto pDto = Dtos.newDto("area_map", url);
 						DevicePO devicePO = deviceDao.selectOne(pDto);
 						if (null != devicePO) {

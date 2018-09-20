@@ -218,7 +218,7 @@ public class HomeService extends CDZBaseController {
      	 httpModel.setAttribute("t_o_yfk", dto.getString("pay"));
      	 httpModel.setAttribute("t_o_dfk", dto.getString("nopay"));
      }
-		httpModel.setViewPath("myproject/alarm_log.jsp");
+		httpModel.setViewPath("system/portal.jsp");
 	}
 
 	/**

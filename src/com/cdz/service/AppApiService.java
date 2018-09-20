@@ -896,7 +896,7 @@ public class AppApiService extends CDZBaseController {
 		if (SystemCons.SUCCESS.equals(outDto.getAppCode())) {
 
 			basic_userPO.setAvatar(outDto.getAppMsg().replace("\\", "/"));
-			avatar = "http://118.126.95.215:9090/cdz/myupload" + outDto.getAppMsg().replace("\\", "/");
+			avatar =Constant.SERVERIP+ "/zhaf/myupload" + outDto.getAppMsg().replace("\\", "/");
 			basic_userDao.updateByKey(basic_userPO);
 
 			odto.put("avatar", getData(avatar));
@@ -936,7 +936,7 @@ public class AppApiService extends CDZBaseController {
 		Basic_userPO basic_userPO = basic_userDao.selectOne(pDto); // 用
 		String avatar = basic_userPO.getAvatar();
 		if (null != avatar && !avatar.isEmpty()) {
-			avatar = "http://118.126.95.215:9090/cdz/myupload" + basic_userPO.getAvatar();
+			avatar = Constant.SERVERIP+ "/zhaf/myupload" + basic_userPO.getAvatar();
 
 		} else {
 			avatar = "";

@@ -30,7 +30,9 @@ public class Constant {
      *please replace the IP and Port of your Application deployment environment address, when you use the demo.
      */
     public static final String CALLBACK_BASE_URL = "http://192.88.88.88:9999";
-
+    public static final String SERVERIP= "http://118.126.95.215:9090";
+   //还有一些文件存放的文件夹.string path
+  
     /*
      * complete callback url锛�
      * please replace uri, when you use the demo.
@@ -138,6 +140,7 @@ public class Constant {
     public static final String QUERY_DEVICECMD_CANCEL_TASK = BASE_URL + "/iocm/app/cmd/v1.4.0/deviceCommandCancelTasks";
 
 
+    
     /*
      * notify Type
      * serviceInfoChanged|deviceInfoChanged|LocationChanged|deviceDataChanged|deviceDatasChanged
