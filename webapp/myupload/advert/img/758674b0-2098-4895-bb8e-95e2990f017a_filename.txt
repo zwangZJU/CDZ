@@ -1,0 +1,1 @@
+已执行的 SQL 语句：insert into `zhihuianfang`.`device` () values ()错误号：1364错误信息：Field 'device_id' doesn't have a default value

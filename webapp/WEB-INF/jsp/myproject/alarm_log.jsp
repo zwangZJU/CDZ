@@ -215,20 +215,9 @@ String path=request.getScheme()+"://"+request.getServerName()+":"+request.getSer
 		}
 	    
 	    function DisplayHot() {
-	     //var name = XMLHttpReq.responseXML.getElementsByTagName("name")[0].firstChild.nodeValue;
-	     //var count = XMLHttpReq.responseXML.getElementsByTagName("count")[0].firstChild.nodeValue;
-	 
-	           //document.getElementById("cheh").innerHTML = "T-"+name+"次列车"; 
-	    //document.getElementById("price").innerHTML = count+"元"; 
-	    
-	    //var text = Ext.decode(response.responseText);
-				        // process server response here
-				        //var value1=text["user_address"];
-				   
-		//Ext.getCmp("a").setValue(text.data);
 		
-	    var audio = document.getElementById("bgMusic");
-	    audio.play();
+	    var audio = document.getElementById("bgMusic");  
+	    audio.play();   //提示音响起
 	    //var msg1 = 'AOS应用基础平台基于JavaEE技术体系，以“标准功能可复用、通用模块可配置、行业需求快速开发、异构系统无缝集成”为目标，为软件开发团队提供高效可控、随需应变、快速实现业务需求的全栈式技术解决方案。帮助企业落实IT策略、屏蔽技术壁垒，快速实现业务愿景。使其获得更低成本、更高质量、更快交付业务和运维支持的核心技术竞争力。';
 	    var msg1 = '<p style="font-size:40px;color:red;text-align: center">注意新的警情 !</p>';
 	   
@@ -364,12 +353,7 @@ String path=request.getScheme()+"://"+request.getServerName()+":"+request.getSer
 			        	 { fieldLabel: "报警时间", id:"f",xtype: "textfield", name: "alarm_time" },
 			        	 { fieldLabel: "处理人", id:"g",xtype: "textfield", name: "handler_" },
 			        	 { fieldLabel: "处理人手机号", id:"h",xtype: "textfield", name: "handler_phone" }
-			        	 //{ fieldLabel: "接警人", value: "/" }
-			            //{ fieldLabel: "产品名称", id:"a",xtype: "textfield", name: "productName", value: "U盘" },
-			            //{ fieldLabel: "金额", xtype: "numberfield", name: "price", value: 100 },
-			            //{ fieldLabel: "生产日期", xtype: "datefield", format: "Y-m-d", name: "date", value: new Date() },
-			            //{ xtype: "hidden", name: "productId", value: "001" },
-			            //{ fieldLabel: "产品简介", name: "introduction", xtype: "textarea" }
+			        	
 			        ] 
 			       /*  buttons: [
 			            { text: "加载简介", handler: loadIntroduction }
@@ -384,31 +368,7 @@ String path=request.getScheme()+"://"+request.getServerName()+":"+request.getSer
 					height:400,
 					frame:false,
 					items:[productForm],	
-					/*
-					bbar:['->',
-					{text:"升级", frame:false,handler:function(){
-						AOS.notice("提示!","确定要将系统升级到该版本吗?",function(){				
-						var vn = combox.getRawValue();
-						Ext.Ajax.request({
-						    url: '/zhaf/http/do.jhtml?router=upgradeHardwareController.upgradeAll&juid='+info,
-						    mathod:"POST",
-						    params:{version:vn,
-						    	aos_rows_: selection},
-						    success: function(response, opts) {
-						        var obj = Ext.decode(response.responseText);
-						        AOS.tip(obj.appmsg);
-						        root.hide();
-						    },
-						    failure: function(response, opts) {
-						        AOS.tip('升级失败');
-						        root.hide();
-						    }
-						});
-						
-						},function(){});
-					}},
-						{text:"取消", frame:false,handler:function(){AOS.tip("取消升级");root.hide();}}*/
-							
+					
 
 					resizable:false,
 					closable:true,
@@ -425,13 +385,7 @@ String path=request.getScheme()+"://"+request.getServerName()+":"+request.getSer
 				    			        id: alarm_id
 				    	    		},
 				    			    success: function(response){
-				    			    	//alert("在接警");
-				    			        //var text = Ext.decode(response.responseText);
-				    			        //Ext.getCmp("x").setValue(text.is_alarming);
-				    			    	//if("x" == "0")
-				    			    	//	alert("接警成功");
-				    			    	//else
-				    			    	//	alert("接警失败");
+				    			    	
 				    			    	
 				    			    	if(response.appcode === -1){
 			 								AOS.err(response.appmsg);

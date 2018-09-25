@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.servlet.ServletInputStream;
 import javax.xml.bind.DatatypeConverter;
 
 import org.json.JSONArray;
@@ -542,12 +543,40 @@ public class AppApiService extends CDZBaseController {
 	public void checkAndUpdate(HttpModel httpModel) {
 		Dto qDto = httpModel.getInDto();
 		Dto odto = Dtos.newDto();
+		
+			ServletInputStream ris = null;
+		
+		 
+			try {
+				ris = httpModel.getRequest().getInputStream();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			StringBuilder content = new StringBuilder();
+			byte[] b = new byte[1024];
+			int lens = -1;
+			try {
+				while ((lens = ris.read(b)) > 0) {
+					content.append(new String(b, 0, lens));
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String strcont = content.toString();
 
-		String current_version = qDto.getString("current_version");
-		String role = qDto.getString("role");
+			System.out.println(strcont);
+			JsonObject jsonObject = (JsonObject) new JsonParser().parse(strcont);
+			 
+			String current_version = jsonObject.get("current_version").getAsString();
+			String role = jsonObject.get("role").getAsString();
+		//String current_version = qDto.getString("current_version");
+		//String role = qDto.getString("role");
 
-		String version = current_version.substring(1);
+		String version = current_version;
 		version = version.replace(".", "");
+		version = version.replace(" ", "");
 
 		Dto pDto1 = Dtos.newDto();
 		Dto pDto = Dtos.newDto();
@@ -563,13 +592,14 @@ public class AppApiService extends CDZBaseController {
 		int num = appDtos.size();
 		Dto dto = appDtos.get(num - 1);
 		String version1 = dto.getString("version_no");
-		version1 = version1.substring(1);
+		//version1 = version1.substring(1);
 		version1 = version1.replace(".", "");
+		version1 = version1.replace(" ", "");
 		int num1 = Integer.parseInt(version);
 		int num2 = Integer.parseInt(version1);
 		if (num2 > num1) {
 			odto.put("status", "1");
-			odto.put("msg", "有新版本");
+			odto.put("msg", "发现新版本");
 			odto.put("new_version_url", dto.getString("download_url"));
 			odto.put("update_content", getData(dto.getString("update_content")));
 			odto.put("version_no", version1);
@@ -897,6 +927,7 @@ public class AppApiService extends CDZBaseController {
 
 			basic_userPO.setAvatar(outDto.getAppMsg().replace("\\", "/"));
 			avatar =Constant.SERVERIP+ "/zhaf/myupload" + outDto.getAppMsg().replace("\\", "/");
+			
 			basic_userDao.updateByKey(basic_userPO);
 
 			odto.put("avatar", getData(avatar));

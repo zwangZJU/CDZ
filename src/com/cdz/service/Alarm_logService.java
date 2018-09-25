@@ -113,26 +113,24 @@ public class Alarm_logService extends CDZBaseController {
 
 	@Transactional
 	public void updateWebpage(HttpModel httpModel) {
-		//Dto inDto = httpModel.getInDto();
 		
 		Dto newDto = Dtos.newDto();
-		//newDto.put("handler_phone", alarm_logPO1.getHandler_phone());
 		newDto.put("data","<name>"+"1234567890"+"</name>");
 		
 		if(i == 0)
 		{
-			num_before = alarm_logDao.row_num();
+			num_before = alarm_logDao.row_num();  //这是重新启动服务器后第一次执行这个函数时会进入这个if得到当前的alarm_log表的行数
 			i=1;
 		}
-		int num = alarm_logDao.row_num();
+		int num = alarm_logDao.row_num();   //当前的alarm_log表的行数
 		System.out.println("num"+num);
 		
-		if(num > num_before)
+		if(num > num_before)  //如果当前表的行数大于之前的行数
 		{
 			PrintWriter pw=null;
 			try {
 				pw = httpModel.getResponse().getWriter();
-				pw.write("1");
+				pw.write("1");   //返回"1",jsp中会根据这个返回值从而弹出报警框并更新网页
 				pw.flush();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -140,16 +138,9 @@ public class Alarm_logService extends CDZBaseController {
 			} finally {
 				pw.close();
 			}
-			num_before = num;
+			num_before = num;  //把num赋值给num_before，用于下次比较
 		}
-		//byte[] buff = pw.toByteArray(); 
-	   // for (int i = 0; i < buff.length; i++) 
-	       // pw.println(buff[i]); 
-		//os.println("456");
-		//os.close();
-		//os.close(); 
-		//httpModel.setOutMsg1("<name>"+"1234567890"+"</name>");
-		//httpModel.setOutMsg1("</response>");
+		
 	}
 	
 	/**
@@ -273,7 +264,7 @@ public void receive_alarmAlarm_log(HttpModel httpModel) {
 		String alarm_id = qDto.getString("id");
 		
 		Alarm_logPO alarm_logPO1;
-		if(alarm_id.substring(alarm_id.length()-1,alarm_id.length()).equals(","))
+		if(alarm_id.substring(alarm_id.length()-1,alarm_id.length()).equals(","))  //单击按键和直接双击得到alarm_id不一样，这里处理一下
 			alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id.substring(0,alarm_id.length()-1)); 
 		else
 			alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id); 
@@ -288,9 +279,6 @@ public void receive_alarmAlarm_log(HttpModel httpModel) {
 			deviceDao.updateByKey(devicePO);
 		}
 		
-		//Dto newDto = Dtos.newDto();
-		//newDto.put("handler_phone", alarm_logPO1.getHandler_phone());
-		//newDto.put("is_alarming","0");
 		
 		httpModel.setOutMsg("接警成功");
 	}
@@ -302,41 +290,36 @@ public void receive_alarmAlarm_log(HttpModel httpModel) {
 		if (null != selectionIds && selectionIds.length > 0) {
 			for (String alarm_id : selectionIds) {
 				Alarm_logPO alarm_logPO1;
-				if(alarm_id.substring(alarm_id.length()-1,alarm_id.length()).equals(","))
+				if(alarm_id.substring(alarm_id.length()-1,alarm_id.length()).equals(","))  //单击按键和直接双击得到alarm_id不一样，这里处理一下
 					alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id.substring(0,alarm_id.length()-1)); 
 				else
 					alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id); 
 				
-				alarm_logPO1.setProcess("1");
+				alarm_logPO1.setProcess("1");  //表示已接警
 				alarm_logDao.updateByKey(alarm_logPO1);
 				
 				DevicePO devicePO =deviceDao.selectByDeviceId(alarm_logPO1.getDevice_id());
 				if(null != devicePO)
 				{
-					devicePO.setIs_alarming("0");  
+					devicePO.setIs_alarming("0");    //更新设备表
 					deviceDao.updateByKey(devicePO);
 				}
 			}
 		} else {
 			String alarm_id = httpModel.getInDto().getString("alarm_id");
-			/*
-			 * Alarm_logPO alarm_logPO = new Alarm_logPO(); alarm_logPO.setCp_id(cp_id);
-			 * alarm_logPO.setIs_del(SystemCons.IS.YES);
-			 * alarm_logDao.updateByKey(alarm_logPO);
-			 */
 			Alarm_logPO alarm_logPO1;
 			if(alarm_id.substring(alarm_id.length()-1,alarm_id.length()).equals(","))
 				alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id.substring(0,alarm_id.length()-1)); 
 			else
 				alarm_logPO1 =alarm_logDao.selectByAlarmId(alarm_id); 
 			
-			alarm_logPO1.setProcess("1");
+			alarm_logPO1.setProcess("1");  //表示已接警
 			alarm_logDao.updateByKey(alarm_logPO1);
 			
 			DevicePO devicePO =deviceDao.selectByDeviceId(alarm_logPO1.getDevice_id());
 			if(null != devicePO)
 			{
-				devicePO.setIs_alarming("0");  
+				devicePO.setIs_alarming("0");    //更新设备表
 				deviceDao.updateByKey(devicePO);
 			}
 

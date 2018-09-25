@@ -2,6 +2,7 @@ package service;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -141,6 +142,16 @@ public class App_versionService extends CDZBaseController {
 			Iterator<String> iter = multiRequest.getFileNames();
 			while (iter.hasNext()) {
 				MultipartFile file = multiRequest.getFile((String) iter.next());
+				
+				long size = file.getSize();
+				float num = (float) size / 1024 / 1024;
+
+				DecimalFormat df = new DecimalFormat("0.0");
+
+				String result = df.format(num);
+				result = result + "M";
+				
+				
 				if (file != null) {
 					String fileName = file.getOriginalFilename();
 
@@ -150,9 +161,9 @@ public class App_versionService extends CDZBaseController {
 						httpModel.setOutMsg("{\"success\":\"false\",\"msg\":\"文件已存在！\"}");
 						break;
 					}
-					/*String path = "D:/github/CDZ7.09/webapp/app/" + fileName;*/
-					 String path = "C:/zhihuianfang/code/CDZ7.09/webapp/app/" + fileName; 
-
+					//String path =Constant.SERVERIP+ "/zhaf/myupload";
+					 String path = request.getServletContext().getRealPath("/app/"+fileName);
+					 path=path.replace("\\", "/");
 					File localFile = new File(path);
 
 					try {
@@ -174,6 +185,7 @@ public class App_versionService extends CDZBaseController {
 					app_versionPO.setRelease_time(date);
 					app_versionPO.setDownload_url(url);
 					app_versionPO.setDownload_times("0");
+					app_versionPO.setPackage_size(result);
 					app_versionDao.insert(app_versionPO);
 					httpModel.setOutMsg("{\"success\":\"true\",\"msg\":\"上传成功！\"}");
 				}

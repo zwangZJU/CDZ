@@ -677,8 +677,9 @@ public class DeviceService extends CDZBaseController {
 						}
 
 						
-						 String path = "C:/zhihuianfang/code/CDZ7.09/webapp/myupload/zonemap/" + fileName;
-
+						// String path = "C:/zhihuianfang/code/CDZ7.09/webapp/myupload/zonemap/" + fileName;
+						 String path = request.getServletContext().getRealPath("/myupload/zonemap/"+fileName);
+						 path=path.replace("\\", "/");
 						File localFile = new File(path);
 
 						try {

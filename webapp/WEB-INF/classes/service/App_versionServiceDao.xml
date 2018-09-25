@@ -13,4 +13,11 @@
 		<where>
  		</where>
 	</select>
+	<select id="listApp" parameterType="Dto" resultType="Dto">
+		SELECT
+	
+		<include refid="dao.App_versionDao.column" />
+		FROM app_version
+		
+	</select>
 </mapper>
